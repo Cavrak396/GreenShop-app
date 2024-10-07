@@ -33,7 +33,7 @@
   text-decoration: none;
   color: rgba(0, 0, 0, 0.5);
   font-size: 18px;
-  padding-bottom: 20px;
+  padding-bottom: 18px;
 }
 
 .header__navigation-link--activated {
@@ -53,6 +53,7 @@
 .header__usertoolbar-button--login {
   display: flex;
   align-items: center;
+  gap: 5px;
   background: rgba(70, 163, 88, 1);
   color: rgba(255, 255, 255, 1);
   padding: 5px 12px;

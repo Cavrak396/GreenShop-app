@@ -1,7 +1,7 @@
 import Button from "../button/Button";
-import magnifier from "../../assets/magnifier.png";
-import cart from "../../assets/cart.png";
-import login from "../../assets/login-icon.png";
+import magnifier from "../../assets/images/magnifier.png";
+import cart from "../../assets/images/cart.png";
+import login from "../../assets/images/login-icon.png";
 
 interface ToolbarItem {
   id: number;
