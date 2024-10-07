@@ -1,0 +1,59 @@
+.header__line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 13px 0;
+  border-bottom: 1px solid rgba(70, 163, 88, 0.3);
+}
+
+.header__logo-link {
+  display: block;
+  max-width: 200px;
+  max-height: 150px;
+  flex: 1 1 200px;
+}
+
+.header__logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.header__navigation-list,
+.header__usertoolbar-list {
+  display: flex;
+  gap: 25px;
+}
+
+.header__usertoolbar-image {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.header__navigation-link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+
+.header__navigation-link--activated {
+  border-bottom: 3px solid rgba(70, 163, 88, 1);
+  color: rgba(0, 0, 0, 1);
+}
+
+.header__usertoolbar-button {
+  border: none;
+  border-radius: 5px;
+}
+
+.header__usertoolbar-button:hover {
+  cursor: pointer;
+}
+
+.header__usertoolbar-button--login {
+  display: flex;
+  align-items: center;
+  background: rgba(70, 163, 88, 1);
+  color: rgba(255, 255, 255, 1);
+  padding: 5px 12px;
+}
