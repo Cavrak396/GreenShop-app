@@ -1,5 +1,5 @@
 import BannerContent from "./BannerContent";
-import BannerGallery from "./BannerGallery";
+import BannerGallery, { bannerImages } from "./BannerGallery";
 import BannerDots from "./BannerDots";
 import { useEffect, useState } from "react";
 
@@ -8,11 +8,11 @@ function Banner() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImage((prev) => (prev === 3 ? 1 : prev + 1));
+      setActiveImage((prev) => (prev === bannerImages.length ? 1 : prev + 1));
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [activeImage]);
+  }, []);
 
   return (
     <section className="banner">
@@ -23,6 +23,7 @@ function Banner() {
           <BannerDots
             activeImage={activeImage}
             setActiveImage={setActiveImage}
+            images={bannerImages}
           />
         </div>
       </div>

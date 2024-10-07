@@ -1,24 +1,21 @@
-interface Dot {
-  id: number;
-}
+import { BannerImage } from "./BannerGallery";
 
 interface BannerDotsProps {
   activeImage: number;
   setActiveImage: (id: number) => void;
+  images: BannerImage[];
 }
 
-const dots: Dot[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
-function BannerDots({ activeImage, setActiveImage }: BannerDotsProps) {
+function BannerDots({ activeImage, setActiveImage, images }: BannerDotsProps) {
   return (
     <div className="banner__dots">
-      {dots.map((dot) => (
+      {images.map((image) => (
         <span
-          key={dot.id}
+          key={image.id}
           className={`banner__dot ${
-            activeImage === dot.id ? "active-dot" : ""
+            activeImage === image.id ? "active-dot" : ""
           }`}
-          onClick={() => setActiveImage(dot.id)}
+          onClick={() => setActiveImage(image.id)}
         ></span>
       ))}
     </div>
