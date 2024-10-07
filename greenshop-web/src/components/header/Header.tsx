@@ -1,6 +1,6 @@
 import HeaderNav from "./HeaderNav";
 import HeaderUserToolbar from "./HeaderUserToolbar";
-import Logo from "../../assets/Logo.png";
+import Logo from "../../assets/images/Logo.png";
 import "./header.css";
 
 function Header() {
