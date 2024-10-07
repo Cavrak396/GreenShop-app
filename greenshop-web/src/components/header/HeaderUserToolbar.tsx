@@ -29,7 +29,7 @@ function HeaderUserToolbar() {
         </li>
       ))}
       <li className="header__usertoolbar-item">
-        <Button className="header__usertoolbar-button header__usertoolbar-button--login">
+        <Button className="header__usertoolbar-button button">
           <img src={login} alt="Login icon" />
           Login
         </Button>
