@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.github",
+    "\\greenshop-api",
+    "\\greenshop-api\\Controllers",
+    "\\greenshop-api\\Data",
+    "\\greenshop-api\\Models"
   ],
+  "SelectedNode": "\\greenshop-api\\greenshop-api.csproj",
   "PreviewInSolutionExplorer": false
 }
