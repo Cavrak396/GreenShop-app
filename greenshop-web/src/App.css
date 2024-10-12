@@ -193,4 +193,5 @@ table {
 
 body {
   font-family: "Poppins";
+  user-select: none;
 }
