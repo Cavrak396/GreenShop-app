@@ -1,5 +1,6 @@
 import { useState } from "react";
 import HomePageShopDropdown from "./HomePageShopDropdown";
+import arrowDown from "../../../assets/images/shop/arrow-down.svg";
 import { FakeDataTypes } from "./fakedata";
 
 interface BarItemsTypes {
@@ -36,14 +37,22 @@ function HomePageShopBar({ setSortedData }: HomePageShopBarProps) {
       <button
         className="homepageshop__sort-btn"
         onClick={() => setActiveDropdown((prev) => !prev)}
+        aria-expanded={activeDropdown}
+        aria-controls="sort-dropdown"
       >
         Sort by: {activeSort}
+        <img
+          src={arrowDown}
+          className="homepageshop__sort-arrow"
+          alt="arrow down"
+        />
       </button>
       {activeDropdown && (
         <HomePageShopDropdown
           setActiveSort={setActiveSort}
           setActiveDropdown={setActiveDropdown}
           setSortedData={setSortedData}
+          id="sort-dropdown"
         />
       )}
     </div>

@@ -15,7 +15,7 @@ interface BannerGalleryProps {
 export const bannerImages: BannerImage[] = [
   { id: 1, src: flowerpotFirst, alt: "First flowerpot image" },
   { id: 2, src: flowerpotSecond, alt: "Second flowerpot image" },
-  { id: 3, src: flowerpotThird, alt: "Third flowerpot image" },
+  // { id: 3, src: flowerpotThird, alt: "Third flowerpot image" },
 ];
 
 function BannerGallery({ activeImage }: BannerGalleryProps) {
