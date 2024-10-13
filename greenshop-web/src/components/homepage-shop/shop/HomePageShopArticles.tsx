@@ -1,7 +1,7 @@
 import { FakeDataTypes } from "./fakedata";
 import Heart from "../../../assets/images/shop/shopingHeart.svg";
 import Cart from "../../../assets/images/shop/shoppingCart.svg";
-import "../homepageshop.css";
+import "./articles.css";
 
 interface HomePageShopArticlesProps {
   sortedData: FakeDataTypes[];
