@@ -1,5 +1,6 @@
 import HomePageToolbox from "./usertoolbox/HomePageToolbox";
 import HomePageShopContent from "./shop/HomePageShopContent";
+import HomePagePagination from "./pagination/HomePagination";
 import "./homepageshop.css";
 
 function HomePageShop() {
@@ -10,6 +11,7 @@ function HomePageShop() {
           <HomePageToolbox />
           <HomePageShopContent />
         </div>
+        <HomePagePagination />
       </div>
     </div>
   );
