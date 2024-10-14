@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("greenshop-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a36ba1a442caed75b961aed48d48c22f91996dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d342ad5eebb4260bbc7d18b02d6925f639af1dfc")]
 [assembly: System.Reflection.AssemblyProductAttribute("greenshop-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("greenshop-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
