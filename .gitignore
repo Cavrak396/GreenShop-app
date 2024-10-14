@@ -1,10 +1,8 @@
 node_modules/
 FileContentIndex*
 .vs/
-# Ignore build artifacts
 obj/
-
-# Ignore solution-specific and cache files
+bin/
 *.suo
 *.cache
 *.sqlite
