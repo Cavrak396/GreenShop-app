@@ -1,7 +1,8 @@
 import "./App.css";
-import Header from "./components/header/header";
+import Header from "./components/header/Header";
 import Banner from "./components/banner/Banner";
 import HomePageShop from "./components/homepage-shop/HomePageShop";
+import About from "./components/about/About";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Header />
       <Banner />
       <HomePageShop />
+      <About />
     </>
   );
 }
