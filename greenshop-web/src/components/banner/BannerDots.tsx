@@ -1,3 +1,4 @@
+import BannerDot from "./BannerDot";
 import { BannerImage } from "./BannerGallery";
 
 interface BannerDotsProps {
@@ -10,13 +11,12 @@ function BannerDots({ activeImage, setActiveImage, images }: BannerDotsProps) {
   return (
     <div className="banner__dots">
       {images.map((image) => (
-        <span
+        <BannerDot
           key={image.id}
-          className={`banner__dot ${
-            activeImage === image.id ? "active-dot" : ""
-          }`}
-          onClick={() => setActiveImage(image.id)}
-        ></span>
+          id={image.id}
+          isActive={activeImage === image.id}
+          onClick={setActiveImage}
+        />
       ))}
     </div>
   );

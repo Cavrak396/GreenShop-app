@@ -1,12 +1,9 @@
 import { useState } from "react";
 import HomePageShopDropdown from "./HomePageShopDropdown";
-import arrowDown from "../../../assets/images/shop/arrow-down.svg";
-import { FakeDataTypes } from "./fakedata";
-
-interface BarItemsTypes {
-  id: number;
-  label: string;
-}
+import HomePageShopBarItem from "./HomePageShopBarItem";
+import arrowDown from "../../../../assets/images/shop/arrow-down.svg";
+import { FakeDataTypes } from "../fakedata";
+import { BarItemsTypes } from "../shopTypes";
 
 interface HomePageShopBarProps {
   setSortedData: React.Dispatch<React.SetStateAction<FakeDataTypes[]>>;
@@ -26,11 +23,7 @@ function HomePageShopBar({ setSortedData }: HomePageShopBarProps) {
     <div className="homepageshop__bar">
       <ul className="homepageshop__bar-items">
         {barItems.map((item) => {
-          return (
-            <li className="homepageshop__bar-item" key={item.id}>
-              {item.label}
-            </li>
-          );
+          return <HomePageShopBarItem key={item.id} item={item} />;
         })}
       </ul>
 

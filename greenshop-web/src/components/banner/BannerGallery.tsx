@@ -1,6 +1,6 @@
 import flowerpotFirst from "../../assets/images/banner/banner-image.png";
 import flowerpotSecond from "../../assets/images/banner/banner-image-second.png";
-import flowerpotThird from "../../assets/images/banner/banner-image-third.png";
+// import flowerpotThird from "../../assets/images/banner/banner-image-third.png";
 
 export interface BannerImage {
   id: number;

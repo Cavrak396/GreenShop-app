@@ -29,6 +29,12 @@
   max-height: 40px;
 }
 
+.header__login-image {
+  max-width: 30px;
+  flex: 1 1 30px;
+  max-height: 30px;
+}
+
 .header__navigation-link {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.5);

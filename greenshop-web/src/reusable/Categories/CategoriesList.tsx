@@ -1,4 +1,5 @@
-import { CategoriesTypes } from "./types/categoriesTypes";
+import { CategoriesTypes } from "../types/categoriesTypes";
+import CategoryItem from "./CategoriesItem";
 
 interface CategoriesListProps {
   categories: CategoriesTypes[];
@@ -16,16 +17,13 @@ function CategoriesList({
       {categories.map((item) => {
         const isActive = item.label === activeCategory;
         return (
-          <li
-            className={`homepageshop__categories-item ${
-              isActive ? "categories-active" : ""
-            }`}
+          <CategoryItem
             key={item.id}
+            label={item.label}
+            size={item.size}
+            isActive={isActive}
             onClick={() => onCategoryClick(item.label)}
-          >
-            <span className="homepageshop__categories-tag">{item.label}</span>
-            <span className="homepageshop__categories-size">({item.size})</span>
-          </li>
+          />
         );
       })}
     </ul>

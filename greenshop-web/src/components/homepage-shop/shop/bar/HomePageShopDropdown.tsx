@@ -1,18 +1,8 @@
 import { useCallback } from "react";
-import { FakeDataTypes } from "./fakedata";
-import fakeData from "./fakedata";
-
-enum SortOptions {
-  DEFAULT = "Default Sorting",
-  LOW_PRICE = "Price Sorting - from lowest",
-  HIGH_PRICE = "Price Sorting - from highest",
-  NAME = "Name Sorting",
-}
-
-interface DropdownItemType {
-  id: number;
-  label: SortOptions;
-}
+import { FakeDataTypes } from "../fakedata";
+import { SortOptions, DropdownItemType } from "../shopTypes";
+import fakeData from "../fakedata";
+import HomePageShopDropdownItem from "./HomePageShopDropdownItem";
 
 interface HomePageShopDropdownProps {
   id: string;
@@ -28,11 +18,18 @@ const dropdownItems: readonly DropdownItemType[] = [
   { id: 4, label: SortOptions.NAME },
 ];
 
-function HomePageShopDropdown({
+const sortByPriceLowToHigh = (data: FakeDataTypes[]) =>
+  data.slice().sort((a, b) => a.price - b.price);
+const sortByPriceHighToLow = (data: FakeDataTypes[]) =>
+  data.slice().sort((a, b) => b.price - a.price);
+const sortByName = (data: FakeDataTypes[]) =>
+  data.slice().sort((a, b) => a.label.localeCompare(b.label));
+
+const HomePageShopDropdown: React.FC<HomePageShopDropdownProps> = ({
   setActiveSort,
   setActiveDropdown,
   setSortedData,
-}: HomePageShopDropdownProps) {
+}) => {
   const handleSort = useCallback(
     (label: SortOptions) => {
       setActiveSort(label);
@@ -40,24 +37,19 @@ function HomePageShopDropdown({
 
       switch (label) {
         case SortOptions.LOW_PRICE:
-          setSortedData((prevData) =>
-            [...prevData].sort((a, b) => a.price - b.price)
-          );
+          setSortedData(sortByPriceLowToHigh(fakeData));
           break;
         case SortOptions.HIGH_PRICE:
-          setSortedData((prevData) =>
-            [...prevData].sort((a, b) => b.price - a.price)
-          );
+          setSortedData(sortByPriceHighToLow(fakeData));
           break;
         case SortOptions.NAME:
-          setSortedData((prevData) =>
-            [...prevData].sort((a, b) => a.label.localeCompare(b.label))
-          );
+          setSortedData(sortByName(fakeData));
           break;
         case SortOptions.DEFAULT:
           setSortedData(fakeData);
           break;
         default:
+          console.warn(`Unhandled sort option: ${label}`);
           break;
       }
     },
@@ -68,17 +60,15 @@ function HomePageShopDropdown({
     <div className="homepageshop__dropdown">
       <ul className="homepageshop__dropdown-list">
         {dropdownItems.map((item) => (
-          <li
-            className="homepageshop__dropdown-item"
+          <HomePageShopDropdownItem
             key={item.id}
-            onClick={() => handleSort(item.label)}
-          >
-            {item.label}
-          </li>
+            item={item}
+            handleSort={handleSort}
+          />
         ))}
       </ul>
     </div>
   );
-}
+};
 
 export default HomePageShopDropdown;

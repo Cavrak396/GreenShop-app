@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SmallTitle from "../../../reusable/SmallTitle";
 import HomePagePriceRange from "./HomePagePriceRange";
-import CategoriesList from "../../../reusable/CategoriesList";
+import CategoriesList from "../../../reusable/Categories/CategoriesList";
 import HomePageAdvertisement from "./HomePageAdvertisement";
 import { categories, categoriesSize } from "./utils/categories";
 import "./usertoolbox.css";

@@ -1,5 +1,5 @@
-import HomePageShopBar from "./HomePageShopBar";
-import HomePageShopArticles from "./HomePageShopArticles";
+import HomePageShopBar from "./bar/HomePageShopBar";
+import HomePageShopArticles from "./articles/HomePageShopArticles";
 import fakeData, { FakeDataTypes } from "./fakedata";
 import { useMemo, useState } from "react";
 

@@ -1,7 +1,7 @@
-import Button from "../button/Button";
+import HeaderToolbarItem from "./HeaderToolBarItem";
+import LoginButton from "./HeaderLoginButton";
 import magnifier from "../../assets/images/header/magnifier.png";
 import cart from "../../assets/images/header/cart.png";
-import login from "../../assets/images/header/login-icon.png";
 
 interface ToolbarItem {
   id: number;
@@ -18,22 +18,9 @@ function HeaderUserToolbar() {
   return (
     <ul className="header__usertoolbar-list">
       {toolbarItems.map((item) => (
-        <li className="header__usertoolbar-item" key={item.id}>
-          <Button className="header__usertoolbar-button">
-            <img
-              src={item.src}
-              alt={item.alt}
-              className="header__usertoolbar-image"
-            />
-          </Button>
-        </li>
+        <HeaderToolbarItem key={item.id} src={item.src} alt={item.alt} />
       ))}
-      <li className="header__usertoolbar-item">
-        <Button className="header__usertoolbar-button button">
-          <img src={login} alt="Login icon" />
-          Login
-        </Button>
-      </li>
+      <LoginButton />
     </ul>
   );
 }
