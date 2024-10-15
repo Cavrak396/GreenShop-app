@@ -1,6 +1,6 @@
 import Button from "../button/Button";
 import { AboutItemProps } from "./aboutTypes";
-import arrow from "../../assets/images/about/about-arrow-right.svg";
+import arrow from "../../assets/images/reusable/arrow-right.svg";
 
 function AboutItem({ item }: AboutItemProps) {
   return (

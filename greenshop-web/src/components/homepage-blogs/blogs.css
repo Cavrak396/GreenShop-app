@@ -1,0 +1,154 @@
+.homepage-blogs__text {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.homepage-blogs__title {
+  margin-bottom: 15px;
+}
+
+.homepage-blogs__join-lines {
+  font-size: 15px;
+  opacity: 0.6;
+}
+
+.homepage-blogs__list {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.homepage-blogs__item {
+  margin: 0 10px;
+  max-width: calc(25% - 20px);
+  flex: 1 1 calc(25% - 20px);
+  border-radius: 10px;
+}
+
+.homepage-blogs__image,
+.homepage-blogs__date,
+.homepage-blogs__tag {
+  display: block;
+}
+
+.homepage-blogs__image {
+  max-width: 100%;
+  max-height: 196px;
+  border-radius: 20px;
+}
+
+.homepage-blogs__date {
+  color: rgba(70, 163, 88, 1);
+  margin: 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.homepage-blogs__tag {
+  max-width: 253px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 25px;
+}
+
+.homepage-blogs__lines {
+  font-size: 14px;
+  line-height: 18px;
+  max-width: 291px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.homepage-blogs__button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.homepage-blogs__button:hover {
+  opacity: 0.7;
+  transition: all 0.5s ease-in-out;
+}
+
+.homepage-blogs__arrow {
+  max-width: 18px;
+  max-height: 18px;
+  filter: invert(1);
+}
+
+@media screen and (max-width: 975px) {
+  .homepage-blogs__list {
+    max-width: 100%;
+  }
+
+  .homepage-blogs__item {
+    max-width: calc(33.33% - 20px);
+    flex: 1 1 calc(33.33% - 20px);
+  }
+
+  .homepage-blogs__date {
+    font-size: 12px;
+  }
+
+  .homepage-blogs__tag {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 21px;
+  }
+
+  .homepage-blogs__lines {
+    font-size: 13px;
+  }
+
+  .homepage-blogs__button {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homepage-blogs__title {
+    margin-bottom: 10px;
+  }
+
+  .homepage-blogs__join-lines {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .homepage-blogs__item {
+    max-width: calc(50% - 20px);
+    flex: 1 1 calc(50% - 20px);
+    margin-bottom: 20px;
+  }
+
+  .homepage-blogs__date {
+    font-size: 10px;
+    line-height: 12px;
+    margin-bottom: 5px;
+  }
+
+  .homepage-blogs__tag {
+    font-size: 13px;
+    line-height: 16px;
+    margin-bottom: 5px;
+  }
+
+  .homepage-blogs__lines {
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .homepage-blogs__button {
+    font-size: 11px;
+  }
+
+  .homepage-blogs__arrow {
+    max-width: 12px;
+    max-height: 12px;
+  }
+}
