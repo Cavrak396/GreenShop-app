@@ -10,7 +10,6 @@ export const categories: CategoriesTypes[] = [
   { id: 7, label: "Terrariums", size: 19 },
   { id: 8, label: "Gardening", size: 13 },
   { id: 9, label: "Accessories", size: 18 },
-  { id: 10, label: "Accessories", size: 18 },
 ];
 
 export const categoriesSize: CategoriesTypes[] = [
