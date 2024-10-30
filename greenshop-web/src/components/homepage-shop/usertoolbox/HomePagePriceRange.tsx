@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import RangeInput from "../../../reusable/RangeInput";
+import RangeInput from "../../../reusable/inputs/RangeInput";
 import Button from "../../button/Button";
 import "./usertoolbox.css";
 

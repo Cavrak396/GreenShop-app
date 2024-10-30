@@ -1,12 +1,5 @@
 import { useEffect, useRef } from "react";
-
-export interface RangeType {
-  className: string;
-  min: number;
-  max: number;
-  value: number;
-  onChange: (value: number) => void;
-}
+import { RangeType } from "../types/inputsTypes";
 
 function RangeInput({ className, min, max, value, onChange }: RangeType) {
   const rangeRef = useRef<HTMLInputElement>(null);
