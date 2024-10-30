@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SmallTitle from "../../../reusable/Title";
+import Title from "../../../reusable/Title";
 import HomePagePriceRange from "./HomePagePriceRange";
 import CategoriesList from "../../../reusable/Categories/CategoriesList";
 import HomePageAdvertisement from "./HomePageAdvertisement";
@@ -11,21 +11,19 @@ function HomePageToolbox() {
 
   return (
     <div className="homepageshop__toolbox">
-      <SmallTitle className="homepageshop__categories-title small-title">
+      <Title className="homepageshop__categories-title small-title">
         Categories
-      </SmallTitle>
+      </Title>
       <CategoriesList
         categories={categories}
         activeCategory={activeCategoryId}
         onCategoryClick={setActiveCategoryId}
       />
-      <SmallTitle className="homepageshop__categories-title small-title">
+      <Title className="homepageshop__categories-title small-title">
         Price Range
-      </SmallTitle>
+      </Title>
       <HomePagePriceRange />
-      <SmallTitle className="homepageshop__categories-title small-title">
-        Size
-      </SmallTitle>
+      <Title className="homepageshop__categories-title small-title">Size</Title>
       <CategoriesList
         categories={categoriesSize}
         activeCategory={activeCategoryId}

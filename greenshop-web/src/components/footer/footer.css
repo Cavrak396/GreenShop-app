@@ -1,0 +1,284 @@
+.footer__top-line {
+  display: flex;
+  align-items: center;
+}
+
+.footer__top-item-list {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 70%;
+  flex: 1 1 70%;
+}
+
+.footer__top-form {
+  max-width: 30%;
+  flex: 1 1 30%;
+}
+
+.footer__top-item {
+  max-width: 33.33%;
+  flex: 1 1 33.33%;
+  padding: 0 5px;
+}
+
+.footer__top-item-image {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+.footer__top-item-tag {
+  display: block;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.footer__top-item-text {
+  max-width: 254px;
+}
+
+.footer__top-item-text,
+.footer__top-form-text {
+  opacity: 0.8;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.footer__top-form-input {
+  margin: 20px 0;
+  padding: 5px 20px;
+  border-radius: 0;
+  outline: none;
+}
+
+.footer__top-form-text {
+  max-width: 390px;
+}
+
+.footer__top-form-button {
+  border-radius: 0 5px 5px 0;
+}
+
+.footer__info-line {
+  display: flex;
+  align-items: center;
+  margin: 70px 0;
+  border-top: 1px solid rgba(70, 163, 88, 0.3);
+  border-bottom: 1px solid rgba(70, 163, 88, 0.3);
+  padding: 30px 0;
+}
+
+.footer__logo-link {
+  max-width: 200px;
+  max-height: 150px;
+  flex: 1 1 200px;
+}
+
+.footer__info-list {
+  display: flex;
+  align-items: center;
+  max-width: 80%;
+  flex: 1 1 80%;
+  gap: 120px;
+}
+
+.footer__info-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  max-width: 233px;
+  line-height: 20px;
+}
+
+.footer__info-image {
+  max-width: 25px;
+  max-height: 25px;
+}
+
+.footer__info-text {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.footer__navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__navigation-lists {
+  display: flex;
+  max-width: 70%;
+  flex: 1 1 70%;
+  justify-content: space-between;
+}
+
+.footer__navigation-title,
+.footer__navigation-item {
+  margin-bottom: 15px;
+}
+
+.footer__navigation-link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.footer__navigation-link:hover {
+  color: rgba(70, 163, 88, 1);
+  transition: 0.3s all ease-in-out;
+}
+
+.footer__navigation-social {
+  padding-left: 20px;
+}
+
+.footer__navigation-social-list {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.footer__navigation-social-image {
+  max-width: 20px;
+  max-height: 20px;
+  cursor: pointer;
+}
+
+.footer__social-text {
+  opacity: 0.6;
+  font-size: 14px;
+  max-width: 300px;
+  line-height: 22px;
+}
+
+.footer__copyright {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.7;
+  padding: 20px 0;
+}
+
+@media screen and (max-width: 975px) {
+  .footer__top-line {
+    flex-direction: column;
+  }
+
+  .footer__top-item-list,
+  .footer__top-form {
+    max-width: 100%;
+    flex: 1 1 100%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .footer__top-item {
+    margin-bottom: 20px;
+  }
+
+  .footer__info-line {
+    margin: 35px 0;
+  }
+
+  .footer__info-list {
+    gap: 10px;
+  }
+
+  .footer__info-text {
+    font-size: 13px;
+  }
+
+  .footer__info-item {
+    margin: 0 10px 20px 0;
+  }
+
+  .footer__navigation,
+  .footer__navigation-lists {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer__navigation-list {
+    margin-bottom: 20px;
+  }
+
+  .footer__navigation-lists {
+    font-size: 14px;
+  }
+
+  .footer__navigation-social-list {
+    justify-content: center;
+  }
+
+  .footer__copyright {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer__top-item {
+    max-width: 50%;
+    flex: 1 1 50%;
+    padding: 0 5px;
+  }
+
+  .footer__top-item-image {
+    max-width: 70px;
+    max-height: 70px;
+  }
+
+  .footer__top-item-tag {
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+
+  .footer__top-item-text {
+    font-size: 11px;
+    margin: 0 auto;
+    line-height: 15px;
+  }
+
+  .footer__top-form-text {
+    max-width: 390px;
+    font-size: 13px;
+    line-height: 19px;
+  }
+
+  .footer__info-line,
+  .footer__info-list {
+    flex-direction: column;
+  }
+
+  .footer__info-line {
+    padding: 20px 0;
+    margin: 20px 0;
+  }
+
+  .footer__logo-link {
+    max-height: 30px;
+    margin-bottom: 20px;
+  }
+
+  .footer__info-item {
+    font-size: 13px;
+    max-width: 208px;
+    margin: 0 auto 5px auto;
+  }
+
+  .footer__info-text {
+    line-height: 17px;
+    font-size: 13px;
+  }
+
+  .footer__navigation-item {
+    margin-bottom: 10px;
+  }
+
+  .footer__navigation-link {
+    font-size: 13px;
+  }
+
+  .footer__social-text {
+    font-size: 12px;
+    line-height: 19px;
+  }
+}

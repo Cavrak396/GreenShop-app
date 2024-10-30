@@ -1,12 +1,12 @@
 import "./reusable.css";
 
-interface SmallTitleTypes {
+interface TitleTypes {
   children: string;
   className: string;
 }
 
-function SmallTitle({ children, className }: SmallTitleTypes) {
+function Title({ children, className }: TitleTypes) {
   return <h3 className={className}>{children}</h3>;
 }
 
-export default SmallTitle;
+export default Title;

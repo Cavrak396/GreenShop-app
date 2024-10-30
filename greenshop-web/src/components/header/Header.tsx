@@ -1,6 +1,6 @@
 import HeaderNav from "./HeaderNav";
 import HeaderUserToolbar from "./HeaderUserToolbar";
-import HeaderLogo from "./HeaderLogo";
+import Logo from "../../reusable/Logo";
 import "./header.css";
 
 function Header() {
@@ -8,7 +8,7 @@ function Header() {
     <section className="header">
       <div className="wrap">
         <div className="header__line">
-          <HeaderLogo />
+          <Logo className="header__logo"/>
           <HeaderNav />
           <HeaderUserToolbar />
         </div>

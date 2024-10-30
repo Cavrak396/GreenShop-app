@@ -1,3 +1,7 @@
+.homepage-blogs {
+  margin-bottom: 100px;
+}
+
 .homepage-blogs__text {
   text-align: center;
   margin-bottom: 30px;
@@ -111,6 +115,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .homepage-blogs {
+    margin-bottom: 30px;
+  }
+
   .homepage-blogs__title {
     margin-bottom: 10px;
   }
