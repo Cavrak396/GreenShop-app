@@ -43,7 +43,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.M,
                     Category = "Potter Plants",
                     Price = 119.00,
-                    Image = "barbertonDaisy.svg",
+                    Image = "barbertonDaisy.png",
+                    Acquisition_Date = new DateTime(2024, 9, 30),
                     Tags = "Home, Garden, Plants",
                     Sale_Percent = 0,
                     Sale_Percent_Private = 20,
@@ -75,7 +76,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.L,
                     Category = "Potter Plants",
                     Price = 169.00,
-                    Image = "angelWingBegonia.svg",
+                    Image = "angelWingBegonia.png",
+                    Acquisition_Date = new DateTime(2024, 10, 28),
                     Tags = "Potter, Garden, Plants",
                     Sale_Percent = 0,
                     Sale_Percent_Private = 10,
@@ -111,7 +113,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.M,
                     Category = "House Plants",
                     Price = 179.00,
-                    Image = "africanViolet.svg",
+                    Image = "africanViolet.png",
+                    Acquisition_Date = new DateTime(2024, 10, 1),
                     Tags = "Home, Garden, Plants",
                     Sale_Percent = 13,
                     Sale_Percent_Private = 20,
@@ -145,7 +148,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.L,
                     Category = "Gardening",
                     Price = 129.00,
-                    Image = "beachSpiderLilly.svg",
+                    Image = "beachSpiderLilly.png",
+                    Acquisition_Date = new DateTime(2024, 10, 17),
                     Tags = "Home, Tropical, Plants",
                     Sale_Percent = 5,
                     Sale_Percent_Private = 15
@@ -169,7 +173,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.XL,
                     Category = "House Plants",
                     Price = 139.00,
-                    Image = "blushingBromeliad.svg",
+                    Image = "blushingBromeliad.png",
+                    Acquisition_Date = new DateTime(2024, 10, 14),
                     Tags = "Home, Tropical, Plants",
                     Sale_Percent = 0,
                     Sale_Percent_Private = 10,
@@ -202,7 +207,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.M,
                     Category = "Potter Plants",
                     Price = 179.00,
-                    Image = "aluminumPlant.svg",
+                    Image = "aluminumPlant.png",
+                    Acquisition_Date = new DateTime(2024, 8, 15),
                     Tags = "Potter, Garden, Plants",
                     Sale_Percent = 0,
                     Sale_Percent_Private = 10,
@@ -234,7 +240,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.S,
                     Category = "House Plants",
                     Price = 99.00,
-                    Image = "birdsNestFern.svg",
+                    Image = "birdsNestFern.png",
+                    Acquisition_Date = new DateTime(2024, 9, 7),
                     Tags = "Home, Tropical, Plants",
                     Sale_Percent = 10,
                     Sale_Percent_Private = 25,
@@ -269,7 +276,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.S,
                     Category = "Gardening",
                     Price = 59.00,
-                    Image = "broadleafLadyPalm.svg",
+                    Image = "broadleafLadyPalm.png",
+                    Acquisition_Date = new DateTime(2024, 8, 25),
                     Tags = "Palm, Garden, Plants",
                     Sale_Percent = 10,
                     Sale_Percent_Private = 25
@@ -295,7 +303,8 @@ namespace greenshop_api.Data
                     Size = Plant.SizeValue.S,
                     Category = "Gardening",
                     Price = 39.00,
-                    Image = "chineseEvergreen.svg",
+                    Image = "chineseEvergreen.png",
+                    Acquisition_Date = new DateTime(2024, 8, 28),
                     Tags = "Garden, Hanging, Plants",
                     Sale_Percent = 10,
                     Sale_Percent_Private = 25
@@ -303,9 +312,10 @@ namespace greenshop_api.Data
             );
         }
 
-        private static string GeneratePlantId(string datePart, int identityPart)
+        private static long GeneratePlantId(string datePart, int identityPart)
         {
-            return $"{datePart}{identityPart:D4}";
+            string plantIdString = $"{datePart}{identityPart:D4}";
+            return long.Parse(plantIdString);
         }
     }
 }
