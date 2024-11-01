@@ -13,3 +13,10 @@ export interface TextInputType {
   buttonText: string;
   buttonClass: string;
 }
+
+export interface FormInputTypes {
+  type: string;
+  placeholder?: string;
+  className: string;
+  ref?: React.Ref<HTMLInputElement>;
+}
