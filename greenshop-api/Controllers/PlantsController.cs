@@ -88,5 +88,55 @@ namespace greenshop_api.Controllers
 
             return Ok(plant);
         }
+
+        [HttpGet("related/{id}")]
+        public async Task<IActionResult> GetRelatedProducts(string id)
+        {
+            if (!long.TryParse(id, out long plantId))
+            {
+                return BadRequest("Invalid ID format!");
+            }
+            var plant = await _context.Plants.FindAsync(plantId);
+
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrEmpty(plant.Tags))
+            {
+                var categoryRelatedProducts = await _context.Plants
+                    .Where(p => p.PlantId != plantId && p.Category == plant.Category)
+                    .Take(5)
+                    .ToListAsync();
+
+                return Ok(categoryRelatedProducts);
+            }
+
+            var tags = plant.Tags.
+                Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).
+                ToHashSet();
+
+            var otherPlants = await _context.Plants
+                .Where(p => p.PlantId != plantId)
+                .ToListAsync();
+
+            var tagsRelatedProducts = otherPlants
+                .Where(p => p.Tags != null &&
+                             p.Tags.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Any(tag => tags.Contains(tag)))
+                .Select(p => new
+                {
+                    Plant = p,
+                    RelativityScore = p.Tags.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                            .Count(tag => tags.Contains(tag))
+                })
+                .OrderByDescending(p => p.RelativityScore)
+                .Take(5)
+                .Select(p => p.Plant)
+                .ToList();
+
+            return Ok(tagsRelatedProducts);
+        }
     }
 }
