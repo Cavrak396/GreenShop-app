@@ -17,9 +17,17 @@
   max-height: 100%;
 }
 
+.header__logo-holder,
+.header__navigation-list,
+.header__usertoolbar-list {
+  max-width: 33.33%;
+  flex: 1 1 33.33%;
+}
+
 .header__navigation-list,
 .header__usertoolbar-list {
   display: flex;
+  align-items: center;
   gap: 25px;
 }
 
@@ -45,6 +53,22 @@
 .header__navigation-link--activated {
   border-bottom: 3px solid rgba(70, 163, 88, 1);
   color: rgba(0, 0, 0, 1);
+}
+
+.header__usertoolbar-search-bar {
+  border-radius: 10px;
+  width: 400px;
+  font-size: 15px;
+  padding: 8px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  transform: translateY(20px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.header__usertoolbar-item.visible .header__usertoolbar-search-bar {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .header__usertoolbar-button {
