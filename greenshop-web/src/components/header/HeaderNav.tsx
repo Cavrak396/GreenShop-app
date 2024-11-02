@@ -1,17 +1,6 @@
 import HeaderNavItem from "./HeaderNavItem";
 import { useState, useCallback } from "react";
-
-interface NavigationItem {
-  id: number;
-  label: string;
-}
-
-const navigationList: NavigationItem[] = [
-  { id: 1, label: "Home" },
-  { id: 2, label: "Shop" },
-  { id: 3, label: "Plant Care" },
-  { id: 4, label: "Blogs" },
-];
+import { navigationList } from "./utils/headerUtils";
 
 function HeaderNav() {
   const [activeLink, setActiveLink] = useState<number>(1);

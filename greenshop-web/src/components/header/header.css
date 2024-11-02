@@ -28,6 +28,7 @@
 .header__usertoolbar-list {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 25px;
 }
 
@@ -57,10 +58,10 @@
 
 .header__usertoolbar-search-bar {
   border-radius: 10px;
-  width: 400px;
-  font-size: 15px;
-  padding: 8px 20px;
-  border: 1px solid rgba(0, 0, 0, 0.7);
+  width: 100%;
+  font-size: 13px;
+  padding: 8px 20px 8px 7px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   transform: translateY(20px);
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0;
