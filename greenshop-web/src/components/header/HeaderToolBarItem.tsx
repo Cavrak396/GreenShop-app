@@ -1,11 +1,6 @@
 import "./header.css";
 import Button from "../button/Button";
-
-interface ToolbarItemProps {
-  src: string;
-  alt: string;
-  setIsAppear: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { ToolbarItemProps } from "./types/headerTypes";
 
 function HeaderToolbarItem({ src, alt, setIsAppear }: ToolbarItemProps) {
   function handleSearchBarAppear() {

@@ -1,9 +1,4 @@
-interface HeaderNavItemProps {
-  id: number;
-  label: string;
-  activeLink: number;
-  handleLinkClick: (id: number) => void;
-}
+import { HeaderNavItemProps } from "./types/headerTypes";
 
 function HeaderNavItem({
   id,
