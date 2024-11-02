@@ -8,7 +8,9 @@ function Header() {
     <section className="header">
       <div className="wrap">
         <div className="header__line">
-          <Logo className="header__logo"/>
+          <div className="header__logo-holder">
+            <Logo className="header__logo" />
+          </div>
           <HeaderNav />
           <HeaderUserToolbar />
         </div>
