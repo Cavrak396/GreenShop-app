@@ -1,5 +1,6 @@
 import { FakeDataTypes } from "../fakedata";
 import { UserToolsType } from "../shopTypes";
+import { useCart } from "../../../../context/CartContext";
 
 interface HomePageShopArticleProps {
   isOnSale: boolean;
@@ -14,6 +15,14 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
   item,
   userTools,
 }) => {
+  const { setCartItems } = useCart();
+
+  function addingItemsToCart(item: FakeDataTypes) {
+    const dateAdded = new Date();
+    const itemWithDate = { ...item, dateAdded };
+    setCartItems((prev) => [...prev, itemWithDate]);
+  }
+
   return (
     <li className="homepageshop__article-item" key={item.id}>
       {isOnSale && (
@@ -31,6 +40,11 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
             src={tool.src}
             alt={tool.alt}
             className={tool.className}
+            onClick={
+              tool.alt === "user cart"
+                ? () => addingItemsToCart(item)
+                : undefined
+            }
           />
         ))}
       </div>
