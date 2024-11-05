@@ -15,12 +15,16 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
   item,
   userTools,
 }) => {
-  const { setCartItems } = useCart();
+  const { addItemToCart } = useCart();
 
   function addingItemsToCart(item: FakeDataTypes) {
     const dateAdded = new Date();
-    const itemWithDate = { ...item, dateAdded };
-    setCartItems((prev) => [...prev, itemWithDate]);
+    const itemWithDate = {
+      ...item,
+      dateAdded,
+      alt: item.label,
+    };
+    addItemToCart(itemWithDate);
   }
 
   return (

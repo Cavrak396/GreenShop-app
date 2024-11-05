@@ -51,7 +51,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const addItemToCart = useCallback((newItem: CartItem) => {
-    setCartItems((prevCartItems) => [...prevCartItems, newItem]);
+    setCartItems((prevCartItems) => {
+      const existingItem = prevCartItems.some((item) => item.id === newItem.id);
+      if (existingItem) {
+        return prevCartItems;
+      } else {
+        return [...prevCartItems, newItem];
+      }
+    });
+
     setQuantities((prevQuantities) => [...prevQuantities, 1]);
   }, []);
 
