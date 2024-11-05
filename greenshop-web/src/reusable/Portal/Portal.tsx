@@ -5,8 +5,14 @@ import Button from "../../components/button/Button";
 import close from "../../assets/images/reusable/close-image.svg";
 
 function Portal({ children, setIsAppear }: OverlayModalTypes) {
+  function handleOverlayClose(e: React.MouseEvent<HTMLDivElement>) {
+    if (e.target === e.currentTarget) {
+      setIsAppear(false);
+    }
+  }
+
   return ReactDOM.createPortal(
-    <div className="modal__overlay">
+    <div className="modal__overlay" onClick={handleOverlayClose}>
       <div className="modal__content">
         <Button
           className="modal__close-button"
