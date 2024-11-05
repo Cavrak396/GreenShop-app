@@ -28,7 +28,7 @@ function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
   return (
     <ul className="homepageshop__articles-list">
       {sortedData.map((item) => {
-        const isOnSale = item.sale !== null && item.sale > 0;
+        const isOnSale = item.sale !== undefined && item.sale > 0;
         const newPrice = isOnSale
           ? Number(
               (item.price - (item.price * (item.sale as number)) / 100).toFixed(
