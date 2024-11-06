@@ -6,7 +6,7 @@ function HeaderSearchBar({ isAppear }: HeaderSearchBarProps) {
     <li className={`header__usertoolbar-item ${isAppear ? "visible" : ""}`}>
       <FormInput
         className="header__usertoolbar-search-bar"
-        placeholder="Search for plant..."
+        placeholder="Find your plants"
         type="text"
       />
     </li>
