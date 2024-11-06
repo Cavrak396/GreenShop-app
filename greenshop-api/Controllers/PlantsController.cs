@@ -1,4 +1,5 @@
 ﻿using greenshop_api.Data;
+using greenshop_api.Filters.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static greenshop_api.Models.Plant;
@@ -17,6 +18,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet]
+        [Plant_ValidateGetHeaders]
         public async Task<IActionResult> GetPlants(
             [FromHeader(Name = "SearchValue")] string? search = null,
             [FromHeader(Name = "CategoryValue")] string? category = null,
@@ -72,41 +74,24 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlantById(string id)
+        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        public async Task<IActionResult> GetPlantById(long id)
         {
-            if (!long.TryParse(id, out long plantId))
-            {
-                return BadRequest("Invalid ID format!");
-            }
-
-            var plant = await _context.Plants.FindAsync(plantId);
-
-            if (plant == null)
-            {
-                return NotFound();
-            }
+            var plant = await _context.Plants.FindAsync(id);
 
             return Ok(plant);
         }
 
         [HttpGet("related/{id}")]
-        public async Task<IActionResult> GetRelatedProducts(string id)
+        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        public async Task<IActionResult> GetRelatedProducts(long id)
         {
-            if (!long.TryParse(id, out long plantId))
-            {
-                return BadRequest("Invalid ID format!");
-            }
-            var plant = await _context.Plants.FindAsync(plantId);
-
-            if (plant == null)
-            {
-                return NotFound();
-            }
+            var plant = await _context.Plants.FindAsync(id);
 
             if (string.IsNullOrEmpty(plant.Tags))
             {
                 var categoryRelatedProducts = await _context.Plants
-                    .Where(p => p.PlantId != plantId && p.Category == plant.Category)
+                    .Where(p => p.PlantId != id && p.Category == plant.Category)
                     .Take(5)
                     .ToListAsync();
 
@@ -118,7 +103,7 @@ namespace greenshop_api.Controllers
                 ToHashSet();
 
             var otherPlants = await _context.Plants
-                .Where(p => p.PlantId != plantId)
+                .Where(p => p.PlantId != id)
                 .ToListAsync();
 
             var tagsRelatedProducts = otherPlants
