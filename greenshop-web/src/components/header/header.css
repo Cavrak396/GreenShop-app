@@ -1,3 +1,7 @@
+.header {
+  position: relative;
+}
+
 .header__line {
   display: flex;
   align-items: center;
@@ -80,4 +84,78 @@
 
 .header__usertoolbar-button:hover {
   cursor: pointer;
+}
+
+.header__responsive-decoration {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .header__line {
+    border-bottom: none;
+    padding: 20px 0 0px 0;
+  }
+
+  .header__navigation-list,
+  .header__logo-holder,
+  .header__usertoolbar-button {
+    display: none;
+  }
+
+  .header__usertoolbar-list {
+    display: block;
+    position: relative;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .header__usertoolbar-button--responsive {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  .header__usertoolbar-image {
+    max-width: 15px;
+    max-height: 15px;
+  }
+
+  .header__usertoolbar-search-bar {
+    display: block;
+    opacity: 1;
+    border: none;
+    font-size: 12px;
+    transform: translateY(0);
+    padding-left: 30px;
+    max-width: 50%;
+  }
+
+  .header__usertoolbar-search-bar:focus {
+    outline: none;
+  }
+
+  .header__responsive-decoration {
+    display: block;
+    position: absolute;
+    top: 8px;
+    right: 0;
+    max-width: 70px;
+    transform: rotate(90deg);
+    text-align: center;
+    background-color: rgba(70, 163, 88, 1);
+    color: rgba(255, 255, 255, 1);
+    line-height: 16px;
+    z-index: 10;
+    border-radius: 0 10px 10px 0;
+    font-size: 12px;
+    transition: top 0.3s ease;
+    padding: 5px 0;
+  }
+
+  .header__responsive-decoration:hover {
+    top: 14px;
+    cursor: pointer;
+  }
 }

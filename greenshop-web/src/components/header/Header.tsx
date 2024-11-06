@@ -2,6 +2,7 @@ import HeaderNav from "./HeaderNav";
 import HeaderUserToolbar from "./HeaderUserToolbar";
 import Logo from "../../reusable/Logo";
 import "./header.css";
+import HeaderResponsiveMessage from "./headerResponsive/HeaderResponsiveMessage";
 
 function Header() {
   return (
@@ -14,6 +15,7 @@ function Header() {
           <HeaderNav />
           <HeaderUserToolbar />
         </div>
+        <HeaderResponsiveMessage />
       </div>
     </section>
   );

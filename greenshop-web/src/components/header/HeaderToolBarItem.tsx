@@ -20,7 +20,9 @@ function HeaderToolbarItem({ src, alt, setIsAppear }: ToolbarItemProps) {
     <>
       <li className="header__usertoolbar-item">
         <Button
-          className="header__usertoolbar-button"
+          className={`header__usertoolbar-button ${
+            alt === "Search" ? "header__usertoolbar-button--responsive" : ""
+          }`}
           onClick={handleToolbarClick}
         >
           <img src={src} alt={alt} className="header__usertoolbar-image" />
