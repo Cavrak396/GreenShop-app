@@ -107,6 +107,7 @@
   transition: opacity 0.3s ease-in-out;
   max-width: 20px;
   max-height: 20px;
+  z-index: 25;
 }
 
 .homepageshop__article-item:hover .homepageshop__article-cart,
