@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { FakeDataTypes } from "../fakedata";
 import { UserToolsType } from "../shopTypes";
 import { useCart } from "../../../../context/CartContext";
@@ -16,6 +17,11 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
   userTools,
 }) => {
   const { addItemToCart } = useCart();
+  const navigate = useNavigate();
+
+  function goToDetailsPage() {
+    navigate(`/details/${item.label}`);
+  }
 
   function addingItemsToCart(item: FakeDataTypes) {
     const dateAdded = new Date();
@@ -36,6 +42,7 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
         src={item.src}
         className="homepageshop__article-image"
         alt={item.label}
+        onClick={goToDetailsPage}
       />
       <div className="homepageshop__article-usertools">
         {userTools.map((tool) => (
