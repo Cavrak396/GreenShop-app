@@ -1,0 +1,27 @@
+﻿using greenshop_api.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+namespace greenshop_api.Filters.ActionFilters
+{
+    public class Plant_ValidateUpdatePlantFilterAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var id = context.ActionArguments["id"] as int?;
+            var shirt = context.ActionArguments["plant"] as Plant;
+
+            if (id.HasValue && shirt != null && id != shirt.PlantId)
+            {
+                context.ModelState.AddModelError("PlantId", "Plant Id is not the same as provided id.");
+                var problemDetails = new ValidationProblemDetails(context.ModelState)
+                {
+                    Status = StatusCodes.Status400BadRequest
+                };
+                context.Result = new BadRequestObjectResult(problemDetails);
+            }
+        }
+    }
+}

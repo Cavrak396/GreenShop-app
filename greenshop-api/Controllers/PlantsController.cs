@@ -1,5 +1,6 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Filters.ActionFilters;
+using greenshop_api.Filters.ExceptionFilters;
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,11 @@ namespace greenshop_api.Controllers
     [Route("/[controller]")]
     public class PlantsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext db;
 
-        public PlantsController(ApplicationDbContext context)
+        public PlantsController(ApplicationDbContext db)
         {
-            _context = context;
+            this.db = db;
         }
 
         [HttpGet]
@@ -27,7 +28,7 @@ namespace greenshop_api.Controllers
             [FromHeader(Name = "Group")] string? group = null,
             [FromHeader(Name = "Page")] int page = 1)
         {
-            var plantsQuery = _context.Plants.AsQueryable();
+            var plantsQuery = this.db.Plants.AsQueryable();
 
             if (!string.IsNullOrEmpty(group))
             {
@@ -78,7 +79,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         public async Task<IActionResult> GetPlantById(long id)
         {
-            var plant = await _context.Plants.FindAsync(id);
+            var plant = await this.db.Plants.FindAsync(id);
 
             return Ok(plant);
         }
@@ -87,11 +88,11 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         public async Task<IActionResult> GetRelatedProducts(long id)
         {
-            var plant = await _context.Plants.FindAsync(id);
+            var plant = await this.db.Plants.FindAsync(id);
 
             if (string.IsNullOrEmpty(plant.Tags))
             {
-                var categoryRelatedProducts = await _context.Plants
+                var categoryRelatedProducts = await this.db.Plants
                     .Where(p => p.PlantId != id && p.Category == plant.Category)
                     .Take(5)
                     .ToListAsync();
@@ -103,7 +104,7 @@ namespace greenshop_api.Controllers
                 Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).
                 ToHashSet();
 
-            var otherPlants = await _context.Plants
+            var otherPlants = await this.db.Plants
                 .Where(p => p.PlantId != id)
                 .ToListAsync();
 
@@ -131,16 +132,45 @@ namespace greenshop_api.Controllers
         {
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
 
-            int identityPart = (await _context.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
+            int identityPart = (await this.db.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
 
             plant.PlantId = ApplicationDbContext.GeneratePlantId(datePart, identityPart);
 
-            _context.Plants.Add(plant);
-            await _context.SaveChangesAsync();
+            this.db.Plants.Add(plant);
+            await this.db.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPlantById),
                 new { id = plant.PlantId },
                 plant);
+        }
+
+        [HttpPut]
+        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [Plant_ValidateUpdatePlantFilter]
+        [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
+        public async Task <IActionResult> UpdatePlant(long id, [FromBody]Plant plant)
+        {
+            var plantToUpdate = await this.db.Plants.FindAsync(id);
+
+            plantToUpdate.Name = plant.Name;
+            plantToUpdate.Short_Description = plant.Short_Description;
+            plantToUpdate.Long_Description = plant.Long_Description;
+            plantToUpdate.Size = plant.Size;
+            plantToUpdate.Category = plant.Category;
+            plantToUpdate.Price = plant.Price;
+            plantToUpdate.Image = plant.Image;
+            plantToUpdate.Acquisition_Date = plant.Acquisition_Date;
+            plantToUpdate.Tags = plant.Tags;
+            plantToUpdate.Sale_Percent = plant.Sale_Percent;
+            plantToUpdate.Sale_Percent_Private = plant.Sale_Percent_Private;
+            plantToUpdate.LivingRoom_Description = plant.LivingRoom_Description;
+            plantToUpdate.DiningRoom_Description = plant.DiningRoom_Description;
+            plantToUpdate.Office_Description = plant.Office_Description;
+
+            db.SaveChanges();
+
+            return NoContent();
+
         }
     }
 }
