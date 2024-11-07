@@ -312,7 +312,7 @@ namespace greenshop_api.Data
             );
         }
 
-        private static long GeneratePlantId(string datePart, int identityPart)
+        public static long GeneratePlantId(string datePart, int identityPart)
         {
             string plantIdString = $"{datePart}{identityPart:D4}";
             return long.Parse(plantIdString);
