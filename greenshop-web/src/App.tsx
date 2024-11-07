@@ -6,6 +6,7 @@ import About from "./components/about/About";
 import Blogs from "./components/homepage-blogs/Blogs";
 import Footer from "./components/footer/Footer";
 import { CartProvider } from "./context/CartContext";
+import UserBar from "./components/responsive-userbar/UserBar";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <About />
       <Blogs />
       <Footer />
+      <UserBar />
     </CartProvider>
   );
 }
