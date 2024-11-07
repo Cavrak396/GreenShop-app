@@ -1,5 +1,6 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Filters.ActionFilters;
+using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static greenshop_api.Models.Plant;
@@ -122,6 +123,24 @@ namespace greenshop_api.Controllers
                 .ToList();
 
             return Ok(tagsRelatedProducts);
+        }
+
+        [HttpPost]
+        [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
+        public async Task<IActionResult> CreatePlant([FromBody]Plant plant)
+        {
+            string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
+
+            int identityPart = (await _context.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
+
+            plant.PlantId = ApplicationDbContext.GeneratePlantId(datePart, identityPart);
+
+            _context.Plants.Add(plant);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPlantById),
+                new { id = plant.PlantId },
+                plant);
         }
     }
 }

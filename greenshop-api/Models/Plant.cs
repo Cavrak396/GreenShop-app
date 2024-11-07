@@ -15,22 +15,22 @@ namespace greenshop_api.Models
 
         [Key]
         public long? PlantId { get; set; }
-        [Required(ErrorMessage = "Name is a required field!")]
+        [Required]
         public string? Name { get; set; }
-        [Required(ErrorMessage = "Short Description is a required field!")]
+        [Required]
         public string? Short_Description { get; set; }
-        [Required(ErrorMessage = "Long Description is a required field!")]
+        [Required]
         public string? Long_Description { get; set; }
-        [Required(ErrorMessage = "Size is a required field!")]
+        [Required]
         public SizeValue Size { get; set; }
-        [Required(ErrorMessage = "Category is a required field!")]
+        [Required]
         public string? Category { get; set; }
-        [Required(ErrorMessage = "Price is a required field!")]
+        [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0!")]
         public double? Price { get; set; }
-        [Required(ErrorMessage = "Image is a required field!")]
+        [Required]
         public string? Image { get; set; }
-        [Required(ErrorMessage = "Acquisition Date is a required field!")]
+        [Required]
         [DateNotInTheFuture]
         public DateTime? Acquisition_Date { get; set; }
         public string? Tags { get; set; }
