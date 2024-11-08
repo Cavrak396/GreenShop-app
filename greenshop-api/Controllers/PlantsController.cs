@@ -26,6 +26,8 @@ namespace greenshop_api.Controllers
             [FromHeader(Name = "CategoryValue")] string? category = null,
             [FromHeader(Name = "SizeType")] string? size = null,
             [FromHeader(Name = "Group")] string? group = null,
+            [FromHeader(Name = "PriceMin")] double? priceMin = null,
+            [FromHeader(Name = "PriceMax")] double? priceMax = null,
             [FromHeader(Name = "Page")] int page = 1)
         {
             var plantsQuery = this.db.Plants.AsQueryable();
@@ -66,6 +68,16 @@ namespace greenshop_api.Controllers
                 {
                     plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
                 }
+            }
+
+            if(priceMin != null)
+            {
+                plantsQuery = plantsQuery.Where(p => p.Price >= priceMin);
+            }
+
+            if (priceMax != null)
+            {
+                plantsQuery = plantsQuery.Where(p => p.Price <= priceMax);
             }
 
             plantsQuery = plantsQuery.Skip((page - 1) * 9).Take(9);
