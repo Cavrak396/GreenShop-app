@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace greenshop_api.Filters
 {
-    public class ModelErrors
+    public static class ModelErrors
     {
         public static void AddBadRequestActionModelError(ActionExecutingContext context, string key, string errorMessage)
         {

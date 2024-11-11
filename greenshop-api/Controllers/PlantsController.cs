@@ -3,7 +3,10 @@ using greenshop_api.Filters.ActionFilters;
 using greenshop_api.Filters.ExceptionFilters;
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using System.ComponentModel;
 using static greenshop_api.Models.Plant;
 
 namespace greenshop_api.Controllers
@@ -22,13 +25,14 @@ namespace greenshop_api.Controllers
         [HttpGet]
         [Plant_ValidateGetHeaders]
         public async Task<IActionResult> GetPlants(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 9,
             [FromHeader(Name = "SearchValue")] string? search = null,
             [FromHeader(Name = "CategoryValue")] string? category = null,
             [FromHeader(Name = "SizeType")] string? size = null,
             [FromHeader(Name = "Group")] string? group = null,
             [FromHeader(Name = "PriceMin")] double? priceMin = null,
-            [FromHeader(Name = "PriceMax")] double? priceMax = null,
-            [FromHeader(Name = "Page")] int page = 1)
+            [FromHeader(Name = "PriceMax")] double? priceMax = null)
         {
             var plantsQuery = this.db.Plants.AsQueryable();
 
@@ -80,11 +84,25 @@ namespace greenshop_api.Controllers
                 plantsQuery = plantsQuery.Where(p => p.Price <= priceMax);
             }
 
-            plantsQuery = plantsQuery.Skip((page - 1) * 9).Take(9);
+            plantsQuery = plantsQuery.Skip((page - 1) * pageSize).Take(pageSize);
 
             var plants = await plantsQuery.ToListAsync();
 
             return Ok(plants);
+        }
+
+        [HttpGet("number")]
+        [Plant_ValidateGetPlantNumberFilter]
+        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlants([FromQuery] string[] categories)
+        {
+            var categoryCounts = new Dictionary<string, int>();
+
+            foreach (var category in categories)
+            {
+                var count = await this.db.Plants.CountAsync(p => p.Category.ToLower().Trim() == category.ToLower());
+                categoryCounts[category] = count;
+            }
+            return Ok(categoryCounts);
         }
 
         [HttpGet("{id}")]
@@ -98,7 +116,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("related/{id}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        public async Task<IActionResult> GetRelatedProducts(long id)
+        public async Task<IActionResult> GetRelatedProducts(long id, [FromQuery] int relatedProductsSize = 5)
         {
             var plant = await this.db.Plants.FindAsync(id);
 
@@ -131,7 +149,7 @@ namespace greenshop_api.Controllers
                                             .Count(tag => tags.Contains(tag))
                 })
                 .OrderByDescending(p => p.RelativityScore)
-                .Take(5)
+                .Take(relatedProductsSize)
                 .Select(p => p.Plant)
                 .ToList();
 
@@ -156,7 +174,7 @@ namespace greenshop_api.Controllers
                 plant);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [Plant_ValidateUpdatePlantFilter]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
@@ -185,7 +203,7 @@ namespace greenshop_api.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         public async Task <IActionResult> DeletePlant(long id)
         {
