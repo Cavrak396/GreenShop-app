@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore.Storage.Json;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters
 {
@@ -22,12 +20,7 @@ namespace greenshop_api.Filters.ActionFilters
                 !string.Equals(groupHeaderValue, "new", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(groupHeaderValue, "sale", StringComparison.OrdinalIgnoreCase))
             {
-                context.ModelState.AddModelError("Group", "Group is invalid.");
-                var problemDetails = new ValidationProblemDetails(context.ModelState)
-                {
-                    Status = StatusCodes.Status400BadRequest
-                };
-                context.Result = new BadRequestObjectResult(problemDetails);
+                ModelErrors.AddBadRequestActionModelError(context, "Group", "Group is invalid.");
             }
 
             if (!string.IsNullOrEmpty(sizeHeaderValue) &&
@@ -35,12 +28,7 @@ namespace greenshop_api.Filters.ActionFilters
                 !string.Equals(sizeHeaderValue, "medium", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(sizeHeaderValue, "large", StringComparison.OrdinalIgnoreCase))
             {
-                context.ModelState.AddModelError("Group", "Size Type is invalid.");
-                var problemDetails = new ValidationProblemDetails(context.ModelState)
-                {
-                    Status = StatusCodes.Status400BadRequest
-                };
-                context.Result = new BadRequestObjectResult(problemDetails);
+                ModelErrors.AddBadRequestActionModelError(context, "Group", "Size Type is invalid.");
             }
 
             if(!string.IsNullOrEmpty(priceMinHeaderValueString))
@@ -49,12 +37,7 @@ namespace greenshop_api.Filters.ActionFilters
                 {
                     if (priceMinHeaderValue < 0)
                     {
-                        context.ModelState.AddModelError("PriceMin", "Minimum Price cannot be negative.");
-                        var problemDetails = new ValidationProblemDetails(context.ModelState)
-                        {
-                            Status = StatusCodes.Status400BadRequest
-                        };
-                        context.Result = new BadRequestObjectResult(problemDetails);
+                        ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Minimum Price cannot be negative.");
                     }
                 }
             }
@@ -65,12 +48,20 @@ namespace greenshop_api.Filters.ActionFilters
                 {
                     if (priceMaxHeaderValue <= 0)
                     {
-                        context.ModelState.AddModelError("PriceMin", "Maximum Price must be greater than 0.");
-                        var problemDetails = new ValidationProblemDetails(context.ModelState)
-                        {
-                            Status = StatusCodes.Status400BadRequest
-                        };
-                        context.Result = new BadRequestObjectResult(problemDetails);
+                        ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Maximum Price must be greater than 0.");
+                    }
+                }
+            }
+
+            if(!string.IsNullOrEmpty(priceMinHeaderValueString) &&
+                !string.IsNullOrEmpty(priceMaxHeaderValueString))
+            {
+                if (double.TryParse(priceMinHeaderValueString, out var priceMinHeaderValue) &&
+                    double.TryParse(priceMaxHeaderValueString, out var priceMaxHeaderValue))
+                {
+                    if(priceMaxHeaderValue <= priceMinHeaderValue)
+                    {
+                        ModelErrors.AddBadRequestActionModelError(context, "Price", "Minimum Price must be lower than Maximum Price.");
                     }
                 }
             }

@@ -21,24 +21,14 @@ namespace greenshop_api.Filters.ActionFilters
             {
                 if (plantId.Value <= 0)
                 {
-                    context.ModelState.AddModelError("PlantId", "Plant Id is invalid");
-                    var problemDetails = new ValidationProblemDetails(context.ModelState)
-                    {
-                        Status = StatusCodes.Status400BadRequest
-                    };
-                    context.Result = new BadRequestObjectResult(problemDetails);
+                    ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is invalid");
                 }
                 else
                 {
                     var plant = db.Plants.Find(plantId.Value);
                     if (plant == null)
                     {
-                        context.ModelState.AddModelError("PlantId", "Plant doesn't exist.");
-                        var problemDetails = new ValidationProblemDetails(context.ModelState)
-                        {
-                            Status = StatusCodes.Status404NotFound
-                        };
-                        context.Result = new NotFoundObjectResult(problemDetails);
+                        ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
                     }
                 }
             }
