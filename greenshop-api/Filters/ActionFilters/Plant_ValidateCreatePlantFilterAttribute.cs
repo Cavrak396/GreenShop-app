@@ -21,14 +21,7 @@ namespace greenshop_api.Filters.ActionFilters
             var plant = context.ActionArguments["plant"] as Plant;
             if (plant == null)
             {
-                context.ModelState.AddModelError("Plant", "Plant object cannot be null.");
-
-                var problemDetails = new ValidationProblemDetails(context.ModelState)
-                {
-                    Status = StatusCodes.Status400BadRequest
-                };
-                context.Result = new BadRequestObjectResult(problemDetails);
-                return;
+                ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
             }
             else
             {
@@ -40,12 +33,7 @@ namespace greenshop_api.Filters.ActionFilters
 
                 if (existingPlant != null)
                 {
-                    context.ModelState.AddModelError("Plant", "Plant already exists.");
-                    var problemDetails = new ValidationProblemDetails(context.ModelState)
-                    {
-                        Status = StatusCodes.Status400BadRequest
-                    };
-                    context.Result = new BadRequestObjectResult(problemDetails);
+                    ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant already exists.");
                 }
             }
         }

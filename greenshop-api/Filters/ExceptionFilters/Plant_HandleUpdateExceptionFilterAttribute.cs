@@ -22,12 +22,7 @@ namespace greenshop_api.Filters.ExceptionFilters
             {
                 if (db.Plants.FirstOrDefault(x => x.PlantId == plantId) == null)
                 {
-                    context.ModelState.AddModelError("PlantId", "Plant doesn't exist anymore.");
-                    var problemDetails = new ValidationProblemDetails(context.ModelState)
-                    {
-                        Status = StatusCodes.Status404NotFound
-                    };
-                    context.Result = new NotFoundObjectResult(problemDetails);
+                    ModelErrors.AddNotFoundExceptionModelError(context, "PlantId", "Plant doesn't exist anymore.");
                 }
             }
         }

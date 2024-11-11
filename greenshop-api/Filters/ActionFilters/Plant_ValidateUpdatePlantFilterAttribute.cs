@@ -15,12 +15,7 @@ namespace greenshop_api.Filters.ActionFilters
 
             if (id.HasValue && shirt != null && id != shirt.PlantId)
             {
-                context.ModelState.AddModelError("PlantId", "Plant Id is not the same as provided id.");
-                var problemDetails = new ValidationProblemDetails(context.ModelState)
-                {
-                    Status = StatusCodes.Status400BadRequest
-                };
-                context.Result = new BadRequestObjectResult(problemDetails);
+                ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is not the same as provided id.");
             }
         }
     }
