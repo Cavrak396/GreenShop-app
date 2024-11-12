@@ -3,18 +3,16 @@ import FormInput from "../../reusable/inputs/FormInput";
 import CartItemInfo from "./CartItemInfo";
 import { CartItemProps } from "./types/CartTypes";
 import Button from "../button/Button";
+import { useCart } from "../../context/CartContext";
 import removeImg from "../../assets/images/cart/Delete.svg";
 
-const CartItem = React.memo(function CartItem({
-  item,
-  quantity,
-  index,
-  setQuantity,
-  removeItem,
-}: CartItemProps) {
+function CartItem({ item }: CartItemProps) {
+  const { quantities, setQuantity, removeItem } = useCart();
+  const quantity = quantities[item.id] || 1;
+
   function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = Math.max(1, Number(e.target.value));
-    setQuantity(index, value);
+    setQuantity(item.id, value);
   }
 
   const cartPrice = item.sale ? item.price * (1 - item.sale / 100) : item.price;
@@ -53,6 +51,6 @@ const CartItem = React.memo(function CartItem({
       </div>
     </li>
   );
-});
+}
 
 export default CartItem;

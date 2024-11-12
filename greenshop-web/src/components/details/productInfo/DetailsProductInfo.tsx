@@ -1,0 +1,27 @@
+import { useState, useCallback } from "react";
+import DetailsInfoButtons from "./DetailsInfoButtons";
+import DetailsInfoContent from "./DetailsInfoContent";
+import { ProductTypes } from "../types/detailsTypes";
+
+function DetailsProductInfo({ product }: ProductTypes) {
+  const [activatedButtonId, setActivatedButtonId] = useState(1);
+
+  const handleButtonClick = useCallback((id: number) => {
+    setActivatedButtonId(id);
+  }, []);
+
+  return (
+    <div className="details__info">
+      <DetailsInfoButtons
+        activatedButtonId={activatedButtonId}
+        handleButtonClick={handleButtonClick}
+      />
+      <DetailsInfoContent
+        activatedButtonId={activatedButtonId}
+        product={product}
+      />
+    </div>
+  );
+}
+
+export default DetailsProductInfo;

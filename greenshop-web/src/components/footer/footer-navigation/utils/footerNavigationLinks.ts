@@ -2,11 +2,11 @@ import {
   FooterNavigationTypes,
   FooterNavigationSocialTypes,
 } from "../types/footerNavigationTypes";
-import facebook from "../../../../assets/images/footer/Facebook.svg";
-import instagram from "../../../../assets/images/footer/Instagram.svg";
-import twitter from "../../../../assets/images/footer/Twitter.svg";
-import linkedin from "../../../../assets/images/footer/Linkedin.svg";
-import union from "../../../../assets/images/footer/Union.svg";
+import facebook from "../../../../assets/images/reusable/Facebook.svg";
+import instagram from "../../../../assets/images/reusable/Instagram.svg";
+import twitter from "../../../../assets/images/reusable/Twitter.svg";
+import linkedin from "../../../../assets/images/reusable/Linkedin.svg";
+import union from "../../../../assets/images/reusable/Union.svg";
 
 export const footerNavigationLinks: FooterNavigationTypes[] = [
   { id: 1, text: "My Account" },
