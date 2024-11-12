@@ -3,7 +3,7 @@ using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace greenshop_api.Filters.ActionFilters
+namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
     public class Plant_ValidateCreatePlantFilterAttribute : ActionFilterAttribute
     {

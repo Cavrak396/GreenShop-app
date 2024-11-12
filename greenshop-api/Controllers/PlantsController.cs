@@ -1,12 +1,9 @@
 ﻿using greenshop_api.Data;
-using greenshop_api.Filters.ActionFilters;
+using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters;
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using System.ComponentModel;
 using static greenshop_api.Models.Plant;
 
 namespace greenshop_api.Controllers

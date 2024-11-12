@@ -1,12 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using greenshop_api.Models;
+using System.Text.RegularExpressions;
 
 namespace greenshop_api.Data
 {
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Plant> Plants { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -316,6 +318,17 @@ namespace greenshop_api.Data
         {
             string plantIdString = $"{datePart}{identityPart:D4}";
             return long.Parse(plantIdString);
+        }
+
+        public static string GenerateSubscriberId(string email)
+        {
+            string prefix = email.Split('@')[0];
+            string cleanPrefix = Regex.Replace(prefix, @"[^a-zA-Z0-9]", string.Empty);
+            cleanPrefix = cleanPrefix.Length >= 4 ? 
+                cleanPrefix.Substring(0, 4) : 
+                cleanPrefix.PadRight(4, '0');
+            Random random = new Random();
+            return $"{cleanPrefix}{random.Next(0,9999):D4}";
         }
     }
 }
