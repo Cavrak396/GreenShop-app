@@ -1,11 +1,12 @@
 button {
   font-family: "Poppins";
   border: none;
+  background: none;
 }
 
 .button {
   background-color: rgba(70, 163, 88, 1);
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1) !important;
   padding: 5px 12px;
   border-radius: 8px;
   cursor: pointer;

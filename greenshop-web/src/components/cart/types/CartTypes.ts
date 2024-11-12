@@ -11,12 +11,14 @@ export interface CartItem {
 export interface CartContextType {
   cartItems: CartItem[];
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  quantities: number[];
-  setQuantities: React.Dispatch<React.SetStateAction<number[]>>;
+  quantities: { [key: number]: number };
+  setQuantities: React.Dispatch<
+    React.SetStateAction<{ [key: number]: number }>
+  >;
   totalPrice: number;
-  setQuantity: (index: number, quantity: number) => void;
+  setQuantity: (productId: number, quantity: number) => void;
   removeItem: (itemId: number) => void;
-  addItemToCart: (newItem: CartItem) => void;
+  addItemToCart: (newItem: CartItem, quantity: number) => void;
 }
 
 export interface CartTotalProps {

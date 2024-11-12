@@ -1,6 +1,6 @@
 import { NavigationItem } from "../types/headerTypes";
 import { ToolbarItem } from "../types/headerTypes";
-import magnifier from "../../../assets/images/header/magnifier.png";
+import magnifier from "../../../assets/images/reusable/magnifier.png";
 import cart from "../../../assets/images/header/cart.png";
 
 export const navigationList: NavigationItem[] = [
