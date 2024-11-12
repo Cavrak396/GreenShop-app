@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace greenshop_api.Filters.ActionFilters
+namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
     public class Plant_ValidateGetHeadersAttribute : ActionFilterAttribute
     {
