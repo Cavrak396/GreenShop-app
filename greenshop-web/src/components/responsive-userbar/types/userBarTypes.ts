@@ -2,6 +2,7 @@ export interface userBarTypes {
   id: number;
   alt: string;
   src: string;
+  path?: string;
   specialClass: boolean;
 }
 
