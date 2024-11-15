@@ -8,7 +8,7 @@ export interface AuthTypeTypes {
 export interface AuthCurrentDataTypes {
   activatedId: number;
   setActivatedId?: (id: number) => void;
-  inputRefs: MutableRefObject<Record<number, HTMLInputElement | null>>;
+  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
   showPassword?: { [key: number]: boolean };
   setShowPassword?: React.Dispatch<
     React.SetStateAction<{ [key: number]: boolean }>

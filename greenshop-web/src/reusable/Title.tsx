@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import "./reusable.css";
 
 interface TitleTypes {
-  children: string;
+  children: ReactNode;
   className: string;
 }
 
