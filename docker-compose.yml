@@ -19,7 +19,7 @@
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: GreenshopManagement
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - greenshop-network
 
