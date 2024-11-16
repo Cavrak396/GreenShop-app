@@ -15,7 +15,12 @@ builder.Services.AddMvc();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-        policy => policy.WithOrigins("http://localhost:3000", "http://localhost:5173", "http://localhost:5050", "https://localhost:7178")
+        policy => policy.WithOrigins("http://localhost:3000", 
+        "http://localhost:5173", 
+        "http://localhost:5050", 
+        "http://localhost:8080", 
+        "https://localhost:7178", 
+        "https://localhost:8081")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });

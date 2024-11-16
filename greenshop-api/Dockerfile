@@ -8,18 +8,18 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["greenshop-api/greenshop-api.csproj", "greenshop-api/"]
-RUN dotnet restore "./greenshop-api/greenshop-api.csproj"
-COPY . .
+COPY ["greenshop-api.csproj", "greenshop-api/"]
+RUN dotnet restore "greenshop-api/greenshop-api.csproj"
 WORKDIR "/src/greenshop-api"
-RUN dotnet build "./greenshop-api.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+COPY . .
+RUN dotnet build "greenshop-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./greenshop-api.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "greenshop-api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
