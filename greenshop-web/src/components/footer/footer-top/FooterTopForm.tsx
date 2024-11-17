@@ -1,5 +1,5 @@
 import TextInput from "../../../reusable/inputs/TextInput";
-import Title from "../../../reusable/Title";
+import Title from "../../../reusable/titles/Title";
 
 function FooterTopForm() {
   return (

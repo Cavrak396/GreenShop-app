@@ -1,6 +1,6 @@
 import { footerNavigationSocial } from "../utils/footerNavigationLinks";
 import FooterSocialItem from "./FooterSocialItem";
-import Title from "../../../../reusable/Title";
+import Title from "../../../../reusable/titles/Title";
 
 function FooterSocialList() {
   return (

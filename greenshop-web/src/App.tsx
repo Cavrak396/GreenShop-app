@@ -6,6 +6,7 @@ import HomePage from "./components/pages/HomePage";
 import DetailsPage from "./components/pages/DetailsPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserBar from "./components/responsive-userbar/UserBar";
+import DevelopersPage from "./components/pages/DevelopersPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/details/:label" element={<DetailsPage />} />
+          <Route path="/developers" element={<DevelopersPage />} />
         </Routes>
         <Footer />
         <UserBar />

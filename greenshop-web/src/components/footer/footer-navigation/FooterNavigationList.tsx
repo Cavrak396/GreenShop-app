@@ -1,6 +1,6 @@
 import FooterNavigationItem from "./FooterNavigationItem";
 import { footerNavigationLinks } from "./utils/footerNavigationLinks";
-import Title from "../../../reusable/Title";
+import Title from "../../../reusable/titles/Title";
 
 const sections = [
   { title: "My Account", start: 0, end: 5 },

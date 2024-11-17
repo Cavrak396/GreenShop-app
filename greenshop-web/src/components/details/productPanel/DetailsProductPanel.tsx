@@ -4,7 +4,7 @@ import ProductSizesList from "./ProductSizesList";
 import DetailsQuantity from "./DetailsQuantity";
 import DetailsOrderButtons from "./DetailsOrderButtons";
 import DetailsSocialList from "./DetailsSocialList";
-import Title from "../../../reusable/Title";
+import Title from "../../../reusable/titles/Title";
 import { useCart } from "../../../context/CartContext";
 import { ProductTypes } from "../types/detailsTypes";
 

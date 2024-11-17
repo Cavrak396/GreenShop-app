@@ -8,9 +8,9 @@ export const userBarItems: userBarTypes[] = [
   { id: 1, alt: "home page ", src: home, path: "/", specialClass: true },
   {
     id: 2,
-    alt: "developer infoe",
+    alt: "developers",
     src: developer,
-    path: "/developer-info",
+    path: "/developers",
     specialClass: true,
   },
   { id: 3, alt: "cart", src: cart, specialClass: false },

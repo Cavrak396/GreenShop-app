@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Title from "../../../reusable/Title";
+import Title from "../../../reusable/titles/Title";
 import HomePagePriceRange from "./HomePagePriceRange";
 import CategoriesList from "../../../reusable/Categories/CategoriesList";
 import HomePageAdvertisement from "./HomePageAdvertisement";

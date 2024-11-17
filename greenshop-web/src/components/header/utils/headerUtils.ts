@@ -6,7 +6,7 @@ import cart from "../../../assets/images/header/cart.png";
 export const navigationList: NavigationItem[] = [
   { id: 1, label: "Home" },
   { id: 2, label: "Shop" },
-  { id: 3, label: "Plant Care" },
+  { id: 3, label: "Devs" },
   { id: 4, label: "Blogs" },
 ];
 
