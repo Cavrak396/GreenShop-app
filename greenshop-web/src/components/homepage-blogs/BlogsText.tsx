@@ -1,4 +1,4 @@
-import Title from "../../reusable/Title";
+import Title from "../../reusable/titles/Title";
 
 function BlogsText() {
   return (

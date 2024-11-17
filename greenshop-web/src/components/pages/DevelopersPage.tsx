@@ -1,7 +1,14 @@
-import Developers from "../developers/Developers";
+import DevelopersHero from "../developers/hero/DevelopersHero";
+import "../developers/developers.css";
+import DevelopersAbout from "../developers/developersAbout/DevelopersAbout";
 
 function DevelopersPage() {
-  return <Developers />;
+  return (
+    <>
+      <DevelopersHero />
+      <DevelopersAbout />
+    </>
+  );
 }
 
 export default DevelopersPage;

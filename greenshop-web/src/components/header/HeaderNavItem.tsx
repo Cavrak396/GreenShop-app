@@ -1,5 +1,5 @@
-import { HeaderNavItemProps } from "./types/headerTypes";
 import { useNavigate } from "react-router-dom";
+import { HeaderNavItemProps } from "./types/headerTypes";
 
 function HeaderNavItem({
   id,
@@ -9,19 +9,18 @@ function HeaderNavItem({
 }: HeaderNavItemProps) {
   const navigate = useNavigate();
 
-  function handleNavigateClick(event: React.MouseEvent) {
-    event.preventDefault();
-    handleLinkClick(id);
-
+  const handleNavigation = (label: string) => {
     switch (label) {
       case "Home":
         navigate("/");
         break;
       case "Devs":
-        navigate("/devs");
+        navigate("/developers");
+        break;
+      default:
         break;
     }
-  }
+  };
 
   return (
     <li className="header__navigation-item" key={id}>
@@ -29,7 +28,10 @@ function HeaderNavItem({
         className={`header__navigation-link ${
           activeLink === id ? "header__navigation-link--activated" : ""
         }`}
-        onClick={handleNavigateClick}
+        onClick={() => {
+          handleLinkClick(id);
+          handleNavigation(label);
+        }}
       >
         {label}
       </a>

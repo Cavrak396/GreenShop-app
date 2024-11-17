@@ -10,6 +10,7 @@ function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
 
   function handleNavigation() {
     setActiveId(item.id);
+
     if (item.alt === "cart") {
       setIsAppear(true);
       navigate("/");

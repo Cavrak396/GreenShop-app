@@ -1,4 +1,4 @@
-import DevelopersHero from "./Hero/DevelopersHero";
+import DevelopersHero from "./hero/DevelopersHero";
 import "./developers.css";
 
 function Developers() {

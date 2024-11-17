@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/details/:label" element={<DetailsPage />} />
-          <Route path="/devs" element={<DevelopersPage />} />
+          <Route path="/developers" element={<DevelopersPage />} />
         </Routes>
         <Footer />
         <UserBar />
