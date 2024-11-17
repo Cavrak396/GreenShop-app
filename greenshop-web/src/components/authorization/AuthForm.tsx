@@ -21,6 +21,13 @@ function AuthForm({
     });
   };
 
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    inputId: number
+  ) => {
+    console.log(`Input ${inputId} changed to: ${e.target.value}`);
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       {inputsToShow.map((input) => (
@@ -33,7 +40,8 @@ function AuthForm({
                 : input.type
             }
             placeholder={input.placeholder}
-            ref={(el) => (inputRefs.current[input.id] = el)}
+            ref={(el) => (inputRefs.current[String(input.id)] = el)}
+            onChange={(e) => handleInputChange(e, input.id)}
           />
           {input.type === "password" && input.icon && (
             <Button

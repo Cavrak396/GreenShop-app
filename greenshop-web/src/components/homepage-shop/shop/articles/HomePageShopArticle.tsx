@@ -29,8 +29,9 @@ const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
       ...item,
       dateAdded,
       alt: item.label,
+      quantity: 1,
     };
-    addItemToCart(itemWithDate);
+    addItemToCart(itemWithDate, 1);
   }
 
   return (
