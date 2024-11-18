@@ -4,6 +4,7 @@ import DevelopersTechList from "./DevelopersTechList";
 import Button from "../../button/Button";
 import { useState } from "react";
 import useIsMobile from "../../../customHooks/useIsMobile";
+import DevelopersImage from "./DevelopersImage";
 
 function DevelopersAboutItem({ developer }: { developer: DevelopersTypes }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -13,11 +14,7 @@ function DevelopersAboutItem({ developer }: { developer: DevelopersTypes }) {
 
   return (
     <li className="about__list-item">
-      <img
-        src={developer.image}
-        alt={developer.alt}
-        className="about__item-developer-image"
-      />
+      <DevelopersImage developer={developer} />
       <span className="about__item-developer">{developer.name}</span>
       <span className="about__item-developer-job">{developer.job}</span>
       <DevelopersTechList developer={developer} />

@@ -1,9 +1,10 @@
+import LazyImage from "../../../reusable/LazyImage/LazyImage";
 import { TechnologyTypes } from "../types/developersTypes";
 
 function DevelopersTechItem({ technology }: { technology: TechnologyTypes }) {
   return (
     <li className="about__tech-item">
-      <img
+      <LazyImage
         src={technology.icon}
         alt={technology.name}
         className="about__tech-image"
