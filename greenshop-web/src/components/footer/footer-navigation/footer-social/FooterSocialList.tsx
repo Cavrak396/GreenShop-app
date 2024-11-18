@@ -1,4 +1,4 @@
-import { footerNavigationSocial } from "../utils/footerNavigationLinks";
+import { footerNavigationSocial } from "../utils/footerNavigationUtils";
 import FooterSocialItem from "./FooterSocialItem";
 import Title from "../../../../reusable/titles/Title";
 

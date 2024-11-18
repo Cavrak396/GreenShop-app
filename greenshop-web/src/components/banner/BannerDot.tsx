@@ -1,8 +1,4 @@
-interface BannerDotProps {
-  id: number;
-  isActive: boolean;
-  onClick: (id: number) => void;
-}
+import { BannerDotProps } from "./types/bannerTypes";
 
 function BannerDot({ id, isActive, onClick }: BannerDotProps) {
   return (

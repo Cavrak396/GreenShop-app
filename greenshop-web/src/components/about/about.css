@@ -35,10 +35,8 @@
 }
 
 .about__item-title {
-  font-size: 26px;
-  font-weight: 700;
   line-height: 27px;
-  max-width: 217px;
+  max-width: 250px;
 }
 
 .about__item-lines {

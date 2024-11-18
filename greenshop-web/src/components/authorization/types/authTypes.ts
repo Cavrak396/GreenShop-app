@@ -1,34 +1,49 @@
-import type { MutableRefObject } from "react";
+import type { MutableRefObject, Dispatch, SetStateAction } from "react";
 
-export interface AuthTypeTypes {
+export interface AuthType {
   id: number;
   type: string;
 }
 
-export interface AuthCurrentDataTypes {
-  activatedId: number;
-  setActivatedId?: (id: number) => void;
-  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
-  showPassword?: { [key: number]: boolean };
-  setShowPassword?: React.Dispatch<
-    React.SetStateAction<{ [key: number]: boolean }>
-  >;
-  togglePasswordVisibility: (id: number) => void;
-}
-
-export interface AuthInputsType {
+export interface AuthInput {
   id: number;
   type: string;
   placeholder: string;
   icon?: string;
 }
 
-export interface SocialAccountWayTypes {
+export interface SocialButton {
   id: number;
   alt: string;
   src: string;
 }
 
-export interface AuthSocialButtonsTypes {
+export interface AuthSocialButtonsProps {
   activatedId: number;
+}
+
+export interface AuthFormProps {
+  activatedId: number;
+  setActivatedId?: (id: number) => void;
+  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
+  showPassword?: Record<number, boolean>;
+  setShowPassword?: Dispatch<SetStateAction<Record<number, boolean>>>;
+  togglePasswordVisibility: (id: number) => void;
+}
+
+export interface AuthFormInputProps {
+  input: AuthInput;
+  refHandler: (el: HTMLInputElement | null) => void;
+  showPassword?: boolean;
+  togglePasswordVisibility?: (id: number) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface AuthCurrentDataTypes {
+  activatedId: number;
+  setActivatedId?: (id: number) => void;
+  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
+  showPassword?: Record<number, boolean>;
+  setShowPassword?: Dispatch<SetStateAction<Record<number, boolean>>>;
+  togglePasswordVisibility: (id: number) => void;
 }

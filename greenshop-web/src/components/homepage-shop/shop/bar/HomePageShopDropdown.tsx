@@ -1,22 +1,10 @@
 import { useCallback } from "react";
 import { FakeDataTypes } from "../fakedata";
-import { SortOptions, DropdownItemType } from "../shopTypes";
+import { SortOptions } from "../shopTypes";
 import fakeData from "../fakedata";
 import HomePageShopDropdownItem from "./HomePageShopDropdownItem";
-
-interface HomePageShopDropdownProps {
-  id: string;
-  setActiveSort: React.Dispatch<React.SetStateAction<string>>;
-  setActiveDropdown: React.Dispatch<React.SetStateAction<boolean>>;
-  setSortedData: React.Dispatch<React.SetStateAction<FakeDataTypes[]>>;
-}
-
-const dropdownItems: readonly DropdownItemType[] = [
-  { id: 1, label: SortOptions.DEFAULT },
-  { id: 2, label: SortOptions.LOW_PRICE },
-  { id: 3, label: SortOptions.HIGH_PRICE },
-  { id: 4, label: SortOptions.NAME },
-];
+import { HomePageShopDropdownProps } from "../shopTypes";
+import { dropdownItems } from "./utils/barUtils";
 
 const sortByPriceLowToHigh = (data: FakeDataTypes[]) =>
   data.slice().sort((a, b) => a.price - b.price);
@@ -25,11 +13,11 @@ const sortByPriceHighToLow = (data: FakeDataTypes[]) =>
 const sortByName = (data: FakeDataTypes[]) =>
   data.slice().sort((a, b) => a.label.localeCompare(b.label));
 
-const HomePageShopDropdown: React.FC<HomePageShopDropdownProps> = ({
+function HomePageShopDropdown({
   setActiveSort,
   setActiveDropdown,
   setSortedData,
-}) => {
+}: HomePageShopDropdownProps) {
   const handleSort = useCallback(
     (label: SortOptions) => {
       setActiveSort(label);
@@ -69,6 +57,6 @@ const HomePageShopDropdown: React.FC<HomePageShopDropdownProps> = ({
       </ul>
     </div>
   );
-};
+}
 
 export default HomePageShopDropdown;

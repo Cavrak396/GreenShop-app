@@ -1,19 +1,10 @@
 import { useState } from "react";
 import HomePageShopDropdown from "./HomePageShopDropdown";
 import HomePageShopBarItem from "./HomePageShopBarItem";
+import { barItems } from "./utils/barUtils";
 import arrowDown from "../../../../assets/images/shop/arrow-down.svg";
-import { FakeDataTypes } from "../fakedata";
-import { BarItemsTypes } from "../shopTypes";
-
-interface HomePageShopBarProps {
-  setSortedData: React.Dispatch<React.SetStateAction<FakeDataTypes[]>>;
-}
-
-const barItems: BarItemsTypes[] = [
-  { id: 1, label: "All Plants" },
-  { id: 2, label: "New Arrivals" },
-  { id: 3, label: "Sale" },
-];
+import { HomePageShopBarProps } from "../shopTypes";
+import Button from "../../../button/Button";
 
 function HomePageShopBar({ setSortedData }: HomePageShopBarProps) {
   const [activeSort, setActiveSort] = useState<string>("Default Sorting");
@@ -27,7 +18,7 @@ function HomePageShopBar({ setSortedData }: HomePageShopBarProps) {
         })}
       </ul>
 
-      <button
+      <Button
         className="homepageshop__sort-btn"
         onClick={() => setActiveDropdown((prev) => !prev)}
         aria-expanded={activeDropdown}
@@ -39,7 +30,7 @@ function HomePageShopBar({ setSortedData }: HomePageShopBarProps) {
           className="homepageshop__sort-arrow"
           alt="arrow down"
         />
-      </button>
+      </Button>
       {activeDropdown && (
         <HomePageShopDropdown
           setActiveSort={setActiveSort}

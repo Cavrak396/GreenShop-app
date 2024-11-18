@@ -1,11 +1,5 @@
 import BannerDot from "./BannerDot";
-import { BannerImage } from "./BannerGallery";
-
-interface BannerDotsProps {
-  activeImage: number;
-  setActiveImage: (id: number) => void;
-  images: BannerImage[];
-}
+import { BannerDotsProps } from "./types/bannerTypes";
 
 function BannerDots({ activeImage, setActiveImage, images }: BannerDotsProps) {
   return (
