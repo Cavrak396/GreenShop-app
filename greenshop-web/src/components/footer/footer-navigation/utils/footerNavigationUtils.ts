@@ -1,6 +1,7 @@
 import {
   FooterNavigationTypes,
   FooterNavigationSocialTypes,
+  Sections,
 } from "../types/footerNavigationTypes";
 import facebook from "../../../../assets/images/reusable/Facebook.svg";
 import instagram from "../../../../assets/images/reusable/Instagram.svg";
@@ -32,4 +33,10 @@ export const footerNavigationSocial: FooterNavigationSocialTypes[] = [
   { id: 3, name: "twitter", src: twitter },
   { id: 4, name: "linkedin", src: linkedin },
   { id: 5, name: "union", src: union },
+];
+
+export const sections: Sections[] = [
+  { title: "My Account", start: 0, end: 5 },
+  { title: "Helps & Guide", start: 5, end: 10 },
+  { title: "Categories", start: 10, end: 15 },
 ];

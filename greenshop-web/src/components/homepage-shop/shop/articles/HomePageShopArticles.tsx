@@ -1,28 +1,7 @@
-import { FakeDataTypes } from "../fakedata";
-import Heart from "../../../../assets/images/shop/shopingHeart.svg";
-import Cart from "../../../../assets/images/shop/shoppingCart.svg";
 import HomePageShopArticle from "./HomePageShopArticle";
-import { UserToolsType } from "../shopTypes";
+import { userTools } from "./utils/articlesUtils";
+import { HomePageShopArticlesProps } from "../shopTypes";
 import "./articles.css";
-
-interface HomePageShopArticlesProps {
-  sortedData: FakeDataTypes[];
-}
-
-const userTools: UserToolsType[] = [
-  {
-    src: Cart,
-    id: 1,
-    alt: "user cart",
-    className: "homepageshop__article-cart",
-  },
-  {
-    src: Heart,
-    id: 2,
-    alt: "user heart",
-    className: "homepageshop__article-heart",
-  },
-];
 
 function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
   return (

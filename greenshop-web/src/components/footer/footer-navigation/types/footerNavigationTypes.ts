@@ -16,3 +16,9 @@ export interface FooterNavigationSocialTypes {
 export interface FooterNavigationSocialItem {
   item: FooterNavigationSocialTypes;
 }
+
+export interface Sections {
+  title: string;
+  start: number;
+  end: number;
+}

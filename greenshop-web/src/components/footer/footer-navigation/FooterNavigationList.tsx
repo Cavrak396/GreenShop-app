@@ -1,12 +1,6 @@
 import FooterNavigationItem from "./FooterNavigationItem";
-import { footerNavigationLinks } from "./utils/footerNavigationLinks";
+import { footerNavigationLinks, sections } from "./utils/footerNavigationUtils";
 import Title from "../../../reusable/titles/Title";
-
-const sections = [
-  { title: "My Account", start: 0, end: 5 },
-  { title: "Helps & Guide", start: 5, end: 10 },
-  { title: "Categories", start: 10, end: 15 },
-];
 
 function FooterNavigationList() {
   return (

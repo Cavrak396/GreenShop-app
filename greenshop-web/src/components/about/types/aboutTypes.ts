@@ -8,3 +8,8 @@ export interface AboutItemType {
 export interface AboutItemProps {
   item: AboutItemType;
 }
+
+export interface AboutItemImageProps {
+  src: string;
+  alt: string;
+}

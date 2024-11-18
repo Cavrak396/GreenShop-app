@@ -1,20 +1,13 @@
 import React from "react";
-import { BlogType } from "./blogTypes";
+import { BlogItemProps } from "./types/blogsTypes";
 import Button from "../button/Button";
 import arrow from "../../assets/images/reusable/arrow-right.svg";
-
-interface BlogItemProps {
-  item: BlogType;
-}
+import BlogsImage from "./BlogsImage";
 
 function BlogItem({ item }: BlogItemProps) {
   return (
     <li className="homepage-blogs__item">
-      <img
-        src={item.image}
-        alt={item.title}
-        className="homepage-blogs__image"
-      />
+      <BlogsImage item={item} />
       <span className="homepage-blogs__date">{item.time}</span>
       <span className="homepage-blogs__tag">{item.title}</span>
       <p className="homepage-blogs__lines">{item.text}</p>

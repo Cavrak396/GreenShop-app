@@ -1,22 +1,5 @@
-import flowerpotFirst from "../../assets/images/banner/banner-image.png";
-import flowerpotSecond from "../../assets/images/banner/banner-image-second.png";
-// import flowerpotThird from "../../assets/images/banner/banner-image-third.png";
-
-export interface BannerImage {
-  id: number;
-  src: string;
-  alt: string;
-}
-
-interface BannerGalleryProps {
-  activeImage: number;
-}
-
-export const bannerImages: BannerImage[] = [
-  { id: 1, src: flowerpotFirst, alt: "First flowerpot image" },
-  { id: 2, src: flowerpotSecond, alt: "Second flowerpot image" },
-  // { id: 3, src: flowerpotThird, alt: "Third flowerpot image" },
-];
+import { bannerImages } from "./utils/bannerUtils";
+import { BannerGalleryProps } from "./types/bannerTypes";
 
 function BannerGallery({ activeImage }: BannerGalleryProps) {
   const activeImageData = bannerImages.find(

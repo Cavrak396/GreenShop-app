@@ -1,80 +1,61 @@
+import HomePageShopImage from "./HomePageShopImage";
+import HomePageShopUsertools from "./HomePageShopUsertools";
+import HomePageShopPrice from "./HomePageShopPrice";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 import { FakeDataTypes } from "../fakedata";
-import { UserToolsType } from "../shopTypes";
 import { useCart } from "../../../../context/CartContext";
+import { HomePageShopArticleProps } from "../shopTypes";
+import HomePageShopSale from "./HomePageShopSale";
 
-interface HomePageShopArticleProps {
-  isOnSale: boolean;
-  newPrice: number;
-  item: FakeDataTypes;
-  userTools: UserToolsType[];
-}
-
-const HomePageShopArticle: React.FC<HomePageShopArticleProps> = ({
+function HomePageShopArticle({
   isOnSale,
   newPrice,
   item,
   userTools,
-}) => {
+}: HomePageShopArticleProps) {
   const { addItemToCart } = useCart();
   const navigate = useNavigate();
+
+  const addingItemsToCart = useCallback(
+    (item: FakeDataTypes) => {
+      const dateAdded = new Date();
+      const itemWithDate = {
+        ...item,
+        dateAdded,
+        alt: item.label,
+        quantity: 1,
+      };
+      addItemToCart(itemWithDate, 1);
+    },
+    [addItemToCart]
+  );
 
   function goToDetailsPage() {
     navigate(`/details/${item.label}`);
   }
 
-  function addingItemsToCart(item: FakeDataTypes) {
-    const dateAdded = new Date();
-    const itemWithDate = {
-      ...item,
-      dateAdded,
-      alt: item.label,
-      quantity: 1,
-    };
-    addItemToCart(itemWithDate, 1);
-  }
-
   return (
     <li className="homepageshop__article-item" key={item.id}>
-      {isOnSale && (
-        <span className="homepageshop__article-sale">{item.sale}% OFF</span>
-      )}
-      <img
+      {isOnSale && <HomePageShopSale sale={item.sale} />}
+      <HomePageShopImage
         src={item.src}
-        className="homepageshop__article-image"
         alt={item.label}
         onClick={goToDetailsPage}
       />
-      <div className="homepageshop__article-usertools">
-        {userTools.map((tool) => (
-          <img
-            key={tool.id}
-            src={tool.src}
-            alt={tool.alt}
-            className={tool.className}
-            onClick={
-              tool.alt === "user cart"
-                ? () => addingItemsToCart(item)
-                : undefined
-            }
-          />
-        ))}
-      </div>
+      <HomePageShopUsertools
+        userTools={userTools}
+        addItemToCart={addingItemsToCart}
+        item={item}
+      />
       <span className="homepageshop__article-name">{item.label}</span>
-      <div className="homepageshop__price-information">
-        {isOnSale && (
-          <span className="homepageshop__article-newprice">${newPrice}</span>
-        )}
-        <span
-          className={`homepageshop__article-price ${
-            isOnSale ? "homepageshop__article-price--oldprice" : ""
-          }`}
-        >
-          ${item.price}
-        </span>
-      </div>
+      <HomePageShopPrice
+        isOnSale={isOnSale}
+        newPrice={newPrice}
+        price={item.price}
+      />
     </li>
   );
-};
+}
 
 export default HomePageShopArticle;

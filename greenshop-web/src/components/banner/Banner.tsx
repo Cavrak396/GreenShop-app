@@ -1,5 +1,6 @@
 import BannerContent from "./BannerContent";
-import BannerGallery, { bannerImages } from "./BannerGallery";
+import BannerGallery from "./BannerGallery";
+import { bannerImages } from "./utils/bannerUtils";
 import BannerDots from "./BannerDots";
 import { useEffect, useState } from "react";
 

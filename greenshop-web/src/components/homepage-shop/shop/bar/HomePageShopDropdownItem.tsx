@@ -1,9 +1,5 @@
-import { SortOptions, DropdownItemType } from "../shopTypes";
+import { HomePageShopDropdownItemProps} from "../shopTypes";
 
-interface HomePageShopDropdownItemProps {
-  item: DropdownItemType;
-  handleSort: (label: SortOptions) => void;
-}
 
 function HomePageShopDropdownItem({
   item,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import FormInput from "../../reusable/inputs/FormInput";
 import CartItemInfo from "./CartItemInfo";
 import { CartItemProps } from "./types/CartTypes";
@@ -10,17 +10,29 @@ function CartItem({ item }: CartItemProps) {
   const { quantities, setQuantity, removeItem } = useCart();
   const quantity = quantities[item.id] || 1;
 
-  function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = Math.max(1, Number(e.target.value));
-    setQuantity(item.id, value);
-  }
+  const cartPrice = useMemo(() => {
+    return item.sale ? item.price * (1 - item.sale / 100) : item.price;
+  }, [item.price, item.sale]);
 
-  const cartPrice = item.sale ? item.price * (1 - item.sale / 100) : item.price;
-  const totalPrice = (cartPrice * quantity).toFixed(2);
+  const totalPrice = useMemo(() => {
+    return (cartPrice * quantity).toFixed(2);
+  }, [cartPrice, quantity]);
+
+  const handleQuantityChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Math.max(1, Number(e.target.value));
+      setQuantity(item.id, value);
+    },
+    [item.id, setQuantity]
+  );
 
   return (
     <li className="cart__list-item">
-      <img src={item.src} alt={item.alt} className="cart__item-image" />
+      <img
+        src={item.src}
+        alt={item.alt || `Image of ${item.label}`}
+        className="cart__item-image"
+      />
       <div className="cart__item-info">
         <CartItemInfo
           label={item.label}

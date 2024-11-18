@@ -1,8 +1,8 @@
 import { socialAccountWays } from "./utils/authUtils";
 import Button from "../button/Button";
-import { AuthSocialButtonsTypes } from "./types/authTypes";
+import type { AuthSocialButtonsProps } from "./types/authTypes";
 
-function AuthSocialButtons({ activatedId }: AuthSocialButtonsTypes) {
+function AuthSocialButtons({ activatedId }: AuthSocialButtonsProps) {
   const actionTypeText = activatedId === 1 ? "Login" : "Continue";
   return (
     <div>
