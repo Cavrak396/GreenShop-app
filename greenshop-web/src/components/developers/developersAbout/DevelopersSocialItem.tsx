@@ -1,3 +1,4 @@
+import LazyImage from "../../../reusable/LazyImage/LazyImage";
 import { SocialTypes } from "../types/developersTypes";
 
 function DevelopersSocialItem({ social }: { social: SocialTypes }) {
@@ -9,7 +10,7 @@ function DevelopersSocialItem({ social }: { social: SocialTypes }) {
         rel="noopener noreferrer"
         className="about__social-link"
       >
-        <img
+        <LazyImage
           src={social.icon}
           alt={social.name}
           className="about__social-image"

@@ -1,8 +1,9 @@
+import LazyImage from "../../../../reusable/LazyImage/LazyImage";
 import { HomePageShopImageProps } from "../shopTypes";
 
 function HomePageShopImage({ src, alt, onClick }: HomePageShopImageProps) {
   return (
-    <img
+    <LazyImage
       src={src}
       className="homepageshop__article-image"
       alt={alt}
