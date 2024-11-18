@@ -1,9 +1,10 @@
 import advertisement from "../../../assets/images/toolbox/toolbox-advertisement.png";
+import LazyImage from "../../../reusable/LazyImage/LazyImage";
 
 function HomePageAdvertisement() {
   return (
     <div className="homepageshop__advertisement-container">
-      <img
+      <LazyImage
         src={advertisement}
         className="homepageshop__advertisement-image"
         alt="advertisement"
