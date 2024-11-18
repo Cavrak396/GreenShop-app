@@ -9,7 +9,7 @@ function LazyImage({
   effect = "blur",
   ...props
 }: LazyImageTypes) {
-  return <LazyLoadImage src={src} alt={alt} effect={effect} {...props} />;
+  return <LazyLoadImage className={className} src={src} alt={alt} effect={effect} {...props} />;
 }
 
 export default LazyImage;
