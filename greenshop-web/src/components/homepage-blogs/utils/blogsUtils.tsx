@@ -2,7 +2,7 @@ import blogFirstImg from "../../../assets/images/blog-homepage/blog-image-first.
 import blogSecondImg from "../../../assets/images/blog-homepage/blog-image-second.png";
 import blogThirdImg from "../../../assets/images/blog-homepage/blog-image-third.png";
 import blogFourthImg from "../../../assets/images/blog-homepage/blog-image-fourth.png";
-import { BlogType } from "../blogTypes";
+import { BlogType } from "../types/blogsTypes";
 
 export const blogsInfo: BlogType[] = [
   {

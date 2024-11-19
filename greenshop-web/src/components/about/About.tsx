@@ -2,7 +2,6 @@ import AboutItem from "./AboutItem";
 import { aboutItems } from "./utils/aboutUtils";
 import "./about.css";
 
-
 function About() {
   return (
     <section className="about">

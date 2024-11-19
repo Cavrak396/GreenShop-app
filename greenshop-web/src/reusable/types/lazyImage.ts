@@ -1,6 +1,7 @@
 export interface LazyImageTypes {
     src: string;
     alt: string;
+    className?: string;
     effect?: string;
-    className: string;
+    onClick?: () => void;
 }
