@@ -1,6 +1,6 @@
 import MainTitle from "../../../reusable/titles/MainTitle";
 
-function DevelopersHeroText() {
+function DevelopersHeroAbstract() {
   return (
     <div className="hero__text-holder">
       <MainTitle className="hero__title">
@@ -15,4 +15,4 @@ function DevelopersHeroText() {
   );
 }
 
-export default DevelopersHeroText;
+export default DevelopersHeroAbstract;

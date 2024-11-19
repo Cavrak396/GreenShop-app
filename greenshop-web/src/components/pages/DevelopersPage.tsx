@@ -1,11 +1,11 @@
-import DevelopersHero from "../developers/hero/DevelopersHero";
-import "../developers/developers.css";
+import DevelopersHeroSection from "../developers/developersHero/DevelopersHeroSection";
 import DevelopersAbout from "../developers/developersAbout/DevelopersAbout";
+import "../developers/developers.css";
 
 function DevelopersPage() {
   return (
     <>
-      <DevelopersHero />
+      <DevelopersHeroSection />
       <DevelopersAbout />
     </>
   );

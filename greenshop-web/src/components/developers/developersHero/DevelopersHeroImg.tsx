@@ -1,6 +1,6 @@
 import developerImage from "../../../assets/images/developers/developer-hero.png";
 
-function DeveloperHeroImage() {
+function DeveloperHeroImg() {
   return (
     <div className="hero__image-holder">
       <img
@@ -12,4 +12,4 @@ function DeveloperHeroImage() {
   );
 }
 
-export default DeveloperHeroImage;
+export default DeveloperHeroImg;
