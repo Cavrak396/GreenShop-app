@@ -1,11 +1,11 @@
-import DevelopersHero from "./hero/DevelopersHero";
+import DevelopersHeroSection from "./developersHero/DevelopersHeroSection";
 import "./developers.css";
 
 function Developers() {
   return (
     <section className="developers">
       <div className="wrap">
-        <DevelopersHero />
+        <DevelopersHeroSection />
       </div>
     </section>
   );
