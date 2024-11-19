@@ -1,5 +1,3 @@
-import type { MutableRefObject, Dispatch, SetStateAction } from "react";
-
 export interface AuthType {
   id: number;
   type: string;
@@ -25,9 +23,9 @@ export interface AuthSocialButtonsProps {
 export interface AuthFormProps {
   activatedId: number;
   setActivatedId?: (id: number) => void;
-  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
+  inputRefs: React.MutableRefObject<Record<string, HTMLInputElement | null>>;
   showPassword?: Record<number, boolean>;
-  setShowPassword?: Dispatch<SetStateAction<Record<number, boolean>>>;
+  setShowPassword?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
   togglePasswordVisibility: (id: number) => void;
 }
 
@@ -42,8 +40,8 @@ export interface AuthFormInputProps {
 export interface AuthCurrentDataTypes {
   activatedId: number;
   setActivatedId?: (id: number) => void;
-  inputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
+  inputRefs: React.MutableRefObject<Record<string, HTMLInputElement | null>>;
   showPassword?: Record<number, boolean>;
-  setShowPassword?: Dispatch<SetStateAction<Record<number, boolean>>>;
+  setShowPassword?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
   togglePasswordVisibility: (id: number) => void;
 }
