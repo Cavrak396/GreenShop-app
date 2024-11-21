@@ -1,9 +1,8 @@
 import { useState, useCallback } from "react";
 import DetailsInfoButtons from "./DetailsInfoButtons";
 import DetailsInfoContent from "./DetailsInfoContent";
-import { ProductTypes } from "../types/detailsTypes";
 
-function DetailsProductInfo({ product }: ProductTypes) {
+function DetailsProductInfo() {
   const [activatedButtonId, setActivatedButtonId] = useState(1);
 
   const handleButtonClick = useCallback((id: number) => {
@@ -16,10 +15,7 @@ function DetailsProductInfo({ product }: ProductTypes) {
         activatedButtonId={activatedButtonId}
         handleButtonClick={handleButtonClick}
       />
-      <DetailsInfoContent
-        activatedButtonId={activatedButtonId}
-        product={product}
-      />
+      <DetailsInfoContent activatedButtonId={activatedButtonId} />
     </div>
   );
 }

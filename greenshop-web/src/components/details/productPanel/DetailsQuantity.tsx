@@ -1,8 +1,9 @@
 import { useCart } from "../../../context/CartContext";
 import Button from "../../button/Button";
-import { ProductTypes } from "../types/detailsTypes";
+import { useProduct } from "../../../context/ProductContext";
 
-function DetailsQuantity({ product }: ProductTypes) {
+function DetailsQuantity() {
+  const product = useProduct();
   const { quantities, setQuantity } = useCart();
   const quantity = quantities[Number(product.id)] || 1;
 

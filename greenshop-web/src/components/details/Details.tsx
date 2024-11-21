@@ -1,46 +1,30 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import fakeData, { FakeDataTypes } from "../homepage-shop/shop/fakedata";
+import { useProduct } from "../../context/ProductContext";
+import { useState } from "react";
 import DetailsProductReview from "./DetailsProductReview";
 import DetailsProductPanel from "./productPanel/DetailsProductPanel";
-import "./details.css";
 import Portal from "../../reusable/Portal/Portal";
 import DetailsProductInfo from "./productInfo/DetailsProductInfo";
+import "./details.css";
 
 function Details() {
-  const { label } = useParams();
-  const [item, setItem] = useState<FakeDataTypes | null>(null);
+  const product = useProduct();
   const [isAppear, setIsAppear] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (label) {
-      const fetchedItem = fakeData.find((item) => item.label === label);
-      setItem(fetchedItem || null);
-    }
-  }, [label]);
-
-  if (!item) {
-    return <p aria-live="polite">Loading...</p>;
-  }
-
   return (
-    <div className="details">
+    <section className="details">
       <div className="wrap">
         <div className="details__product-info">
-          <DetailsProductReview
-            productImage={item.src}
-            setIsAppear={setIsAppear}
-          />
-          <DetailsProductPanel product={item} />
+          <DetailsProductReview setIsAppear={setIsAppear} />
+          <DetailsProductPanel />
         </div>
-        <DetailsProductInfo product={item} />
+        <DetailsProductInfo />
       </div>
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>
-          <img src={item.src} className="details__zoomed-image" />
+          <img src={product.src} className="details__zoomed-image" />
         </Portal>
       )}
-    </div>
+    </section>
   );
 }
 

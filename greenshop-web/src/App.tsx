@@ -4,9 +4,9 @@ import Footer from "./components/footer/Footer";
 import { CartProvider } from "./context/CartContext";
 import HomePage from "./components/pages/HomePage";
 import DetailsPage from "./components/pages/DetailsPage";
+import DevelopersPage from "./components/pages/DevelopersPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserBar from "./components/responsive-userbar/UserBar";
-import DevelopersPage from "./components/pages/DevelopersPage";
 
 function App() {
   return (

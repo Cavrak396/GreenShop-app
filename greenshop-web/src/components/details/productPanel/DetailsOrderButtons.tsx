@@ -2,15 +2,15 @@ import { userButtons } from "../utils/detailsUtils";
 import Button from "../../button/Button";
 import { useCart } from "../../../context/CartContext";
 import { useState, useEffect } from "react";
-import { ProductDetailsOrderButtonsProps } from "../types/detailsTypes";
+import { useProduct } from "../../../context/ProductContext";
 
-function DetailsOrderButtons({
-  product,
-  quantity,
-}: ProductDetailsOrderButtonsProps) {
+function DetailsOrderButtons() {
+  const product = useProduct();
+  const { quantities, addItemToCart, cartItems } = useCart();
   const [isActive, setIsActive] = useState<number>(1);
   const [isAdded, setIsAdded] = useState<string>("Add to cart");
-  const { addItemToCart, cartItems } = useCart();
+
+  const quantity = quantities[Number(product.id)] || 1;
 
   const handleButtonClick = (id: number, text: string) => {
     setIsActive(id);

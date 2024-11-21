@@ -5,13 +5,10 @@ import DetailsQuantity from "./DetailsQuantity";
 import DetailsOrderButtons from "./DetailsOrderButtons";
 import DetailsSocialList from "./DetailsSocialList";
 import Title from "../../../reusable/titles/Title";
-import { useCart } from "../../../context/CartContext";
-import { ProductTypes } from "../types/detailsTypes";
+import { useProduct } from "../../../context/ProductContext";
 
-function DetailsProductPanel({ product }: ProductTypes) {
-  const { quantities } = useCart();
-  const productIndex = product.id;
-  const quantity = quantities[productIndex] || 1;
+function DetailsProductPanel() {
+  const product = useProduct();
 
   const calculatedSalePrice = useMemo(() => {
     return product.sale
@@ -40,8 +37,8 @@ function DetailsProductPanel({ product }: ProductTypes) {
       </div>
       <ProductSizesList />
       <div className="details__product-line">
-        <DetailsQuantity product={product} />
-        <DetailsOrderButtons product={product} quantity={quantity} />
+        <DetailsQuantity />
+        <DetailsOrderButtons />
       </div>
       <DetailsSocialList />
     </div>
