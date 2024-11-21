@@ -1,13 +1,14 @@
+import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { FakeDataTypes } from "../../homepage-shop/shop/fakedata";
+
+export interface ProductProviderProps {
+  children: ReactNode;
+  product: FakeDataTypes;
+}
 
 export interface ProductDescriptionType {
   className: string;
   text: string;
-}
-
-export interface ProductReviewType {
-  productImage: string;
-  setIsAppear: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface SocialMediaType {
@@ -19,17 +20,6 @@ export interface SocialMediaType {
 export interface ButtonOrSizeType {
   id: number;
   text: string;
-}
-
-export interface ProductTypes {
-  product: FakeDataTypes;
-  item?: FakeDataTypes | SocialMediaType;
-  productId?: number;
-}
-
-export interface ProductDetailsOrderButtonsProps {
-  product: FakeDataTypes;
-  quantity: number;
 }
 
 export interface ProductSizesItemProps {
@@ -45,5 +35,19 @@ export interface DetailsInfoButtonsProps {
 
 export interface DetailsInfoContentProps {
   activatedButtonId: number;
-  product: FakeDataTypes;
+}
+
+export interface CommentsType {
+  id: number;
+  username: string;
+  comment: string;
+  rate: number;
+}
+
+export interface RatingsCountType {
+  [key: number]: number;
+}
+
+export interface ProductReviewType {
+  setIsAppear: Dispatch<SetStateAction<boolean>>;
 }

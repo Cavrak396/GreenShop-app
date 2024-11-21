@@ -4,7 +4,6 @@ import ProductSizesItem from "./ProductSizesItem";
 
 function ProductSizesList() {
   const [isActive, setIsActive] = useState<number>(1);
-
   return (
     <>
       <span className="details__product-sizes-tag">Sizes:</span>

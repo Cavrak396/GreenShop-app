@@ -188,15 +188,154 @@
   border-bottom: 3px solid rgba(70, 163, 88, 1);
 }
 
+.details__critique-line {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.details__critique-usertool {
+  max-width: 45%;
+  flex: 1 1 45%;
+}
+
+.details__comments {
+  max-width: 55%;
+  flex: 1 1 55%;
+}
+
+.details__critique-title,
+.details__rating-title {
+  margin-bottom: 20px;
+}
+
+.details__critique-rate-image {
+  max-width: 60px;
+  max-height: 60px;
+  margin-bottom: 5px;
+}
+
+.details__critique-rate-stats {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.details__critique-rate-number {
+  font-size: 12px;
+}
+
+.details__critique-average {
+  display: flex;
+  align-items: center;
+}
+
+.details__critique-rate {
+  max-width: 30%;
+  flex: 1 1 30%;
+  text-align: center;
+  padding-right: 30px;
+}
+
+.details__rating-breakdown {
+  max-width: 70%;
+  flex: 1 1 70%;
+  padding-right: 10px;
+}
+
+.details__rating-breakdown-title,
+.details__rating-bar {
+  margin-bottom: 10px;
+}
+
+.details__rating-bar {
+  border: rgba(0, 0, 0, 0.3) solid 1px;
+  border-radius: 20px;
+}
+
+.details__comments-list {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.details__comments-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.details__comments-list::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 1);
+}
+
+.details__comments-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 1);
+}
+
+.details__comments-comment {
+  border: rgba(0, 0, 0, 0.3) solid 1px;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  margin: 0 auto 20px auto;
+  max-width: 500px;
+}
+
+.details__comments-username {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.details__comments-text {
+  font-size: 14px;
+}
+
+.details__stars-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 10px 0;
+}
+
+.details__comments-star {
+  max-width: 20px;
+  max-height: 20px;
+}
+
 @media screen and (max-width: 975px) {
   .details__product-info {
     flex-direction: column;
   }
 
   .details__review-container,
-  .details__product-panel {
+  .details__product-panel,
+  .details__critique-usertool,
+  .details__comments,
+  .details__critique-rate,
+  .details__rating-breakdown {
     max-width: 100%;
     flex: 1 1 100%;
+  }
+
+  .details__critique-average {
+    flex-direction: column;
+  }
+
+  .details__rating-breakdown,
+  .details__critique-rate {
+    padding: 0;
+  }
+
+  .details__critique-rate {
+    margin-bottom: 20px;
+  }
+
+  .details__rating-breakdown {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .details__comments-list {
+    max-height: 300px;
   }
 }
 
@@ -272,5 +411,59 @@
   .details__product-description {
     font-size: 12px;
     line-height: 21px;
+  }
+
+  .details__critique-title {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .details__rating-title {
+    margin-bottom: 30px;
+  }
+
+  .details__critique-rate-image {
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  .details__critique-rate-stats {
+    font-size: 16px;
+  }
+
+  .details__critique-rate-number {
+    font-size: 9px;
+  }
+
+  .details__rating-bar {
+    margin-bottom: 10px;
+  }
+
+  .rating-bar-label {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+
+  .details__comments-comment {
+    padding: 10px;
+    margin: 0 auto 10px auto;
+    max-width: 280px;
+  }
+
+  .details__comments-username {
+    font-size: 15px;
+  }
+
+  .details__comments-text {
+    font-size: 12px;
+  }
+
+  .details__stars-line {
+    margin: 5px 0;
+  }
+
+  .details__comments-star {
+    max-width: 13px;
+    max-height: 13px;
   }
 }

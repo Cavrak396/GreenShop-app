@@ -1,10 +1,10 @@
 import magnifier from "../../assets/images/reusable/magnifier.png";
 import { ProductReviewType } from "./types/detailsTypes";
+import { useProduct } from "../../context/ProductContext";
 
-function DetailsProductReview({
-  productImage,
-  setIsAppear,
-}: ProductReviewType) {
+function DetailsProductReview({ setIsAppear }: ProductReviewType) {
+  const product = useProduct();
+
   function handleImageZoom() {
     setIsAppear((prev) => !prev);
   }
@@ -18,7 +18,7 @@ function DetailsProductReview({
           alt="magnifier"
         />
         <img
-          src={productImage}
+          src={product.src}
           className="details__review-image"
           alt="product image"
         />

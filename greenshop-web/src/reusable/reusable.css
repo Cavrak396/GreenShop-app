@@ -91,6 +91,22 @@
   max-height: 100%;
 }
 
+.rating-bar-label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.progressbar-progress {
+  background-color: rgba(70, 163, 88, 1) !important;
+  border-radius: 20px;
+}
+
+.stars-line {
+  display: flex;
+  align-items: center;
+}
+
 @media screen and (max-width: 768px) {
   .middle-title {
     font-size: 20px;
