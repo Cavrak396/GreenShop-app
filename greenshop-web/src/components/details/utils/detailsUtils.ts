@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import facebook from "../../../assets/images/reusable/Facebook.svg";
 import twiter from "../../../assets/images/reusable/Twitter.svg";
 import linkedin from "../../../assets/images/reusable/Linkedin.svg";
@@ -61,4 +62,9 @@ export function calculateRatingPercentages(comments: CommentsType[]) {
     count,
     percentage: totalComments > 0 ? (count / totalComments) * 100 : 0,
   }));
+}
+
+export function calculateAverageRating(comments: CommentsType[]) {
+  const totalRating = comments.reduce((acc, { rate }) => acc + rate, 0);
+  return comments.length > 0 ? totalRating / comments.length : 0;
 }

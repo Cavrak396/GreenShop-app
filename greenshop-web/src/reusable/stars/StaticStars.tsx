@@ -4,7 +4,11 @@ import LazyImage from "../LazyImage/LazyImage";
 import "../reusable.css";
 import { StarsType } from "../types/stars";
 
-const Stars = ({ rate, starClassName, starPositionClassName }: StarsType) => {
+const StaticStars = ({
+  rate,
+  starClassName,
+  starPositionClassName,
+}: StarsType) => {
   return (
     <div className={starPositionClassName}>
       {Array.from({ length: 5 }, (_, index) => (
@@ -19,4 +23,4 @@ const Stars = ({ rate, starClassName, starPositionClassName }: StarsType) => {
   );
 };
 
-export default Stars;
+export default StaticStars;
