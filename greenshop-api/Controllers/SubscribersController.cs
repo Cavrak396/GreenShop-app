@@ -29,7 +29,9 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberFilterAttribute))]
         public async Task<IActionResult> CreateSubscriber([FromBody]Subscriber subscriber)
         {
-            subscriber.SubscriberId = ApplicationDbContext.GenerateSubscriberId(subscriber.SubscriberEmail);
+            int identityPart = (await this.db.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
+
+            subscriber.SubscriberId = ApplicationDbContext.GenerateId(identityPart);
 
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();

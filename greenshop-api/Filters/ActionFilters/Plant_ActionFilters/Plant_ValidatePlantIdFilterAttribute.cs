@@ -1,4 +1,5 @@
 ﻿using greenshop_api.Data;
+using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -17,19 +18,16 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             base.OnActionExecuting(context);
 
             var plantId = context.ActionArguments["id"] as long?;
-            if (plantId.HasValue)
+            if (!plantId.HasValue)
             {
-                if (plantId.Value <= 0)
+                ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id must be provided.");
+            }
+            else
+            {
+                var plant = db.Subscribers.Find(plantId);
+                if (plant == null)
                 {
-                    ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is invalid");
-                }
-                else
-                {
-                    var plant = db.Plants.Find(plantId.Value);
-                    if (plant == null)
-                    {
-                        ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
-                    }
+                    ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
                 }
             }
         }

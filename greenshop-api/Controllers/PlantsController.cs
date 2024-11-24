@@ -157,11 +157,9 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
         public async Task<IActionResult> CreatePlant([FromBody]Plant plant)
         {
-            string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
-
             int identityPart = (await this.db.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
 
-            plant.PlantId = ApplicationDbContext.GeneratePlantId(datePart, identityPart);
+            plant.PlantId = ApplicationDbContext.GenerateId(identityPart);
 
             this.db.Plants.Add(plant);
             await this.db.SaveChangesAsync();
