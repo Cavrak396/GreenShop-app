@@ -24,7 +24,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             }
             else
             {
-                var plant = db.Subscribers.Find(plantId);
+                var plant = db.Plants.FirstOrDefault(p => p.PlantId == plantId);
                 if (plant == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");

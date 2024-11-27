@@ -2,6 +2,7 @@
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters;
 using greenshop_api.Models;
+using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static greenshop_api.Models.Plant;
@@ -13,10 +14,12 @@ namespace greenshop_api.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
+        private readonly NewsettlerService newsettlerService;
 
-        public PlantsController(ApplicationDbContext db)
+        public PlantsController(ApplicationDbContext db, NewsettlerService newsettlerService)
         {
             this.db = db;
+            this.newsettlerService = newsettlerService;
         }
 
         [HttpGet]
@@ -164,6 +167,16 @@ namespace greenshop_api.Controllers
             this.db.Plants.Add(plant);
             await this.db.SaveChangesAsync();
 
+            var subscribers = await this.db.Subscribers.ToListAsync();
+
+            if (subscribers.Count()!=0) 
+            {
+                foreach (var subscriber in subscribers)
+                {
+                    await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail);
+                }
+            }
+
             return CreatedAtAction(nameof(GetPlantById),
                 new { id = plant.PlantId },
                 plant);
@@ -195,7 +208,6 @@ namespace greenshop_api.Controllers
             db.SaveChanges();
 
             return NoContent();
-
         }
 
         [HttpDelete("{id}")]
