@@ -1,4 +1,5 @@
 using greenshop_api.Data;
+using greenshop_api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+builder.Services.AddTransient<NewsettlerService>();
 builder.Services.AddMvc();
 
 builder.Services.AddCors(options =>

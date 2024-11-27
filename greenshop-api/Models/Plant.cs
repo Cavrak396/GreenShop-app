@@ -14,7 +14,7 @@ namespace greenshop_api.Models
         }
 
         [Key]
-        public long? PlantId { get; set; }
+        public long PlantId { get; set; }
         [Required]
         public string? Name { get; set; }
         [Required]
