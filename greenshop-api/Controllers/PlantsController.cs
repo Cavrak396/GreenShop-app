@@ -160,7 +160,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
         public async Task<IActionResult> CreatePlant([FromBody]Plant plant)
         {
-            int identityPart = (await this.db.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
+            long identityPart = (await this.db.Plants.MaxAsync(i => (long?)i.PlantId % 10000) ?? 0) + 1;
 
             plant.PlantId = ApplicationDbContext.GenerateId(identityPart);
 
@@ -173,7 +173,14 @@ namespace greenshop_api.Controllers
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail);
+                    await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail,
+                          "New Plant in the shop!",
+                          "Are you ready for new purchase?",
+                          $"We have a new arrival - {plant.Name}. If you are ready to decorate " +
+                          $"your ambient with this amazing product, chack it out on our website " +
+                          $"for price and details. And hurry up - this plant may not be forever in " +
+                          $"our shop!");
+
                 }
             }
 

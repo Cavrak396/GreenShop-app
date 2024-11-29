@@ -45,7 +45,7 @@ namespace greenshop_api.Data
                     Category = "Potter Plants",
                     Price = 119.00,
                     Image = "barbertonDaisy.png",
-                    Acquisition_Date = new DateTime(2024, 9, 30),
+                    Acquisition_Date = new DateTime(2024, 9, 29),
                     Tags = "Home, Garden, Plants",
                     Sale_Percent = 0,
                     Sale_Percent_Private = 20,
@@ -313,9 +313,9 @@ namespace greenshop_api.Data
             );
         }
 
-        public static long GenerateId(int identityPart)
+        public static long GenerateId(long identityPart)
         {
-            string datePart = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
             string idString = $"{datePart}{identityPart:D3}";
             return long.Parse(idString);
         }
