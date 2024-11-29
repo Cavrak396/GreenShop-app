@@ -1,6 +1,7 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using greenshop_api.Models;
+using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,12 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
+        private readonly NewsettlerService newsettlerService;
 
-        public SubscribersController(ApplicationDbContext db)
+        public SubscribersController(ApplicationDbContext db, NewsettlerService newsettlerService)
         {
             this.db = db;
+            this.newsettlerService = newsettlerService;
         }
 
         [HttpGet]
@@ -29,12 +32,19 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberFilterAttribute))]
         public async Task<IActionResult> CreateSubscriber([FromBody]Subscriber subscriber)
         {
-            int identityPart = (await this.db.Plants.MaxAsync(i => (int?)i.PlantId % 10000) ?? 0) + 1;
+            long identityPart = (await this.db.Subscribers.MaxAsync(i => (long?)i.SubscriberId % 10000) ?? 0) + 1;
 
             subscriber.SubscriberId = ApplicationDbContext.GenerateId(identityPart);
 
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();
+
+            await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail,
+                       "Welcome to Miso Greenshop Newsettler!",
+                       "You will never miss a thing from now on!",
+                       "We are so happy to have you here! Whever there is a new product " +
+                       "in our store, you will be informed right away. This way, you can purchase " +
+                       "the plant while it's still in stock with the best prize.");
 
             return CreatedAtAction(nameof(GetSubscribers),
                 new { id = subscriber.SubscriberId },
@@ -43,7 +53,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{id}")]
         [TypeFilter(typeof(Subscriber_ValidateSubscriberIdFilterAttribute))]
-        public async Task<IActionResult> DeleteSubscriber(string id)
+        public async Task<IActionResult> DeleteSubscriber(long id)
         {
             var subscriberToDelete = await this.db.Subscribers.FindAsync(id);
 

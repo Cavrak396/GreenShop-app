@@ -16,7 +16,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
             base.OnActionExecuting(context);
 
             var subscriberId = context.ActionArguments["id"] as long?;
-            if (!subscriberId.HasValue)
+            if (subscriberId == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "SubscriberId", "Subscriber Id must be provided.");
             }
