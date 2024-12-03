@@ -1,4 +1,20 @@
-import { FakeDataTypes } from "./fakedata";
+export interface ProductType {
+  acquisition_Date: string;
+  category: string;
+  diningRoom_Description: string;
+  image: string;
+  livingRoom_Description: string;
+  long_Description: string;
+  short_Description: string;
+  name: string;
+  office_Description: string;
+  plantId: number;
+  price: number;
+  sale_Percent: number;
+  sale_Percent_Private: number;
+  size: number;
+  tags: string;
+}
 
 export interface UserToolsType {
   src: string;
@@ -13,7 +29,8 @@ export interface BarItemsTypes {
 }
 
 export interface HomePageShopBarProps {
-  setSortedData: React.Dispatch<React.SetStateAction<FakeDataTypes[]>>;
+  setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  loadPlants: (params: PlantsParams) => void;
 }
 
 export enum SortOptions {
@@ -26,12 +43,13 @@ export enum SortOptions {
 export interface HomePageShopArticleProps {
   isOnSale: boolean;
   newPrice: number;
-  item: FakeDataTypes;
+  totalSalePercent: number;
+  item: ProductType;
   userTools: UserToolsType[];
 }
 
 export interface HomePageShopArticlesProps {
-  sortedData: FakeDataTypes[];
+  sortedData: ProductType[];
 }
 
 export interface HomePageShopSaleProps {
@@ -40,8 +58,8 @@ export interface HomePageShopSaleProps {
 
 export interface HomePageShopUserToolsProps {
   userTools: UserToolsType[];
-  addItemToCart: (item: FakeDataTypes) => void;
-  item: FakeDataTypes;
+  addItemToCart: (item: ProductType) => void;
+  item: ProductType;
 }
 
 export interface HomePageShopPriceProps {
@@ -60,7 +78,12 @@ export interface HomePageShopDropdownProps {
   id: string;
   setActiveSort: React.Dispatch<React.SetStateAction<string>>;
   setActiveDropdown: React.Dispatch<React.SetStateAction<boolean>>;
-  setSortedData: React.Dispatch<React.SetStateAction<FakeDataTypes[]>>;
+}
+
+export interface HomePageShopBarItemProps {
+  item: BarItemsTypes;
+  isActive: boolean;
+  onItemClick: (item: BarItemsTypes) => void;
 }
 
 export interface DropdownItemType {
@@ -71,4 +94,24 @@ export interface DropdownItemType {
 export interface HomePageShopDropdownItemProps {
   item: DropdownItemType;
   handleSort: (label: SortOptions) => void;
+}
+
+export interface PlantsParams {
+  searchValue?: string;
+  categoryValue?: string;
+  sizeType?: string;
+  group?: string;
+  priceMin?: number;
+  priceMax?: number;
+  page: number;
+  pageSize: number;
+}
+
+export interface PlantsContextType {
+  sortedData: ProductType[];
+  setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  data: ProductType[];
+  loading: boolean;
+  error: string | null;
+  loadPlants: (params: PlantsParams) => void;
 }

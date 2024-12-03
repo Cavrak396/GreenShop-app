@@ -1,4 +1,3 @@
-import "./ErrorMessage.css";
 import { ErrorMessageType } from "./types/ErrorMessageType";
 
 function ErrorMessage({ message, className }: ErrorMessageType) {

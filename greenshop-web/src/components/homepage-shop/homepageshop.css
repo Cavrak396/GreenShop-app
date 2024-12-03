@@ -17,6 +17,13 @@
   flex: 1 1 20%;
 }
 
+.homepageshop__content-error {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+}
+
 @media screen and (max-width: 975px) {
   .homepageshop__content {
     padding-left: 0;

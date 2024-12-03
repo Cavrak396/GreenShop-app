@@ -11,7 +11,7 @@ function DetailsInfoContent({ activatedButtonId }: DetailsInfoContentProps) {
       {activatedButtonId === 1 ? (
         <DetailsProductDescription
           className="details__product-description"
-          text={product.description}
+          text={product.long_Description}
         />
       ) : (
         <DetailsCritique />

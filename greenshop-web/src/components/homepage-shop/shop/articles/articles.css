@@ -18,6 +18,7 @@
 .homepageshop__bar-items {
   display: flex;
   gap: 10px;
+  font-weight: 600;
 }
 
 .homepageshop__bar-item,
@@ -157,6 +158,10 @@
   color: rgba(0, 0, 0, 0.3);
   font-weight: 600;
   text-decoration: line-through;
+}
+
+.active {
+  color: rgba(70, 163, 88, 1);
 }
 
 @media screen and (max-width: 975px) {

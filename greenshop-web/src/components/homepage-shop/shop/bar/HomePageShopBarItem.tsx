@@ -1,7 +1,18 @@
-import { BarItemsTypes } from "../shopTypes";
+import { HomePageShopBarItemProps } from "../shopTypes";
 
-function HomePageShopBarItem({ item }: { item: BarItemsTypes }) {
-  return <li className="homepageshop__bar-item">{item.label}</li>;
+function HomePageShopBarItem({
+  item,
+  isActive,
+  onItemClick,
+}: HomePageShopBarItemProps) {
+  return (
+    <li
+      className={`homepageshop__bar-item ${isActive ? "active" : ""}`}
+      onClick={() => onItemClick(item)}
+    >
+      {item.label}
+    </li>
+  );
 }
 
 export default HomePageShopBarItem;

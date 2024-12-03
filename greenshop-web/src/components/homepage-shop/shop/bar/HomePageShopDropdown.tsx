@@ -1,23 +1,23 @@
 import { useCallback } from "react";
-import { FakeDataTypes } from "../fakedata";
-import { SortOptions } from "../shopTypes";
-import fakeData from "../fakedata";
+import { ProductType, SortOptions } from "../shopTypes";
 import HomePageShopDropdownItem from "./HomePageShopDropdownItem";
 import { HomePageShopDropdownProps } from "../shopTypes";
 import { dropdownItems } from "./utils/barUtils";
+import { usePlants } from "../../../../context/PlantsContext";
 
-const sortByPriceLowToHigh = (data: FakeDataTypes[]) =>
+const sortByPriceLowToHigh = (data: ProductType[]) =>
   data.slice().sort((a, b) => a.price - b.price);
-const sortByPriceHighToLow = (data: FakeDataTypes[]) =>
+const sortByPriceHighToLow = (data: ProductType[]) =>
   data.slice().sort((a, b) => b.price - a.price);
-const sortByName = (data: FakeDataTypes[]) =>
-  data.slice().sort((a, b) => a.label.localeCompare(b.label));
+const sortByName = (data: ProductType[]) =>
+  data.slice().sort((a, b) => a.name.localeCompare(b.name));
 
 function HomePageShopDropdown({
   setActiveSort,
   setActiveDropdown,
-  setSortedData,
 }: HomePageShopDropdownProps) {
+  const { setSortedData, sortedData, data } = usePlants();
+
   const handleSort = useCallback(
     (label: SortOptions) => {
       setActiveSort(label);
@@ -25,23 +25,23 @@ function HomePageShopDropdown({
 
       switch (label) {
         case SortOptions.LOW_PRICE:
-          setSortedData(sortByPriceLowToHigh(fakeData));
+          setSortedData(sortByPriceLowToHigh(sortedData));
           break;
         case SortOptions.HIGH_PRICE:
-          setSortedData(sortByPriceHighToLow(fakeData));
+          setSortedData(sortByPriceHighToLow(sortedData));
           break;
         case SortOptions.NAME:
-          setSortedData(sortByName(fakeData));
+          setSortedData(sortByName(sortedData));
           break;
         case SortOptions.DEFAULT:
-          setSortedData(fakeData);
+          setSortedData(data);
           break;
         default:
           console.warn(`Unhandled sort option: ${label}`);
           break;
       }
     },
-    [setActiveSort, setActiveDropdown, setSortedData]
+    [setActiveSort, setActiveDropdown, setSortedData, sortedData, data]
   );
 
   return (

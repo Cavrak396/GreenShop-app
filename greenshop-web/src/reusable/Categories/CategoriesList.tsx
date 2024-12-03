@@ -14,18 +14,15 @@ function CategoriesList({
 }: CategoriesListProps) {
   return (
     <ul className="homepageshop__categories-list">
-      {categories.map((item) => {
-        const isActive = item.label === activeCategory;
-        return (
-          <CategoryItem
-            key={item.id}
-            label={item.label}
-            size={item.size}
-            isActive={isActive}
-            onClick={() => onCategoryClick(item.label)}
-          />
-        );
-      })}
+      {categories.map((item) => (
+        <CategoryItem
+          key={item.id}
+          label={item.label}
+          size={item.size}
+          isActive={item.label === activeCategory}
+          onClick={() => onCategoryClick(item.label)}
+        />
+      ))}
     </ul>
   );
 }

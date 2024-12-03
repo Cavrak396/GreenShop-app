@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
-import { FakeDataTypes } from "../components/homepage-shop/shop/fakedata";
+import { Product } from "../components/details/types/detailsTypes";
 import { ProductProviderProps } from "../components/details/types/detailsTypes";
 
-const ProductContext = createContext<FakeDataTypes | null>(null);
+const ProductContext = createContext<Product | null>(null);
 
 export function ProductProvider({ children, product }: ProductProviderProps) {
   return (
@@ -12,7 +12,7 @@ export function ProductProvider({ children, product }: ProductProviderProps) {
   );
 }
 
-export function useProduct() {
+export function useProduct(): Product {
   const context = useContext(ProductContext);
   if (!context) {
     throw new Error("useProduct must be used within a ProductProvider");

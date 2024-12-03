@@ -15,8 +15,8 @@ function DetailsProductPanel() {
   const { avgRating } = useRatings(comments);
 
   const calculatedSalePrice = useMemo(() => {
-    return product.sale
-      ? product.price * (1 - product.sale / 100)
+    return product.sale_Percent
+      ? product.price * (1 - product.sale_Percent / 100)
       : product.price;
   }, [product]);
 
@@ -24,7 +24,7 @@ function DetailsProductPanel() {
     <div className="details__product-panel">
       <div className="details__product-panel-container">
         <Title className="details__product-title middle-title">
-          {product.label}
+          {product.name}
         </Title>
         <div className="details__product-line details__product-line--with-price-rating">
           <span className="details__product-price">
@@ -42,7 +42,7 @@ function DetailsProductPanel() {
           </span>
           <DetailsProductDescription
             className="details__product-description-text"
-            text={product.description.slice(0, 215) + "..."}
+            text={product.short_Description.slice(0, 215) + "..."}
           />
         </div>
         <ProductSizesList />
