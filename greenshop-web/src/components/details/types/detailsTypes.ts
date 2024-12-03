@@ -1,9 +1,18 @@
 import { ReactNode, Dispatch, SetStateAction } from 'react';
-import { FakeDataTypes } from "../../homepage-shop/shop/fakedata";
+
+export interface ProductType {
+  name: string;
+  short_Description: string;
+  price: number;
+  sale_Percent: number;
+  image: string;
+  category: string;
+  tags: string;
+}
 
 export interface ProductProviderProps {
   children: ReactNode;
-  product: FakeDataTypes;
+  product: ProductType;
 }
 
 export interface ProductDescriptionType {

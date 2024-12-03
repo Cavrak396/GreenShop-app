@@ -7,20 +7,22 @@ function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
   return (
     <ul className="homepageshop__articles-list">
       {sortedData.map((item) => {
-        const isOnSale = item.sale !== undefined && item.sale > 0;
+        const publicSalePercent = item.sale_Percent || 0;
+
+        const isOnSale = publicSalePercent > 0;
+
         const newPrice = isOnSale
           ? Number(
-              (item.price - (item.price * (item.sale as number)) / 100).toFixed(
-                2
-              )
+              (item.price - (item.price * publicSalePercent) / 100).toFixed(2)
             )
           : item.price;
 
         return (
           <HomePageShopArticle
-            key={item.id}
+            key={item.plantId}
             isOnSale={isOnSale}
             newPrice={newPrice}
+            totalSalePercent={publicSalePercent}
             item={item}
             userTools={userTools}
           />

@@ -1,4 +1,6 @@
+import { ReactNode } from "react";
+
 export interface ErrorMessageType {
-  message: string;
+  message: ReactNode;
   className: string;
 }

@@ -10,5 +10,5 @@ export const dropdownItems: readonly DropdownItemType[] = [
 
 export const barItems: BarItemsTypes[] = [
     { id: 1, label: "All Plants" },
-    { id: 2, label: "New Arrivals" },
+    { id: 2, label: "New" },
     { id: 3, label: "Sale" },]
