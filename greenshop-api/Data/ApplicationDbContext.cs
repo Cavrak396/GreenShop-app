@@ -9,6 +9,7 @@ namespace greenshop_api.Data
     {
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -16,6 +17,9 @@ namespace greenshop_api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Subscriber>(entity => { entity.HasIndex(e => e.SubscriberEmail).IsUnique(); });
+            modelBuilder.Entity<User>(entity => { entity.HasIndex(e => e.UserEmail).IsUnique(); });
 
             int identityValue = 1;
 

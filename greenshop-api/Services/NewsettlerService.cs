@@ -5,19 +5,19 @@ namespace greenshop_api.Services
 {
     public class NewsettlerService
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration configuration;
 
         public NewsettlerService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            this.configuration = configuration;
         }
         public async Task SendNewsettlerMessage(string recipient, string subject, string title, string body)
         {
-            string server = _configuration["SMTP:Server"];
-            string username = _configuration["SMTP:Username"];
-            string password = _configuration["SMTP:Password"];
-            int port = int.Parse(_configuration["SMTP:Port"]);
-            bool enableSsl = bool.Parse(_configuration["SMTP:EnableSsl"]);
+            string server = configuration["SMTP:Server"];
+            string username = configuration["SMTP:Username"];
+            string password = configuration["SMTP:Password"];
+            int port = int.Parse(configuration["SMTP:Port"]);
+            bool enableSsl = bool.Parse(configuration["SMTP:EnableSsl"]);
 
             string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "..\\greenshop-api\\Media\\logo.png");
 
