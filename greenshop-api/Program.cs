@@ -48,10 +48,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowTestingOrigins");
 }
 
+app.UseRouting();
+
+app.UseCors("AllowTestingOrigins");
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
