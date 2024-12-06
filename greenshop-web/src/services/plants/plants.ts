@@ -28,7 +28,7 @@ export const fetchPlants = async ({
                 page,
                 pageSize,
             },
-            withCredentials: true, 
+            withCredentials: true,
         });
 
         return response.data;
