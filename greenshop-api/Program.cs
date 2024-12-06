@@ -1,3 +1,4 @@
+using greenshop_api.Authority;
 using greenshop_api.Data;
 using greenshop_api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,21 @@ builder.Services.AddCors(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        options.AddPolicy("AllowAllOrigins", policy =>
-            policy.AllowAnyOrigin()
+        options.AddPolicy("AllowTestingOrigins", policy =>
+            policy.WithOrigins([ 
+                "http://localhost:5173", 
+                "http://localhost:3000", 
+                "http://localhost:8080", 
+                "http://localhost:5050"])
                   .AllowAnyMethod()
-                  .AllowAnyHeader());
+                  .AllowAnyHeader()
+                  .AllowCredentials());
     }
 });
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JwtService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,7 +46,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowAllOrigins");
+    app.UseCors("AllowTestingOrigins");
 }
 
 app.UseHttpsRedirection();
