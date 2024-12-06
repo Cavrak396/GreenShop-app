@@ -12,7 +12,7 @@ export const fetchPlants = async ({
     pageSize,
 }: PlantsParams) => {
 
-    const baseUrl = "http://localhost:8080/Plants"
+    const baseUrl = "http://localhost:8080/Plants";
 
     try {
         const response = await axios.get(baseUrl, {
@@ -28,6 +28,7 @@ export const fetchPlants = async ({
                 page,
                 pageSize,
             },
+            withCredentials: true, 
         });
 
         return response.data;
