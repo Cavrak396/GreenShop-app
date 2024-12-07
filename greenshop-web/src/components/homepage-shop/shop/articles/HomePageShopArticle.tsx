@@ -38,7 +38,7 @@ function HomePageShopArticle({
   );
 
   function goToDetailsPage() {
-    navigate(`/details/${item.name}`);
+    navigate(`/details/${item.plantId}`);
   }
 
   return (

@@ -1,5 +1,8 @@
 import { PlantsParams } from "./plantsTypes";
 import axios from "axios";
+import { ProductType } from "../../components/homepage-shop/shop/shopTypes";
+
+const BASE_URL = "http://localhost:8080/Plants";
 
 export const fetchPlants = async ({
     searchValue,
@@ -11,11 +14,8 @@ export const fetchPlants = async ({
     page,
     pageSize,
 }: PlantsParams) => {
-
-    const baseUrl = "http://localhost:8080/Plants"
-
     try {
-        const response = await axios.get(baseUrl, {
+        const response = await axios.get(BASE_URL, {
             headers: {
                 SearchValue: searchValue || "",
                 CategoryValue: categoryValue || "",
@@ -33,6 +33,16 @@ export const fetchPlants = async ({
         return response.data;
     } catch (error) {
         console.error("Error fetching plants:", error);
+        throw error;
+    }
+};
+
+export const fetchPlantById = async (id: string): Promise<ProductType> => {
+    try {
+        const response = await axios.get(`${BASE_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching plant by ID:", error);
         throw error;
     }
 };
