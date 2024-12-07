@@ -2,23 +2,50 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Details from "../details/Details";
 import { ProductProvider } from "../../context/ProductContext";
-import { usePlants } from "../../context/PlantsContext";
+import { fetchPlantById } from "../../services/plants/plants";
+import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
+import ErrorMessage from "../error/ErrorMessage";
 import { ProductType } from "../homepage-shop/shop/shopTypes";
 
 function DetailsPage() {
-  const { label } = useParams();
+  const { id } = useParams();
   const [product, setProduct] = useState<ProductType | null>(null);
-  const { sortedData } = usePlants();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (label && sortedData.length > 0) {
-      const fetchedProduct = sortedData.find((item) => item.name === label);
-      setProduct(fetchedProduct || null);
+    if (id) {
+      const fetchProduct = async () => {
+        try {
+          setLoading(true);
+          const fetchedProduct = await fetchPlantById(id);
+          setProduct(fetchedProduct);
+        } catch (error) {
+          setError("Failed to fetch product details");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchProduct();
     }
-  }, [label, sortedData]);
+  }, [id]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <ErrorMessage className="error" message={error} />;
+  }
 
   if (!product) {
-    return <p aria-live="polite">Loading...</p>;
+    return (
+      <ErrorMessage
+        className="error"
+        message="No product found with the provided ID."
+      />
+    );
   }
 
   return (
