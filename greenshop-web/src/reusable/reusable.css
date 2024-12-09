@@ -10,6 +10,7 @@
   background: rgba(221, 221, 221, 1);
   border-radius: 5px;
   outline: none;
+  margin-bottom: 10px;
 }
 
 .range-input::-webkit-slider-thumb {

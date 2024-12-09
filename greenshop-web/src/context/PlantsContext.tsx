@@ -22,10 +22,14 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     category: string | null;
     size: string | null;
     group: string;
+    priceMin: number | null;
+    priceMax: number | null;
   }>({
     category: null,
     size: null,
     group: "",
+    priceMin: null,
+    priceMax: null,
   });
 
   const loadPlants = async (params: PlantsParams) => {
@@ -48,8 +52,8 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       categoryValue: filters.category,
       sizeType: filters.size,
       group: filters.group,
-      priceMin: null,
-      priceMax: null,
+      priceMin: filters.priceMin,
+      priceMax: filters.priceMax,
       page: 1,
       pageSize: 9,
     });
@@ -78,6 +82,12 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
             size: id !== null ? String(id) : null,
           })),
         setCategoriesData: (data: ProductType[]) => setData(data),
+        setPriceRange: (minPrice: number, maxPrice: number) =>
+          setFilters((prev) => ({
+            ...prev,
+            priceMin: minPrice,
+            priceMax: maxPrice,
+          })),
       }}
     >
       {children}
