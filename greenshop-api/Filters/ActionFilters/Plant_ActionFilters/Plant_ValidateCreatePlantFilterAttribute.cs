@@ -33,7 +33,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
                 if (existingPlant != null)
                 {
-                    ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant already exists.");
+                    ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
                 }
             }
         }

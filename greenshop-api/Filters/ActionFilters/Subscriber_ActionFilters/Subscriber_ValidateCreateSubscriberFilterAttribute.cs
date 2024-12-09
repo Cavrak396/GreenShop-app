@@ -31,7 +31,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 
                 if (existingSubscriber != null)
                 {
-                    ModelErrors.AddBadRequestActionModelError(context, "Subscriber", "Subscriber is already added.");
+                    ModelErrors.AddConflictActionModelError(context, "Subscriber", "Subscriber is already added.");
                 }
             }
         }

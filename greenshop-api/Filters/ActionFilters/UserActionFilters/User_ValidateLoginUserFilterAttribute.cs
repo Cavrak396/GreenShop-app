@@ -31,13 +31,13 @@ namespace greenshop_api.Filters.ActionFilters.UserActionFilters
 
                 if (user == null)
                 {
-                    ModelErrors.AddBadRequestActionModelError(context, "User", "Invalid credentials.");
+                    ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
                 }
                 else
                 {
                     if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.UserPassword))
                     {
-                        ModelErrors.AddBadRequestActionModelError(context, "User", "Invalid credentials.");
+                        ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
                     }
                 }
             }

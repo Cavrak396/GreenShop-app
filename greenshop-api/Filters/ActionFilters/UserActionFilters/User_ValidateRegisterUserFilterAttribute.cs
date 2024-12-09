@@ -32,7 +32,7 @@ namespace greenshop_api.Filters.ActionFilters.UserActionFilters
 
                 if (existingUser != null)
                 {
-                    ModelErrors.AddBadRequestActionModelError(context, "User", "User is already added.");
+                    ModelErrors.AddConflictActionModelError(context, "User", "User is already added.");
                 }
             }
         }
