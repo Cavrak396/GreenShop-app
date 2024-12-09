@@ -1,22 +1,31 @@
 import { ProductType } from "../../components/homepage-shop/shop/shopTypes";
 import { PlantsParams } from "../../services/plants/plantsTypes";
-import { Dispatch, SetStateAction } from "react";
 
 export interface PlantsContextType {
     sortedData: ProductType[];
+    setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
     data: ProductType[];
     loading: boolean;
     error: string | null;
     filters: {
-        category: string | null;
-        size: string | null;
-        group: string;
+      category: string | null;
+      size: string | null;
+      group: string;
+      priceMin: number | null;
+      priceMax: number | null;
     };
-    setFilters: Dispatch<SetStateAction<{ category: string | null; size: string | null; group: string }>>;
-    setSortedData: Dispatch<SetStateAction<ProductType[]>>;
-    setSearchedData: Dispatch<SetStateAction<string>>;
+    setFilters: React.Dispatch<React.SetStateAction<{
+      category: string | null;
+      size: string | null;
+      group: string;
+      priceMin: number | null;
+      priceMax: number | null;
+    }>>;
     loadPlants: (params: PlantsParams) => void;
+    setSearchedData: React.Dispatch<React.SetStateAction<string>>;
     setActiveCategoryId: (id: number | null) => void;
     setActiveSizeId: (id: number | null) => void;
     setCategoriesData: (data: ProductType[]) => void;
-}
+    setPriceRange: (minPrice: number, maxPrice: number) => void;
+  }
+  
