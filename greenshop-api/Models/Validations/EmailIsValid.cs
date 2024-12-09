@@ -26,7 +26,7 @@ namespace greenshop_api.Models.Validations
             }
             catch (ArgumentException e)
             {
-                return new ValidationResult("Invalid Email format.");
+                return new ValidationResult("Email format is invalid.");
             }
 
             if (!Regex.IsMatch(emailValue, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", 

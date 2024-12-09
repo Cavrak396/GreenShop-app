@@ -64,7 +64,6 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("logout")]
-        //maybe add check if user is logged in
         public IActionResult Logout()
         {
             Response.Cookies.Delete("jwt");

@@ -8,7 +8,7 @@ namespace greenshop_api.Models
         [Key]
         public long SubscriberId { get; set; }
         [Required]
-        
+        [EmailIsValid]
         public string? SubscriberEmail { get; set;}
     }
 }

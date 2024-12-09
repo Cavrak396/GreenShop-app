@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace greenshop_api.Filters
 {
@@ -23,6 +24,26 @@ namespace greenshop_api.Filters
                 Status = StatusCodes.Status404NotFound
             };
             context.Result = new NotFoundObjectResult(problemDetails);
+        }
+
+        public static void AddUnauthorizedActionModelError(ActionExecutingContext context, string key, string errorMessage)
+        {
+            context.ModelState.AddModelError(key, errorMessage);
+            var problemDetails = new ValidationProblemDetails(context.ModelState)
+            {
+                Status = StatusCodes.Status401Unauthorized
+            };
+            context.Result = new UnauthorizedObjectResult(problemDetails);
+        }
+
+        public static void AddConflictActionModelError(ActionExecutingContext context, string key, string errorMessage)
+        {
+            context.ModelState.AddModelError(key, errorMessage);
+            var problemDetails = new ValidationProblemDetails(context.ModelState)
+            {
+                Status = 409
+            };
+            context.Result = new ObjectResult(problemDetails) { StatusCode = 409 };
         }
 
         public static void AddNotFoundExceptionModelError(ExceptionContext context, string key, string errorMessage)
