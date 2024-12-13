@@ -27,6 +27,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetPlants(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 9,
+            [FromHeader(Name = "Authorized")] bool authorized = false,
             [FromHeader(Name = "SearchValue")] string? search = null,
             [FromHeader(Name = "CategoryValue")] string? category = null,
             [FromHeader(Name = "SizeType")] string? size = null,
@@ -44,7 +45,14 @@ namespace greenshop_api.Controllers
                 }
                 else if (string.Equals(group, "sale", StringComparison.OrdinalIgnoreCase))
                 {
-                    plantsQuery = plantsQuery.Where(p => p.Sale_Percent > 0);
+                    if(authorized)
+                    {
+                        plantsQuery = plantsQuery.Where(p => p.Sale_Percent_Private > 0);
+                    }
+                    else
+                    {
+                        plantsQuery = plantsQuery.Where(p => p.Sale_Percent > 0);
+                    }
                 }
             }
 

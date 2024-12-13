@@ -19,16 +19,25 @@ builder.Services.AddCors(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        options.AddPolicy("AllowTestingOrigins", policy =>
+        options.AddPolicy("DefaultPolicy", policy =>
             policy.WithOrigins(
                 "http://localhost:5173", 
-                "http://localhost:3000", 
-                "http://localhost:8080", 
-                "http://localhost:5050",
+                "http://localhost:3000",
                 "http://127.0.0.1:5173",
                 "http://127.0.0.1:3000")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader());
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+        );
+        options.AddPolicy("WithCredentialsPolicy", policy =>
+           policy.WithOrigins(
+               "http://localhost:5173",
+               "http://localhost:3000",
+               "http://127.0.0.1:5173",
+               "http://127.0.0.1:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials()
+        );
     }
 });
 
@@ -51,7 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors("AllowTestingOrigins");
+app.UseCors("DefaultPolicy");
 
 app.UseHttpsRedirection();
 
