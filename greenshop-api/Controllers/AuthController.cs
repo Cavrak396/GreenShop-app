@@ -5,6 +5,7 @@ using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.UserActionFilters;
 using greenshop_api.Models;
 using greenshop_api.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -72,6 +73,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("user")]
+        [EnableCors("WithCredentialsPolicy")]
         public async Task<IActionResult> GetUser()
         {
             try
