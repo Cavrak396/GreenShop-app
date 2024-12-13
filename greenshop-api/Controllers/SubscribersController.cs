@@ -57,8 +57,8 @@ namespace greenshop_api.Controllers
         {
             var subscriberToDelete = await this.db.Subscribers.FindAsync(id);
 
-            db.Subscribers.Remove(subscriberToDelete);
-            db.SaveChanges();
+            this.db.Subscribers.Remove(subscriberToDelete);
+            await this.db.SaveChangesAsync();
 
             return Ok(subscriberToDelete);
         }

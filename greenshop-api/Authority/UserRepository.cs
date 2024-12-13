@@ -1,5 +1,6 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Authority
 {
@@ -10,21 +11,21 @@ namespace greenshop_api.Authority
         { 
             this.db = db;
         }
-        public User CreateUser(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            db.Users.Add(user);
-            db.SaveChanges();
+            this.db.Users.Add(user);
+            await this.db.SaveChangesAsync();
 
             return user;
         }
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            return db.Users.FirstOrDefault(u => u.UserEmail == email);
+            return await this.db.Users.FirstOrDefaultAsync(u => u.UserEmail == email);
         }
 
-        public User GetUserById(long id)
+        public async Task<User> GetUserByIdAsync(long id)
         {
-            return db.Users.Find(id);
+            return await this.db.Users.FindAsync(id);
         }
     }
 }
