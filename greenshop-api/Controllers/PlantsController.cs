@@ -34,7 +34,7 @@ namespace greenshop_api.Controllers
             [FromHeader(Name = "PriceMin")] double? priceMin = null,
             [FromHeader(Name = "PriceMax")] double? priceMax = null)
         {
-            var plantsQuery = this.db.Plants.AsQueryable();
+            IQueryable<Plant> plantsQuery = this.db.Plants.AsQueryable();
 
             if (!string.IsNullOrEmpty(group))
             {
@@ -99,7 +99,7 @@ namespace greenshop_api.Controllers
 
             foreach (var category in categories)
             {
-                var count = await this.db.Plants.CountAsync(p => p.Category.ToLower().Trim() == category.ToLower());
+                var count = await this.db.Plants.CountAsync(p => p.Category.ToLower().Trim() == category.ToLower().Trim());
                 categoryCounts[category] = count;
             }
             return Ok(categoryCounts);
@@ -114,7 +114,7 @@ namespace greenshop_api.Controllers
             return Ok(plant);
         }
 
-        [HttpGet("related/{id}")]
+        [HttpGet("{id}/related")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         public async Task<IActionResult> GetRelatedProducts(long id, [FromQuery] int relatedProductsSize = 5)
         {
@@ -177,7 +177,7 @@ namespace greenshop_api.Controllers
                           "New Plant in the shop!",
                           "Are you ready for new purchase?",
                           $"We have a new arrival - {plant.Name}. If you are ready to decorate " +
-                          $"your ambient with this amazing product, chack it out on our website " +
+                          $"your ambient with this amazing product, check it out on our website " +
                           $"for price and details. And hurry up - this plant may not be forever in " +
                           $"our shop!");
 
@@ -212,7 +212,7 @@ namespace greenshop_api.Controllers
             plantToUpdate.DiningRoom_Description = plant.DiningRoom_Description;
             plantToUpdate.Office_Description = plant.Office_Description;
 
-            db.SaveChanges();
+            await this.db.SaveChangesAsync();
 
             return NoContent();
         }
@@ -223,8 +223,8 @@ namespace greenshop_api.Controllers
         {
             var plantToDelete = await this.db.Plants.FindAsync(id);
 
-            db.Plants.Remove(plantToDelete);
-            db.SaveChanges();
+            this.db.Plants.Remove(plantToDelete);
+            await this.db.SaveChangesAsync();
 
             return Ok(plantToDelete);
         }

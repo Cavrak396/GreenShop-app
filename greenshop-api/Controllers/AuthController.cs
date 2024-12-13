@@ -27,9 +27,9 @@ namespace greenshop_api.Controllers
 
         [HttpPost("register")]
         [TypeFilter(typeof(User_ValidateRegisterUserFilterAttribute))]
-        public IActionResult Register(RegisterDto dto)
+        public async Task<IActionResult> Register(RegisterDto dto)
         {
-            long identityPart = (this.db.Users.Max(i => (long?)i.UserId % 10000) ?? 0) + 1;
+            long identityPart = (await this.db.Users.MaxAsync(i => (long?)i.UserId % 10000) ?? 0) + 1;
 
             var user = new User
             {
@@ -39,16 +39,16 @@ namespace greenshop_api.Controllers
                 UserPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             };
 
-            repository.CreateUser(user);
+            await this.repository.CreateUserAsync(user);
 
-            return Created("success", repository.CreateUser(user));
+            return Created("success", this.repository.CreateUserAsync(user));
         }
 
         [HttpPost("login")]
         [TypeFilter(typeof(User_ValidateLoginUserFilterAttribute))]
-        public IActionResult Login(LoginDto dto)
+        public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = repository.GetUserByEmail(dto.Email);
+            var user = await this.repository.GetUserByEmailAsync(dto.Email);
 
             var jwt = jwtService.Generate(user.UserId);
 
@@ -64,14 +64,15 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await Task.CompletedTask;
             Response.Cookies.Delete("jwt");
             return Ok();
         }
 
         [HttpGet("user")]
-        public IActionResult GetUser()
+        public async Task<IActionResult> GetUser()
         {
             try
             {
@@ -81,7 +82,7 @@ namespace greenshop_api.Controllers
 
                 var userId = long.Parse(token.Issuer);
 
-                var user = repository.GetUserById(userId);
+                var user = await this.repository.GetUserByIdAsync(userId);
 
                 return Ok(user);
             }
@@ -93,12 +94,12 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("user/{id}")]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
-        public IActionResult DeleteUser(long id)
+        public async Task<IActionResult> DeleteUser(long id)
         {
-            var userToDelete = this.db.Users.Find(id);
+            var userToDelete = await this.db.Users.FindAsync(id);
 
-            db.Users.Remove(userToDelete);
-            db.SaveChanges();
+            this.db.Users.Remove(userToDelete);
+            await this.db.SaveChangesAsync();
 
             return Ok(userToDelete);
         }
