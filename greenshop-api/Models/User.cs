@@ -10,7 +10,6 @@ namespace greenshop_api.Models
         [Required]
         public string? UserName { get; set; }
         [Required]
-        [EmailIsValid]
         public string? UserEmail { get; set; }
         [Required]
         public string? UserPassword { get; set; }
