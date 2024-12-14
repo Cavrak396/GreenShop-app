@@ -39,10 +39,9 @@ namespace greenshop_api.Controllers
                 UserEmail = dto.Email,
                 UserPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             };
-
             await this.repository.CreateUserAsync(user);
 
-            return Created("success", this.repository.CreateUserAsync(user));
+            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
         }
 
         [HttpPost("login")]
@@ -94,6 +93,13 @@ namespace greenshop_api.Controllers
             }
         }
 
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetUserById(long id)
+        {
+            var user = await this.repository.GetUserByIdAsync(id);
+            return Ok(user);
+        }
+
         [HttpDelete("user/{id}")]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
         public async Task<IActionResult> DeleteUser(long id)
@@ -102,6 +108,8 @@ namespace greenshop_api.Controllers
 
             this.db.Users.Remove(userToDelete);
             await this.db.SaveChangesAsync();
+
+            Response.Cookies.Delete("jwt");
 
             return Ok(userToDelete);
         }

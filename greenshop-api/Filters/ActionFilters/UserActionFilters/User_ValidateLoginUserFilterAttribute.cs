@@ -2,6 +2,7 @@
 using greenshop_api.Data;
 using greenshop_api.Dtos;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.UserActionFilters
 {
@@ -27,7 +28,7 @@ namespace greenshop_api.Filters.ActionFilters.UserActionFilters
             }
             else
             {
-                var user = repository.GetUserByEmail(userDto.Email);
+                var user = this.db.Users.FirstOrDefault(u => u.UserEmail == userDto.Email);
 
                 if (user == null)
                 {
