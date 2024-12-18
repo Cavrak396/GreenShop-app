@@ -16,14 +16,14 @@ namespace greenshop_api.Services
 
         }
 
-        public string Generate(long id)
+        public string Generate(string id)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
 
             var payload = new JwtPayload(
-                id.ToString(),
+                id,
                 null,
                 null,
                 null,

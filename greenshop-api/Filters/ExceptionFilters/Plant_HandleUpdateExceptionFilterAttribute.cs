@@ -17,13 +17,11 @@ namespace greenshop_api.Filters.ExceptionFilters
         {
             base.OnException(context);
 
-            var idString = context.RouteData.Values["id"] as string;
-            if (int.TryParse(idString, out int plantId))
+            var plantId = context.RouteData.Values["id"] as string;
+
+            if (db.Plants.FirstOrDefault(x => x.PlantId == plantId) == null)
             {
-                if (db.Plants.FirstOrDefault(x => x.PlantId == plantId) == null)
-                {
-                    ModelErrors.AddNotFoundExceptionModelError(context, "PlantId", "Plant doesn't exist anymore.");
-                }
+                ModelErrors.AddNotFoundExceptionModelError(context, "PlantId", "Plant doesn't exist anymore.");
             }
         }
     }

@@ -12,8 +12,8 @@ using greenshop_api.Data;
 namespace greenshop_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241129153706_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20241218142429_SeedNinePlants")]
+    partial class SeedNinePlants
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,8 @@ namespace greenshop_api.Migrations
 
             modelBuilder.Entity("greenshop_api.Models.Plant", b =>
                 {
-                    b.Property<long>("PlantId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("PlantId"));
+                    b.Property<string>("PlantId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime?>("Acquisition_Date")
                         .IsRequired()
@@ -89,7 +86,7 @@ namespace greenshop_api.Migrations
                     b.HasData(
                         new
                         {
-                            PlantId = 20241129001L,
+                            PlantId = "7710db52-2dbb-408f-bad8-4acdf7137305",
                             Acquisition_Date = new DateTime(2024, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Barberton daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
@@ -107,7 +104,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129002L,
+                            PlantId = "d1fbb5da-8052-489b-9fe8-4d6786ea5251",
                             Acquisition_Date = new DateTime(2024, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Angel Wing begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
@@ -125,7 +122,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129003L,
+                            PlantId = "4005f565-2551-41c9-8d14-37f26fc39c59",
                             Acquisition_Date = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The African violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
@@ -143,7 +140,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129004L,
+                            PlantId = "1a4ce2d8-723a-4cdb-b909-08ec896839b3",
                             Acquisition_Date = new DateTime(2024, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "beachSpiderLilly.png",
@@ -158,7 +155,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129005L,
+                            PlantId = "6723f6ed-2d7d-4f32-945b-93bb92bb1641",
                             Acquisition_Date = new DateTime(2024, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The blushing bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
@@ -176,7 +173,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129006L,
+                            PlantId = "391eb587-678c-4b16-a74a-094a66144fc3",
                             Acquisition_Date = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The aluminum plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
@@ -194,7 +191,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129007L,
+                            PlantId = "b6c3d408-dbc4-4e52-a859-b527df2bd7c6",
                             Acquisition_Date = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The bird's nest fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
@@ -212,7 +209,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129008L,
+                            PlantId = "9aa72dbf-0678-47e5-96bc-641f64e0c50e",
                             Acquisition_Date = new DateTime(2024, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "broadleafLadyPalm.png",
@@ -227,7 +224,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = 20241129009L,
+                            PlantId = "4472ce04-8992-45f8-b1e8-a762da7b8044",
                             Acquisition_Date = new DateTime(2024, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "chineseEvergreen.png",
@@ -244,19 +241,47 @@ namespace greenshop_api.Migrations
 
             modelBuilder.Entity("greenshop_api.Models.Subscriber", b =>
                 {
-                    b.Property<long>("SubscriberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("SubscriberId"));
+                    b.Property<string>("SubscriberId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("SubscriberEmail")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("SubscriberId");
 
+                    b.HasIndex("SubscriberEmail")
+                        .IsUnique();
+
                     b.ToTable("Subscribers");
+                });
+
+            modelBuilder.Entity("greenshop_api.Models.User", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("IsSubscribed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserPassword")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("UserEmail")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
