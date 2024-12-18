@@ -13,5 +13,7 @@ namespace greenshop_api.Dtos
         [Required]
         [PasswordIsValid]
         public string? Password { get; set; }
+        [Required]
+        public bool IsSubscribed { get; set; } = false;
     }
 }

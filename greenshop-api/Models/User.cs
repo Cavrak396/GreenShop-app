@@ -13,5 +13,7 @@ namespace greenshop_api.Models
         public string? UserEmail { get; set; }
         [Required]
         public string? UserPassword { get; set; }
+        [Required]
+        public bool IsSubscribed { get; set; } = false;
     }
 }

@@ -18,27 +18,64 @@ namespace greenshop_api.Controllers
         private readonly IUserRepository repository;
         private readonly ApplicationDbContext db;
         private readonly JwtService jwtService;
+        private readonly NewsettlerService newsettlerService;
 
-        public AuthController(IUserRepository repository, ApplicationDbContext db, JwtService jwtService) 
+        public AuthController(IUserRepository repository, ApplicationDbContext db, JwtService jwtService, NewsettlerService newsettlerService) 
         {
             this.repository = repository;
             this.db = db;
             this.jwtService = jwtService;
+            this.newsettlerService = newsettlerService;
+        }
+
+        [HttpGet("users")]
+        public async Task<IActionResult> GetSubscribers()
+        {
+            var users = await this.db.Users.ToListAsync();
+
+            return Ok(users);
         }
 
         [HttpPost("register")]
         [TypeFilter(typeof(User_ValidateRegisterUserFilterAttribute))]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            long identityPart = (await this.db.Users.MaxAsync(i => (long?)i.UserId % 10000) ?? 0) + 1;
+            long identityPartUser = (await this.db.Users.MaxAsync(i => (long?)i.UserId % 10000) ?? 0) + 1;
 
             var user = new User
             {
-                UserId = ApplicationDbContext.GenerateId(identityPart),
+                UserId = ApplicationDbContext.GenerateId(identityPartUser),
                 UserName = dto.Name,
                 UserEmail = dto.Email,
                 UserPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                IsSubscribed = dto.IsSubscribed
             };
+
+            if(dto.IsSubscribed == true)
+            {
+                var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == dto.Email);
+                if (foundSubscriber == null)
+                {
+                    long identityPartSubscriber = (await this.db.Subscribers.MaxAsync(i => (long?)i.SubscriberId % 10000) ?? 0) + 1;
+                    var subscriber = new Subscriber
+                    {
+                        SubscriberId = ApplicationDbContext.GenerateId(identityPartSubscriber),
+                        SubscriberEmail = dto.Email
+                    };
+                    this.db.Subscribers.Add(subscriber);
+                    await this.db.SaveChangesAsync();
+                }
+            }
+
+            await newsettlerService.SendNewsettlerMessage(
+                dto.Email,
+                "You successfully joined Miso Greenshop family!",
+                $"Hello, {dto.Name}, your register proccess was successfull!",
+                "Now you can login and shop all your favorite products " +
+                "for awesome prices! You can also leave reviews for the " +
+                "the products you purchased and many other features!"
+            );
+
             await this.repository.CreateUserAsync(user);
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
@@ -112,6 +149,20 @@ namespace greenshop_api.Controllers
             Response.Cookies.Delete("jwt");
 
             return Ok(userToDelete);
+        }
+
+        [HttpDelete("users")]
+        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersFilterAttribute))]
+        public async Task<IActionResult> DeleteAllUsers()
+        {
+            var allUsers = await this.db.Users.ToListAsync();
+
+            this.db.Users.RemoveRange(allUsers);
+            await this.db.SaveChangesAsync();
+
+            Response.Cookies.Delete("jwt");
+
+            return Ok(allUsers);
         }
     }
 }
