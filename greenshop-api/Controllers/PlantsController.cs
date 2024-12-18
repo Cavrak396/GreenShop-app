@@ -236,5 +236,17 @@ namespace greenshop_api.Controllers
 
             return Ok(plantToDelete);
         }
+
+        [HttpDelete]
+        [TypeFilter(typeof(Plant_ValidateDeletePlantsFilterAttribute))]
+        public async Task<IActionResult> DeleteAllPlants()
+        {
+            var allPlants = this.db.Plants.ToList();
+
+            this.db.Plants.RemoveRange(allPlants);
+            await this.db.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

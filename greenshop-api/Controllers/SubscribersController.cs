@@ -39,12 +39,14 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();
 
-            await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail,
-                       "Welcome to Miso Greenshop Newsettler!",
-                       "You will never miss a thing from now on!",
-                       "We are so happy to have you here! Whever there is a new product " +
-                       "in our store, you will be informed right away. This way, you can purchase " +
-                       "the plant while it's still in stock with the best prize.");
+            await newsettlerService.SendNewsettlerMessage(
+                subscriber.SubscriberEmail,
+                "Welcome to Miso Greenshop Newsettler!",
+                "You will never miss a thing from now on!",
+                "We are so happy to have you here! Whenever there is a new product " +
+                "in our store, you will be informed right away. This way, you can purchase " +
+                "the plant while it's still in stock with the best prize."
+            );
 
             return CreatedAtAction(nameof(GetSubscribers),
                 new { id = subscriber.SubscriberId },
@@ -61,6 +63,18 @@ namespace greenshop_api.Controllers
             await this.db.SaveChangesAsync();
 
             return Ok(subscriberToDelete);
+        }
+
+        [HttpDelete]
+        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersFilterAttribute))]
+        public async Task<IActionResult> DeleteAllSubscribers()
+        {
+            var allSubscribers = this.db.Subscribers.ToList();
+
+            this.db.Subscribers.RemoveRange(allSubscribers);
+            await this.db.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
