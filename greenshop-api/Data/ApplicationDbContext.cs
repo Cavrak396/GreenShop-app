@@ -21,12 +21,10 @@ namespace greenshop_api.Data
             modelBuilder.Entity<Subscriber>(entity => { entity.HasIndex(e => e.SubscriberEmail).IsUnique(); });
             modelBuilder.Entity<User>(entity => { entity.HasIndex(e => e.UserEmail).IsUnique(); });
 
-            int identityValue = 1;
-
             modelBuilder.Entity<Plant>().HasData(
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Barberton Daisy",
                     Short_Description = "The Barberton daisy (Gerbera jamesonii), " +
                     "also known as the Transvaal or Gerbera daisy, is a vibrant, " +
@@ -66,7 +64,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Angel Wing Begonia",
                     Short_Description = "The Angel Wing begonia (Begonia corymbosa) is a stunning " +
                     "houseplant with large, wing-shaped leaves featuring silvery spots. It produces" +
@@ -98,7 +96,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "African Violet",
                     Short_Description = "The African violet (Saintpaulia) is a popular " +
                     "houseplant known for its soft, fuzzy leaves and vibrant, colorful flowers " +
@@ -135,7 +133,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Beach Spider Lilly",
                     Short_Description = "The beach spider lily (Hymenocallis littoralis) is a striking " +
                     "coastal plant known for its dramatic, white, spider-like flowers that bloom atop tall," +
@@ -161,7 +159,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Blushing Bromeliad",
                     Short_Description = "The blushing bromeliad (Neoregalia carolinae) is a striking " +
                     "tropical plant known for its rosette of green leaves that turn a vibrant red or " +
@@ -196,7 +194,7 @@ namespace greenshop_api.Data
                 new Plant
                 {
 
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Aluminum Plant",
                     Short_Description = "The aluminum plant (Pilea cadierei) is a striking houseplant" +
                     " known for its green leaves with distinctive silver markings, resembling metallic " +
@@ -229,7 +227,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Bird's Nest Fern",
                     Short_Description = "The bird's nest fern (Asplenium nidus) is a lush," +
                     " tropical plant with bright green, wavy fronds that form a rosette shape " +
@@ -263,7 +261,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Broadleaf Lady Palm",
                     Short_Description = "The broadleaf lady palm (Rhapis excelsa) is an attractive " +
                     "garden plant known for its lush, fan-shaped fronds and graceful, slender stems. " +
@@ -289,7 +287,7 @@ namespace greenshop_api.Data
                 },
                 new Plant
                 {
-                    PlantId = GenerateId(identityValue++),
+                    PlantId = Guid.NewGuid().ToString(),
                     Name = "Chinese Evergreen",
                     Short_Description = "The Chinese evergreen (Aglaonema) is a resilient garden" +
                     " plant known for its lush, glossy leaves and attractive variegation in shades" +
@@ -315,13 +313,6 @@ namespace greenshop_api.Data
                     Sale_Percent_Private = 25
                 }
             );
-        }
-
-        public static long GenerateId(long identityPart)
-        {
-            string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
-            string idString = $"{datePart}{identityPart:D3}";
-            return long.Parse(idString);
         }
     }
 }

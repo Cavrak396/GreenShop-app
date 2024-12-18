@@ -115,7 +115,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{id}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        public async Task<IActionResult> GetPlantById(long id)
+        public async Task<IActionResult> GetPlantById(string id)
         {
             var plant = await this.db.Plants.FindAsync(id);
 
@@ -124,7 +124,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{id}/related")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        public async Task<IActionResult> GetRelatedProducts(long id, [FromQuery] int relatedProductsSize = 5)
+        public async Task<IActionResult> GetRelatedProducts(string id, [FromQuery] int relatedProductsSize = 5)
         {
             var plant = await this.db.Plants.FindAsync(id);
 
@@ -168,9 +168,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
         public async Task<IActionResult> CreatePlant([FromBody]Plant plant)
         {
-            long identityPart = (await this.db.Plants.MaxAsync(i => (long?)i.PlantId % 10000) ?? 0) + 1;
-
-            plant.PlantId = ApplicationDbContext.GenerateId(identityPart);
+            plant.PlantId = Guid.NewGuid().ToString();
 
             this.db.Plants.Add(plant);
             await this.db.SaveChangesAsync();
@@ -181,13 +179,15 @@ namespace greenshop_api.Controllers
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await newsettlerService.SendNewsettlerMessage(subscriber.SubscriberEmail,
-                          "New Plant in the shop!",
-                          "Are you ready for new purchase?",
-                          $"We have a new arrival - {plant.Name}. If you are ready to decorate " +
-                          $"your ambient with this amazing product, check it out on our website " +
-                          $"for price and details. And hurry up - this plant may not be forever in " +
-                          $"our shop!");
+                    await newsettlerService.SendNewsettlerMessage(
+                        subscriber.SubscriberEmail,
+                        "New Plant in the shop!",
+                        "Are you ready for new purchase?",
+                        $"We have a new arrival - {plant.Name}. If you are ready to decorate " +
+                        $"your ambient with this amazing product, check it out on our website " +
+                        $"for price and details. And hurry up - this plant may not be forever in " +
+                        $"our shop!"
+                    );
 
                 }
             }
@@ -201,7 +201,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [Plant_ValidateUpdatePlantFilter]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
-        public async Task <IActionResult> UpdatePlant(long id, [FromBody]Plant plant)
+        public async Task <IActionResult> UpdatePlant(string id, [FromBody]Plant plant)
         {
             var plantToUpdate = await this.db.Plants.FindAsync(id);
 
@@ -227,7 +227,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{id}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        public async Task <IActionResult> DeletePlant(long id)
+        public async Task <IActionResult> DeletePlant(string id)
         {
             var plantToDelete = await this.db.Plants.FindAsync(id);
 

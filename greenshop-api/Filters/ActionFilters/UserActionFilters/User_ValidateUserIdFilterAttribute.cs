@@ -15,14 +15,14 @@ namespace greenshop_api.Filters.ActionFilters.UserActionFilters
         {
             base.OnActionExecuting(context);
 
-            var userId = context.ActionArguments["id"] as long?;
-            if (userId == null)
+            var userId = context.ActionArguments["id"] as string;
+            if (string.IsNullOrEmpty(userId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "UserId", "User Id must be provided.");
             }
             else
             {
-                var user = db.Users.FirstOrDefault(u => u.UserId == userId);
+                var user = db.Users.Find(userId);
                 if (user == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "UserId", "User isn't added.");

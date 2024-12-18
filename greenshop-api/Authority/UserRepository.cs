@@ -23,7 +23,7 @@ namespace greenshop_api.Authority
             return await this.db.Users.FirstOrDefaultAsync(u => u.UserEmail == email);
         }
 
-        public async Task<User> GetUserByIdAsync(long id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
             return await this.db.Users.FindAsync(id);
         }
