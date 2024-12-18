@@ -127,14 +127,14 @@ namespace greenshop_api.Controllers
             }
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("users/{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
             var user = await this.repository.GetUserByIdAsync(id);
             return Ok(user);
         }
 
-        [HttpDelete("user/{id}")]
+        [HttpDelete("users/{id}")]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
         public async Task<IActionResult> DeleteUser(string id)
         {
