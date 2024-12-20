@@ -8,6 +8,8 @@ import DevelopersPage from "./components/pages/DevelopersPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserBar from "./components/responsive-userbar/UserBar";
 import { PlantsProvider } from "./context/PlantsContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
           <Footer />
           <UserBar />
         </Router>
+        <ToastContainer />
       </CartProvider>
     </PlantsProvider>
   );

@@ -6,20 +6,29 @@ function TextInput({
   type,
   inputClass,
   placeholder,
+  value,
+  onChange,
   buttonText,
   buttonClass,
+  onButtonClick,
 }: TextInputType) {
   return (
-    <>
+    <div className="text-input-container">
       <input
         type={type}
         className={`text-input ${inputClass}`}
         placeholder={placeholder}
         aria-label={placeholder}
+        value={value}
+        onChange={onChange}
         required
       />
-      <Button className={`button ${buttonClass}`}>{buttonText}</Button>
-    </>
+      {buttonText && (
+        <Button className={`button ${buttonClass}`} onClick={onButtonClick}>
+          {buttonText}
+        </Button>
+      )}
+    </div>
   );
 }
 
