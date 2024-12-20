@@ -8,10 +8,13 @@ export interface RangeType {
 
 export interface TextInputType {
   type: string;
-  inputClass?: string;
-  placeholder?: string;
+  inputClass: string;
+  placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   buttonText: string;
   buttonClass: string;
+  onButtonClick: (event: React.FormEvent) => void;
 }
 
 export interface FormInputTypes {
