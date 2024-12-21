@@ -15,5 +15,6 @@ namespace greenshop_api.Models
         public string? UserPassword { get; set; }
         [Required]
         public bool IsSubscribed { get; set; } = false;
+        public ICollection<Review>? Reviews { get; set; }
     }
 }

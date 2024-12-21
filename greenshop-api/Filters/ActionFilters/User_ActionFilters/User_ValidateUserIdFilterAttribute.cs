@@ -1,7 +1,7 @@
 ﻿using greenshop_api.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace greenshop_api.Filters.ActionFilters.UserActionFilters
+namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
     public class User_ValidateUserIdFilterAttribute : ActionFilterAttribute
     {

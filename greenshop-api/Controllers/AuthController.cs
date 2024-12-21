@@ -127,18 +127,18 @@ namespace greenshop_api.Controllers
             }
         }
 
-        [HttpGet("users/{id}")]
-        public async Task<IActionResult> GetUserById(string id)
+        [HttpGet("users/{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
         {
-            var user = await this.repository.GetUserByIdAsync(id);
+            var user = await this.repository.GetUserByIdAsync(userId);
             return Ok(user);
         }
 
-        [HttpDelete("users/{id}")]
+        [HttpDelete("users/{userId}")]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            var userToDelete = await this.db.Users.FindAsync(id);
+            var userToDelete = await this.db.Users.FindAsync(userId);
 
             this.db.Users.Remove(userToDelete);
             await this.db.SaveChangesAsync();
