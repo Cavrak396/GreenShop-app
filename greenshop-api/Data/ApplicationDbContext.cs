@@ -10,6 +10,7 @@ namespace greenshop_api.Data
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -20,6 +21,19 @@ namespace greenshop_api.Data
 
             modelBuilder.Entity<Subscriber>(entity => { entity.HasIndex(e => e.SubscriberEmail).IsUnique(); });
             modelBuilder.Entity<User>(entity => { entity.HasIndex(e => e.UserEmail).IsUnique(); });
+
+            modelBuilder.Entity<Review>()
+                .HasKey(r => new { r.UserId, r.PlantId });
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Plant)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.PlantId);
 
             modelBuilder.Entity<Plant>().HasData(
                 new Plant

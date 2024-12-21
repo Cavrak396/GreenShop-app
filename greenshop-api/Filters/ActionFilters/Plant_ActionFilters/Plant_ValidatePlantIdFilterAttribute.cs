@@ -17,7 +17,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         {
             base.OnActionExecuting(context);
 
-            var plantId = context.ActionArguments["id"] as string;
+            var plantId = context.ActionArguments["plantId"] as string;
             if (string.IsNullOrEmpty(plantId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id must be provided.");

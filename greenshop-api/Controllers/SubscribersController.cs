@@ -51,11 +51,11 @@ namespace greenshop_api.Controllers
                 subscriber);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{subscriberId}")]
         [TypeFilter(typeof(Subscriber_ValidateSubscriberIdFilterAttribute))]
-        public async Task<IActionResult> DeleteSubscriber(string id)
+        public async Task<IActionResult> DeleteSubscriber(string subscriberId)
         {
-            var subscriberToDelete = await this.db.Subscribers.FindAsync(id);
+            var subscriberToDelete = await this.db.Subscribers.FindAsync(subscriberId);
 
             this.db.Subscribers.Remove(subscriberToDelete);
             await this.db.SaveChangesAsync();

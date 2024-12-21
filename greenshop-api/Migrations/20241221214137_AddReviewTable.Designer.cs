@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using greenshop_api.Data;
 
@@ -11,9 +12,11 @@ using greenshop_api.Data;
 namespace greenshop_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241221214137_AddReviewTable")]
+    partial class AddReviewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +86,7 @@ namespace greenshop_api.Migrations
                     b.HasData(
                         new
                         {
-                            PlantId = "ac0db14e-f070-457a-b9d1-cec3f0d52c98",
+                            PlantId = "cbb96c90-78d1-4412-b215-3ebcd7742b59",
                             Acquisition_Date = new DateTime(2024, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Barberton daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
@@ -101,7 +104,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "ca4da99f-c779-4632-8aea-f863efbcd473",
+                            PlantId = "6d05b9e9-0d27-4cfe-8d4a-557d28775630",
                             Acquisition_Date = new DateTime(2024, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Angel Wing begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
@@ -119,7 +122,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "24dc9d81-0978-4b2f-8dfe-33064872ec5a",
+                            PlantId = "690bdfce-5ef9-4097-8b9a-23ac212ed83b",
                             Acquisition_Date = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The African violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
@@ -137,7 +140,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "cab4af84-ade3-489f-9304-0581da7d7b65",
+                            PlantId = "2066fb88-6db8-4a3a-910d-fa741d1d1261",
                             Acquisition_Date = new DateTime(2024, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "beachSpiderLilly.png",
@@ -152,7 +155,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "43433478-c6aa-45b4-bd01-09d6ec4b5b89",
+                            PlantId = "1cbcfa3d-c3bd-4ee0-b27e-5c95e6f3007d",
                             Acquisition_Date = new DateTime(2024, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The blushing bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
@@ -170,7 +173,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "33bc9f44-b2f1-4a14-902c-f811c18ee50c",
+                            PlantId = "313eab1c-57b1-4b7d-89ba-bf8d47679f15",
                             Acquisition_Date = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The aluminum plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
@@ -188,7 +191,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "3729de2a-e626-4f7f-8eff-cf362fa87999",
+                            PlantId = "a7f69d20-2195-4096-8a20-18e453cc2cce",
                             Acquisition_Date = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The bird's nest fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
@@ -206,7 +209,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "e3f2e181-f220-4744-bf4f-e353e24b3f9e",
+                            PlantId = "6e7ca006-d1f0-4160-866c-2681dff9c274",
                             Acquisition_Date = new DateTime(2024, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "broadleafLadyPalm.png",
@@ -221,7 +224,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "15858ac7-8dea-4bf7-b631-8393009f01b4",
+                            PlantId = "122e66a9-c352-4a0b-888b-332e35b7d045",
                             Acquisition_Date = new DateTime(2024, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "chineseEvergreen.png",
@@ -260,7 +263,7 @@ namespace greenshop_api.Migrations
 
                     b.HasIndex("PlantId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("greenshop_api.Models.Subscriber", b =>

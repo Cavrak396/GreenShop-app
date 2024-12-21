@@ -10,10 +10,10 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         {
             base.OnActionExecuting(context);
 
-            var id = context.ActionArguments["id"] as string;
+            var plantId = context.ActionArguments["plantId"] as string;
             var plant = context.ActionArguments["plant"] as Plant;
 
-            if (!string.IsNullOrEmpty(id) && plant != null && id != plant.PlantId)
+            if (!string.IsNullOrEmpty(plantId) && plant != null && plantId != plant.PlantId)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is not the same as provided id.");
             }

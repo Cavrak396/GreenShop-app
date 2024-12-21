@@ -41,5 +41,6 @@ namespace greenshop_api.Models
         public string? LivingRoom_Description { get; set; }
         public string? DiningRoom_Description { get; set; }
         public string? Office_Description { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
     }
 }
