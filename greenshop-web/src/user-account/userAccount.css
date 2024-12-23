@@ -1,0 +1,202 @@
+.useraccount__content {
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.useraccount {
+  min-width: 1000px;
+}
+
+.useraccount__line {
+  display: flex;
+}
+
+.useraccount__toolbar {
+  max-width: 25%;
+  flex: 1 1 25%;
+  border-right: rgba(0, 0, 0, 0.5) solid 1px;
+  min-height: 600px;
+}
+
+.useraccount__info {
+  max-width: 75%;
+  flex: 1 1 75%;
+}
+
+.useraccount__toolbox-item {
+  font-size: 17px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.useraccount__toolbox-item--active {
+  background-color: rgba(70, 163, 88, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.useraccount__profile-photo {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.useraccount__profile-title {
+  margin-bottom: 2px;
+}
+
+.useraccount__profile-mail {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.useraccount__profile-text,
+.useraccount__subscribe-text,
+.useraccount__unsubscribe-text,
+.useraccount__logout-text {
+  font-size: 13px;
+  max-width: 530px;
+  line-height: 20px;
+  margin-bottom: 15px;
+}
+
+.useraccount__profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 20px auto;
+}
+
+.useraccount__profile-copy-image {
+  max-width: 15px;
+  max-height: 15px;
+  filter: invert(1) brightness(2);
+}
+
+.useraccount__profile-delete {
+  border-top: solid 1px rgba(0, 0, 0, 0.5);
+  padding-top: 15px;
+  margin-top: 90px;
+}
+
+.useraccount__subscribe,
+.useraccount__logout {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 530px;
+}
+
+.useraccount__subscribe-text--modified {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1200px) {
+  .useraccount {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 975px) {
+  .useraccount {
+    min-width: 720px;
+  }
+
+  .useraccount__profile-photo {
+    max-width: 100px;
+    max-height: 100px;
+    margin-bottom: 7px;
+  }
+
+  .useraccount__profile-mail {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .useraccount__profile-text,
+  .useraccount__subscribe-text,
+  .useraccount__unsubscribe-text,
+  .useraccount__logout-text {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 10px;
+  }
+
+  .useraccount__profile-button {
+    font-size: 10px;
+  }
+
+  .useraccount__toolbar {
+    min-height: 470px;
+  }
+
+  .useraccount__toolbox-item {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .useraccount {
+    min-width: 310px;
+  }
+
+  .useraccount__content {
+    padding: 20px 0 3px 0;
+  }
+
+  .useraccount__toolbar {
+    min-height: 428px;
+  }
+
+  .useraccount__toolbox-item {
+    font-size: 11px;
+  }
+
+  .useraccount__profile-photo {
+    max-width: 50px;
+    max-height: 50px;
+    margin-bottom: 3px;
+  }
+
+  .useraccount__profile-title {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .useraccount__profile-mail {
+    font-size: 9px;
+    margin-bottom: 5px;
+  }
+
+  .useraccount__profile-text,
+  .useraccount__subscribe-text,
+  .useraccount__unsubscribe-text,
+  .useraccount__logout-text {
+    font-size: 9px;
+    max-width: 220px;
+    line-height: 15px;
+    margin-bottom: 10px;
+  }
+
+  .useraccount__profile-button,
+  .useraccount__unsubscribe-button,
+  .useraccount__logout-button {
+    font-size: 8px;
+  }
+
+  .useraccount__profile-copy-image {
+    max-width: 10px;
+    max-height: 10px;
+  }
+
+  .useraccount__subscribe,
+  .useraccount__logout {
+    min-width: 214px;
+  }
+}
