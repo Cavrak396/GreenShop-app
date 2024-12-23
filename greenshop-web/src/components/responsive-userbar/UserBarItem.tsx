@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { userBarItemType } from "./types/userBarTypes";
 import Portal from "../../reusable/Portal/Portal";
 import Cart from "../cart/Cart";
+import UserAccount from "../../user-account/UserAccount";
 
 function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
   const navigate = useNavigate();
   const [isAppear, setIsAppear] = useState(false);
+  const [isUserAccountOpen, setIsUserAccountOpen] = useState(false);
 
   function handleNavigation() {
     setActiveId(item.id);
@@ -14,6 +16,8 @@ function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
     if (item.alt === "cart") {
       setIsAppear(true);
       navigate("/");
+    } else if (item.alt === "user account") {
+      setIsUserAccountOpen(true);
     } else if (item.path) {
       navigate(item.path);
     } else {
@@ -41,6 +45,12 @@ function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>
           <Cart />
+        </Portal>
+      )}
+
+      {isUserAccountOpen && (
+        <Portal setIsAppear={setIsUserAccountOpen}>
+          <UserAccount />
         </Portal>
       )}
     </>
