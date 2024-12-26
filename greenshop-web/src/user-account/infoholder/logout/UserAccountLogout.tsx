@@ -1,6 +1,7 @@
 import Button from "../../../components/button/Button";
+import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
 
-function UserAccountLogout() {
+function UserAccountLogout({ setIsAppear }: ConfirmationTypes) {
   return (
     <div className="useraccount__logout">
       <p className="useraccount__logout-text">
@@ -11,7 +12,12 @@ function UserAccountLogout() {
         application or are on a shared device, we recommend logging out to
         protect your data and maintain your privacy.
       </p>
-      <Button className="useraccount__logout-button button">Logout</Button>
+      <Button
+        className="useraccount__logout-button button"
+        onClick={() => setIsAppear((prev) => !prev)}
+      >
+        Logout
+      </Button>
     </div>
   );
 }
