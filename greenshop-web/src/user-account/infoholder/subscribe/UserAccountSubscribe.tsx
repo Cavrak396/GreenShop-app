@@ -1,6 +1,7 @@
+import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
 import UserAccountUnsubscribe from "./UserAccountUnsubscribe";
 
-function UserAccountSubscribe() {
+function UserAccountSubscribe({setIsAppear}: ConfirmationTypes) {
   return (
     <div className="useraccount__subscribe">
       <p className="useraccount__subscribe-text useraccount__subscribe-text--modified">
@@ -12,7 +13,7 @@ function UserAccountSubscribe() {
         subscribe, simply check the footer of our website and sign up to enjoy
         all the benefits that come with being a subscriber!
       </p>
-      <UserAccountUnsubscribe />
+      <UserAccountUnsubscribe setIsAppear={setIsAppear}/>
     </div>
   );
 }

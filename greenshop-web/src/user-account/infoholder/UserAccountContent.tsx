@@ -1,13 +1,26 @@
+import { useState } from "react";
 import UserAccountLogout from "./logout/UserAccountLogout";
 import UserAccountProfile from "./profile/UserAccountProfile";
 import UserAccountSubscribe from "./subscribe/UserAccountSubscribe";
+import Portal from "../../reusable/Portal/Portal";
+import ConfirmationContent from "../../reusable/Confirmation/ConfirmationContent";
 
 function UserAccountContent({ isActive }: { isActive: number }) {
+  const [isAppear, setIsAppear] = useState(false);
+
   return (
     <div className="useraccount__content">
-      {isActive === 1 && <UserAccountProfile />}
-      {isActive === 2 && <UserAccountSubscribe />}
-      {isActive === 3 && <UserAccountLogout />}
+      {isActive === 1 && <UserAccountProfile setIsAppear={setIsAppear} />}
+      {isActive === 2 && <UserAccountSubscribe setIsAppear={setIsAppear} />}
+      {isActive === 3 && <UserAccountLogout setIsAppear={setIsAppear} />}
+      {isAppear && (
+        <Portal setIsAppear={setIsAppear}>
+          <ConfirmationContent
+            setIsAppear={setIsAppear}
+            message="Are you sure about this action, this action can change your current status?"
+          />
+        </Portal>
+      )}
     </div>
   );
 }
