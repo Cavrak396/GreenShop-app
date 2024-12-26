@@ -26,6 +26,7 @@
 
 @media screen and (max-width: 975px) {
   .homepageshop__content {
+    min-height: 200px;
     padding-left: 0;
     max-width: 100%;
     flex: 1 1 100%;
