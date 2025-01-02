@@ -23,11 +23,13 @@ export interface AuthSocialButtonsProps {
 export interface AuthFormProps {
   activatedId: number;
   setActivatedId?: (id: number) => void;
-  inputRefs: React.MutableRefObject<Record<string, HTMLInputElement | null>>;
+  inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
   showPassword?: Record<number, boolean>;
   setShowPassword?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
   togglePasswordVisibility: (id: number) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
 
 export interface AuthFormInputProps {
   input: AuthInput;
@@ -40,8 +42,9 @@ export interface AuthFormInputProps {
 export interface AuthCurrentDataTypes {
   activatedId: number;
   setActivatedId?: (id: number) => void;
-  inputRefs: React.MutableRefObject<Record<string, HTMLInputElement | null>>;
+  inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
   showPassword?: Record<number, boolean>;
   setShowPassword?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
   togglePasswordVisibility: (id: number) => void;
 }
+

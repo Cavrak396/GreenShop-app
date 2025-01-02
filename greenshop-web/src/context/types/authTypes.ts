@@ -1,0 +1,38 @@
+export interface LoginDTO {
+    email: string;
+    password: string;
+}
+
+export interface RegisterDTO {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export interface AuthResponse {
+    jwt: string | null;
+    user: User | null;
+}
+
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+}
+
+export interface AuthContextProps {
+    user: User | null;
+    token: string | null;
+    loading: boolean;
+    error: string | null;
+    login: (dto: LoginDTO) => Promise<AuthResponse | ApiError>;
+    register: (dto: RegisterDTO) => Promise<AuthResponse | ApiError>;
+    logout: () => void;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    setToken: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export interface ApiError {
+    message: string;
+    jwt?: string | null;
+}

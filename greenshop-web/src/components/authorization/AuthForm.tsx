@@ -9,17 +9,10 @@ function AuthForm({
   inputRefs,
   showPassword,
   togglePasswordVisibility,
+  onSubmit,
 }: AuthFormProps) {
   const inputsToShow = activatedId === 1 ? authInputs.slice(0, 2) : authInputs;
   const actionTypeText = activatedId === 1 ? "login" : "register";
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    inputsToShow.forEach((input) => {
-      const inputValue = inputRefs.current[input.id]?.value;
-      console.log(`Input ${input.id} value: ${inputValue}`);
-    });
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -29,12 +22,12 @@ function AuthForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       {inputsToShow.map((input) => (
         <AuthFormInput
           key={input.id}
           input={input}
-          refHandler={(el) => (inputRefs.current[input.id] = el)}
+          refHandler={(el) => (inputRefs.current[input.id] = el)} 
           showPassword={showPassword?.[input.id]}
           togglePasswordVisibility={togglePasswordVisibility}
           onChange={(e) => handleInputChange(e, input.id)}
