@@ -6,8 +6,6 @@ namespace greenshop_api.Models
 {
     public class Review
     {
-        [Key]
-        public string? ReviewId { get; set; }
         [Required]
         public string? UserId { get; set; }
         [Required]

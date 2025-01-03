@@ -22,7 +22,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
             }
             else
             {
-                var subscriber = await db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberId == subscriberId);
+                var subscriber = await db.Subscribers.FindAsync(subscriberId);
                 if (subscriber == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "SubscriberId", "Subscriber isn't added.");

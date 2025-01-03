@@ -1,6 +1,6 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
-using greenshop_api.Filters.ExceptionFilters;
+using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
 using greenshop_api.Models;
 using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet]
-        [Plant_ValidateGetHeaders]
+        [TypeFilter(typeof(Plant_ValidateGetHeadersFilterAttribute))]
         public async Task<IActionResult> GetPlants(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 9,
@@ -100,7 +100,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("number")]
-        [Plant_ValidateGetPlantNumberFilter]
+        [TypeFilter(typeof(Plant_ValidateGetPlantNumberFilterAttribute))]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlants([FromQuery] string[] categories)
         {
             var categoryCounts = new Dictionary<string, int>();
@@ -199,7 +199,7 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [Plant_ValidateUpdatePlantFilter]
+        [TypeFilter(typeof(Plant_ValidateUpdatePlantFilterAttribute))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
         public async Task <IActionResult> UpdatePlant(string plantId, [FromBody]Plant plant)
         {
