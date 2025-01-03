@@ -2,7 +2,7 @@
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateGetHeadersAttribute : IAsyncActionFilter
+    public class Plant_ValidateGetHeadersFilterAttribute : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

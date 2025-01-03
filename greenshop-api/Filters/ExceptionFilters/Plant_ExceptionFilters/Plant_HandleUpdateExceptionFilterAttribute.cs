@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
-namespace greenshop_api.Filters.ExceptionFilters
+namespace greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters
 {
     public class Plant_HandleUpdateExceptionFilterAttribute : IAsyncExceptionFilter
     {
@@ -18,7 +18,7 @@ namespace greenshop_api.Filters.ExceptionFilters
         {
             var plantId = context.RouteData.Values["id"] as string;
 
-            if (await db.Plants.FirstOrDefaultAsync(p => p.PlantId == plantId) == null)
+            if (await db.Plants.FindAsync(plantId) == null)
             {
                 ModelErrors.AddNotFoundExceptionModelError(context, "PlantId", "Plant doesn't exist anymore.");
             }

@@ -24,7 +24,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             }
             else
             {
-                var plant = await db.Plants.FirstOrDefaultAsync(p => p.PlantId == plantId);
+                var plant = await db.Plants.FindAsync(plantId);
                 if (plant == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");

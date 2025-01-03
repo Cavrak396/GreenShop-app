@@ -23,7 +23,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             }
             else
             {
-                var user = await db.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+                var user = await db.Users.FindAsync(userId);
                 if (user == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "UserId", "User isn't added.");

@@ -28,12 +28,14 @@ namespace greenshop_api.Data
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reviews)
-                .HasForeignKey(r => r.UserId);
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Plant)
                 .WithMany(p => p.Reviews)
-                .HasForeignKey(r => r.PlantId);
+                .HasForeignKey(r => r.PlantId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Plant>().HasData(
                 new Plant

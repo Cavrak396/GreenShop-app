@@ -2,7 +2,8 @@
 using greenshop_api.Data;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
-using greenshop_api.Filters.ActionFilters.UserActionFilters;
+using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
+using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Models;
 using greenshop_api.Services;
 using Microsoft.AspNetCore.Cors;
