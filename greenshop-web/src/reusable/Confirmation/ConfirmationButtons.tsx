@@ -1,13 +1,27 @@
 import Button from "../../components/button/Button";
 import { ConfirmationTypes } from "../types/confirmationTypes";
 
-function ConfirmationButtons({ setIsAppear }: ConfirmationTypes) {
+type ConfirmationButtonsProps = ConfirmationTypes & {
+  onConfirmAction: (() => void) | null;
+};
+
+function ConfirmationButtons({
+  setIsAppear,
+  onConfirmAction,
+}: ConfirmationButtonsProps) {
   return (
     <div className="confirmation__buttons">
-      <Button className="confirmation__button button">Yes</Button>
       <Button
         className="confirmation__button button"
-        onClick={() => setIsAppear((prev) => !prev)}
+        onClick={() => {
+          if (onConfirmAction) onConfirmAction();
+        }}
+      >
+        Yes
+      </Button>
+      <Button
+        className="confirmation__button button"
+        onClick={() => setIsAppear(false)}
       >
         No
       </Button>

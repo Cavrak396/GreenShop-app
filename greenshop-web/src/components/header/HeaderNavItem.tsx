@@ -1,8 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { HeaderNavItemProps } from "./types/headerTypes";
-import Portal from "../../reusable/Portal/Portal";
-import UserAccount from "../../user-account/UserAccount";
 
 function HeaderNavItem({
   id,
@@ -11,7 +8,6 @@ function HeaderNavItem({
   handleLinkClick,
 }: HeaderNavItemProps) {
   const navigate = useNavigate();
-  const [isAppear, setIsAppear] = useState<boolean>(false);
 
   const handleNavigation = (label: string) => {
     switch (label) {
@@ -20,9 +16,6 @@ function HeaderNavItem({
         break;
       case "Devs":
         navigate("/developers");
-        break;
-      case "Blogs":
-        setIsAppear(true); // test
         break;
       default:
         break;
@@ -44,12 +37,6 @@ function HeaderNavItem({
           {label}
         </a>
       </li>
-      {isAppear && (
-        <Portal setIsAppear={setIsAppear}>
-          <UserAccount /> 
-          {/* test */}
-        </Portal>
-      )}
     </>
   );
 }

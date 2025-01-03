@@ -1,10 +1,13 @@
 import HeaderToolbarItem from "./HeaderToolBarItem";
 import HeaderSearchBar from "./HeaderSearchBar";
 import LoginButton from "./HeaderLoginButton";
+import HeaderAccount from "./HeaderAccount";
 import { useState } from "react";
 import { toolbarItems } from "./utils/headerUtils";
+import { useUser } from "../../context/AuthContext";
 
 function HeaderUserToolbar() {
+  const { token } = useUser();
   const [isAppear, setIsAppear] = useState<boolean>(false);
 
   return (
@@ -18,7 +21,11 @@ function HeaderUserToolbar() {
           setIsAppear={setIsAppear}
         />
       ))}
-      <LoginButton />
+      {token ? (
+        <HeaderAccount />
+      ) : (
+        <LoginButton />
+      )}
     </ul>
   );
 }
