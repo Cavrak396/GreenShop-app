@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from "react";
-import { loginUser, registerUser } from "../services/auth/auth";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { loginUser, registerUser, logoutUser } from "../services/auth/auth";
 import {
   AuthContextProps,
   LoginDTO,
@@ -23,9 +23,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(() =>
+    localStorage.getItem("token")
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const login = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
@@ -33,10 +42,25 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       const response = await loginUser(dto);
       setToken(response.jwt);
       setUser(response.user);
+      localStorage.setItem("token", response.jwt);
       return response;
     } catch (err: any) {
       setError(err.message || "An error occurred during login.");
       return { message: err.message || "Login failed" };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      await logoutUser();
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+    } catch (err: any) {
+      setError(err.message || "An error occurred during logout.");
     } finally {
       setLoading(false);
     }
@@ -57,11 +81,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const logout = () => {
-    setToken(null);
-    setUser(null);
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -69,7 +88,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         token,
         login,
         register,
-        logout,
+        logout, // Dodato
         setUser,
         setToken,
         loading,
