@@ -1,10 +1,11 @@
 ﻿using greenshop_api.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ExceptionFilters
 {
-    public class Plant_HandleUpdateExceptionFilterAttribute : ExceptionFilterAttribute
+    public class Plant_HandleUpdateExceptionFilterAttribute : IAsyncExceptionFilter
     {
         private readonly ApplicationDbContext db;
 
@@ -13,13 +14,11 @@ namespace greenshop_api.Filters.ExceptionFilters
             this.db = db;
         }
 
-        public override void OnException(ExceptionContext context)
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
-            base.OnException(context);
-
             var plantId = context.RouteData.Values["id"] as string;
 
-            if (db.Plants.FirstOrDefault(x => x.PlantId == plantId) == null)
+            if (await db.Plants.FirstOrDefaultAsync(p => p.PlantId == plantId) == null)
             {
                 ModelErrors.AddNotFoundExceptionModelError(context, "PlantId", "Plant doesn't exist anymore.");
             }

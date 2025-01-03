@@ -2,10 +2,11 @@
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateCreatePlantFilterAttribute : ActionFilterAttribute
+    public class Plant_ValidateCreatePlantFilterAttribute : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
@@ -14,18 +15,17 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             this.db = db;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
-
             var plant = context.ActionArguments["plant"] as Plant;
+
             if (plant == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
             }
             else
             {
-                var existingPlant = db.Plants.FirstOrDefault(p =>
+                var existingPlant = await db.Plants.FirstOrDefaultAsync(p =>
                 !string.IsNullOrWhiteSpace(plant.Name) &&
                 !string.IsNullOrWhiteSpace(p.Name) &&
                 plant.Name.ToLower() == p.Name.ToLower() &&
@@ -36,6 +36,8 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                     ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
                 }
             }
+
+            await next();
         }
     }
 }

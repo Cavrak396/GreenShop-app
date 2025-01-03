@@ -2,10 +2,11 @@
 using greenshop_api.Dtos;
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateRegisterUserFilterAttribute : ActionFilterAttribute
+    public class User_ValidateRegisterUserFilterAttribute : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
@@ -14,18 +15,17 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             this.db = db;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
-
             var user = context.ActionArguments["dto"] as RegisterDto;
+
             if (user == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
             }
             else
             {
-                var existingUser = db.Users.FirstOrDefault(u =>
+                var existingUser = await db.Users.FirstOrDefaultAsync(u =>
                 !string.IsNullOrWhiteSpace(user.Email) &&
                 !string.IsNullOrWhiteSpace(u.UserEmail) &&
                 user.Email.ToLower() == u.UserEmail.ToLower());
@@ -35,6 +35,8 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
                     ModelErrors.AddConflictActionModelError(context, "User", "User is already added.");
                 }
             }
+
+            await next();
         }
     }
 }
