@@ -1,9 +1,11 @@
 ﻿using greenshop_api.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateUserIdFilterAttribute : ActionFilterAttribute
+    public class User_ValidateUserIdFilterAttribute : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
@@ -11,23 +13,24 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         {
             this.db = db;
         }
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
-
             var userId = context.ActionArguments["userId"] as string;
+
             if (string.IsNullOrEmpty(userId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "UserId", "User Id must be provided.");
             }
             else
             {
-                var user = db.Users.Find(userId);
+                var user = await db.Users.FirstOrDefaultAsync(u => u.UserId == userId);
                 if (user == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "UserId", "User isn't added.");
                 }
             }
+
+            await next();
         }
     }
 }

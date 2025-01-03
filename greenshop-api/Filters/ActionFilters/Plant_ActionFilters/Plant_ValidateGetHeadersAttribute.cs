@@ -2,12 +2,10 @@
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateGetHeadersAttribute : ActionFilterAttribute
+    public class Plant_ValidateGetHeadersAttribute : IAsyncActionFilter
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
-
             var groupHeaderValue = context.HttpContext.Request.Headers["Group"].ToString();
 
             var sizeHeaderValue = context.HttpContext.Request.Headers["SizeType"].ToString();
@@ -65,6 +63,8 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                     }
                 }
             }
+
+            await next();
         }
     }
 }
