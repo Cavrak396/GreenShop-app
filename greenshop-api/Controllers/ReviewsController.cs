@@ -62,8 +62,8 @@ namespace greenshop_api.Controllers
         [HttpPut("{plantId}/{userId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateReviewIdFilterAttribute))]
         [TypeFilter(typeof(Review_ValidateUpdateReviewFilterAttribute))]
+        [TypeFilter(typeof(Review_ValidateReviewIdFilterAttribute))]
         public async Task<IActionResult> UpdateReview(string plantId, string userId, [FromBody] Review review)
         {
             var reviewToUpdate = await this.db.Reviews.FindAsync(userId, plantId);
