@@ -18,7 +18,6 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             var userId = context.ActionArguments["userId"] as string;
 
             var review = await this.db.Reviews.FindAsync(userId, plantId);
-
             if (review == null)
             {
                 ModelErrors.AddNotFoundActionModelError(context, "Review", "Review isn't added.");
