@@ -25,6 +25,7 @@ namespace greenshop_api.Controllers
         [HttpGet("{plantId}/{userId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
+        [TypeFilter(typeof(Review_ValidateReviewIdFilterAttribute))]
         public async Task<IActionResult> GetReviewById(string plantId, string userId)
         {
             var review = await this.db.Reviews.FindAsync(userId, plantId);
@@ -61,6 +62,7 @@ namespace greenshop_api.Controllers
         [HttpPut("{plantId}/{userId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
+        [TypeFilter(typeof(Review_ValidateReviewIdFilterAttribute))]
         [TypeFilter(typeof(Review_ValidateUpdateReviewFilterAttribute))]
         public async Task<IActionResult> UpdateReview(string plantId, string userId, [FromBody] Review review)
         {
@@ -78,6 +80,7 @@ namespace greenshop_api.Controllers
         [HttpDelete("{plantId}/{userId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
+        [TypeFilter(typeof(Review_ValidateReviewIdFilterAttribute))]
         public async Task<IActionResult> DeleteReview(string plantId, string userId)
         {
             var reviewToDelete = await this.db.Reviews.FindAsync(userId, plantId);
