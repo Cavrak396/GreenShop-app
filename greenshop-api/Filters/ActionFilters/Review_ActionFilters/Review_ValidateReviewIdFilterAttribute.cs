@@ -21,6 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             if (review == null)
             {
                 ModelErrors.AddNotFoundActionModelError(context, "Review", "Review isn't added.");
+                return;
             }
 
             await next();

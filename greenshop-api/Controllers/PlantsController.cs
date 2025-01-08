@@ -14,12 +14,12 @@ namespace greenshop_api.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly NewsettlerService newsettlerService;
+        private readonly NewsletterService newsletterService;
 
-        public PlantsController(ApplicationDbContext db, NewsettlerService newsettlerService)
+        public PlantsController(ApplicationDbContext db, NewsletterService newsletterService)
         {
             this.db = db;
-            this.newsettlerService = newsettlerService;
+            this.newsletterService = newsletterService;
         }
 
         [HttpGet]
@@ -179,7 +179,7 @@ namespace greenshop_api.Controllers
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await newsettlerService.SendNewsettlerMessage(
+                    await newsletterService.SendNewsletterMessage(
                         subscriber.SubscriberEmail,
                         "New Plant in the shop!",
                         "Are you ready for new purchase?",

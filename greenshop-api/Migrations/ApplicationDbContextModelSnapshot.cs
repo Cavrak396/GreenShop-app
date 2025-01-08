@@ -22,6 +22,47 @@ namespace greenshop_api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("greenshop_api.Models.Cart", b =>
+                {
+                    b.Property<string>("CartId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<double>("CartPrice")
+                        .HasColumnType("double");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("greenshop_api.Models.CartItem", b =>
+                {
+                    b.Property<string>("CartId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("PlantId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId", "PlantId");
+
+                    b.HasIndex("PlantId");
+
+                    b.HasIndex("CartId", "PlantId")
+                        .IsUnique();
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("greenshop_api.Models.Plant", b =>
                 {
                     b.Property<string>("PlantId")
@@ -83,7 +124,7 @@ namespace greenshop_api.Migrations
                     b.HasData(
                         new
                         {
-                            PlantId = "b0a2a987-b2ce-4359-a8e2-68ab8ada780f",
+                            PlantId = "1c517bc7-967d-46b8-b2b6-099fe533af02",
                             Acquisition_Date = new DateTime(2024, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Barberton daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
@@ -101,7 +142,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "60b48e0f-f963-465b-8182-e99379762831",
+                            PlantId = "89fff02e-9fb8-428a-9b8f-a3bf17f8e95d",
                             Acquisition_Date = new DateTime(2024, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Angel Wing begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
@@ -119,7 +160,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "88eb7784-4f21-4f5f-9251-b306632a8c1e",
+                            PlantId = "fa9f9393-d449-4aae-bab2-f332bf591e90",
                             Acquisition_Date = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The African violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
@@ -137,7 +178,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "c3d24fbe-ea21-4205-ab28-1e47da14173a",
+                            PlantId = "0753e952-b67d-4fea-9163-d3f5eeba748f",
                             Acquisition_Date = new DateTime(2024, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "beachSpiderLilly.png",
@@ -152,7 +193,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "368b0448-6e8b-4d7c-8bf2-7fed173462e6",
+                            PlantId = "f97ea876-4686-4461-8b45-f497153c3637",
                             Acquisition_Date = new DateTime(2024, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The blushing bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
@@ -170,7 +211,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "2c6a30d8-efa6-4fbd-b460-6c694d0cdee7",
+                            PlantId = "a2387018-906b-41a6-8b90-a15f79a3fe0b",
                             Acquisition_Date = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The aluminum plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
@@ -188,7 +229,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "bb80afb5-c088-45bc-aec0-6a5a1cf3c4ea",
+                            PlantId = "71f1a41f-78b3-411c-8321-3da300a2bd39",
                             Acquisition_Date = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The bird's nest fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
@@ -206,7 +247,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "b7f02646-0010-44db-8e2d-c999e5e4cfa9",
+                            PlantId = "d252ec1a-5599-4a53-9aca-39972ee33163",
                             Acquisition_Date = new DateTime(2024, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "broadleafLadyPalm.png",
@@ -221,7 +262,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "cbda09df-9bd0-4d71-b820-81ca5fcb78be",
+                            PlantId = "d4cb9d04-2b80-406d-8b67-34a69ba92bf3",
                             Acquisition_Date = new DateTime(2024, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "chineseEvergreen.png",
@@ -305,6 +346,36 @@ namespace greenshop_api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("greenshop_api.Models.Cart", b =>
+                {
+                    b.HasOne("greenshop_api.Models.User", "User")
+                        .WithMany("Carts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("greenshop_api.Models.CartItem", b =>
+                {
+                    b.HasOne("greenshop_api.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("greenshop_api.Models.Plant", "Plant")
+                        .WithMany()
+                        .HasForeignKey("PlantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Plant");
+                });
+
             modelBuilder.Entity("greenshop_api.Models.Review", b =>
                 {
                     b.HasOne("greenshop_api.Models.Plant", "Plant")
@@ -324,6 +395,11 @@ namespace greenshop_api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("greenshop_api.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("greenshop_api.Models.Plant", b =>
                 {
                     b.Navigation("Reviews");
@@ -331,6 +407,8 @@ namespace greenshop_api.Migrations
 
             modelBuilder.Entity("greenshop_api.Models.User", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

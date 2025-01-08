@@ -18,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             if (allUsers.Count() == 0)
             {
                 ModelErrors.AddNotFoundActionModelError(context, "User", "No users found to delete.");
+                return;
             }
 
             await next();

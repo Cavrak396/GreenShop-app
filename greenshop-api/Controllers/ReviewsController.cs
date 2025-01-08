@@ -3,7 +3,6 @@ using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.Review_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Models;
-using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +13,10 @@ namespace greenshop_api.Controllers
     public class ReviewsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly NewsettlerService newsettlerService;
 
-        public ReviewsController(ApplicationDbContext db, NewsettlerService newsettlerService)
+        public ReviewsController(ApplicationDbContext db)
         {
             this.db = db;
-            this.newsettlerService = newsettlerService;
         }
 
         [HttpGet("{plantId}/{userId}")]
@@ -55,7 +52,7 @@ namespace greenshop_api.Controllers
 
             return CreatedAtAction(nameof(GetReviewById), new { 
                 userId = review.UserId, 
-                plantId = review.PlantId }, 
+                plantId = review.PlantId },
                 review);
         }
 

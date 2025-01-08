@@ -1,7 +1,6 @@
 ﻿using greenshop_api.Authority;
 using greenshop_api.Data;
 using greenshop_api.Dtos;
-using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Models;
@@ -19,14 +18,14 @@ namespace greenshop_api.Controllers
         private readonly IUserRepository repository;
         private readonly ApplicationDbContext db;
         private readonly JwtService jwtService;
-        private readonly NewsettlerService newsettlerService;
+        private readonly NewsletterService newsletterService;
 
-        public AuthController(IUserRepository repository, ApplicationDbContext db, JwtService jwtService, NewsettlerService newsettlerService) 
+        public AuthController(IUserRepository repository, ApplicationDbContext db, JwtService jwtService, NewsletterService newsletterService) 
         {
             this.repository = repository;
             this.db = db;
             this.jwtService = jwtService;
-            this.newsettlerService = newsettlerService;
+            this.newsletterService = newsletterService;
         }
 
         [HttpGet("users")]
@@ -65,7 +64,7 @@ namespace greenshop_api.Controllers
                 }
             }
 
-            await newsettlerService.SendNewsettlerMessage(
+            await newsletterService.SendNewsletterMessage(
                 dto.Email,
                 "You successfully joined Miso Greenshop family!",
                 $"Hello, {dto.Name}, your register proccess was successfull!",
@@ -76,7 +75,7 @@ namespace greenshop_api.Controllers
 
             await this.repository.CreateUserAsync(user);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+            return Ok();
         }
 
         [HttpPost("login")]

@@ -19,6 +19,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 !string.Equals(groupHeaderValue, "sale", StringComparison.OrdinalIgnoreCase))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Group", "Group is invalid.");
+                return;
             }
 
             if (!string.IsNullOrEmpty(sizeHeaderValue) &&
@@ -27,6 +28,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 !string.Equals(sizeHeaderValue, "large", StringComparison.OrdinalIgnoreCase))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Group", "Size Type is invalid.");
+                return;
             }
 
             if(!string.IsNullOrEmpty(priceMinHeaderValueString))
@@ -36,6 +38,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                     if (priceMinHeaderValue < 0)
                     {
                         ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Minimum Price cannot be negative.");
+                        return;
                     }
                 }
             }
@@ -47,6 +50,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                     if (priceMaxHeaderValue <= 0)
                     {
                         ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Maximum Price must be greater than 0.");
+                        return;
                     }
                 }
             }
@@ -60,6 +64,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                     if(priceMaxHeaderValue <= priceMinHeaderValue)
                     {
                         ModelErrors.AddBadRequestActionModelError(context, "Price", "Minimum Price must be lower than Maximum Price.");
+                        return;
                     }
                 }
             }

@@ -21,6 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
             if (subscriber == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Subscriber", "Subscriber object cannot be null.");
+                return;
             }
             else
             {
@@ -32,6 +33,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
                 if (existingSubscriber != null)
                 {
                     ModelErrors.AddConflictActionModelError(context, "Subscriber", "Subscriber is already added.");
+                    return;
                 }
             }
 

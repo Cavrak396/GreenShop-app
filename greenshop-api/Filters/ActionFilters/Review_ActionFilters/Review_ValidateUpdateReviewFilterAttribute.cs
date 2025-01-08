@@ -22,10 +22,12 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             if (!string.IsNullOrEmpty(plantId) && review != null && plantId != review.PlantId)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is not the same as provided id.");
+                return;
             }
             if (!string.IsNullOrEmpty(userId) && review != null && userId != review.UserId)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "UserId", "User Id is not the same as provided id.");
+                return;
             }
 
             await next();

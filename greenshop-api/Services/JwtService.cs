@@ -7,17 +7,16 @@ namespace greenshop_api.Services
     public class JwtService
     {
         private readonly IConfiguration configuration;
-        private readonly string securityKey;
 
         public JwtService(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.securityKey = configuration["JWT:SecurityKey"];
 
         }
 
         public string Generate(string id)
         {
+            string securityKey = configuration["JWT:SecurityKey"];
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
@@ -36,6 +35,7 @@ namespace greenshop_api.Services
 
         public JwtSecurityToken Verify(string jwt)
         {
+            string securityKey = configuration["JWT:SecurityKey"];
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(securityKey);
             tokenHandler.ValidateToken(jwt, new TokenValidationParameters

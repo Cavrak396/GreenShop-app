@@ -1,7 +1,6 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
@@ -21,6 +20,7 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             if (review == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Review", "Review object cannot be null.");
+                return;
             }
             else
             {
@@ -29,16 +29,19 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
                 if(user == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "User", "User isn't added.");
+                    return;
                 }
                 if (plant == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "Plant", "Plant doesn't exist.");
+                    return;
                 }
 
                 var existingReview = await this.db.Reviews.FindAsync(review.UserId, review.PlantId);
                 if(existingReview == null)
                 {
                     ModelErrors.AddConflictActionModelError(context, "Review", "Review is already added.");
+                    return;
                 }
             }
 

@@ -1,7 +1,5 @@
 ﻿using greenshop_api.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
@@ -20,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             if (string.IsNullOrEmpty(userId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "UserId", "User Id must be provided.");
+                return;
             }
             else
             {
@@ -27,6 +26,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
                 if (user == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "UserId", "User isn't added.");
+                    return;
                 }
             }
 

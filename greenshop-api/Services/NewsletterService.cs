@@ -1,17 +1,16 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 namespace greenshop_api.Services
 {
-    public class NewsettlerService
+    public class NewsletterService
     {
         private readonly IConfiguration configuration;
 
-        public NewsettlerService(IConfiguration configuration)
+        public NewsletterService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-        public async Task SendNewsettlerMessage(string recipient, string subject, string title, string body)
+        public async Task SendNewsletterMessage(string recipient, string subject, string title, string body)
         {
             string server = configuration["SMTP:Server"];
             string username = configuration["SMTP:Username"];
@@ -21,7 +20,7 @@ namespace greenshop_api.Services
 
             string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "..\\greenshop-api\\Media\\logo.png");
 
-            MailMessage message = CreateNewsettlerMessage(username,
+            MailMessage message = CreateNewsletterMessage(username,
                 recipient,
                 subject,
                 title,
@@ -45,7 +44,7 @@ namespace greenshop_api.Services
             }
         }
 
-        private MailMessage CreateNewsettlerMessage(string username,
+        private MailMessage CreateNewsletterMessage(string username,
             string recipient,
             string subject,
             string title,

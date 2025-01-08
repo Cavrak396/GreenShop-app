@@ -18,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
             if (allSubscribers.Count() == 0)
             {
                 ModelErrors.AddNotFoundActionModelError(context, "Subscriber", "No subscribers found to delete.");
+                return;
             }
 
             await next();

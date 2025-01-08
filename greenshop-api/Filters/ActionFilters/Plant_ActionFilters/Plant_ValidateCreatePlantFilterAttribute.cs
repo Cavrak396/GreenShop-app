@@ -1,6 +1,5 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             if (plant == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
+                return;
             }
             else
             {
@@ -34,6 +34,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 if (existingPlant != null)
                 {
                     ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
+                    return;
                 }
             }
 

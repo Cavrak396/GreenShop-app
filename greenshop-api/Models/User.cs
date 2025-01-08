@@ -1,5 +1,4 @@
-﻿using greenshop_api.Models.Validations;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace greenshop_api.Models
 {
@@ -16,5 +15,6 @@ namespace greenshop_api.Models
         [Required]
         public bool IsSubscribed { get; set; } = false;
         public ICollection<Review>? Reviews { get; set; }
+        public ICollection<Cart>? Carts { get; set; }
     }
 }

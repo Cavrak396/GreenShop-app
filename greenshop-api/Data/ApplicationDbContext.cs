@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using greenshop_api.Models;
-using System.Text.RegularExpressions;
 
 namespace greenshop_api.Data
 {
@@ -11,6 +9,8 @@ namespace greenshop_api.Data
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -36,6 +36,35 @@ namespace greenshop_api.Data
                 .WithMany(p => p.Reviews)
                 .HasForeignKey(r => r.PlantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Cart>()
+                .HasIndex(c => c.UserId)
+                .IsUnique();
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Carts)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasKey(ci => new { ci.CartId, ci.PlantId });
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Plant)
+                .WithMany()
+                .HasForeignKey(ci => ci.PlantId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CartItem>()
+                .HasIndex(ci => new { ci.CartId, ci.PlantId })
+                .IsUnique();
 
             modelBuilder.Entity<Plant>().HasData(
                 new Plant
