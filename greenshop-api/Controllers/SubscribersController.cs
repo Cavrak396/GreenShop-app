@@ -12,12 +12,12 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly NewsettlerService newsettlerService;
+        private readonly NewsletterService newsletterService;
 
-        public SubscribersController(ApplicationDbContext db, NewsettlerService newsettlerService)
+        public SubscribersController(ApplicationDbContext db, NewsletterService newsletterService)
         {
             this.db = db;
-            this.newsettlerService = newsettlerService;
+            this.newsletterService = newsletterService;
         }
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();
 
-            await newsettlerService.SendNewsettlerMessage(
+            await newsletterService.SendNewsletterMessage(
                 subscriber.SubscriberEmail,
                 "Welcome to Miso Greenshop Newsettler!",
                 "You will never miss a thing from now on!",

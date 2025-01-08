@@ -1,8 +1,5 @@
 ﻿using greenshop_api.Data;
-using greenshop_api.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
@@ -21,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             if (string.IsNullOrEmpty(plantId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id must be provided.");
+                return;
             }
             else
             {
@@ -28,6 +26,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 if (plant == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
+                    return;
                 }
             }
 

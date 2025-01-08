@@ -11,6 +11,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             if(categories == null || categories.Length == 0)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Category", "Categories must be provided.");
+                return;
             }
 
             await next();   

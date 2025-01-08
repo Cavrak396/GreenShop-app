@@ -1,6 +1,5 @@
 ﻿using greenshop_api.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
@@ -19,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
             if (string.IsNullOrEmpty(subscriberId))
             {
                 ModelErrors.AddBadRequestActionModelError(context, "SubscriberId", "Subscriber Id must be provided.");
+                return;
             }
             else
             {
@@ -26,6 +26,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
                 if (subscriber == null)
                 {
                     ModelErrors.AddNotFoundActionModelError(context, "SubscriberId", "Subscriber isn't added.");
+                    return;
                 }
             }
 

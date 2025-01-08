@@ -1,5 +1,4 @@
-﻿using greenshop_api.Authority;
-using greenshop_api.Data;
+﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             if (userDto == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
+                return;
             }
             else
             {
@@ -29,12 +29,14 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
                 if (user == null)
                 {
                     ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                    return;
                 }
                 else
                 {
                     if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.UserPassword))
                     {
                         ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                        return;
                     }
                 }
             }

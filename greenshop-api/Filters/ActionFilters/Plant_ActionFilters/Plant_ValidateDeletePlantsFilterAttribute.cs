@@ -18,6 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             if (allPlants.Count() == 0)
             {
                 ModelErrors.AddNotFoundActionModelError(context, "Plant", "No plants found to delete.");
+                return;
             }
 
             await next();

@@ -1,7 +1,5 @@
 ﻿using greenshop_api.Data;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters
 {
