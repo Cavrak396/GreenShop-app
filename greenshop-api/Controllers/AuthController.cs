@@ -1,7 +1,6 @@
 ﻿using greenshop_api.Authority;
 using greenshop_api.Data;
 using greenshop_api.Dtos;
-using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Models;
 using greenshop_api.Services;
@@ -29,7 +28,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<IActionResult> GetSubscribers()
+        public async Task<IActionResult> GetUsers()
         {
             var users = await this.db.Users.ToListAsync();
 
@@ -38,26 +37,26 @@ namespace greenshop_api.Controllers
 
         [HttpPost("register")]
         [TypeFilter(typeof(User_ValidateRegisterUserFilterAttribute))]
-        public async Task<IActionResult> Register(RegisterDto dto)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var user = new User
             {
                 UserId = Guid.NewGuid().ToString(),
-                UserName = dto.Name,
-                UserEmail = dto.Email,
-                UserPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                IsSubscribed = dto.IsSubscribed
+                UserName = registerDto.Name,
+                UserEmail = registerDto.Email,
+                UserPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
+                IsSubscribed = registerDto.IsSubscribed
             };
 
-            if(dto.IsSubscribed == true)
+            if(registerDto.IsSubscribed == true)
             {
-                var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == dto.Email);
+                var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == registerDto.Email);
                 if (foundSubscriber == null)
                 {
                     var subscriber = new Subscriber
                     {
                         SubscriberId = Guid.NewGuid().ToString(),
-                        SubscriberEmail = dto.Email
+                        SubscriberEmail = registerDto.Email
                     };
                     this.db.Subscribers.Add(subscriber);
                     await this.db.SaveChangesAsync();
@@ -65,9 +64,9 @@ namespace greenshop_api.Controllers
             }
 
             await newsletterService.SendNewsletterMessage(
-                dto.Email,
+                registerDto.Email,
                 "You successfully joined Miso Greenshop family!",
-                $"Hello, {dto.Name}, your register proccess was successfull!",
+                $"Hello, {registerDto.Name}, your register proccess was successfull!",
                 "Now you can login and shop all your favorite products " +
                 "for awesome prices! You can also leave reviews for the " +
                 "the products you purchased and many other features!"
@@ -80,9 +79,9 @@ namespace greenshop_api.Controllers
 
         [HttpPost("login")]
         [TypeFilter(typeof(User_ValidateLoginUserFilterAttribute))]
-        public async Task<IActionResult> Login(LoginDto dto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var user = await this.repository.GetUserByEmailAsync(dto.Email);
+            var user = await this.repository.GetUserByEmailAsync(loginDto.Email);
 
             var jwt = jwtService.Generate(user.UserId);
 
@@ -107,49 +106,81 @@ namespace greenshop_api.Controllers
 
         [HttpGet("user")]
         [EnableCors("WithCredentialsPolicy")]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
         public async Task<IActionResult> GetUser()
         {
-            try
-            {
-                var jwt = Request.Cookies["jwt"];
-
-                var token = jwtService.Verify(jwt);
-
-                var userId = token.Issuer.ToString();
-
-                var user = await this.repository.GetUserByIdAsync(userId);
-
-                return Ok(user);
-            }
-            catch (Exception ex) 
-            { 
-                return Unauthorized();
-            }
-        }
-
-        [HttpGet("users/{userId}")]
-        public async Task<IActionResult> GetUserById(string userId)
-        {
+            var jwt = Request.Cookies["jwt"];
+            var token = jwtService.Verify(jwt);
+            var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
-            return Ok(user);
+
+            var userDto = new UserDto
+            {
+                UserEmail = user.UserEmail,
+                UserName = user.UserName,
+                IsSubscribed = user.IsSubscribed,
+            };
+
+            return Ok(userDto);
         }
 
-        [HttpDelete("users/{userId}")]
-        [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
-        public async Task<IActionResult> DeleteUser(string userId)
+        [HttpPut("user")]
+        [EnableCors("WithCredentialsPolicy")]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDto user)
         {
-            var userToDelete = await this.db.Users.FindAsync(userId);
+            var jwt = Request.Cookies["jwt"];
+            var token = jwtService.Verify(jwt);
+            var userId = token.Issuer.ToString();
+            var userToUpdate = await this.repository.GetUserByIdAsync(userId);
+
+            userToUpdate.UserName = user.UserName ?? user.UserName;
+            userToUpdate.IsSubscribed = user.IsSubscribed;
+
+            var subscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == userToUpdate.UserEmail);
+
+            if (userToUpdate.IsSubscribed && subscriber == null)
+            {
+                if (subscriber == null)
+                {
+                    var subscriberToCreate = new Subscriber
+                    {
+                        SubscriberId = Guid.NewGuid().ToString(),
+                        SubscriberEmail = userToUpdate.UserEmail
+                    };
+                    this.db.Subscribers.Add(subscriberToCreate);
+                }
+            }
+            else if(!userToUpdate.IsSubscribed && subscriber != null)
+            {
+                 this.db.Subscribers.Remove(subscriber);
+            }
+
+            await this.db.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("user")]
+        [EnableCors("WithCredentialsPolicy")]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        public async Task<IActionResult> DeleteUser()
+        {
+            var jwt = Request.Cookies["jwt"];
+            var token = jwtService.Verify(jwt);
+            var userId = token.Issuer.ToString();
+            var userToDelete = await this.repository.GetUserByIdAsync(userId);
 
             this.db.Users.Remove(userToDelete);
             await this.db.SaveChangesAsync();
 
             Response.Cookies.Delete("jwt");
 
-            return Ok(userToDelete);
+            return Ok();
         }
 
         [HttpDelete("users")]
-        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateDeleteUsersFilterAttribute))]
         public async Task<IActionResult> DeleteAllUsers()
         {
             var allUsers = await this.db.Users.ToListAsync();

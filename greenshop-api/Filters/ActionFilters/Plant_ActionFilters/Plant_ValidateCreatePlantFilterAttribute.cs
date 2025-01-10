@@ -1,5 +1,5 @@
 ﻿using greenshop_api.Data;
-using greenshop_api.Models;
+using greenshop_api.Dtos;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,26 +16,24 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var plant = context.ActionArguments["plant"] as Plant;
+            var plant = context.ActionArguments["plant"] as PlantDto;
 
             if (plant == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
                 return;
             }
-            else
-            {
-                var existingPlant = await db.Plants.FirstOrDefaultAsync(p =>
-                !string.IsNullOrWhiteSpace(plant.Name) &&
-                !string.IsNullOrWhiteSpace(p.Name) &&
-                plant.Name.ToLower() == p.Name.ToLower() &&
-                plant.Size == p.Size);
 
-                if (existingPlant != null)
-                {
-                    ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
-                    return;
-                }
+            var existingPlant = await db.Plants.FirstOrDefaultAsync(p =>
+            !string.IsNullOrWhiteSpace(plant.Name) &&
+            !string.IsNullOrWhiteSpace(p.Name) &&
+            plant.Name.ToLower() == p.Name.ToLower() &&
+            plant.Size == p.Size);
+
+            if (existingPlant != null)
+            {
+                ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
+                return;
             }
 
             await next();

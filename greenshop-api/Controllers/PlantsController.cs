@@ -1,4 +1,7 @@
-﻿using greenshop_api.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using greenshop_api.Data;
+using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
 using greenshop_api.Models;
@@ -15,11 +18,13 @@ namespace greenshop_api.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly NewsletterService newsletterService;
+        private readonly IMapper mapper;
 
-        public PlantsController(ApplicationDbContext db, NewsletterService newsletterService)
+        public PlantsController(ApplicationDbContext db, NewsletterService newsletterService, IMapper mapper)
         {
             this.db = db;
             this.newsletterService = newsletterService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -94,7 +99,7 @@ namespace greenshop_api.Controllers
 
             plantsQuery = plantsQuery.Skip((page - 1) * pageSize).Take(pageSize);
 
-            var plants = await plantsQuery.ToListAsync();
+            var plants = await plantsQuery.ProjectTo<PlantDto>(mapper.ConfigurationProvider).ToListAsync();
 
             return Ok(plants);
         }
@@ -118,8 +123,9 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetPlantById(string plantId)
         {
             var plant = await this.db.Plants.FindAsync(plantId);
+            var plantDto = mapper.Map<PlantDto>(plant);
 
-            return Ok(plant);
+            return Ok(plantDto);
         }
 
         [HttpGet("{plantId}/related")]
@@ -161,16 +167,19 @@ namespace greenshop_api.Controllers
                 .Select(p => p.Plant)
                 .ToList();
 
-            return Ok(tagsRelatedProducts);
+            var tagsRelatedProductsDto = mapper.Map<List<PlantDto>>(tagsRelatedProducts);
+
+            return Ok(tagsRelatedProductsDto);
         }
 
         [HttpPost]
         [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
-        public async Task<IActionResult> CreatePlant([FromBody]Plant plant)
+        public async Task<IActionResult> CreatePlant([FromBody]PlantDto plant)
         {
-            plant.PlantId = Guid.NewGuid().ToString();
+            var plantToCreate = mapper.Map<Plant>(plant);
+            plantToCreate.PlantId = Guid.NewGuid().ToString();
 
-            this.db.Plants.Add(plant);
+            this.db.Plants.Add(plantToCreate);
             await this.db.SaveChangesAsync();
 
             var subscribers = await this.db.Subscribers.ToListAsync();
@@ -183,7 +192,7 @@ namespace greenshop_api.Controllers
                         subscriber.SubscriberEmail,
                         "New Plant in the shop!",
                         "Are you ready for new purchase?",
-                        $"We have a new arrival - {plant.Name}. If you are ready to decorate " +
+                        $"We have a new arrival - {plantToCreate.Name}. If you are ready to decorate " +
                         $"your ambient with this amazing product, check it out on our website " +
                         $"for price and details. And hurry up - this plant may not be forever in " +
                         $"our shop!"
@@ -194,14 +203,14 @@ namespace greenshop_api.Controllers
 
             return CreatedAtAction(nameof(GetPlantById),
                 new { plantId = plant.PlantId },
-                plant);
+                mapper.Map<PlantDto>(plantToCreate));
         }
 
         [HttpPut("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(Plant_ValidateUpdatePlantFilterAttribute))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
-        public async Task <IActionResult> UpdatePlant(string plantId, [FromBody]Plant plant)
+        public async Task <IActionResult> UpdatePlant(string plantId, [FromBody]PlantDto plant)
         {
             var plantToUpdate = await this.db.Plants.FindAsync(plantId);
 
@@ -234,7 +243,7 @@ namespace greenshop_api.Controllers
             this.db.Plants.Remove(plantToDelete);
             await this.db.SaveChangesAsync();
 
-            return Ok(plantToDelete);
+            return Ok(mapper.Map<PlantDto>(plantToDelete));
         }
 
         [HttpDelete]

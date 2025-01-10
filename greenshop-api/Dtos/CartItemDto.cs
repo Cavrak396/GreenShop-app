@@ -7,7 +7,7 @@ namespace greenshop_api.Dtos
         [Required]
         public string? PlantId { get; set; }
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity cannot be negative.")]
+        [Range(0, 20, ErrorMessage = "Quantity cannot be negative or greater than 20.")]
         public int Quantity { get; set; }
     }
 }
