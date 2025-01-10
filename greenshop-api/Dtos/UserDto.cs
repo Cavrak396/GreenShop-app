@@ -1,0 +1,16 @@
+﻿using greenshop_api.Models.Validations;
+using System.ComponentModel.DataAnnotations;
+
+namespace greenshop_api.Dtos
+{
+    public class UserDto
+    {
+        [Required]
+        [EmailIsValid]
+        public string? UserEmail { get; set; }
+        [Required]
+        public string? UserName { get; set; }
+        [Required]
+        public bool IsSubscribed { get; set; }
+    }
+}

@@ -40,6 +40,8 @@ builder.Services.AddCors(options =>
     }
 });
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -74,3 +76,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//svuda samo koristi userId iz tokena, to promeni u metodama
+//mapiraj korpu kako treba
+//dodaj metodu za dobijanje svih reviews za jedan plant
+//podesi max quantity za cart
+//obrisi nekoriscene bibl  komentare

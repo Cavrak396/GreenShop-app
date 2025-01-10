@@ -14,7 +14,7 @@ namespace greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters
 
         public async Task OnExceptionAsync(ExceptionContext context)
         {
-            var plantId = context.RouteData.Values["id"] as string;
+            var plantId = context.RouteData.Values["plantId"] as string;
 
             if (await db.Plants.FindAsync(plantId) == null)
             {

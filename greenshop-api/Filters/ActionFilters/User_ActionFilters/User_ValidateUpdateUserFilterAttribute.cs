@@ -5,32 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateRegisterUserFilterAttribute : IAsyncActionFilter
+    public class User_ValidateUpdateUserFilterAttribute : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public User_ValidateRegisterUserFilterAttribute(ApplicationDbContext db)
+        public User_ValidateUpdateUserFilterAttribute(ApplicationDbContext db)
         {
             this.db = db;
         }
-
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var registerDto = context.ActionArguments["registerDto"] as RegisterDto;
+            var user = context.ActionArguments["user"] as UserDto;
 
-            if (registerDto == null)
+            if (user == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
                 return;
             }
 
-            var existingUser = await db.Users.FirstOrDefaultAsync(u =>
-            !string.IsNullOrWhiteSpace(registerDto.Email) &&
+            var existingUser = await this.db.Users.FirstOrDefaultAsync(u =>
+            !string.IsNullOrWhiteSpace(user.UserEmail) &&
             !string.IsNullOrWhiteSpace(u.UserEmail) &&
-            !string.IsNullOrWhiteSpace(registerDto.Name) &&
+            !string.IsNullOrWhiteSpace(user.UserName) &&
             !string.IsNullOrWhiteSpace(u.UserName) &&
-            registerDto.Email.ToLower() == u.UserEmail.ToLower() &&
-            registerDto.Name == u.UserName);
+            user.UserEmail.ToLower() == u.UserEmail.ToLower() &&
+            user.UserName == u.UserName);
 
             if (existingUser != null)
             {

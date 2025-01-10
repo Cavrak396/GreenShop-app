@@ -124,7 +124,7 @@ namespace greenshop_api.Migrations
                     b.HasData(
                         new
                         {
-                            PlantId = "1c517bc7-967d-46b8-b2b6-099fe533af02",
+                            PlantId = "0245f7d7-e26e-4126-bc97-eea650bc2eb3",
                             Acquisition_Date = new DateTime(2024, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Barberton daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
@@ -142,7 +142,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "89fff02e-9fb8-428a-9b8f-a3bf17f8e95d",
+                            PlantId = "4a1024ba-0027-4c8d-94c9-e840ad111e04",
                             Acquisition_Date = new DateTime(2024, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The Angel Wing begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
@@ -160,7 +160,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "fa9f9393-d449-4aae-bab2-f332bf591e90",
+                            PlantId = "a95bb836-6005-45a7-95d5-ed073ca37ee2",
                             Acquisition_Date = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The African violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
@@ -178,7 +178,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "0753e952-b67d-4fea-9163-d3f5eeba748f",
+                            PlantId = "6f52f52a-e653-4558-a35f-fddf7f1fab5c",
                             Acquisition_Date = new DateTime(2024, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "beachSpiderLilly.png",
@@ -193,7 +193,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "f97ea876-4686-4461-8b45-f497153c3637",
+                            PlantId = "33550754-16c8-4812-a3c8-c01553458c5a",
                             Acquisition_Date = new DateTime(2024, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The blushing bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
@@ -211,7 +211,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "a2387018-906b-41a6-8b90-a15f79a3fe0b",
+                            PlantId = "e1916f34-e44f-49a2-85e4-64c7f09b7f61",
                             Acquisition_Date = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Potter Plants",
                             DiningRoom_Description = "The aluminum plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
@@ -229,7 +229,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "71f1a41f-78b3-411c-8321-3da300a2bd39",
+                            PlantId = "49bf074d-1046-414f-88fe-0462b56283dd",
                             Acquisition_Date = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "House Plants",
                             DiningRoom_Description = "The bird's nest fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
@@ -247,7 +247,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "d252ec1a-5599-4a53-9aca-39972ee33163",
+                            PlantId = "d77e2227-f940-4864-a6e6-b63c353fd684",
                             Acquisition_Date = new DateTime(2024, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "broadleafLadyPalm.png",
@@ -262,7 +262,7 @@ namespace greenshop_api.Migrations
                         },
                         new
                         {
-                            PlantId = "d4cb9d04-2b80-406d-8b67-34a69ba92bf3",
+                            PlantId = "de826ad7-c5e9-43b9-a996-c5b5bff72dbe",
                             Acquisition_Date = new DateTime(2024, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Category = "Gardening",
                             Image = "chineseEvergreen.png",

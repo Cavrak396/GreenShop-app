@@ -1,0 +1,39 @@
+services:
+  greenshop-api:
+    build:
+      context: ./greenshop-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ConnectionStrings__GreenshopManagement=Server=db;Database=GreenshopManagement;User Id=root;Password= ${MYSQL_ROOT_PASSWORD};SslMode=None;AllowPublicKeyRetrieval=True
+    depends_on:
+      - db
+    networks:
+      - greenshop-network
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: GreenshopManagement
+    ports:
+      - "3307:3306"
+    networks:
+      - greenshop-network
+
+  greenshop-web:
+    build:
+      context: ./greenshop-web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - greenshop-network
+    depends_on:
+      - greenshop-api
+
+networks:
+  greenshop-network:
+    driver: bridge

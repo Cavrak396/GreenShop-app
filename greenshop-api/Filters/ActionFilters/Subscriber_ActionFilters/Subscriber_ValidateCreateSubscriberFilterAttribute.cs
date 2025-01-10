@@ -23,18 +23,16 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
                 ModelErrors.AddBadRequestActionModelError(context, "Subscriber", "Subscriber object cannot be null.");
                 return;
             }
-            else
-            {
-                var existingSubscriber = await db.Subscribers.FirstOrDefaultAsync(s =>
-                !string.IsNullOrWhiteSpace(subscriber.SubscriberEmail) &&
-                !string.IsNullOrWhiteSpace(s.SubscriberEmail) &&
-                subscriber.SubscriberEmail.ToLower() == s.SubscriberEmail.ToLower());
 
-                if (existingSubscriber != null)
-                {
-                    ModelErrors.AddConflictActionModelError(context, "Subscriber", "Subscriber is already added.");
-                    return;
-                }
+            var existingSubscriber = await db.Subscribers.FirstOrDefaultAsync(s =>
+            !string.IsNullOrWhiteSpace(subscriber.SubscriberEmail) &&
+            !string.IsNullOrWhiteSpace(s.SubscriberEmail) &&
+            subscriber.SubscriberEmail.ToLower() == s.SubscriberEmail.ToLower());
+
+            if (existingSubscriber != null)
+            {
+                ModelErrors.AddConflictActionModelError(context, "Subscriber", "Subscriber is already added.");
+                return;
             }
 
             await next();

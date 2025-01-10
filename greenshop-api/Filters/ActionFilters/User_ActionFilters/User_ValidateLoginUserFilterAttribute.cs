@@ -16,29 +16,25 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var userDto = context.ActionArguments["dto"] as LoginDto;
+            var loginDto = context.ActionArguments["loginDto"] as LoginDto;
 
-            if (userDto == null)
+            if (loginDto == null)
             {
                 ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
                 return;
             }
-            else
+
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserEmail == loginDto.Email);
+            if (user == null)
             {
-                var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserEmail == userDto.Email);
-                if (user == null)
-                {
-                    ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
-                    return;
-                }
-                else
-                {
-                    if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.UserPassword))
-                    {
-                        ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
-                        return;
-                    }
-                }
+                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                return;
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.UserPassword))
+            {
+                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                return;
             }
 
             await next();

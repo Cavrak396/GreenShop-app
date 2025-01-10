@@ -20,14 +20,12 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id must be provided.");
                 return;
             }
-            else
+
+            var plant = await db.Plants.FindAsync(plantId);
+            if (plant == null)
             {
-                var plant = await db.Plants.FindAsync(plantId);
-                if (plant == null)
-                {
-                    ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
-                    return;
-                }
+                ModelErrors.AddNotFoundActionModelError(context, "PlantId", "Plant doesn't exist.");
+                return;
             }
 
             await next();

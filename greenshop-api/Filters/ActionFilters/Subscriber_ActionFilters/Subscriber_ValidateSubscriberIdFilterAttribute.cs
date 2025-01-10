@@ -20,14 +20,12 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
                 ModelErrors.AddBadRequestActionModelError(context, "SubscriberId", "Subscriber Id must be provided.");
                 return;
             }
-            else
+
+            var subscriber = await db.Subscribers.FindAsync(subscriberId);
+            if (subscriber == null)
             {
-                var subscriber = await db.Subscribers.FindAsync(subscriberId);
-                if (subscriber == null)
-                {
-                    ModelErrors.AddNotFoundActionModelError(context, "SubscriberId", "Subscriber isn't added.");
-                    return;
-                }
+                ModelErrors.AddNotFoundActionModelError(context, "SubscriberId", "Subscriber isn't added.");
+                return;
             }
 
             await next();

@@ -3,6 +3,8 @@ using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Cart_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Models;
+using greenshop_api.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,18 +15,28 @@ namespace greenshop_api.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
+        private readonly JwtService jwtService;
 
-        public CartsController(ApplicationDbContext db)
+        public CartsController(ApplicationDbContext db, JwtService jwtService)
         {
             this.db = db;
+            this.jwtService = jwtService;
         }
 
-        [HttpPost("{userId}")]
-        [TypeFilter(typeof(User_ValidateUserIdFilterAttribute))]
-        [TypeFilter(typeof(Cart_ValidateCartItemsFilterAttribute))]
+        [HttpPost("sync")]
+        [EnableCors("WithCredentialsPolicy")]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(Cart_ValidateSyncCartItemsFilterAttribute))]
         [TypeFilter(typeof(Cart_ValidatePlantIdsFilterAttribute))]
-        public async Task<IActionResult> SyncCart(string userId, [FromBody]List<CartItemDto> cartItems)
+        public async Task<IActionResult> SyncCart([FromBody] List<CartItemDto> cartItems)
         {
+            var jwt = Request.Cookies["jwt"];
+            var token = jwtService.Verify(jwt);
+            var userId = token.Issuer.ToString();
+
+            CartDto cartDto;
+            ICollection<CartItemDto> cartItemDtos;
+
             var cart = await this.db.Carts
                .Include(c => c.CartItems)
                .ThenInclude(ci => ci.Plant)
@@ -32,21 +44,28 @@ namespace greenshop_api.Controllers
 
             if (cart == null)
             {
-                cart = new Cart {
+                cart = new Cart
+                {
                     CartId = Guid.NewGuid().ToString(),
-                    UserId = userId, 
-                    CartItems = new List<CartItem>() 
+                    UserId = userId,
+                    CartItems = new List<CartItem>()
                 };
                 this.db.Carts.Add(cart);
             }
 
-            bool cartsMatch = cartItems.Count == cart.CartItems.Count &&
-                      cartItems.All(ci =>
-                          cart.CartItems.Any(c => c.PlantId == ci.PlantId && c.Quantity == ci.Quantity));
+            bool cartsMatch = cartItems.Any() && cart.CartItems.Any() &&
+                              cartItems.Count == cart.CartItems.Count &&
+                              cartItems.All(ci => cart.CartItems.Any(c => c.PlantId == ci.PlantId && c.Quantity == ci.Quantity));
 
             if (cartsMatch)
             {
-                return Ok(cart);
+                cartDto = new CartDto
+                {
+                    CartItems = cart.CartItems,
+                    CartPrice = cart.CartPrice,
+                };
+                
+                return Ok(cartDto);
             }
 
             var plantIds = cartItems.Select(ci => ci.PlantId).ToList();
@@ -79,7 +98,44 @@ namespace greenshop_api.Controllers
             cart.CartPrice = cartPrice;
 
             await this.db.SaveChangesAsync();
-            return Ok(cart);
+
+            cartDto = new CartDto
+            {
+                CartItems = cart.CartItems,
+                CartPrice = cart.CartPrice,
+            };
+
+            return Ok(cartDto);
+        }
+
+        [HttpPut]
+        [EnableCors("WithCredentialsPolicy")]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(Cart_ValidateRemoveCartItemsFilterAttribute))]
+
+        public async Task<IActionResult> RemoveCartItems()
+        {
+            var jwt = Request.Cookies["jwt"];
+            var token = jwtService.Verify(jwt);
+            var userId = token.Issuer.ToString();
+
+            var cart = await this.db.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Plant)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            this.db.CartItems.RemoveRange(cart.CartItems);
+            cart.CartItems.Clear();
+            cart.CartPrice = 0;
+            await this.db.SaveChangesAsync();
+
+            var cartDto = new CartDto
+            {
+                CartItems = cart.CartItems,
+                CartPrice = cart.CartPrice,
+            };
+
+            return Ok(cartDto);
         }
     }
 }
