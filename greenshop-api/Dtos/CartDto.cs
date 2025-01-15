@@ -7,6 +7,7 @@ namespace greenshop_api.Dtos
     {
         public ICollection<CartItem>? CartItems { get; set; }
         [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Cart Price must be greater than 0.")]
         public double CartPrice { get; set; }
     }
 }

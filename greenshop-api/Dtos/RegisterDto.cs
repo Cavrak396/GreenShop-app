@@ -6,6 +6,7 @@ namespace greenshop_api.Dtos
     public class RegisterDto
     {
         [Required]
+        [UsernameIsValid]
         public string? Name { get; set; }
         [Required]
         [EmailIsValid]

@@ -127,6 +127,7 @@ namespace greenshop_api.Controllers
         [HttpPut("user")]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
         public async Task<IActionResult> UpdateUser([FromBody] UserDto user)
         {
             var jwt = Request.Cookies["jwt"];
