@@ -27,5 +27,12 @@ namespace greenshop_api.Authority
         {
             return await this.db.Users.FindAsync(id);
         }
+
+        public async Task<List<User>> GetUsersByIdsAsync(List<string> userIds)
+        {
+            return await this.db.Users
+                .Where(u => userIds.Contains(u.UserId))
+                .ToListAsync();
+        }
     }
 }

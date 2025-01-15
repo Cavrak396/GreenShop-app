@@ -18,20 +18,24 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            try
-            {
-                var jwt = context.HttpContext.Request.Cookies["jwt"];
-                var token = jwtService.Verify(jwt);
-                var userId = token.Issuer.ToString();
-                var user = await repository.GetUserByIdAsync(userId);
+            var jwt = context.HttpContext.Request.Cookies["jwt"];
 
-                await next();
-            }
-            catch (Exception)
+            if (!string.IsNullOrEmpty(jwt))
             {
-                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Unauthenticated user.");
-                return;
+                try
+                {
+                    var token = jwtService.Verify(jwt);
+                    var userId = token.Issuer.ToString();
+                    var user = await repository.GetUserByIdAsync(userId);
+                }
+                catch (Exception)
+                {
+                    ModelErrors.AddUnauthorizedActionModelError(context, "User", "Unauthenticated user.");
+                    return;
+                }
             }
+
+            await next();
         }
     }
 }
