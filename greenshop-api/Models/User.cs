@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using greenshop_api.Models.Validations;
+using System.ComponentModel.DataAnnotations;
 
 namespace greenshop_api.Models
 {
@@ -7,10 +8,13 @@ namespace greenshop_api.Models
         [Key]
         public string? UserId { get; set; }
         [Required]
+        [UsernameIsValid]
         public string? UserName { get; set; }
         [Required]
+        [EmailIsValid]
         public string? UserEmail { get; set; }
         [Required]
+        [PasswordIsValid]
         public string? UserPassword { get; set; }
         [Required]
         public bool IsSubscribed { get; set; } = false;

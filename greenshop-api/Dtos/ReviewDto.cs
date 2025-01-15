@@ -6,11 +6,12 @@ namespace greenshop_api.Dtos
     public class ReviewDto
     {
         [Required]
+        [UsernameIsValid]
         public string? UserName { get; set; }
         [Required]
         public string? PlantId { get; set; }
         [Required]
-        [Range(1, 5)]
+        [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
         public int Rating { get; set; }
         [Required]
         [DateNotInTheFuture]

@@ -96,6 +96,10 @@ namespace greenshop_api.Controllers
             var jwt = Request.Cookies["jwt"];
             var token = jwtService.Verify(jwt);
             var userId = token.Issuer.ToString();
+            var user = await repository.GetUserByIdAsync(userId);
+
+            review.UserName = user.UserName;
+            review.Creation_Date = DateTime.Now;
 
             var reviewToCreate = mapper.Map<Review>(review);
             reviewToCreate.UserId = userId;

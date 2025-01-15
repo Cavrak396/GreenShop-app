@@ -11,6 +11,7 @@ namespace greenshop_api.Models.Validations
             {
                 return new ValidationResult("Value for Password must be provided.");
             }
+
             string passwordValue = value.ToString();
 
             if (passwordValue.Length < 8 || passwordValue.Length > 20
