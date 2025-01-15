@@ -31,6 +31,42 @@ namespace greenshop_api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("{plantId}")]
+        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        public async Task<IActionResult> GetReviews(string plantId)
+        {
+            var reviews = await db.Reviews
+                .Where(r => r.PlantId == plantId)
+                .ToListAsync();
+
+            var userIds = reviews.Select(r => r.UserId).ToList();
+            var users = await repository.GetUsersByIdsAsync(userIds);
+
+            var reviewDtos = reviews.Select(review =>
+            {
+                var reviewDto = mapper.Map<ReviewDto>(review);
+                reviewDto.UserName = users.FirstOrDefault(u => u.UserId == review.UserId)?.UserName;
+                return reviewDto;
+            }).ToList();
+
+            var jwt = Request.Cookies["jwt"];
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                var token = jwtService.Verify(jwt);
+                var userId = token.Issuer.ToString();
+                var currentUser = users.FirstOrDefault(u => u.UserId == userId);
+                var currentUserReview = reviewDtos.FirstOrDefault(r => r.UserName == currentUser.UserName);
+
+                if (currentUserReview != null)
+                {
+                    reviewDtos.Remove(currentUserReview);
+                }
+            }
+            
+            return Ok(reviewDtos);
+        }
+
         [HttpGet("{plantId}/user")]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
@@ -49,19 +85,6 @@ namespace greenshop_api.Controllers
 
             return Ok(reviewDto);
         }
-
-        //[HttpGet("{plantId}")]
-        //public async Task<IActionResult> GetReviews(string plantId)
-        //{
-        //    var reviews = await this.db.Reviews.Where(r => r.PlantId == plantId).ToListAsync();
-        //    var reviewDto = mapper.Map<List<ReviewDto>>(reviews);
-
-        //    foreach (var review in reviews)
-        //    {
-        //        var userId = review.UserId;
-        //        var user = await this.db.Users.FindAsync(userId);
-        //    }
-        //}
         
 
         [HttpPost]

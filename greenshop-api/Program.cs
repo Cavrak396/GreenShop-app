@@ -26,6 +26,8 @@ builder.Services.AddCors(options =>
                 "http://127.0.0.1:3000")
             .AllowAnyMethod()
             .AllowAnyHeader()
+            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .AllowCredentials()
         );
         options.AddPolicy("WithCredentialsPolicy", policy =>
            policy.WithOrigins(
