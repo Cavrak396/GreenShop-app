@@ -1,12 +1,12 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { loginUser, registerUser, logoutUser } from "../services/auth/auth";
 import {
   AuthContextProps,
   LoginDTO,
   RegisterDTO,
   AuthResponse,
-  User,
   ApiError,
+  User,
 } from "./types/authTypes";
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -40,13 +40,39 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     try {
       setLoading(true);
       const response = await loginUser(dto);
-      setToken(response.jwt);
-      setUser(response.user);
-      localStorage.setItem("token", response.jwt);
-      return response;
+      if (response.jwt) {
+        setToken(response.jwt);
+        localStorage.setItem("token", response.jwt);
+        return response;
+      } else {
+        setError("Login failed.");
+        return { message: "Login failed" };
+      }
     } catch (err: any) {
-      setError(err.message || "An error occurred during login.");
+      setError(err.message || "Login error.");
       return { message: err.message || "Login failed" };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (
+    dto: RegisterDTO
+  ): Promise<AuthResponse | ApiError> => {
+    try {
+      setLoading(true);
+      const response = await registerUser(dto);
+      if (response.jwt) {
+        setToken(response.jwt);
+        localStorage.setItem("token", response.jwt);
+        return response;
+      } else {
+        setError("Registration failed.");
+        return { message: "Registration failed" };
+      }
+    } catch (err: any) {
+      setError(err.message || "Registration error.");
+      return { message: err.message || "Registration failed" };
     } finally {
       setLoading(false);
     }
@@ -60,22 +86,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setToken(null);
       localStorage.removeItem("token");
     } catch (err: any) {
-      setError(err.message || "An error occurred during logout.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const register = async (
-    dto: RegisterDTO
-  ): Promise<AuthResponse | ApiError> => {
-    try {
-      setLoading(true);
-      const response = await registerUser(dto);
-      return response;
-    } catch (err: any) {
-      setError(err.message || "An error occurred during registration.");
-      return { message: err.message || "Registration failed" };
+      setError(err.message || "Logout failed.");
     } finally {
       setLoading(false);
     }
@@ -88,7 +99,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         token,
         login,
         register,
-        logout, // Dodato
+        logout,
         setUser,
         setToken,
         loading,

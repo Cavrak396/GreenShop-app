@@ -27,7 +27,7 @@ function AuthForm({
         <AuthFormInput
           key={input.id}
           input={input}
-          refHandler={(el) => (inputRefs.current[input.id] = el)} 
+          refHandler={(el) => (inputRefs.current[input.id] = el)}
           showPassword={showPassword?.[input.id]}
           togglePasswordVisibility={togglePasswordVisibility}
           onChange={(e) => handleInputChange(e, input.id)}
