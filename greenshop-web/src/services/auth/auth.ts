@@ -15,6 +15,7 @@ const axiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
 const handleApiError = (error: any): ApiError => {
     if (error.response) {
         return error.response.data as ApiError;
@@ -24,7 +25,9 @@ const handleApiError = (error: any): ApiError => {
 
 export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post<AuthResponse>('/auth/login', dto);
+        const response = await axiosInstance.post<AuthResponse>('/auth/login', dto, {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -33,17 +36,22 @@ export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError>
 
 export const registerUser = async (dto: RegisterDTO): Promise<AuthResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post<AuthResponse>('/auth/register', dto);
+        console.log('Registering user with data:', dto);
+        const response = await axiosInstance.post<AuthResponse>('/auth/register', dto, {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
+        console.error('Registration error:', error);
         return handleApiError(error);
     }
 };
 
-
-export const logoutUser = async (): Promise<{ message: string } | ApiError> => {
+export const logoutUser = async () => {
     try {
-        const response = await axiosInstance.post<{ message: string }>('/auth/logout');
+        const response = await axiosInstance.post('/auth/logout', null, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -52,40 +60,20 @@ export const logoutUser = async (): Promise<{ message: string } | ApiError> => {
 
 export const getCurrentUser = async (): Promise<User | ApiError> => {
     try {
-        const response = await axiosInstance.get<User>('/auth/users');
+        const response = await axiosInstance.get<User>('/auth/user', {
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
     }
 };
 
-export const getAllUsers = async (): Promise<User[] | ApiError> => {
+export const deleteUser = async (): Promise<{ message: string } | ApiError> => {
     try {
-        const response = await axiosInstance.get<User[]>('/auth/users');
-        return response.data;
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-export const getUserById = async (id: string): Promise<User | ApiError> => {
-    if (!id) {
-        throw new Error('ID is required');
-    }
-    try {
-        const response = await axiosInstance.get<User>(`/auth/users/${id}`);
-        return response.data;
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-export const deleteUser = async (id: string): Promise<{ message: string }> => {
-    if (!id) {
-        throw new Error('ID is required');
-    }
-    try {
-        const response = await axiosInstance.delete<{ message: string }>(`/auth/${id}`);
+        const response = await axiosInstance.delete<{ message: string }>('/auth/user', {
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -95,6 +83,17 @@ export const deleteUser = async (id: string): Promise<{ message: string }> => {
 export const deleteAllUsers = async (): Promise<{ message: string }> => {
     try {
         const response = await axiosInstance.delete<{ message: string }>('/auth/users');
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const getUsers = async (): Promise<User[] | ApiError> => {
+    try {
+        const response = await axiosInstance.get<User[]>('/auth/users', {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -112,4 +111,3 @@ export const validatePassword = (password: string): boolean => {
 };
 
 export default axiosInstance;
-
