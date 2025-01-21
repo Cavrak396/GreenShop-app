@@ -33,7 +33,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(Review_ValidateJwtTokenFilterAttribute))]
         public async Task<IActionResult> GetReviews(string plantId)
         {
             var reviews = await db.Reviews

@@ -20,19 +20,16 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         {
             var jwt = context.HttpContext.Request.Cookies["jwt"];
 
-            if (!string.IsNullOrEmpty(jwt))
+            try
             {
-                try
-                {
-                    var token = jwtService.Verify(jwt);
-                    var userId = token.Issuer.ToString();
-                    var user = await repository.GetUserByIdAsync(userId);
-                }
-                catch (Exception)
-                {
-                    ModelErrors.AddUnauthorizedActionModelError(context, "User", "Unauthenticated user.");
-                    return;
-                }
+                var token = jwtService.Verify(jwt);
+                var userId = token.Issuer.ToString();
+                var user = await repository.GetUserByIdAsync(userId);
+            }
+            catch (Exception)
+            {
+                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Unauthenticated user.");
+                return;
             }
 
             await next();
