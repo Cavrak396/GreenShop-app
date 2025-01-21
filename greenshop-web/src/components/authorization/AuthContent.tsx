@@ -11,7 +11,7 @@ const AuthContent: React.FC = () => {
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { login, register, setUser, user, setToken, loading } = useUser();
+  const { login, register, setUser, setToken, loading } = useUser();
 
   const togglePasswordVisibility = useCallback((id: number) => {
     setShowPassword((prev) => ({

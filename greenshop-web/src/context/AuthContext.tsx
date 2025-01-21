@@ -1,5 +1,11 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { loginUser, registerUser, logoutUser } from "../services/auth/auth";
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+  deleteUser,
+  getCurrentUser,
+} from "../services/auth/auth";
 import {
   AuthContextProps,
   LoginDTO,
@@ -33,8 +39,29 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+      fetchCurrentUser();
     }
   }, []);
+
+  const fetchCurrentUser = async () => {
+    if (!token) return;
+
+    try {
+      setLoading(true);
+      const response = await getCurrentUser();
+      console.log(response);
+
+      if (response.message) {
+        setError(response.message);
+      } else {
+        setUser(response);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
@@ -43,6 +70,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       if (response.jwt) {
         setToken(response.jwt);
         localStorage.setItem("token", response.jwt);
+        fetchCurrentUser();
         return response;
       } else {
         setError("Login failed.");
@@ -71,7 +99,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         return { message: "Registration failed" };
       }
     } catch (err: any) {
-      setError(err.message || "Registration error.");
       return { message: err.message || "Registration failed" };
     } finally {
       setLoading(false);
@@ -92,6 +119,27 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
+  const deleteAccount = async (): Promise<{ message: string } | ApiError> => {
+    if (!token) {
+      setError("User not authenticated.");
+      return { message: "User not authenticated" };
+    }
+
+    try {
+      setLoading(true);
+      const response = await deleteUser(token);
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+      return response;
+    } catch (err: any) {
+      setError(err.message || "Account deletion failed.");
+      return { message: err.message || "Account deletion failed" };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -100,6 +148,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         login,
         register,
         logout,
+        deleteAccount,
         setUser,
         setToken,
         loading,

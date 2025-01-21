@@ -25,9 +25,7 @@ const handleApiError = (error: any): ApiError => {
 
 export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post<AuthResponse>('/auth/login', dto, {
-            withCredentials: false,
-        });
+        const response = await axiosInstance.post<AuthResponse>('/auth/login', dto);
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -37,9 +35,7 @@ export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError>
 export const registerUser = async (dto: RegisterDTO): Promise<AuthResponse | ApiError> => {
     try {
         console.log('Registering user with data:', dto);
-        const response = await axiosInstance.post<AuthResponse>('/auth/register', dto, {
-            withCredentials: false,
-        });
+        const response = await axiosInstance.post<AuthResponse>('/auth/register', dto);
         return response.data;
     } catch (error) {
         console.error('Registration error:', error);
@@ -58,21 +54,22 @@ export const logoutUser = async () => {
     }
 };
 
-export const getCurrentUser = async (): Promise<User | ApiError> => {
+export const getCurrentUser = async () => {
     try {
         const response = await axiosInstance.get<User>('/auth/user', {
-            withCredentials: true,
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
+        console.error('Error fetching current user:', error);
         return handleApiError(error);
     }
 };
 
-export const deleteUser = async (): Promise<{ message: string } | ApiError> => {
+export const deleteUser = async (token: string): Promise<{ message: string } | ApiError> => {
     try {
         const response = await axiosInstance.delete<{ message: string }>('/auth/user', {
-            withCredentials: true,
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
@@ -82,7 +79,9 @@ export const deleteUser = async (): Promise<{ message: string } | ApiError> => {
 
 export const deleteAllUsers = async (): Promise<{ message: string }> => {
     try {
-        const response = await axiosInstance.delete<{ message: string }>('/auth/users');
+        const response = await axiosInstance.delete<{ message: string }>('/auth/users', {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
