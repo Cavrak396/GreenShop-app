@@ -29,19 +29,22 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(() =>
-    localStorage.getItem("token")
-  );
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-      fetchCurrentUser();
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) {
+      setToken(savedToken);
     }
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      fetchCurrentUser();
+    }
+  }, [token]);
 
   const fetchCurrentUser = async () => {
     if (!token) return;
@@ -49,28 +52,27 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     try {
       setLoading(true);
       const response = await getCurrentUser();
-      console.log(response);
 
       if (response.message) {
         setError(response.message);
       } else {
-        setUser(response);
+        setUser(response as User);
+        console.log(response);
       }
     } catch (err: any) {
-      console.log(err.message);
+      setError(err.message || "Failed to fetch current user.");
     } finally {
       setLoading(false);
     }
   };
 
-  const login = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
+  const login = async (dto: LoginDTO) => {
     try {
       setLoading(true);
       const response = await loginUser(dto);
       if (response.jwt) {
         setToken(response.jwt);
         localStorage.setItem("token", response.jwt);
-        fetchCurrentUser();
         return response;
       } else {
         setError("Login failed.");
@@ -84,9 +86,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const register = async (
-    dto: RegisterDTO
-  ): Promise<AuthResponse | ApiError> => {
+  const register = async (dto: RegisterDTO) => {
     try {
       setLoading(true);
       const response = await registerUser(dto);
@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async () => {
     try {
       setLoading(true);
       await logoutUser();
@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const deleteAccount = async (): Promise<{ message: string } | ApiError> => {
+  const deleteAccount = async () => {
     if (!token) {
       setError("User not authenticated.");
       return { message: "User not authenticated" };
@@ -127,7 +127,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     try {
       setLoading(true);
-      const response = await deleteUser(token);
+      const response = await deleteUser();
       setUser(null);
       setToken(null);
       localStorage.removeItem("token");
