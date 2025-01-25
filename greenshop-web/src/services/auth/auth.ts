@@ -14,6 +14,7 @@ const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true,
 });
 
 const handleApiError = (error: any): ApiError => {
@@ -56,7 +57,7 @@ export const logoutUser = async () => {
 
 export const getCurrentUser = async () => {
     try {
-        const response = await axiosInstance.get<User>('/auth/user', {
+        const response = await axiosInstance.get<User>('/auth/user/', {
             withCredentials: true
         });
         return response.data;
@@ -66,7 +67,7 @@ export const getCurrentUser = async () => {
     }
 };
 
-export const deleteUser = async (token: string): Promise<{ message: string } | ApiError> => {
+export const deleteUser = async () => {
     try {
         const response = await axiosInstance.delete<{ message: string }>('/auth/user', {
             withCredentials: true

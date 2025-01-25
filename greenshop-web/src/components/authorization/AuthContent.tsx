@@ -37,7 +37,6 @@ const AuthContent: React.FC = () => {
           if (loginResponse && loginResponse.jwt) {
             setUser({ email });
             setToken(loginResponse.jwt);
-            console.log("User:", loginResponse.jwt);
             setSuccessMessage("Successfully logged in!");
           } else {
             setError("Login failed: Invalid response");
@@ -57,10 +56,15 @@ const AuthContent: React.FC = () => {
           setError("All fields are required for registration.");
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error during authentication:", err);
+
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
       setSuccessMessage(null);
-      setError(err.message || "An error occurred.");
     }
   };
 
