@@ -1,12 +1,9 @@
 import magnifier from "../../assets/images/reusable/magnifier.png";
 import { ProductReviewType } from "./types/detailsTypes";
-// import { useProduct } from "../../context/ProductContext";
 import LazyImage from "../../reusable/LazyImage/LazyImage";
 import ProductImage from "../../assets/images/banner/banner-image.png";
 
 function DetailsProductReview({ setIsAppear }: ProductReviewType) {
-  //  const product = useProduct(); waiting for api for img
-
   function handleImageZoom() {
     setIsAppear((prev) => !prev);
   }

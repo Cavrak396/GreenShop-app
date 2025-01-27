@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import FormInput from "../../reusable/inputs/FormInput";
 import CartItemInfo from "./CartItemInfo";
 import { CartItemProps } from "./types/CartTypes";
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 import { useCart } from "../../context/CartContext";
 import removeImg from "../../assets/images/cart/Delete.svg";
 

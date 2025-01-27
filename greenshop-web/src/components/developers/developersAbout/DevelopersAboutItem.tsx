@@ -1,7 +1,7 @@
 import { DevelopersTypes } from "../types/developersTypes";
 import DevelopersSocialList from "./DevelopersSocialList";
 import DevelopersTechList from "./DevelopersTechList";
-import Button from "../../button/Button";
+import Button from "../../../reusable/button/Button";
 import { useState } from "react";
 import useIsMobile from "../../../customHooks/useIsMobile";
 import DevelopersImage from "./DevelopersImage";

@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import { OverlayModalTypes } from "../types/modalTypes";
 import "../reusable.css";
-import Button from "../../components/button/Button";
+import Button from "../button/Button";
 import close from "../../assets/images/reusable/close-image.svg";
 
 function Portal({ children, setIsAppear }: OverlayModalTypes) {

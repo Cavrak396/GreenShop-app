@@ -1,5 +1,5 @@
 import type { AuthFormInputProps } from "./types/authTypes";
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 import FormInput from "../../reusable/inputs/FormInput";
 
 function AuthFormInput({

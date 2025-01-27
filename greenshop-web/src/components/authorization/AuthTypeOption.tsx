@@ -1,6 +1,6 @@
 import { authType } from "./utils/authUtils";
 import { AuthCurrentDataTypes } from "./types/authTypes";
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 
 function AuthTypeOption({
   activatedId,

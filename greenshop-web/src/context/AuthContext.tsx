@@ -10,8 +10,6 @@ import {
   AuthContextProps,
   LoginDTO,
   RegisterDTO,
-  AuthResponse,
-  ApiError,
   User,
 } from "./types/authTypes";
 

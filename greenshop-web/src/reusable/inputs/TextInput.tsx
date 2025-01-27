@@ -1,5 +1,5 @@
 import "../reusable.css";
-import Button from "../../components/button/Button";
+import Button from "../button/Button";
 import { TextInputType } from "../types/inputsTypes";
 
 function TextInput({

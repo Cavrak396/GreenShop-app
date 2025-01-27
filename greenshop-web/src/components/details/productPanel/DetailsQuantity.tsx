@@ -1,5 +1,5 @@
 import { useCart } from "../../../context/CartContext";
-import Button from "../../button/Button";
+import Button from "../../../reusable/button/Button";
 import { useProduct } from "../../../context/ProductContext";
 
 function DetailsQuantity() {

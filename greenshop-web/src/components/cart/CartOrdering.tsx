@@ -1,4 +1,4 @@
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 import CartTotal from "./CartTotal";
 import { CartTotalProps } from "./types/CartTypes";
 
