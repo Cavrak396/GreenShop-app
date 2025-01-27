@@ -308,6 +308,23 @@
   max-height: 20px;
 }
 
+.details__comments-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.details__comments-input {
+  max-width: 330px;
+  flex: 1 1 330px;
+  min-height: 30px;
+  border-radius: 10px;
+  border: none;
+  padding: 0 10px;
+  outline: none;
+}
+
 @media screen and (max-width: 975px) {
   .details__product-info {
     flex-direction: column;
@@ -483,5 +500,9 @@
   .details__product-star {
     max-width: 15px;
     max-height: 15px;
+  }
+  
+  .details__comments-input {
+    font-size: 12px;
   }
 }

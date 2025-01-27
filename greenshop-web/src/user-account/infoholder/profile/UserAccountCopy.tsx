@@ -1,6 +1,6 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Button from "../../../components/button/Button";
+import Button from "../../../reusable/button/Button";
 import CopyImg from "../../../assets/images/account/copy.svg";
 
 function UserAccountCopy() {

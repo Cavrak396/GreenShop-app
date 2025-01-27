@@ -1,5 +1,5 @@
 import { socialAccountWays } from "./utils/authUtils";
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 import type { AuthSocialButtonsProps } from "./types/authTypes";
 
 function AuthSocialButtons({ activatedId }: AuthSocialButtonsProps) {

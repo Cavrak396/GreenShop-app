@@ -1,5 +1,5 @@
 import { userButtons } from "../utils/detailsUtils";
-import Button from "../../button/Button";
+import Button from "../../../reusable/button/Button";
 import { useCart } from "../../../context/CartContext";
 import { useState, useEffect } from "react";
 import { useProduct } from "../../../context/ProductContext";

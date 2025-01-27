@@ -1,4 +1,4 @@
-import Button from "../../components/button/Button";
+import Button from "../button/Button";
 import { ConfirmationTypes } from "../types/confirmationTypes";
 
 type ConfirmationButtonsProps = ConfirmationTypes & {

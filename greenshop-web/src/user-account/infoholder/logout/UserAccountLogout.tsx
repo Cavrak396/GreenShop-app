@@ -1,4 +1,4 @@
-import Button from "../../../components/button/Button";
+import Button from "../../../reusable/button/Button";
 import { LogoutProps } from "../../types/userAccountTypes";
 
 function UserAccountLogout({

@@ -1,6 +1,6 @@
 import React from "react";
 import { BlogItemProps } from "./types/blogsTypes";
-import Button from "../button/Button";
+import Button from "../../reusable/button/Button";
 import arrow from "../../assets/images/reusable/arrow-right.svg";
 import BlogsImage from "./BlogsImage";
 

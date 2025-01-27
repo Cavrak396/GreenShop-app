@@ -1,5 +1,5 @@
 import { infoButtons } from "../utils/detailsUtils";
-import Button from "../../button/Button";
+import Button from "../../../reusable/button/Button";
 import { DetailsInfoButtonsProps } from "../types/detailsTypes";
 
 function DetailsInfoButtons({

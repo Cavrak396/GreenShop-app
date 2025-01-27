@@ -23,6 +23,6 @@ export interface FormInputTypes {
   className: string;
   min?: string;
   value?: number | string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }

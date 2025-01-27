@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import RangeInput from "../../../reusable/inputs/RangeInput";
-import Button from "../../button/Button";
+import Button from "../../../reusable/button/Button";
 import "./usertoolbox.css";
 import { usePlants } from "../../../context/PlantsContext";
 
