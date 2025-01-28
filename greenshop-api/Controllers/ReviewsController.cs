@@ -50,6 +50,11 @@ namespace greenshop_api.Controllers
                 return reviewDto;
             }).ToList();
 
+            if (reviewDtos == null)
+            {
+                return NotFound("Review list is null.");
+            }
+
             var jwt = Request.Cookies["jwt"];
             if (!string.IsNullOrEmpty(jwt))
             {
