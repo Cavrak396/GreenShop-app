@@ -2,7 +2,9 @@ import facebook from "../../../assets/images/reusable/Facebook.svg";
 import twiter from "../../../assets/images/reusable/Twitter.svg";
 import linkedin from "../../../assets/images/reusable/Linkedin.svg";
 import union from "../../../assets/images/reusable/Union.svg";
-import { ButtonOrSizeType, CommentsType, SocialMediaType, RatingsCountType } from "../types/detailsTypes";
+import bin from "../../../assets/images/reusable/bin.svg";
+import edit from "../../../assets/images/reusable/edit.svg";
+import { ButtonOrSizeType, CommentsType, SocialMediaType, RatingsCountType, DetailsPersonalToolsType } from "../types/detailsTypes";
 
 export const sizes: ButtonOrSizeType[] = [
   { id: 1, text: "S" },
@@ -23,12 +25,16 @@ export const detailsSocialMedia: SocialMediaType[] = [
   { id: 4, alt: "union", src: union },
 ];
 
+export const detailsPersonalCommentTools: DetailsPersonalToolsType[] = [
+  { id: 1, alt: 'Delete', src: edit },
+  { id: 2, alt: 'Edit', src: bin },
+]
+
 export const infoButtons: ButtonOrSizeType[] = [
   { id: 1, text: "Product Description" },
   { id: 2, text: "Reviews" },
 ];
 
-// Fake data, waiting for API
 export const comments: CommentsType[] = [
   { id: 1, username: 'Jone Jones', comment: 'I can t smoke this, why?', rate: 3 },
   { id: 2, username: 'Milorad Dodik', comment: 'Ok je, moze da prodje', rate: 4 },

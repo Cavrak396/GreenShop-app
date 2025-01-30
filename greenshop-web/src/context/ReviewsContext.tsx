@@ -5,9 +5,13 @@ import {
   ReactNode,
   useCallback,
 } from "react";
-import { createReview, getPlantReviews } from "../services/reviews/reviews";
+import {
+  createReview,
+  getPlantReviews,
+  getUserReview,
+} from "../services/reviews/reviews";
 import { useUser } from "./AuthContext";
-import { Comment, CommentsContextType } from "./types/reviewsTypes";
+import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
 
 const CommentsContext = createContext<CommentsContextType | undefined>(
   undefined
@@ -15,6 +19,7 @@ const CommentsContext = createContext<CommentsContextType | undefined>(
 
 export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [comments, setComments] = useState<Comment[]>([]);
+  const [userComment, setUserComment] = useState<Comment | null>(null);
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
 
@@ -24,7 +29,6 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const data = await getPlantReviews(plantId);
-      console.log("Fetched comments:", data);
       if (Array.isArray(data)) {
         const formattedComments: Comment[] = data.map((review) => ({
           ...review,
@@ -43,6 +47,32 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const fetchUserComment = useCallback(
+    async (plantId: string) => {
+      if (!plantId || !user) return;
+
+      setLoading(true);
+      try {
+        const data = await getUserReview(plantId, user.id);
+        if (data) {
+          setUserComment({
+            ...data,
+            userName: data.userName ?? "",
+            creationDate: data.creationDate ?? new Date().toISOString(),
+          });
+        } else {
+          setUserComment(null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user comment:", error);
+        setUserComment(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [user]
+  );
+
   const addComment = async (
     plantId: string,
     comment: string,
@@ -50,7 +80,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     if (!comment.trim() || !user) return;
 
-    const reviewDto: Comment = {
+    const reviewDto: ReviewDto = {
       plantId,
       comment,
       rating,
@@ -62,6 +92,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       const response = await createReview(reviewDto);
       if (response) {
         await fetchComments(plantId);
+        await fetchUserComment(plantId);
       } else {
         console.error("Error adding comment:", response);
       }
@@ -72,7 +103,14 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CommentsContext.Provider
-      value={{ comments, loading, fetchComments, addComment }}
+      value={{
+        comments,
+        userComment,
+        loading,
+        fetchComments,
+        fetchUserComment,
+        addComment,
+      }}
     >
       {children}
     </CommentsContext.Provider>

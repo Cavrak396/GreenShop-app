@@ -1,18 +1,7 @@
-import { useParams } from "react-router-dom";
-import { useComments } from "../../../../context/ReviewsContext";
-import { useEffect } from "react";
 import DetailsCritiqueCommentsItem from "./DetailsCritiqueCommentsItem";
+import { DetailsCritiqueCommentsListProps } from "../../../../context/types/reviewsTypes";
 
-function DetailsCritiqueCommentsList() {
-  const { id } = useParams();
-  const { comments, loading, fetchComments } = useComments();
-
-  useEffect(() => {
-    if (id) {
-      fetchComments(id);
-    }
-  }, [id, fetchComments]);
-
+function DetailsCritiqueCommentsList({ comments, loading }: DetailsCritiqueCommentsListProps) {
   if (loading) return <p>Loading comments...</p>;
 
   return (
