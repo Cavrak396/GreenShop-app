@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import facebook from "../../../assets/images/reusable/Facebook.svg";
 import twiter from "../../../assets/images/reusable/Twitter.svg";
 import linkedin from "../../../assets/images/reusable/Linkedin.svg";
