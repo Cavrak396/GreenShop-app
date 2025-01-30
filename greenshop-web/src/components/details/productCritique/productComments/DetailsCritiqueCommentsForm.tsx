@@ -1,34 +1,37 @@
-import React, { useRef } from "react";
+import { useProduct } from "../../../../context/ProductContext";
+import { useComments } from "../../../../context/ReviewsContext";
+import { useState } from "react";
 import FormInput from "../../../../reusable/inputs/FormInput";
 import Button from "../../../../reusable/button/Button";
 
 function DetailsCritiqueCommentsForm() {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { plantId } = useProduct();
+  const { addComment } = useComments();
+  const [comment, setComment] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputRef.current) {
-      const commentValue = inputRef.current.value;
-      console.log(commentValue);
+    if (comment.trim()) {
+      addComment(plantId, comment, 5);
+      setComment("");
     }
   };
 
   return (
-    <form className="details__comments-form" onSubmit={handleSubmit}>
-      <FormInput
-        ref={inputRef}
-        className="details__comments-input"
-        placeholder="Leave your comment"
-        type="text"
-      />
-      <Button
-        type="submit"
-        className="details__comments-button button"
-        onClick={() => handleSubmit}
-      >
-        Submit
-      </Button>
-    </form>
+    <div className="details__comments">
+      <form className="details__comments-form" onSubmit={handleSubmit}>
+        <FormInput
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="details__comments-input"
+          placeholder="Leave your comment"
+          type="text"
+        />
+        <Button type="submit" className="details__comments-button button">
+          Submit
+        </Button>
+      </form>
+    </div>
   );
 }
 

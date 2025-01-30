@@ -1,12 +1,12 @@
 import StaticStars from "../../../../reusable/stars/StaticStars";
-import { CommentsType } from "../../types/detailsTypes";
+import { Comment } from "../../../../context/types/reviewsTypes";
 
-function DetailsCritiqueCommentsItem({ comment }: { comment: CommentsType }) {
+function DetailsCritiqueCommentsItem({ comment }: { comment: Comment }) {
   return (
     <li className="details__comments-comment">
-      <span className="details__comments-username">{comment.username}</span>
+      <span className="details__comments-username">{comment.userName}</span>
       <StaticStars
-        rate={comment.rate}
+        rate={comment.rating}
         starClassName="details__comments-star"
         starPositionClassName="details__stars-line"
       />
