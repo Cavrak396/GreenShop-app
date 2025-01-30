@@ -60,3 +60,9 @@ export interface RatingsCountType {
 export interface ProductReviewType {
   setIsAppear: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface DetailsPersonalToolsType {
+  id: number;
+  alt: string;
+  src: string;
+}
