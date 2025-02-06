@@ -50,17 +50,26 @@ namespace greenshop_api.Controllers
                 return reviewDto;
             }).ToList();
 
+            if (reviewDtos == null)
+            {
+                return Ok(new List<ReviewDto>());
+            }
+
             var jwt = Request.Cookies["jwt"];
             if (!string.IsNullOrEmpty(jwt))
             {
                 var token = jwtService.Verify(jwt);
                 var userId = token.Issuer.ToString();
                 var currentUser = users.FirstOrDefault(u => u.UserId == userId);
-                var currentUserReview = reviewDtos.FirstOrDefault(r => r.UserName == currentUser.UserName);
 
-                if (currentUserReview != null)
+                if (currentUser != null)
                 {
-                    reviewDtos.Remove(currentUserReview);
+                    var currentUserReview = reviewDtos.FirstOrDefault(r => r.UserName == currentUser.UserName);
+
+                    if (currentUserReview != null)
+                    {
+                        reviewDtos.Remove(currentUserReview);
+                    }
                 }
             }
             
