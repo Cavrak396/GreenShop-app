@@ -52,4 +52,14 @@ export const getUserReview = async (plantId: string, userId: string) => {
   }
 };
 
+export const deleteReview = async (plantId: string): Promise<ReviewDto | null> => {
+  try {
+    const response = await axiosInstance.delete<ReviewDto>(`/reviews/${plantId}`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    return null;
+  }
+};
+
 export default axiosInstance;

@@ -26,8 +26,8 @@ export const detailsSocialMedia: SocialMediaType[] = [
 ];
 
 export const detailsPersonalCommentTools: DetailsPersonalToolsType[] = [
-  { id: 1, alt: 'Delete', src: edit },
-  { id: 2, alt: 'Edit', src: bin },
+  { id: 1, alt: 'Edit', src: edit },
+  { id: 2, alt: 'Delete', src: bin },
 ]
 
 export const infoButtons: ButtonOrSizeType[] = [
@@ -43,7 +43,6 @@ export const comments: CommentsType[] = [
   { id: 5, username: 'Mike', comment: 'Thats great zbidelj', rate: 5 },
   { id: 6, username: 'Cavrak', comment: 'Ja pravim app tako da je meni ok sve', rate: 5 },
 ]
-
 
 export function calculateRatingPercentages(comments: CommentsType[]) {
   const totalComments = comments.length;

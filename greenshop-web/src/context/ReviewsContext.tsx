@@ -9,6 +9,7 @@ import {
   createReview,
   getPlantReviews,
   getUserReview,
+  deleteReview,
 } from "../services/reviews/reviews";
 import { useUser } from "./AuthContext";
 import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
@@ -101,6 +102,22 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const removeComment = async (plantId: string): Promise<void> => {
+    if (!user) return;
+
+    try {
+      const response = await deleteReview(plantId);
+      if (response) {
+        await fetchComments(plantId);
+        setUserComment(null);
+      } else {
+        console.error("Error deleting comment:", response);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
   return (
     <CommentsContext.Provider
       value={{
@@ -110,6 +127,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         fetchComments,
         fetchUserComment,
         addComment,
+        removeComment,
       }}
     >
       {children}

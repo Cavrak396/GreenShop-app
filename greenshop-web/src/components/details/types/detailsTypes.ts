@@ -66,3 +66,7 @@ export interface DetailsPersonalToolsType {
   alt: string;
   src: string;
 }
+
+export interface DetailsPersonalToolType {
+  tool: DetailsPersonalToolsType;
+}
