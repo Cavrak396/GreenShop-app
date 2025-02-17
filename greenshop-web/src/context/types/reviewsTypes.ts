@@ -22,7 +22,9 @@ export interface CommentsContextType {
     fetchComments: (plantId: string) => Promise<void>;
     fetchUserComment: (plantId: string) => Promise<void>;
     addComment: (plantId: string, comment: string, rating: number) => Promise<void>;
+    removeComment: (plantId: string) => Promise<void>;
 }
+
 
 export interface DetailsCritiqueCommentsListProps {
     comments: Comment[];
