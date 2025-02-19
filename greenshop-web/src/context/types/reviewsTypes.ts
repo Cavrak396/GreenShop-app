@@ -29,7 +29,6 @@ export interface CommentsContextType {
 
 export interface DetailsCritiqueCommentsListProps {
     comments: Comment[];
-    loading: boolean;
 }
 
 export interface DetailsCritiqueCommentsPersonalProps {

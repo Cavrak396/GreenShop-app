@@ -1,17 +1,21 @@
 import DetailsCritiqueCommentsItem from "./DetailsCritiqueCommentsItem";
 import { DetailsCritiqueCommentsListProps } from "../../../../context/types/reviewsTypes";
+import ErrorMessage from "../../../../reusable/error/ErrorMessage";
 
-function DetailsCritiqueCommentsList({ comments, loading }: DetailsCritiqueCommentsListProps) {
-  if (loading) return <p>Loading comments...</p>;
-
+function DetailsCritiqueCommentsList({
+  comments,
+}: DetailsCritiqueCommentsListProps) {
   return (
     <ul className="details__comments-list">
       {comments.length > 0 ? (
-        comments.map((comment) => (
-          <DetailsCritiqueCommentsItem key={comment.id} comment={comment} />
+        comments.map((comment, index) => (
+          <DetailsCritiqueCommentsItem key={index} comment={comment} />
         ))
       ) : (
-        <p>No comments yet.</p>
+        <ErrorMessage
+          className="details__comments-error"
+          message="We have not found any comments for now..."
+        />
       )}
     </ul>
   );

@@ -45,7 +45,6 @@ export const getUserReview = async (plantId: string) => {
     const response = await axiosInstance.get(`/reviews/${plantId}/user`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching user review:", error);
     return null;
   }
 };

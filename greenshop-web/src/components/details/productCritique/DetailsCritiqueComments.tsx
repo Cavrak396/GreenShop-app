@@ -5,6 +5,7 @@ import { useUser } from "../../../context/AuthContext";
 import { useComments } from "../../../context/ReviewsContext";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import LoadingSpinner from "../../../reusable/LoadingSpinner/LoadingSpinner";
 
 function DetailsCritiqueComments() {
   const { token } = useUser();
@@ -21,11 +22,17 @@ function DetailsCritiqueComments() {
 
   return (
     <div className="details__comments">
-      {token && <DetailsCritiqueCommentsForm />}
-      {userComment && userComment.comment && (
-        <DetailsCritiqueCommentsPersonal comment={userComment} />
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          {token && <DetailsCritiqueCommentsForm />}
+          {userComment && userComment.comment && (
+            <DetailsCritiqueCommentsPersonal comment={userComment} />
+          )}
+          <DetailsCritiqueCommentsList comments={comments} />
+        </>
       )}
-      <DetailsCritiqueCommentsList comments={comments} loading={loading} />
     </div>
   );
 }

@@ -6,32 +6,38 @@ import Button from "../../../../reusable/button/Button";
 
 function DetailsCritiqueCommentsForm() {
   const { plantId } = useProduct();
-  const { addComment } = useComments();
+  const { addComment, userComment } = useComments();
   const [comment, setComment] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (comment.trim()) {
+    if (comment.trim() && !userComment) {
       addComment(plantId, comment, 5);
       setComment("");
     }
   };
 
   return (
-    <div className="details__comments">
-      <form className="details__comments-form" onSubmit={handleSubmit}>
-        <FormInput
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          className="details__comments-input"
-          placeholder="Leave your comment"
-          type="text"
-        />
-        <Button type="submit" className="details__comments-button button">
-          Submit
-        </Button>
-      </form>
-    </div>
+    <form className="details__comments-form" onSubmit={handleSubmit}>
+      <FormInput
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        className="details__comments-input"
+        placeholder={
+          userComment
+            ? "You have already submitted a comment"
+            : "Leave your comment"
+        }
+        type="text"
+      />
+      <Button
+        type="submit"
+        className="details__comments-button button"
+        disabled={!!userComment}
+      >
+        {userComment ? "Submitted" : "Submit"}
+      </Button>
+    </form>
   );
 }
 
