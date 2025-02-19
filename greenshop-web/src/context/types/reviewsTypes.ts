@@ -11,6 +11,7 @@ export interface ReviewDto {
     plantId: string;
     comment: string;
     rating: number;
+    userId?: string;
     userName: string;
     creationDate: string;
 }
@@ -23,8 +24,8 @@ export interface CommentsContextType {
     fetchUserComment: (plantId: string) => Promise<void>;
     addComment: (plantId: string, comment: string, rating: number) => Promise<void>;
     removeComment: (plantId: string) => Promise<void>;
+    updateComment: (plantId: string, comment: string, rating: number) => Promise<void>;
 }
-
 
 export interface DetailsCritiqueCommentsListProps {
     comments: Comment[];

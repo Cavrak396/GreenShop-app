@@ -326,11 +326,25 @@
   font-size: 15px;
 }
 
+.details__comments-edit-input {
+  display: block;
+  padding: 5px;
+}
+
 .details__comments-form {
+  margin-bottom: 20px;
+}
+
+.details__comments-edit-form {
+  gap: 3px;
+  margin-bottom: 10px;
+}
+
+.details__comments-form,
+.details__comments-edit-form {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
 .details__comments-input {

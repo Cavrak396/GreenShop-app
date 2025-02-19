@@ -1,4 +1,3 @@
-// import { useProduct } from "../../context/ProductContext";
 import { useState } from "react";
 import DetailsProductReview from "./DetailsProductReview";
 import DetailsProductPanel from "./productPanel/DetailsProductPanel";
@@ -8,7 +7,6 @@ import ProductImage from "../../assets/images/banner/banner-image.png";
 import "./details.css";
 
 function Details() {
-  // const product = useProduct(); waiting for img data
   const [isAppear, setIsAppear] = useState<boolean>(false);
 
   return (

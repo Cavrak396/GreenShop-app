@@ -10,6 +10,7 @@ import {
   getPlantReviews,
   getUserReview,
   deleteReview,
+  updateReview,
 } from "../services/reviews/reviews";
 import { useUser } from "./AuthContext";
 import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
@@ -50,11 +51,9 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUserComment = useCallback(
     async (plantId: string) => {
-      if (!plantId || !user) return;
-
       setLoading(true);
       try {
-        const data = await getUserReview(plantId, user.id);
+        const data = await getUserReview(plantId);
         if (data) {
           setUserComment({
             ...data,
@@ -102,6 +101,32 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateComment = async (
+    plantId: string,
+    comment: string,
+    rating: number
+  ) => {
+    if (!comment.trim() || !user) return;
+
+    const reviewDto: ReviewDto = {
+      plantId,
+      comment,
+      rating,
+      userName: user.userName ?? "",
+      creationDate: new Date().toISOString(),
+    };
+
+    console.log("Updating comment with reviewDto:", reviewDto);
+
+    try {
+      await updateReview(plantId, reviewDto);
+      await fetchComments(plantId);
+      await fetchUserComment(plantId);
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
   const removeComment = async (plantId: string): Promise<void> => {
     if (!user) return;
 
@@ -128,6 +153,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         fetchUserComment,
         addComment,
         removeComment,
+        updateComment,
       }}
     >
       {children}

@@ -40,15 +40,22 @@ export const createReview = async (reviewDto: ReviewDto): Promise<ReviewDto> => 
   }
 };
 
-export const getUserReview = async (plantId: string, userId: string) => {
+export const getUserReview = async (plantId: string) => {
   try {
-    const response = await axiosInstance.get(`/reviews/${plantId}/user`, {
-      params: { userId },
-    });
+    const response = await axiosInstance.get(`/reviews/${plantId}/user`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user review:", error);
     return null;
+  }
+};
+
+export const updateReview = async (plantId: string, reviewDto: ReviewDto): Promise<void> => {
+  try {
+    await axiosInstance.put(`/reviews/${plantId}`, reviewDto);
+  } catch (error) {
+    handleApiError(error);
+    throw error;
   }
 };
 
