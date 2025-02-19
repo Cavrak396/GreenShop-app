@@ -206,6 +206,7 @@
 }
 
 .details__comments {
+  position: relative;
   max-width: 55%;
   flex: 1 1 55%;
 }
@@ -274,6 +275,11 @@
 
 .details__comments-list::-webkit-scrollbar-thumb:hover {
   background: rgba(85, 85, 85, 1);
+}
+
+.details__comments-error {
+  text-align: center;
+  padding: 40px 0;
 }
 
 .details__comments-comment,

@@ -64,7 +64,6 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
           setUserComment(null);
         }
       } catch (error) {
-        console.error("Failed to fetch user comment:", error);
         setUserComment(null);
       } finally {
         setLoading(false);
@@ -115,9 +114,6 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       userName: user.userName ?? "",
       creationDate: new Date().toISOString(),
     };
-
-    console.log("Updating comment with reviewDto:", reviewDto);
-
     try {
       await updateReview(plantId, reviewDto);
       await fetchComments(plantId);

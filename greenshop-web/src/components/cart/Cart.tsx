@@ -1,7 +1,7 @@
 import CartItemsList from "./CartItemsList";
 import CartOrdering from "./CartOrdering";
 import { useCart } from "../../context/CartContext";
-import ErrorMessage from "../error/ErrorMessage";
+import ErrorMessage from "../../reusable/error/ErrorMessage";
 import Title from "../../reusable/titles/Title";
 import "./cart.css";
 

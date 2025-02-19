@@ -7,7 +7,6 @@ import { useCart } from "../../../../context/CartContext";
 import { HomePageShopArticleProps, ProductType } from "../shopTypes";
 import HomePageShopSale from "./HomePageShopSale";
 import { CartItem } from "../../../cart/types/CartTypes";
-// custom image for now
 import ProductImage from "../../../../assets/images/banner/banner-image.png";
 
 function HomePageShopArticle({

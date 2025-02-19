@@ -4,7 +4,7 @@ import Details from "../details/Details";
 import { ProductProvider } from "../../context/ProductContext";
 import { fetchPlantById } from "../../services/plants/plants";
 import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
-import ErrorMessage from "../error/ErrorMessage";
+import ErrorMessage from "../../reusable/error/ErrorMessage";
 import { ProductType } from "../homepage-shop/shop/shopTypes";
 
 function DetailsPage() {

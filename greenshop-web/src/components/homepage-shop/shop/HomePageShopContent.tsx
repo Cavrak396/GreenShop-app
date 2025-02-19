@@ -1,6 +1,6 @@
 import HomePageShopBar from "./bar/HomePageShopBar";
 import HomePageShopArticles from "./articles/HomePageShopArticles";
-import ErrorMessage from "../../error/ErrorMessage";
+import ErrorMessage from "../../../reusable/error/ErrorMessage";
 import { usePlants } from "../../../context/PlantsContext";
 import LoadingSpinner from "../../../reusable/LoadingSpinner/LoadingSpinner";
 
