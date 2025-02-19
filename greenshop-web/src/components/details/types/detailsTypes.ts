@@ -1,4 +1,4 @@
-import { ReactNode, Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from "react";
 
 export interface ProductType {
   name: string;
@@ -69,4 +69,9 @@ export interface DetailsPersonalToolsType {
 
 export interface DetailsPersonalToolType {
   tool: DetailsPersonalToolsType;
+  setIsActiveEdit: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface DetailsCritiqueCommentsToolsProps {
+  setIsActiveEdit: Dispatch<SetStateAction<boolean>>;
 }
