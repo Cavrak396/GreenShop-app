@@ -243,7 +243,7 @@ namespace greenshop_api.Controllers
             this.db.Plants.Remove(plantToDelete);
             await this.db.SaveChangesAsync();
 
-            return Ok(mapper.Map<PlantDto>(plantToDelete));
+            return NoContent();
         }
 
         [HttpDelete]
@@ -255,7 +255,7 @@ namespace greenshop_api.Controllers
             this.db.Plants.RemoveRange(allPlants);
             await this.db.SaveChangesAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }
