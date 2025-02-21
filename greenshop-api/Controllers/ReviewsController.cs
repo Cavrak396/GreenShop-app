@@ -34,11 +34,16 @@ namespace greenshop_api.Controllers
         [HttpGet("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         [TypeFilter(typeof(Review_ValidateJwtTokenFilterAttribute))]
-        public async Task<IActionResult> GetReviews(string plantId)
+        public async Task<IActionResult> GetReviews(
+             string plantId,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var reviews = await db.Reviews
-                .Where(r => r.PlantId == plantId)
-                .ToListAsync();
+            IQueryable<Review> reviewsQuery = db.Reviews.Where(r => r.PlantId == plantId);
+
+            reviewsQuery = reviewsQuery.Skip((page - 1) * pageSize).Take(pageSize);
+
+            var reviews = await reviewsQuery.ToListAsync();
 
             var userIds = reviews.Select(r => r.UserId).ToList();
             var users = await repository.GetUsersByIdsAsync(userIds);
