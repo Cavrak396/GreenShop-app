@@ -48,19 +48,22 @@ namespace greenshop_api.Controllers
                 IsSubscribed = registerDto.IsSubscribed
             };
 
-            if(registerDto.IsSubscribed == true)
+            var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == registerDto.Email);
+
+            if(foundSubscriber != null && registerDto.IsSubscribed == false)
             {
-                var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == registerDto.Email);
-                if (foundSubscriber == null)
+                this.db.Subscribers.Remove(foundSubscriber);
+                await this.db.SaveChangesAsync();
+            }
+
+            if (foundSubscriber == null && registerDto.IsSubscribed == true)
+            {
+                var subscriber = new Subscriber
                 {
-                    var subscriber = new Subscriber
-                    {
-                        SubscriberId = Guid.NewGuid().ToString(),
-                        SubscriberEmail = registerDto.Email
-                    };
-                    this.db.Subscribers.Add(subscriber);
-                    await this.db.SaveChangesAsync();
-                }
+                    SubscriberId = Guid.NewGuid().ToString(),
+                    SubscriberEmail = registerDto.Email
+                };
+                this.db.Subscribers.Add(subscriber);
             }
 
             await newsletterService.SendNewsletterMessage(
