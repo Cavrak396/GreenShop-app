@@ -37,7 +37,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetReviews(
              string plantId,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 9)
+            [FromQuery] int pageSize = 10)
         {
             IQueryable<Review> reviewsQuery = db.Reviews.Where(r => r.PlantId == plantId);
 
