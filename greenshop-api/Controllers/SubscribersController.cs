@@ -60,7 +60,7 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.Remove(subscriberToDelete);
             await this.db.SaveChangesAsync();
 
-            return Ok(subscriberToDelete);
+            return NoContent();
         }
 
         [HttpDelete]
@@ -72,7 +72,7 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.RemoveRange(allSubscribers);
             await this.db.SaveChangesAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }

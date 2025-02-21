@@ -74,7 +74,7 @@ namespace greenshop_api.Controllers
 
             await this.repository.CreateUserAsync(user);
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPost("login")]
@@ -101,7 +101,7 @@ namespace greenshop_api.Controllers
         {
             await Task.CompletedTask;
             Response.Cookies.Delete("jwt");
-            return Ok();
+            return NoContent();
         }
 
         [HttpGet("user")]
@@ -177,7 +177,7 @@ namespace greenshop_api.Controllers
 
             Response.Cookies.Delete("jwt");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("users")]
@@ -191,7 +191,7 @@ namespace greenshop_api.Controllers
 
             Response.Cookies.Delete("jwt");
 
-            return Ok(allUsers);
+            return NoContent();
         }
     }
 }

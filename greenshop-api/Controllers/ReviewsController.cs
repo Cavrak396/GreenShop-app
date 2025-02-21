@@ -89,10 +89,15 @@ namespace greenshop_api.Controllers
             var user = await this.repository.GetUserByIdAsync(userId);
 
             var review = await this.db.Reviews.FindAsync(userId, plantId);
-            var reviewDto = mapper.Map<ReviewDto>(review);
-            reviewDto.UserName = user.UserName;
 
-            return Ok(reviewDto);
+            if(review != null)
+            {
+                var reviewDto = mapper.Map<ReviewDto>(review);
+                reviewDto.UserName = user.UserName;
+                return Ok(reviewDto);
+            }
+
+            return NoContent();
         }
         
 
@@ -163,10 +168,7 @@ namespace greenshop_api.Controllers
             this.db.Reviews.Remove(reviewToDelete);
             await this.db.SaveChangesAsync();
 
-            var reviewDto = mapper.Map<ReviewDto>(reviewToDelete);
-            reviewDto.UserName = user.UserName;
-
-            return Ok(reviewDto);
+            return NoContent();
         }
     }
 }
