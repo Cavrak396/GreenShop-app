@@ -1,17 +1,10 @@
 import { useMemo } from "react";
-import {
-  calculateAverageRating,
-  calculateRatingPercentages,
-} from "../components/details/utils/detailsUtils";
-import { CommentsType } from "../components/details/types/detailsTypes";
+import { calculateAverageRating } from "../components/details/utils/detailsUtils";
 
-export function useRatings(comments: CommentsType[]) {
-  const avgRating = useMemo(() => calculateAverageRating(comments), [comments]);
+export function useRatings(comments: Comment[]) {
+  const avgRating = useMemo(() => {
+    return comments.length ? calculateAverageRating(comments) : 0;
+  }, [comments]);
 
-  const ratingPercentages = useMemo(
-    () => calculateRatingPercentages(comments),
-    [comments]
-  );
-
-  return { avgRating, ratingPercentages };
+  return { avgRating };
 }

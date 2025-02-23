@@ -310,10 +310,12 @@
   font-size: 14px;
 }
 
-.details__stars-line {
+.details__stars-line,
+.details__comments-stars {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 3px;
   margin: 10px 0 10px 0;
 }
 
@@ -562,6 +564,11 @@
   .details__product-star {
     max-width: 15px;
     max-height: 15px;
+  }
+
+  .details__comments-stars--modified {
+    max-width: 20px;
+    max-height: 20px;
   }
 
   .details__comments-input {

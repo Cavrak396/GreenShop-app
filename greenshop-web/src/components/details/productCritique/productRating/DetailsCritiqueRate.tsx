@@ -1,9 +1,10 @@
 import rateStar from "../../../../assets/images/reusable/star.svg";
 import LazyImage from "../../../../reusable/LazyImage/LazyImage";
-import { comments } from "../../utils/detailsUtils";
 import { useRatings } from "../../../../customHooks/useRating";
+import { useComments } from "../../../../context/ReviewsContext";
 
 function DetailsCritiqueRate() {
+  const { comments } = useComments();
   const { avgRating } = useRatings(comments);
 
   return (
@@ -14,7 +15,7 @@ function DetailsCritiqueRate() {
         className="details__critique-rate-image"
       />
       <span className="details__critique-rate-stats">
-        {avgRating.toFixed(1)}
+        {Math.ceil(avgRating)}.0
       </span>
       <span className="details__critique-rate-number">
         {comments.length} users rated this

@@ -5,6 +5,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
+import { useUser } from "./AuthContext";
 import {
   createReview,
   getPlantReviews,
@@ -12,7 +13,6 @@ import {
   deleteReview,
   updateReview,
 } from "../services/reviews/reviews";
-import { useUser } from "./AuthContext";
 import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
 
 const CommentsContext = createContext<CommentsContextType | undefined>(
@@ -23,6 +23,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [userComment, setUserComment] = useState<Comment | null>(null);
   const [loading, setLoading] = useState(false);
+  const [rating, setRating] = useState<number>(0);
   const { user } = useUser();
 
   const fetchComments = useCallback(async (plantId: string) => {
@@ -77,7 +78,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     comment: string,
     rating: number
   ) => {
-    if (!comment.trim() || !user) return;
+    if (rating <= 0 || !user) return;
 
     const reviewDto: ReviewDto = {
       plantId,
@@ -105,7 +106,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     comment: string,
     rating: number
   ) => {
-    if (!comment.trim() || !user) return;
+    if (rating <= 0 || !user) return;
 
     const reviewDto: ReviewDto = {
       plantId,
@@ -139,12 +140,18 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const changeRating = (newRating: number) => {
+    setRating(newRating);
+  };
+
   return (
     <CommentsContext.Provider
       value={{
         comments,
         userComment,
         loading,
+        rating,
+        changeRating,
         fetchComments,
         fetchUserComment,
         addComment,

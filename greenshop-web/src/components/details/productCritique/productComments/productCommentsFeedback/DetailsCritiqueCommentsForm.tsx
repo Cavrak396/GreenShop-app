@@ -1,18 +1,18 @@
-import { useProduct } from "../../../../context/ProductContext";
-import { useComments } from "../../../../context/ReviewsContext";
 import { useState } from "react";
-import FormInput from "../../../../reusable/inputs/FormInput";
-import Button from "../../../../reusable/button/Button";
+import { useProduct } from "../../../../../context/ProductContext";
+import { useComments } from "../../../../../context/ReviewsContext";
+import FormInput from "../../../../../reusable/inputs/FormInput";
+import Button from "../../../../../reusable/button/Button";
 
 function DetailsCritiqueCommentsForm() {
   const { plantId } = useProduct();
-  const { addComment, userComment } = useComments();
+  const { addComment, userComment, rating } = useComments();
   const [comment, setComment] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (comment.trim() && !userComment) {
-      addComment(plantId, comment, 5);
+    if (rating) {
+      addComment(plantId, comment, rating);
       setComment("");
     }
   };
@@ -33,7 +33,7 @@ function DetailsCritiqueCommentsForm() {
       <Button
         type="submit"
         className="details__comments-button button"
-        disabled={!!userComment}
+        disabled={!!userComment || !rating}
       >
         {userComment ? "Submitted" : "Submit"}
       </Button>

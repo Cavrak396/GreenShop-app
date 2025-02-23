@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, ReactNode } from "react";
 
 export interface ProductType {
   name: string;
@@ -44,17 +44,6 @@ export interface DetailsInfoButtonsProps {
 
 export interface DetailsInfoContentProps {
   activatedButtonId: number;
-}
-
-export interface CommentsType {
-  id: number;
-  username: string;
-  comment: string;
-  rate: number;
-}
-
-export interface RatingsCountType {
-  [key: number]: number;
 }
 
 export interface ProductReviewType {

@@ -1,8 +1,8 @@
 import emptyStar from "../../assets/images/reusable/empty-star.svg";
 import fullStar from "../../assets/images/reusable/star.svg";
 import LazyImage from "../LazyImage/LazyImage";
-import "../reusable.css";
 import { StarsType } from "../types/stars";
+import "../reusable.css";
 
 const StaticStars = ({
   rate,

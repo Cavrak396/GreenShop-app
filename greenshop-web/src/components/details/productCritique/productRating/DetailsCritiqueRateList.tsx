@@ -1,11 +1,14 @@
-import { comments } from "../../utils/detailsUtils";
+import { useComments } from "../../../../context/ReviewsContext";
 import ProgressBar from "../../../../reusable/progress/ProgressBar";
 import { calculateRatingPercentages } from "../../utils/detailsUtils";
 
 function DetailsCritiqueRateList() {
+  const { comments } = useComments();
   const ratingPercentages = calculateRatingPercentages(comments);
 
-  const sortedRatings = ratingPercentages.sort((a, b) => b.rating - a.rating);
+  const sortedRatings = ratingPercentages.sort(
+    (a, b) => b.percentage - a.percentage
+  );
 
   return (
     <div className="details__rating-bars">
