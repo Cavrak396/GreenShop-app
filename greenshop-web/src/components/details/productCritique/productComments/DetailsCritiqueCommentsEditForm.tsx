@@ -5,14 +5,16 @@ import FormInput from "../../../../reusable/inputs/FormInput";
 import Button from "../../../../reusable/button/Button";
 
 function DetailsCritiqueCommentsEditForm() {
-  const [editedComment, setEditedComment] = useState("");
+  const { updateComment, rating, userComment } = useComments();
+  const [editedComment, setEditedComment] = useState(
+    userComment?.comment || ""
+  );
   const { id } = useParams();
-  const { updateComment } = useComments();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (id && editedComment.trim()) {
-      updateComment(id, editedComment, 5);
+    if (id) {
+      updateComment(id, editedComment, rating);
       setEditedComment("");
     }
   };

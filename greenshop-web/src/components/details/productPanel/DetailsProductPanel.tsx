@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import DetailsProductDescription from "../DetailsProductDescription";
 import ProductSizesList from "./ProductSizesList";
 import DetailsQuantity from "./DetailsQuantity";
@@ -8,11 +8,21 @@ import Title from "../../../reusable/titles/Title";
 import StaticStars from "../../../reusable/stars/StaticStars";
 import { useProduct } from "../../../context/ProductContext";
 import { useRatings } from "../../../customHooks/useRating";
-import { comments } from "../utils/detailsUtils";
+import { useComments } from "../../../context/ReviewsContext";
+import { useParams } from "react-router-dom";
 
 function DetailsProductPanel() {
   const product = useProduct();
+  const { comments, fetchComments, fetchUserComment } = useComments();
+  const { id } = useParams();
   const { avgRating } = useRatings(comments);
+
+  useEffect(() => {
+    if (id) {
+      fetchComments(id);
+      fetchUserComment(id);
+    }
+  }, [id, fetchComments, fetchUserComment]);
 
   const calculatedSalePrice = useMemo(() => {
     return product.sale_Percent
@@ -31,7 +41,7 @@ function DetailsProductPanel() {
             ${calculatedSalePrice.toFixed(2)}
           </span>
           <StaticStars
-            rate={Math.ceil(avgRating)}
+            rate={avgRating}
             starClassName="details__product-star"
             starPositionClassName="details__stars-line"
           />

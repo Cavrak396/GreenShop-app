@@ -2,15 +2,12 @@ import StaticStars from "../../../../reusable/stars/StaticStars";
 import DetailsCritiqueCommentsTools from "./productCommentsTools/DetailsCritiquesCommentsTools";
 import { DetailsCritiqueCommentsPersonalProps } from "../../../../context/types/reviewsTypes";
 import DetailsCritiqueCommentsEditForm from "./DetailsCritiqueCommentsEditForm";
+import DetailsCritiqueCommentsStars from "./productCommentsFeedback/DetailsCritiqueCommentsStars";
 import { useState } from "react";
 
 function DetailsCritiqueCommentsPersonal({
   comment,
 }: DetailsCritiqueCommentsPersonalProps) {
-  if (!comment || !comment.userName || !comment.comment) {
-    return <p>Invalid comment data</p>;
-  }
-
   const [isActiveEdit, setIsActiveEdit] = useState(false);
 
   return (
@@ -19,11 +16,15 @@ function DetailsCritiqueCommentsPersonal({
       <span className="details__comments-personal-name">
         {comment.userName}
       </span>
-      <StaticStars
-        rate={comment.rating}
-        starClassName="details__comments-star"
-        starPositionClassName="details__stars-line"
-      />
+      {isActiveEdit ? (
+        <DetailsCritiqueCommentsStars />
+      ) : (
+        <StaticStars
+          rate={comment.rating}
+          starClassName="details__comments-star"
+          starPositionClassName="details__stars-line"
+        />
+      )}
       {isActiveEdit && <DetailsCritiqueCommentsEditForm />}
       <p className="details__comments-personal-text">{comment.comment}</p>
     </div>
