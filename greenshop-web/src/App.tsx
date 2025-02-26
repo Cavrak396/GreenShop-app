@@ -16,8 +16,8 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <PlantsProvider>
-      <CartProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <CartProvider>
           <CommentsProvider>
             <Router>
               <Header />
@@ -31,8 +31,8 @@ function App() {
             </Router>
             <ToastContainer />
           </CommentsProvider>
-        </AuthProvider>
-      </CartProvider>
+        </CartProvider>
+      </AuthProvider>
     </PlantsProvider>
   );
 }

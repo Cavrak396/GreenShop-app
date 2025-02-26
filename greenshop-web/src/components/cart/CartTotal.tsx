@@ -1,4 +1,4 @@
-import { CartTotalProps } from "./types/CartTypes";
+import { CartTotalProps } from "./types/cartTypes";
 
 function CartTotal({ totalPrice }: CartTotalProps) {
   return (

@@ -1,5 +1,6 @@
 import axios from "axios";
-import { ReviewDto, ApiError } from "./reviewsTypes";
+import { ReviewDto } from "./reviewsTypes";
+import { ApiError } from "../reusable/reusableTypes";
 
 const API_BASE_URL = "http://localhost:8080";
 
