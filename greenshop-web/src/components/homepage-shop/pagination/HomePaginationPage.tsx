@@ -1,14 +1,10 @@
-interface PaginationPageProps {
-  page: number;
-  isActive: boolean;
-  handleClick: (page: number) => void;
-}
+import { PaginationPropsTypes } from "./types/paginationTypes";
 
 function HomePaginationPage({
   page,
   isActive,
   handleClick,
-}: PaginationPageProps) {
+}: PaginationPropsTypes) {
   return (
     <li
       className={`homepageshop__pagination-page ${

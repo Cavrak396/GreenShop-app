@@ -104,8 +104,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
       if ("message" in response) {
         console.error("API error:", response.message);
-      } else {
-        console.log("Cart synced successfully!", response);
       }
     } catch (error: any) {
       console.error("Error syncing cart:", error);
