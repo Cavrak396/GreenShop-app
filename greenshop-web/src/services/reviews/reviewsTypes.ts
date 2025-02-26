@@ -7,8 +7,3 @@ export interface ReviewDto {
     userName?: string;
     creationDate?: string;
 }
-
-export interface ApiError {
-    message: string;
-    status?: number;
-}

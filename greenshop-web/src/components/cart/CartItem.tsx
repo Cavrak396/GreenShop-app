@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import FormInput from "../../reusable/inputs/FormInput";
 import CartItemInfo from "./CartItemInfo";
-import { CartItemProps } from "./types/CartTypes";
+import { CartItemProps } from "./types/cartTypes";
 import Button from "../../reusable/button/Button";
 import { useCart } from "../../context/CartContext";
 import removeImg from "../../assets/images/cart/Delete.svg";
@@ -25,6 +25,12 @@ function CartItem({ item }: CartItemProps) {
     },
     [item.id, setQuantity]
   );
+  const formattedDate = useMemo(() => {
+    const dateAdded = new Date(item.dateAdded);
+    return dateAdded instanceof Date && !isNaN(dateAdded.getTime())
+      ? dateAdded.toLocaleDateString()
+      : "Invalid Date";
+  }, [item.dateAdded]);
 
   return (
     <li className="cart__list-item">
@@ -34,10 +40,7 @@ function CartItem({ item }: CartItemProps) {
         className="cart__item-image"
       />
       <div className="cart__item-info">
-        <CartItemInfo
-          label={item.label}
-          info={item.dateAdded.toLocaleDateString()}
-        />
+        <CartItemInfo label={item.label} info={formattedDate} />
         <CartItemInfo label="Price" info={`$${cartPrice.toFixed(2)}`} />
         <div className="cart__item-info-detail">
           <span className="cart__item-label">Quantity</span>

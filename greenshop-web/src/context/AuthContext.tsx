@@ -12,6 +12,7 @@ import {
   RegisterDTO,
   User,
 } from "./types/authTypes";
+import { ApiError } from "../services/reusable/reusableTypes";
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
@@ -51,14 +52,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setLoading(true);
       const response = await getCurrentUser();
 
-      if (response.message) {
-        setError(response.message);
+      if ("message" in response) {
+        const error: ApiError = { message: response.message };
+        setError(error.message);
       } else {
         setUser(response as User);
         console.log(response);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to fetch current user.");
+      const error: ApiError = {
+        message: err.message || "Failed to fetch current user.",
+      };
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -73,12 +78,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         localStorage.setItem("token", response.jwt);
         return response;
       } else {
-        setError("Login failed.");
-        return { message: "Login failed" };
+        const error: ApiError = { message: "Login failed." };
+        setError(error.message);
+        return error;
       }
     } catch (err: any) {
-      setError(err.message || "Login error.");
-      return { message: err.message || "Login failed" };
+      const error: ApiError = { message: err.message || "Login error." };
+      setError(error.message);
+      return error;
     } finally {
       setLoading(false);
     }
@@ -93,11 +100,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         localStorage.setItem("token", response.jwt);
         return response;
       } else {
-        setError("Registration failed.");
-        return { message: "Registration failed" };
+        const error: ApiError = { message: "Registration failed." };
+        setError(error.message);
+        return error;
       }
     } catch (err: any) {
-      return { message: err.message || "Registration failed" };
+      const error: ApiError = { message: err.message || "Registration failed" };
+      return error;
     } finally {
       setLoading(false);
     }
@@ -111,7 +120,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setToken(null);
       localStorage.removeItem("token");
     } catch (err: any) {
-      setError(err.message || "Logout failed.");
+      const error: ApiError = { message: err.message || "Logout failed." };
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -119,8 +129,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const deleteAccount = async () => {
     if (!token) {
-      setError("User not authenticated.");
-      return { message: "User not authenticated" };
+      const error: ApiError = { message: "User not authenticated." };
+      setError(error.message);
+      return error;
     }
 
     try {
@@ -131,8 +142,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       localStorage.removeItem("token");
       return response;
     } catch (err: any) {
-      setError(err.message || "Account deletion failed.");
-      return { message: err.message || "Account deletion failed" };
+      const error: ApiError = {
+        message: err.message || "Account deletion failed.",
+      };
+      setError(error.message);
+      return error;
     } finally {
       setLoading(false);
     }

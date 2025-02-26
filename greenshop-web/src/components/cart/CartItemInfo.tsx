@@ -1,5 +1,5 @@
 import React from "react";
-import { CartItemInfoType } from "./types/CartTypes";
+import { CartItemInfoType } from "./types/cartTypes";
 
 const CartItemInfo = React.memo(function CartItemInfo({
   label,

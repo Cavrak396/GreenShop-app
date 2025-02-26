@@ -1,3 +1,5 @@
+import { ApiError } from "../../services/reusable/reusableTypes";
+
 export interface LoginDTO {
     email: string;
     password: string;
@@ -34,9 +36,4 @@ export interface AuthContextProps {
     deleteAccount: () => Promise<ApiError | { message: string }>;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setToken: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-export interface ApiError {
-    message: string;
-    jwt?: string | null;
 }

@@ -8,19 +8,6 @@ export interface CartItem {
   dateAdded: Date;
 }
 
-export interface CartContextType {
-  cartItems: CartItem[];
-  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  quantities: { [key: number]: number };
-  setQuantities: React.Dispatch<
-    React.SetStateAction<{ [key: number]: number }>
-  >;
-  totalPrice: number;
-  setQuantity: (productId: number, quantity: number) => void;
-  removeItem: (itemId: number) => void;
-  addItemToCart: (newItem: CartItem, quantity: number) => void;
-}
-
 export interface CartTotalProps {
   totalPrice: number;
 }
