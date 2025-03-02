@@ -3,9 +3,10 @@ import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
 import { authInstructions } from "./utils/authUtils";
 import AuthForm from "./AuthForm";
+import { subscribeToNewsletter } from "../../services/subscribers/subscribers";
 import "./authorization.css";
 
-const AuthContent: React.FC = () => {
+function AuthContent() {
   const [activatedId, setActivatedId] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
@@ -48,10 +49,35 @@ const AuthContent: React.FC = () => {
         // Register
         const name = inputRefs.current[4]?.value;
         const password = inputRefs.current[3]?.value;
+        const subscribeEmail = inputRefs.current[5]?.value;
+
+        const isSubscribed =
+          subscribeEmail &&
+          subscribeEmail.length > 0 &&
+          subscribeEmail === email
+            ? true
+            : false;
 
         if (name && email && password) {
-          await register({ name, email, password });
-          setSuccessMessage("Successfully registered!");
+          await register({ name, email, password, isSubscribed });
+
+          if (subscribeEmail) {
+            const subscribeResponse = await subscribeToNewsletter(
+              subscribeEmail
+            );
+
+            if (subscribeResponse.success) {
+              setSuccessMessage(
+                "Successfully registered and subscribed to the newsletter!"
+              );
+            } else {
+              setSuccessMessage(
+                "Successfully registered, but failed to subscribe to the newsletter."
+              );
+            }
+          } else {
+            setSuccessMessage("Successfully registered!");
+          }
         } else {
           setError("All fields are required for registration.");
         }
@@ -98,6 +124,6 @@ const AuthContent: React.FC = () => {
       )}
     </div>
   );
-};
+}
 
 export default AuthContent;

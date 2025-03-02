@@ -18,6 +18,7 @@ export const authInputs: AuthInput[] = [
   { id: 2, type: "password", placeholder: "Password", icon: hide },
   { id: 3, type: "password", placeholder: "Confirm password", icon: hide },
   { id: 4, type: "text", placeholder: "Create your username" },
+  { id: 5, type: "text", placeholder: "Enter you email for subscribe" }
 ];
 
 export const socialAccountWays: SocialButton[] = [
