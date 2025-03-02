@@ -9,6 +9,7 @@ export interface RegisterDTO {
     name: string;
     email: string;
     password: string;
+    isSubscribed: boolean;
 }
 
 export interface AuthResponse {

@@ -1,66 +1,82 @@
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-import { SubscribeResponseType, SubscriberType } from "./subscribersTypes";
+import { ApiError } from "../reusable/reusableTypes";
 
-export const subscribeToNewsletter = async (email: string): Promise<SubscribeResponseType> => {
+const API_BASE_URL = "http://localhost:8080";
+
+const axiosInstance = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    withCredentials: false,
+});
+
+const handleApiError = (error: any): ApiError => {
+    if (error.response) {
+        console.error("API Error Response:", error.response.data);
+        return error.response.data as ApiError;
+    } else if (error.request) {
+        console.error("No response received from server:", error.request);
+        return { message: "No response from the server. Please try again later." };
+    } else {
+        console.error("Unexpected Error:", error.message);
+        return { message: error.message };
+    }
+};
+
+export const getSubscribers = async (): Promise<any[] | ApiError> => {
     try {
-        const subscriberId = uuidv4();
+        const response = await axiosInstance.get("/subscribers");
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
 
-        const existingSubscribers = await axios.get("http://localhost:8080/Subscribers", {
-            withCredentials: false,
+export const subscribeToNewsletter = async (
+    email: string
+): Promise<{ success: boolean; message: string } | ApiError> => {
+    try {
+        const response = await axiosInstance.post("/subscribers", {
+            subscriberEmail: email,
         });
 
-        const isEmailAlreadySubscribed = existingSubscribers.data.some((subscriber: SubscriberType) => subscriber.subscriberEmail === email);
-
-        if (isEmailAlreadySubscribed) {
-            return {
-                success: false,
-                message: "This email is already subscribed.",
-            };
-        }
-
-        const response = await axios.post(
-            "http://localhost:8080/Subscribers",
-            {
-                subscriberId,
-                subscriberEmail: email
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                withCredentials: false,
-            }
-        );
+        console.log("Subscription response:", response);
 
         return {
             success: true,
             message: `Subscription successful! Welcome, ${response.data.subscriberEmail}`,
         };
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.response) {
-                if (error.response.status === 409) {
-                    return {
-                        success: false,
-                        message: "This email is already subscribed.",
-                    };
-                }
-                return {
-                    success: false,
-                    message: error.response.data.message || "An error occurred. Please try again.",
-                };
-            } else if (error.request) {
-                return {
-                    success: false,
-                    message: "No response from server. Please try again later.",
-                };
-            }
-        }
-
-        return {
-            success: false,
-            message: "Failed to connect to the server. Please try again later.",
-        };
+        const apiError = handleApiError(error);
+        console.log("Error during subscription:", apiError);
+        return apiError;
     }
 };
+
+
+export const deleteAllSubscribers = async (): Promise<ApiError | void> => {
+    try {
+        await axiosInstance.delete("/subscribers");
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const deleteSubscriberById = async (
+    subscriberId: string
+): Promise<ApiError | void> => {
+    try {
+        if (!subscriberId) {
+            return {
+                message: "Bad Request: Subscriber ID is required.",
+            } as ApiError;
+        }
+
+        await axiosInstance.delete(`/subscribers/${subscriberId}`);
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export default axiosInstance;

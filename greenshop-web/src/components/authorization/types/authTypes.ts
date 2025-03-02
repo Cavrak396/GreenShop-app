@@ -6,8 +6,9 @@ export interface AuthType {
 export interface AuthInput {
   id: number;
   type: string;
-  placeholder: string;
+  placeholder?: string;
   icon?: string;
+  label?: string;
 }
 
 export interface SocialButton {
