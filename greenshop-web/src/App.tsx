@@ -11,27 +11,30 @@ import { PlantsProvider } from "./context/PlantsContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CommentsProvider } from "./context/ReviewsContext";
 import { ToastContainer } from "react-toastify";
+import { SubscriberProvider } from "./context/SubscribersContext";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <PlantsProvider>
       <AuthProvider>
-        <CartProvider>
-          <CommentsProvider>
-            <Router>
-              <Header />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/details/:id" element={<DetailsPage />} />
-                <Route path="/developers" element={<DevelopersPage />} />
-              </Routes>
-              <Footer />
-              <UserBar />
-            </Router>
-            <ToastContainer />
-          </CommentsProvider>
-        </CartProvider>
+        <SubscriberProvider>
+          <CartProvider>
+            <CommentsProvider>
+              <Router>
+                <Header />
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/details/:id" element={<DetailsPage />} />
+                  <Route path="/developers" element={<DevelopersPage />} />
+                </Routes>
+                <Footer />
+                <UserBar />
+              </Router>
+              <ToastContainer />
+            </CommentsProvider>
+          </CartProvider>
+        </SubscriberProvider>
       </AuthProvider>
     </PlantsProvider>
   );
