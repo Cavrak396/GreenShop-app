@@ -28,6 +28,7 @@ function UserAccountContent({ isActive }: { isActive: number }) {
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>
           <ConfirmationContent
+            type="unsubscribe"
             setIsAppear={setIsAppear}
             onConfirmAction={onConfirmAction}
             message="Are you sure about this action, this action can change your current status?"

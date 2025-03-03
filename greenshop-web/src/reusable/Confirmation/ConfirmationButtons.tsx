@@ -1,19 +1,30 @@
 import Button from "../button/Button";
-import { ConfirmationTypes } from "../types/confirmationTypes";
-
-type ConfirmationButtonsProps = ConfirmationTypes & {
-  onConfirmAction: (() => void) | null;
-};
+import { ConfirmationButtonsProps } from "../types/confirmationTypes";
+import { useSubscriber } from "../../context/SubscribersContext";
 
 function ConfirmationButtons({
   setIsAppear,
   onConfirmAction,
+  type,
 }: ConfirmationButtonsProps) {
+  const { unsubscribe } = useSubscriber();
+
+  function handleActionClick() {
+    switch (type) {
+      case "unsubscribe":
+        unsubscribe();
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <div className="confirmation__buttons">
       <Button
         className="confirmation__button button"
         onClick={() => {
+          handleActionClick();
           if (onConfirmAction) onConfirmAction();
         }}
       >

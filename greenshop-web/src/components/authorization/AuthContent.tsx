@@ -3,7 +3,7 @@ import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
 import { authInstructions } from "./utils/authUtils";
 import AuthForm from "./AuthForm";
-import { subscribeToNewsletter } from "../../services/subscribers/subscribers";
+import { useSubscriber } from "../../context/SubscribersContext";
 import "./authorization.css";
 
 function AuthContent() {
@@ -13,6 +13,7 @@ function AuthContent() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { login, register, setUser, setToken, loading } = useUser();
+  const { subscribe } = useSubscriber();
 
   const togglePasswordVisibility = useCallback((id: number) => {
     setShowPassword((prev) => ({
@@ -62,9 +63,7 @@ function AuthContent() {
           await register({ name, email, password, isSubscribed });
 
           if (subscribeEmail) {
-            const subscribeResponse = await subscribeToNewsletter(
-              subscribeEmail
-            );
+            const subscribeResponse = await subscribe(subscribeEmail);
 
             if (subscribeResponse.success) {
               setSuccessMessage(
