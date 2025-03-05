@@ -128,13 +128,10 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
 
     try {
-      const response = await deleteReview(plantId);
-      if (response) {
-        await fetchComments(plantId);
-        setUserComment(null);
-      } else {
-        console.error("Error deleting comment:", response);
-      }
+      await deleteReview(plantId);
+      await fetchComments(plantId);
+      setUserComment(null);
+      setRating(0);
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
