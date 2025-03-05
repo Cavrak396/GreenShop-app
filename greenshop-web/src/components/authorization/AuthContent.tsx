@@ -1,17 +1,17 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
-import { authInstructions } from "./utils/authUtils";
+import { authInstructions, emailRegex } from "./utils/authUtils";
 import AuthForm from "./AuthForm";
 import { useSubscriber } from "../../context/SubscribersContext";
+import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
+import { toast } from "react-toastify";
 import "./authorization.css";
 
 function AuthContent() {
   const [activatedId, setActivatedId] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const { login, register, setUser, setToken, loading } = useUser();
   const { subscribe } = useSubscriber();
 
@@ -24,12 +24,13 @@ function AuthContent() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSuccessMessage(null);
-    setError(null);
 
     try {
       const email = inputRefs.current[1]?.value;
       const password = inputRefs.current[2]?.value;
+      const confirmationPassword = inputRefs.current[3]?.value;
+      const name = inputRefs.current[4]?.value;
+      const subscribeEmail = inputRefs.current[5]?.value;
 
       if (activatedId === 1) {
         // Login
@@ -39,57 +40,58 @@ function AuthContent() {
           if (loginResponse && loginResponse.jwt) {
             setUser({ email });
             setToken(loginResponse.jwt);
-            setSuccessMessage("Successfully logged in!");
+            toast.success("Successfully logged in!");
+          } else if (!emailRegex.test(email)) {
+            toast.error("Write a correct email.");
           } else {
-            setError("Login failed: Invalid response");
+            toast.error("This account doesn't exist");
           }
         } else {
-          setError("Email and password are required.");
+          toast.error("Email and password are required.");
         }
       } else {
         // Register
-        const name = inputRefs.current[4]?.value;
-        const password = inputRefs.current[3]?.value;
-        const subscribeEmail = inputRefs.current[5]?.value;
-
-        const isSubscribed =
-          subscribeEmail &&
-          subscribeEmail.length > 0 &&
-          subscribeEmail === email
-            ? true
-            : false;
-
-        if (name && email && password) {
-          await register({ name, email, password, isSubscribed });
-
-          if (subscribeEmail) {
-            const subscribeResponse = await subscribe(subscribeEmail);
-
-            if (subscribeResponse.success) {
-              setSuccessMessage(
-                "Successfully registered and subscribed to the newsletter!"
-              );
-            } else {
-              setSuccessMessage(
-                "Successfully registered, but failed to subscribe to the newsletter."
-              );
-            }
+        if (!name || !email || !password || password !== confirmationPassword) {
+          if (password !== confirmationPassword) {
+            toast.error("Passwords do not match.");
           } else {
-            setSuccessMessage("Successfully registered!");
+            toast.error("All fields are required for registration.");
+          }
+          return;
+        }
+
+        if (subscribeEmail && subscribeEmail !== email) {
+          toast.error("Subscription email does not match registration email.");
+          return;
+        }
+
+        await register({
+          name,
+          email,
+          password,
+          isSubscribed: subscribeEmail ? true : false,
+        });
+
+        if (subscribeEmail) {
+          const subscribeResponse = await subscribe(subscribeEmail);
+
+          if (subscribeResponse.success) {
+            toast.success("Successfully registered and subscribed!");
+          } else {
+            toast.success("Successfully registered!");
           }
         } else {
-          setError("All fields are required for registration.");
+          toast.success("Successfully registered!");
         }
       }
     } catch (err: unknown) {
       console.error("Error during authentication:", err);
 
       if (err instanceof Error) {
-        setError(err.message);
+        toast.error(err.message);
       } else {
-        setError("An unknown error occurred.");
+        toast.error("An unknown error occurred.");
       }
-      setSuccessMessage(null);
     }
   };
 
@@ -112,15 +114,7 @@ function AuthContent() {
         togglePasswordVisibility={togglePasswordVisibility}
         onSubmit={handleSubmit}
       />
-      {loading && <p>Loading...</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      {error && (
-        <p style={{ color: "red" }}>
-          {activatedId === 1
-            ? `Login failed: ${error}`
-            : `Registration failed: ${error}`}
-        </p>
-      )}
+      {loading && <LoadingSpinner />}
     </div>
   );
 }

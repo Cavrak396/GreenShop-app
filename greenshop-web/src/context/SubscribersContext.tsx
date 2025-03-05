@@ -35,6 +35,7 @@ export function SubscriberProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       const response = await getSubscribers();
+      console.log(response);
       if (Array.isArray(response)) {
         const matchedSubscriber = response.find(
           (subscriber) => subscriber.subscriberEmail === user?.userEmail

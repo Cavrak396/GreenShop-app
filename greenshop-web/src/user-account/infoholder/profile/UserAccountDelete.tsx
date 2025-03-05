@@ -3,7 +3,7 @@ import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
 import { useUser } from "../../../context/AuthContext";
 
 function UserAccountDelete({ setIsAppear }: ConfirmationTypes) {
-  const { deleteAccount, loading, error, token } = useUser();
+  const { deleteAccount, loading, token } = useUser();
 
   const handleDelete = async () => {
     if (!token) {
@@ -32,7 +32,6 @@ function UserAccountDelete({ setIsAppear }: ConfirmationTypes) {
         If you wish to delete your account, you can easily do so by clicking the
         button below. You're always welcome back!
       </p>
-      {error && <p className="error-message">{error}</p>}
       <Button
         className="useraccount__profile-button button"
         onClick={handleDelete}
