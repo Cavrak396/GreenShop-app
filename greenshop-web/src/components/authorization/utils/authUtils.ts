@@ -13,6 +13,8 @@ export const authInstructions = new Map<number, string>([
   [2, "email and password to register"],
 ]);
 
+export const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
 export const authInputs: AuthInput[] = [
   { id: 1, type: "text", placeholder: "Enter your email address" },
   { id: 2, type: "password", placeholder: "Password", icon: hide },

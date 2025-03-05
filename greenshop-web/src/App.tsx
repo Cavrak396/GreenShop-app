@@ -31,7 +31,7 @@ function App() {
                 <Footer />
                 <UserBar />
               </Router>
-              <ToastContainer />
+              <ToastContainer position="top-right" autoClose={3000} />
             </CommentsProvider>
           </CartProvider>
         </SubscriberProvider>

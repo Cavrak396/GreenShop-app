@@ -31,7 +31,6 @@ export interface AuthFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-
 export interface AuthFormInputProps {
   input: AuthInput;
   refHandler: (el: HTMLInputElement | null) => void;
@@ -48,4 +47,3 @@ export interface AuthCurrentDataTypes {
   setShowPassword?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
   togglePasswordVisibility: (id: number) => void;
 }
-
