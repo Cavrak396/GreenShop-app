@@ -1,23 +1,14 @@
+import { footerNavigationLinks } from "./utils/footerNavigationUtils";
 import FooterNavigationItem from "./FooterNavigationItem";
-import { footerNavigationLinks, sections } from "./utils/footerNavigationUtils";
-import Title from "../../../reusable/titles/Title";
+import { FooterNavigationListProps } from "./types/footerNavigationTypes";
 
-function FooterNavigationList() {
+function FooterNavigationList({ section }: FooterNavigationListProps) {
   return (
-    <div className="footer__navigation-lists">
-      {sections.map((section, index) => (
-        <ul key={index} className="footer__navigation-list">
-          <Title className="footer__navigation-title small-title">
-            {section.title}
-          </Title>
-          {footerNavigationLinks
-            .slice(section.start, section.end)
-            .map((item) => (
-              <FooterNavigationItem key={item.id} item={item} />
-            ))}
-        </ul>
+    <ul role="list">
+      {footerNavigationLinks.slice(section.start, section.end).map((item) => (
+        <FooterNavigationItem key={item.id} item={item} />
       ))}
-    </div>
+    </ul>
   );
 }
 

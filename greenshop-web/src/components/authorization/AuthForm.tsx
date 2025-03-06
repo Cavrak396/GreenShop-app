@@ -3,6 +3,7 @@ import { authInputs } from "./utils/authUtils";
 import AuthFormInput from "./AuthFormInput";
 import Button from "../../reusable/button/Button";
 import AuthSocialButtons from "./AuthSocialButtons";
+import AccessibiltyText from "../../reusable/accessibility-text/AccessibilityText";
 
 function AuthForm({
   activatedId,
@@ -22,7 +23,12 @@ function AuthForm({
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} aria-labelledby="auth-form-title">
+      <AccessibiltyText
+        text={actionTypeText === "login" ? "Login Form" : "Register Form"}
+        id="auth-form-title"
+      />
+
       {inputsToShow.map((input) => (
         <AuthFormInput
           key={input.id}
@@ -31,15 +37,27 @@ function AuthForm({
           showPassword={showPassword?.[input.id]}
           togglePasswordVisibility={togglePasswordVisibility}
           onChange={(e) => handleInputChange(e, input.id)}
+          aria-label={input.label}
+          aria-describedby={`input-desc-${input.id}`}
         />
       ))}
-      <Button className="authorization__form-button button" type="submit">
-        {actionTypeText}
+
+      <Button
+        className="authorization__form-button button"
+        type="submit"
+        aria-label={`Submit ${actionTypeText}`}
+      >
+        Submit
       </Button>
+
       <span className="authorization__form-guidance">
         or {actionTypeText} with:
       </span>
-      <div className="authorization__form-social">
+
+      <div
+        className="authorization__form-social"
+        aria-label="Social media login options"
+      >
         <AuthSocialButtons activatedId={activatedId} />
       </div>
     </form>

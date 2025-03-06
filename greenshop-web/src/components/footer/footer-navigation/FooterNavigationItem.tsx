@@ -6,6 +6,7 @@ function FooterNavigationItem({ item }: FooterNavigationItemType) {
       <a
         href="#"
         className="footer__navigation-link"
+        aria-label={item.text}
         onClick={(e) => e.preventDefault()}
       >
         {item.text}

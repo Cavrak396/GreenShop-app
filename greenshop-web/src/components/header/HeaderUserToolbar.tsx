@@ -21,11 +21,7 @@ function HeaderUserToolbar() {
           setIsAppear={setIsAppear}
         />
       ))}
-      {token ? (
-        <HeaderAccount />
-      ) : (
-        <LoginButton />
-      )}
+      {token ? <HeaderAccount /> : <LoginButton />}
     </ul>
   );
 }

@@ -29,6 +29,8 @@ function DetailsCritiqueCommentsStars() {
           onMouseEnter={() => handleMouseEnter(index)}
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick(index)}
+          aria-label={`Rate ${index + 1} star`}
+          role="button"
         >
           <LazyImage
             src={

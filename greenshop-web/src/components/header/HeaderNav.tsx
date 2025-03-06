@@ -10,7 +10,7 @@ function HeaderNav() {
   }, []);
 
   return (
-    <ul className="header__navigation-list">
+    <ul className="header__navigation-list" aria-label="Main navigation menu">
       {navigationList.map(({ id, label }) => (
         <HeaderNavItem
           key={id}

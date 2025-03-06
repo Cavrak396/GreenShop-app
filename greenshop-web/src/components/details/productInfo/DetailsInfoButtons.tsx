@@ -15,6 +15,8 @@ function DetailsInfoButtons({
             activatedButtonId === button.id ? "activated" : ""
           }`}
           onClick={() => handleButtonClick(button.id)}
+          aria-label={button.text}
+          aria-pressed={activatedButtonId === button.id ? "true" : "false"}
         >
           {button.text}
         </Button>

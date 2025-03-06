@@ -8,7 +8,10 @@ function FooterSocialList() {
       <Title className="footer__navigation-title small-title">
         Social Media
       </Title>
-      <ul className="footer__navigation-social-list">
+      <ul
+        className="footer__navigation-social-list"
+        aria-label="Social Media Links"
+      >
         {footerNavigationSocial.map((item) => (
           <FooterSocialItem key={item.id} item={item} />
         ))}

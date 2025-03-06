@@ -11,3 +11,14 @@ export const categoriesSize: CategoriesTypes[] = [
   { id: 2, label: "Medium", size: 33 },
   { id: 3, label: "Large", size: 33 },
 ];
+
+export const MIN_PRICE = 0;
+export const MAX_PRICE = 300;
+
+export const handleMinPriceChange = (newMin: number, maxPrice: number) => {
+  return Math.min(newMin, maxPrice);
+};
+
+export const handleMaxPriceChange = (newMax: number, minPrice: number) => {
+  return Math.max(newMax, minPrice);
+};
