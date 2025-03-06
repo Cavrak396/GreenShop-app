@@ -1,4 +1,4 @@
-import FooterNavigationList from "./FooterNavigationList";
+import FooterNavigationList from "./FooterNavigationSection";
 import FooterSocial from "./footer-social/FooterSocial";
 
 function FooterNavigation() {

@@ -23,21 +23,21 @@ function HeaderNavItem({
   };
 
   return (
-    <>
-      <li className="header__navigation-item" key={id}>
-        <a
-          className={`header__navigation-link ${
-            activeLink === id ? "header__navigation-link--activated" : ""
-          }`}
-          onClick={() => {
-            handleLinkClick(id);
-            handleNavigation(label);
-          }}
-        >
-          {label}
-        </a>
-      </li>
-    </>
+    <li className="header__navigation-item" key={id}>
+      <a
+        className={`header__navigation-link ${
+          activeLink === id ? "header__navigation-link--activated" : ""
+        }`}
+        onClick={() => {
+          handleLinkClick(id);
+          handleNavigation(label);
+        }}
+        aria-label={label}
+        aria-current={activeLink === id ? "page" : undefined}
+      >
+        {label}
+      </a>
+    </li>
   );
 }
 

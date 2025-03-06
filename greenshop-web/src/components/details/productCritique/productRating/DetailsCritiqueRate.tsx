@@ -8,16 +8,23 @@ function DetailsCritiqueRate() {
   const { avgRating } = useRatings(comments);
 
   return (
-    <div className="details__critique-rate">
+    <div className="details__critique-rate" aria-live="polite">
       <LazyImage
         src={rateStar}
-        alt="rate start image"
+        alt="Rate this product"
         className="details__critique-rate-image"
+        aria-label="Rating star icon"
       />
-      <span className="details__critique-rate-stats">
+      <span
+        className="details__critique-rate-stats"
+        aria-describedby="rating-stat-description"
+      >
         {Math.ceil(avgRating)}.0
       </span>
-      <span className="details__critique-rate-number">
+      <span
+        className="details__critique-rate-number"
+        id="rating-stat-description"
+      >
         {comments.length} users rated this
       </span>
     </div>

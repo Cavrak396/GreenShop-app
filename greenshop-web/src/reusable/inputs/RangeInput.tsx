@@ -22,7 +22,10 @@ function RangeInput({ className, min, max, value, onChange }: RangeType) {
       min={min}
       max={max}
       value={value}
+      aria-valuemin={min}
+      aria-valuemax={max}
       aria-valuenow={value}
+      aria-label="Price range"
       onChange={(e) => onChange(Number(e.target.value))}
       ref={rangeRef}
     />

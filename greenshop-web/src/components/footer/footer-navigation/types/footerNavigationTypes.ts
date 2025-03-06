@@ -22,3 +22,7 @@ export interface Sections {
   start: number;
   end: number;
 }
+
+export interface FooterNavigationListProps {
+  section: Sections;
+}

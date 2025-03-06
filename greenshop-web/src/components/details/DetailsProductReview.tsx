@@ -10,16 +10,22 @@ function DetailsProductReview({ setIsAppear }: ProductReviewType) {
 
   return (
     <div className="details__review-container">
-      <div className="details__review" onClick={handleImageZoom}>
+      <div
+        className="details__review"
+        onClick={handleImageZoom}
+        role="button"
+        aria-label="Zoom in to enlarge the image"
+        aria-pressed="false"
+      >
         <img
           src={magnifier}
           className="details__review-magnifier"
-          alt="magnifier"
+          alt="Magnifying glass icon for zooming"
         />
         <LazyImage
           src={ProductImage}
           className="details__review-image"
-          alt="product image"
+          alt="Product image"
         />
       </div>
     </div>

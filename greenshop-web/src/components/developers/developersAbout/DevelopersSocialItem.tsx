@@ -9,6 +9,7 @@ function DevelopersSocialItem({ social }: { social: SocialTypes }) {
         target="_blank"
         rel="noopener noreferrer"
         className="about__social-link"
+        aria-label={`Visit ${social.name} profile`}
       >
         <LazyImage
           src={social.icon}

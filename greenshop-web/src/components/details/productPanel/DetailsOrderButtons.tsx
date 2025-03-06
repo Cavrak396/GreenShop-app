@@ -39,6 +39,8 @@ function DetailsOrderButtons() {
             isActive === button.id ? "button" : ""
           }`}
           onClick={() => handleButtonClick(button.id, button.text)}
+          aria-label={button.text === "Add to cart" ? isAdded : button.text}
+          aria-pressed={isActive === button.id ? "true" : "false"}
         >
           {button.text === "Add to cart" ? isAdded : button.text}
         </Button>
