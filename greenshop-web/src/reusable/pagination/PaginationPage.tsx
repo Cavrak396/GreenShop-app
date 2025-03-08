@@ -1,10 +1,6 @@
-import { PaginationPropsTypes } from "./types/paginationTypes";
+import { PaginationPropsTypes } from "../types/paginationTypes";
 
-function HomePaginationPage({
-  page,
-  isActive,
-  handleClick,
-}: PaginationPropsTypes) {
+function PaginationPage({ page, isActive, handleClick }: PaginationPropsTypes) {
   return (
     <li
       className={`homepageshop__pagination-page ${
@@ -18,4 +14,4 @@ function HomePaginationPage({
   );
 }
 
-export default HomePaginationPage;
+export default PaginationPage;

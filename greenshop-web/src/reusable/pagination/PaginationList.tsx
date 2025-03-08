@@ -1,7 +1,7 @@
-import HomePaginationPage from "./HomePaginationPage";
-import { PaginationTypes } from "./types/paginationTypes";
+import HomePaginationPage from "./PaginationPage";
+import { PaginationTypes } from "../types/paginationTypes";
 
-function HomePagePaginationList({
+function PaginationList({
   visiblePages,
   activePage,
   handlePageClick,
@@ -20,4 +20,4 @@ function HomePagePaginationList({
   );
 }
 
-export default HomePagePaginationList;
+export default PaginationList;
