@@ -1,20 +1,22 @@
-import { SetPageFunctions, VisiblePagesParams } from "../types/paginationTypes";
-
-export const NUM_OF_ARTICLES = 50;
-export const ITEMS_PER_PAGE = 9;
-export const numOfPages = Math.ceil(NUM_OF_ARTICLES / ITEMS_PER_PAGE);
-export const pages = Array.from({ length: numOfPages }, (_, i) => i + 1);
+import {
+  SetPageFunctions,
+  VisiblePagesParams,
+} from "../../types/paginationTypes";
 
 export function getVisiblePages({
   rangeStartPage,
-}: VisiblePagesParams): number[] {
-  return pages.slice(rangeStartPage - 1, rangeStartPage + 3);
+  numOfPages,
+}: VisiblePagesParams & { numOfPages: number }): number[] {
+  return Array.from({ length: 4 }, (_, i) => rangeStartPage + i).filter(
+    (page) => page <= numOfPages
+  );
 }
 
 export function handleMoveToLastPage({
   setActivePage,
   setRangeStartPage,
-}: SetPageFunctions) {
+  numOfPages,
+}: SetPageFunctions & { numOfPages: number }) {
   setActivePage(numOfPages);
   setRangeStartPage(numOfPages - 3);
 }
@@ -30,7 +32,8 @@ export function handleMoveToFirstPage({
 export function handlePageClick(
   page: number,
   rangeStartPage: number,
-  { setActivePage, setRangeStartPage }: SetPageFunctions
+  { setActivePage, setRangeStartPage }: SetPageFunctions,
+  numOfPages: number
 ) {
   setActivePage(page);
   if (page === rangeStartPage + 3 && rangeStartPage + 4 <= numOfPages) {

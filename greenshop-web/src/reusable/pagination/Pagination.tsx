@@ -1,46 +1,54 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
-  numOfPages,
   handleMoveToFirstPage,
   handleMoveToLastPage,
   getVisiblePages,
   handlePageClick as handlePageClickUtil,
 } from "./utils/paginationUtils";
-import arrow from "../../../assets/images/shop/pagination/arrow-right.svg";
-import HomePagePaginationList from "./HomePaginationList";
-import { usePlants } from "../../../context/PlantsContext";
+import arrow from "../../assets/images/shop/pagination/arrow-right.svg";
+import HomePagePaginationList from "./PaginationList";
+import { PaginationItemsProps } from "../types/paginationTypes";
 import "./pagination.css";
 
-function HomePagePagination() {
-  const { loadPlants } = usePlants();
-  const [activePage, setActivePage] = useState<number>(1);
-  const [rangeStartPage, setRangeStartPage] = useState<number>(1);
+function Pagination({
+  totalItems,
+  itemsPerPage,
+  loadItems,
+}: PaginationItemsProps) {
+  const numOfPages = Math.ceil(totalItems / itemsPerPage);
+  const [activePage, setActivePage] = useState(1);
+  const [rangeStartPage, setRangeStartPage] = useState(1);
 
   const prevActivePage = useRef(activePage);
 
   const visiblePages = useMemo(
-    () => getVisiblePages({ rangeStartPage }),
-    [rangeStartPage]
+    () => getVisiblePages({ rangeStartPage, numOfPages }),
+    [rangeStartPage, numOfPages]
   );
 
   useEffect(() => {
     if (prevActivePage.current !== activePage) {
-      loadPlants({
+      loadItems({
         page: activePage,
-        pageSize: 9,
+        pageSize: itemsPerPage,
       });
       prevActivePage.current = activePage;
     }
-  }, [activePage, loadPlants]);
+  }, [activePage, loadItems, itemsPerPage]);
 
   const handlePageClick = useCallback(
     (page: number) => {
-      handlePageClickUtil(page, rangeStartPage, {
-        setActivePage,
-        setRangeStartPage,
-      });
+      handlePageClickUtil(
+        page,
+        rangeStartPage,
+        {
+          setActivePage,
+          setRangeStartPage,
+        },
+        numOfPages
+      );
     },
-    [rangeStartPage]
+    [rangeStartPage, numOfPages]
   );
 
   return (
@@ -67,7 +75,11 @@ function HomePagePagination() {
           alt="Go to last page"
           className="homepageshop__pagination-arrow"
           onClick={() =>
-            handleMoveToLastPage({ setActivePage, setRangeStartPage })
+            handleMoveToLastPage({
+              setActivePage,
+              setRangeStartPage,
+              numOfPages,
+            })
           }
           aria-label="Go to last page"
         />
@@ -76,4 +88,4 @@ function HomePagePagination() {
   );
 }
 
-export default HomePagePagination;
+export default Pagination;
