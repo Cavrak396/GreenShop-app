@@ -1,4 +1,4 @@
-import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
+import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
 import UserAccountCopy from "./UserAccountCopy";
 import UserAccountDelete from "./UserAccountDelete";
 import UserAccountInfo from "./UserAccountInfo";

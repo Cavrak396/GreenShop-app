@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userBarItemType } from "./types/userBarTypes";
 import Portal from "../../reusable/Portal/Portal";
 import Cart from "../cart/Cart";
-import UserAccount from "../../user-account/UserAccount";
+import UserAccount from "../user-account/UserAccount";
 
 function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
   const navigate = useNavigate();

@@ -5,12 +5,14 @@ import {
   logoutUser,
   deleteUser,
   getCurrentUser,
+  updateUser,
 } from "../services/auth/auth";
 import {
   AuthContextProps,
   LoginDTO,
   RegisterDTO,
   User,
+  UserDto,
 } from "./types/authTypes";
 import { ApiError } from "../services/reusable/reusableTypes";
 
@@ -152,6 +154,41 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
+  const updateUserDetails = async (dto: UserDto) => {
+    if (!token) {
+      const error: ApiError = { message: "User not authenticated." };
+      setError(error.message);
+      return error;
+    }
+
+    try {
+      setLoading(true);
+      const response = await updateUser(dto);
+      console.log(response);
+
+      if (!response) {
+        setError("No data returned from the server.");
+        return { message: "No data returned from the server." } as ApiError;
+      }
+
+      if ("message" in response) {
+        setError(response.message);
+        return response;
+      } else {
+        setUser(response);
+        return response;
+      }
+    } catch (err: any) {
+      const error: ApiError = {
+        message: err.message || "Failed to update user.",
+      };
+      setError(error.message);
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -161,6 +198,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         register,
         logout,
         deleteAccount,
+        updateUserDetails,
         setUser,
         setToken,
         loading,

@@ -24,6 +24,14 @@ export interface User {
     profilePhoto?: string;
     userName?: string;
     userEmail?: string;
+    isSubscribed: boolean;
+}
+
+export interface UserDto {
+    name?: string;
+    email?: string;
+    userName?: string;
+    isSubscribed?: boolean;
 }
 
 export interface AuthContextProps {
@@ -35,6 +43,7 @@ export interface AuthContextProps {
     register: (dto: RegisterDTO) => Promise<AuthResponse | ApiError>;
     logout: () => void;
     deleteAccount: () => Promise<ApiError | { message: string }>;
+    updateUserDetails: (dto: UserDto) => Promise<User | ApiError>;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setToken: React.Dispatch<React.SetStateAction<string | null>>;
 }

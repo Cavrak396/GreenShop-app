@@ -2,12 +2,12 @@ import { useState } from "react";
 import UserAccountLogout from "./logout/UserAccountLogout";
 import UserAccountProfile from "./profile/UserAccountProfile";
 import UserAccountSubscribe from "./subscribe/UserAccountSubscribe";
-import Portal from "../../reusable/Portal/Portal";
-import ConfirmationContent from "../../reusable/Confirmation/ConfirmationContent";
-import { useUser } from "../../context/AuthContext";
+import Portal from "../../../reusable/Portal/Portal";
+import ConfirmationContent from "../../../reusable/Confirmation/ConfirmationContent";
+import { useUser } from "../../../context/AuthContext";
 
 function UserAccountContent({ isActive }: { isActive: number }) {
-  const { logout } = useUser();
+  const { logout, user } = useUser();
 
   const [isAppear, setIsAppear] = useState(false);
   const [onConfirmAction, setOnConfirmAction] = useState<(() => void) | null>(
@@ -28,7 +28,7 @@ function UserAccountContent({ isActive }: { isActive: number }) {
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>
           <ConfirmationContent
-            type="unsubscribe"
+            type={user?.isSubscribed ? "unsubscribe" : "subscribe"}
             setIsAppear={setIsAppear}
             onConfirmAction={onConfirmAction}
             message="Are you sure about this action, this action can change your current status?"

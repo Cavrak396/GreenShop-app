@@ -1,6 +1,6 @@
-import Button from "../../../reusable/button/Button";
-import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
-import { useUser } from "../../../context/AuthContext";
+import Button from "../../../../reusable/button/Button";
+import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
+import { useUser } from "../../../../context/AuthContext";
 
 function UserAccountDelete({ setIsAppear }: ConfirmationTypes) {
   const { deleteAccount, loading, token } = useUser();

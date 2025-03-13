@@ -1,7 +1,11 @@
-import Button from "../../../reusable/button/Button";
-import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
+import { useUser } from "../../../../context/AuthContext";
+import Button from "../../../../reusable/button/Button";
+import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
 
 function UserAccountUnsubscribe({ setIsAppear }: ConfirmationTypes) {
+  const { user } = useUser();
+  const isSubscribed = user?.isSubscribed;
+
   const handleUnsubscribeClick = () => {
     setIsAppear(true);
   };
@@ -16,7 +20,7 @@ function UserAccountUnsubscribe({ setIsAppear }: ConfirmationTypes) {
         className="useraccount__unsubscribe-button button"
         onClick={handleUnsubscribeClick}
       >
-        Unsubscribe
+        {isSubscribed ? "Unsubscribe" : "Subscribe"}
       </Button>
     </div>
   );

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SubscribeApiResponse, SubscribeSuccessResponse } from "./subscribersTypes";
 import { ApiError } from "../reusable/reusableTypes";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -24,24 +25,13 @@ const handleApiError = (error: any): ApiError => {
     }
 };
 
-export const getSubscribers = async (): Promise<any[] | ApiError> => {
-    try {
-        const response = await axiosInstance.get("/subscribers");
-        return response.data;
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
 export const subscribeToNewsletter = async (
     email: string
-): Promise<{ success: boolean; message: string } | ApiError> => {
+): Promise<SubscribeSuccessResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post("/subscribers", {
+        const response = await axiosInstance.post<SubscribeApiResponse>("/subscribers", {
             subscriberEmail: email,
         });
-
-        console.log("Subscription response:", response);
 
         return {
             success: true,
@@ -53,30 +43,3 @@ export const subscribeToNewsletter = async (
         return apiError;
     }
 };
-
-
-export const deleteAllSubscribers = async (): Promise<ApiError | void> => {
-    try {
-        await axiosInstance.delete("/subscribers");
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-export const deleteSubscriberById = async (
-    subscriberId: string
-): Promise<ApiError | void> => {
-    try {
-        if (!subscriberId) {
-            return {
-                message: "Bad Request: Subscriber ID is required.",
-            } as ApiError;
-        }
-
-        await axiosInstance.delete(`/subscribers/${subscriberId}`);
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-export default axiosInstance;

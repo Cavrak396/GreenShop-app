@@ -1,4 +1,4 @@
-import { ConfirmationTypes } from "../../reusable/types/confirmationTypes";
+import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
 
 export type LogoutProps = ConfirmationTypes & {
     setOnConfirmAction: (action: () => void) => void;

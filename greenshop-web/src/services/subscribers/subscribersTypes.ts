@@ -1,9 +1,8 @@
-export interface SubscriberType {
-    subscriberId: string;
-    subscriberEmail: string;
-}
-
-export interface SubscribeResponseType {
+export interface SubscribeSuccessResponse {
     success: boolean;
     message: string;
-}
+  }
+  
+  export interface SubscribeApiResponse {
+    subscriberEmail: string;
+  }

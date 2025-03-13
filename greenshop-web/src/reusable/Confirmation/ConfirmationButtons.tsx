@@ -1,21 +1,39 @@
 import Button from "../button/Button";
 import { ConfirmationButtonsProps } from "../types/confirmationTypes";
-import { useSubscriber } from "../../context/SubscribersContext";
+import { useUser } from "../../context/AuthContext";
 
 function ConfirmationButtons({
   setIsAppear,
   onConfirmAction,
   type,
 }: ConfirmationButtonsProps) {
-  const { unsubscribe } = useSubscriber();
+  const { user, updateUserDetails } = useUser();
 
-  function handleActionClick() {
+  function handleSubscribe() {
+    let userUpdate;
+
     switch (type) {
+      case "subscribe":
+        userUpdate = { isSubscribed: true };
+        break;
       case "unsubscribe":
-        unsubscribe();
+        userUpdate = { isSubscribed: false };
         break;
       default:
-        break;
+        return;
+    }
+
+    if (user && userUpdate) {
+      const userToUpdate = {
+        ...userUpdate,
+        userEmail: user.userEmail,
+        userName: "anton",
+      };
+
+      updateUserDetails(userToUpdate).then(() => {
+        if (onConfirmAction) onConfirmAction();
+        setIsAppear(false);
+      });
     }
   }
 
@@ -24,7 +42,7 @@ function ConfirmationButtons({
       <Button
         className="confirmation__button button"
         onClick={() => {
-          handleActionClick();
+          handleSubscribe();
           if (onConfirmAction) onConfirmAction();
         }}
       >
