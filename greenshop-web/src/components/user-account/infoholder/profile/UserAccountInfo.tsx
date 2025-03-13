@@ -1,6 +1,6 @@
-import { useUser } from "../../../context/AuthContext";
-import Title from "../../../reusable/titles/Title";
-import ProfilePhoto from "../../../assets/images/account/user.png";
+import { useUser } from "../../../../context/AuthContext";
+import Title from "../../../../reusable/titles/Title";
+import ProfilePhoto from "../../../../assets/images/account/user.png";
 
 function UserAccountInfo() {
   const { user } = useUser();

@@ -6,7 +6,7 @@ import {
   handlePageClick as handlePageClickUtil,
 } from "./utils/paginationUtils";
 import arrow from "../../assets/images/shop/pagination/arrow-right.svg";
-import HomePagePaginationList from "./PaginationList";
+import PaginationList from "./PaginationList";
 import { PaginationItemsProps } from "../types/paginationTypes";
 import "./pagination.css";
 
@@ -64,7 +64,7 @@ function Pagination({
           aria-label="Go to first page"
         />
       )}
-      <HomePagePaginationList
+      <PaginationList
         visiblePages={visiblePages}
         activePage={activePage}
         handlePageClick={handlePageClick}

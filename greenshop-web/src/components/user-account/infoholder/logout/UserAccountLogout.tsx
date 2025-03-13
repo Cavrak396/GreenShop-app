@@ -1,4 +1,4 @@
-import Button from "../../../reusable/button/Button";
+import Button from "../../../../reusable/button/Button";
 import { LogoutProps } from "../../types/userAccountTypes";
 
 function UserAccountLogout({
@@ -6,13 +6,13 @@ function UserAccountLogout({
   setOnConfirmAction,
   logout,
 }: LogoutProps) {
-  const handleLogout = () => {
+  function handleLogout() {
     setIsAppear(true);
     setOnConfirmAction(() => async () => {
       logout();
       setIsAppear(false);
     });
-  };
+  }
 
   return (
     <div className="useraccount__logout">

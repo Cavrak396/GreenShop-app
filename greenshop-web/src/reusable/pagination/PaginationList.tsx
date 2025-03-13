@@ -1,4 +1,4 @@
-import HomePaginationPage from "./PaginationPage";
+import PaginationPage from "./PaginationPage";
 import { PaginationTypes } from "../types/paginationTypes";
 
 function PaginationList({
@@ -9,7 +9,7 @@ function PaginationList({
   return (
     <ul className="homepageshop__pagination-pages">
       {visiblePages.map((page) => (
-        <HomePaginationPage
+        <PaginationPage
           key={page}
           page={page}
           isActive={activePage === page}

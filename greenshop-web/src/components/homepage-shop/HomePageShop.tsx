@@ -9,6 +9,7 @@ function HomePageShop() {
   const { loadPlants } = usePlants();
   const [totalItems] = useState(50);
   const [itemsPerPage] = useState(9);
+
   return (
     <div className="homepageshop">
       <div className="wrap">

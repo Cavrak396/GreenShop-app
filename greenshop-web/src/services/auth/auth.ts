@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
     LoginDTO,
     RegisterDTO,
+    UserDTO,
     AuthResponse,
     ApiError,
     User,
@@ -78,9 +79,9 @@ export const deleteUser = async () => {
     }
 };
 
-export const deleteAllUsers = async (): Promise<{ message: string }> => {
+export const getUsers = async (): Promise<User[] | ApiError> => {
     try {
-        const response = await axiosInstance.delete<{ message: string }>('/auth/users', {
+        const response = await axiosInstance.get<User[]>('/auth/users', {
             withCredentials: false,
         });
         return response.data;
@@ -89,10 +90,10 @@ export const deleteAllUsers = async (): Promise<{ message: string }> => {
     }
 };
 
-export const getUsers = async (): Promise<User[] | ApiError> => {
+export const updateUser = async (dto: UserDTO): Promise<void | ApiError> => {
     try {
-        const response = await axiosInstance.get<User[]>('/auth/users', {
-            withCredentials: false,
+        const response = await axiosInstance.put('/auth/user', dto, {
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
