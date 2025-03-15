@@ -8,7 +8,7 @@ export interface ProductType {
   short_Description: string;
   name: string;
   office_Description: string;
-  plantId: number;
+  plantId: string;
   price: number;
   sale_Percent: number;
   sale_Percent_Private: number;

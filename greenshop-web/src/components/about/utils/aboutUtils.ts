@@ -1,5 +1,5 @@
-import firstImage from "../../../assets/images/about/about-first-image.png";
-import secondImage from "../../../assets/images/about/about-second-image.png";
+import firstImage from "../../../assets/images/about/about-first-image.webp";
+import secondImage from "../../../assets/images/about/about-second-image.webp";
 import { AboutItemType } from "../types/aboutTypes";
 
 export const aboutItems: AboutItemType[] = [

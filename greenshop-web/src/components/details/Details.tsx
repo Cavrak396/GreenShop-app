@@ -3,7 +3,7 @@ import DetailsProductReview from "./DetailsProductReview";
 import DetailsProductPanel from "./productPanel/DetailsProductPanel";
 import Portal from "../../reusable/Portal/Portal";
 import DetailsProductInfo from "./productInfo/DetailsProductInfo";
-import ProductImage from "../../assets/images/banner/banner-image.png";
+import ProductImage from "../../assets/images/banner/banner-image.webp";
 import "./details.css";
 
 function Details() {

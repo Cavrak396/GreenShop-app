@@ -1,7 +1,7 @@
-import magnifier from "../../assets/images/reusable/magnifier.png";
+import magnifier from "../../assets/images/reusable/magnifier.svg";
 import { ProductReviewType } from "./types/detailsTypes";
 import LazyImage from "../../reusable/LazyImage/LazyImage";
-import ProductImage from "../../assets/images/banner/banner-image.png";
+import ProductImage from "../../assets/images/banner/banner-image.webp";
 
 function DetailsProductReview({ setIsAppear }: ProductReviewType) {
   function handleImageZoom() {

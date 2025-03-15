@@ -1,8 +1,10 @@
 import { createContext, useContext } from "react";
-import { Product } from "../components/details/types/detailsTypes";
-import { ProductProviderProps } from "../components/details/types/detailsTypes";
+import {
+  ProductType,
+  ProductProviderProps,
+} from "../components/details/types/detailsTypes";
 
-const ProductContext = createContext<Product | null>(null);
+const ProductContext = createContext<ProductType | null>(null);
 
 export function ProductProvider({ children, product }: ProductProviderProps) {
   return (
@@ -12,7 +14,7 @@ export function ProductProvider({ children, product }: ProductProviderProps) {
   );
 }
 
-export function useProduct(): Product {
+export function useProduct(): ProductType {
   const context = useContext(ProductContext);
   if (!context) {
     throw new Error("useProduct must be used within a ProductProvider");

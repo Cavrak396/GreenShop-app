@@ -1,5 +1,5 @@
-import frontendDev from "../../../../assets/images/developers/marko-cavrak-frontend.jfif";
-import backendDev from "../../../../assets/images/developers/ana-jurisic-backend.jpg";
+import frontendDev from "../../../../assets/images/developers/marko-cavrak-frontend.webp";
+import backendDev from "../../../../assets/images/developers/ana-jurisic-backend.webp";
 import react from "../../../../assets/images/developers/react.svg";
 import javascript from "../../../../assets/images/developers/js.svg";
 import css from "../../../../assets/images/developers/css-3.svg";

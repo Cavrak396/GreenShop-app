@@ -1,4 +1,4 @@
-import developerImage from "../../../assets/images/developers/developer-hero.png";
+import developerImage from "../../../assets/images/developers/developer-hero.webp";
 
 function DeveloperHeroImg() {
   return (

@@ -1,4 +1,4 @@
-export interface CartItem {
+export interface CartItemTypes {
   id: number;
   label: string;
   price: number;
@@ -18,7 +18,7 @@ export interface CartItemInfoType {
 }
 
 export interface CartItemProps {
-  item: CartItem;
+  item: CartItemTypes;
   quantity: number;
   index: number;
   setQuantity: (index: number, quantity: number) => void;
@@ -26,7 +26,7 @@ export interface CartItemProps {
 }
 
 export interface CartItemsListType {
-  cartItems: CartItem[];
+  cartItems: CartItemTypes[];
   quantities: number[];
   setQuantity: (index: number, quantity: number) => void;
 }

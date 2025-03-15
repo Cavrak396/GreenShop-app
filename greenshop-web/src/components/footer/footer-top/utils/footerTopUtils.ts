@@ -1,6 +1,6 @@
 import { FooterOffers } from "../types/footerTopTypes";
-import secondImage from "../../../../assets/images/footer/footer-top-second-image.png";
-import thirdImage from "../../../../assets/images/footer/footer-top-third-image.png";
+import secondImage from "../../../../assets/images/footer/footer-top-second-image.svg";
+import thirdImage from "../../../../assets/images/footer/footer-top-third-image.svg";
 
 export const footerTopOffers: FooterOffers[] = [
   {

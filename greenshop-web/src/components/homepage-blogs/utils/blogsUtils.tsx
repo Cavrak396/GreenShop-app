@@ -1,7 +1,7 @@
-import blogFirstImg from "../../../assets/images/blog-homepage/blog-image-first.png";
-import blogSecondImg from "../../../assets/images/blog-homepage/blog-image-second.png";
-import blogThirdImg from "../../../assets/images/blog-homepage/blog-image-third.png";
-import blogFourthImg from "../../../assets/images/blog-homepage/blog-image-fourth.png";
+import blogFirstImg from "../../../assets/images/blog-homepage/blog-image-first.webp";
+import blogSecondImg from "../../../assets/images/blog-homepage/blog-image-second.webp";
+import blogThirdImg from "../../../assets/images/blog-homepage/blog-image-third.webp";
+import blogFourthImg from "../../../assets/images/blog-homepage/blog-image-fourth.webp";
 import { BlogType } from "../types/blogsTypes";
 
 export const blogsInfo: BlogType[] = [
