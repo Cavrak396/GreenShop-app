@@ -5,10 +5,12 @@ import DetailsCritiqueCommentsFeedback from "./productComments/productCommentsFe
 import { useUser } from "../../../context/AuthContext";
 import { useComments } from "../../../context/ReviewsContext";
 import Pagination from "../../../reusable/pagination/Pagination";
+import { usePlants } from "../../../context/PlantsContext";
 
 function DetailsCritiqueComments() {
   const { token } = useUser();
   const { comments, userComment, loading } = useComments();
+  const { loadPlants } = usePlants(); // waiting for real api datas
 
   return (
     <div className="details__comments">
@@ -25,7 +27,7 @@ function DetailsCritiqueComments() {
             <Pagination
               totalItems={comments.length}
               itemsPerPage={5}
-              // loadItems={loadPlants} first version, waiting for API
+              loadItems={loadPlants}
             />
           )}
         </>

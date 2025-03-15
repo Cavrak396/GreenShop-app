@@ -1,4 +1,4 @@
-import advertisement from "../../../assets/images/toolbox/toolbox-advertisement.png";
+import advertisement from "../../../assets/images/toolbox/toolbox-advertisement.webp";
 import LazyImage from "../../../reusable/LazyImage/LazyImage";
 
 function HomePageAdvertisement() {

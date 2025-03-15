@@ -24,7 +24,7 @@ export interface User {
     profilePhoto?: string;
     userName?: string;
     userEmail?: string;
-    isSubscribed: boolean;
+    isSubscribed?: boolean;
 }
 
 export interface UserDto {

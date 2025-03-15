@@ -5,14 +5,14 @@ import { useProduct } from "../../../context/ProductContext";
 function DetailsQuantity() {
   const product = useProduct();
   const { quantities, setQuantity } = useCart();
-  const quantity = quantities[Number(product.id)] || 1;
+  const quantity = quantities[Number(product.plantId)] || 1;
 
   const handleDecrease = () => {
-    setQuantity(Number(product.id), Math.max(1, quantity - 1));
+    setQuantity(Number(product.plantId), Math.max(1, quantity - 1));
   };
 
   const handleIncrease = () => {
-    setQuantity(Number(product.id), quantity + 1);
+    setQuantity(Number(product.plantId), quantity + 1);
   };
 
   return (

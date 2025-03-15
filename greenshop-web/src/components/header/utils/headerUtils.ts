@@ -1,7 +1,7 @@
 import { NavigationItem } from "../types/headerTypes";
 import { ToolbarItem } from "../types/headerTypes";
-import magnifier from "../../../assets/images/reusable/magnifier.png";
-import cart from "../../../assets/images/header/cart.png";
+import magnifier from "../../../assets/images/reusable/magnifier.svg";
+import cart from "../../../assets/images/header/cart.svg";
 
 export const navigationList: NavigationItem[] = [
   { id: 1, label: "Home" },

@@ -1,8 +1,9 @@
 import { userButtons } from "../utils/detailsUtils";
 import Button from "../../../reusable/button/Button";
 import { useCart } from "../../../context/CartContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useProduct } from "../../../context/ProductContext";
+import { createCartItem } from "../utils/detailsUtils";
 
 function DetailsOrderButtons() {
   const product = useProduct();
@@ -10,25 +11,30 @@ function DetailsOrderButtons() {
   const [isActive, setIsActive] = useState<number>(1);
   const [isAdded, setIsAdded] = useState<string>("Add to cart");
 
-  const quantity = quantities[Number(product.id)] || 1;
+  const quantity = quantities[Number(product.plantId)] || 1;
 
-  const handleButtonClick = (id: number, text: string) => {
-    setIsActive(id);
-    const dateAdded = new Date();
-    const productWithDate = { ...product, dateAdded, alt: "Product image" };
+  const handleButtonClick = useCallback(
+    (id: number, text: string) => {
+      setIsActive(id);
+      const dateAdded = new Date();
+      const productWithDate = createCartItem(product, dateAdded);
 
-    if (text === "Add to cart") {
-      addItemToCart(productWithDate, quantity);
-      setIsAdded("Added to cart");
-    }
-  };
+      if (text === "Add to cart") {
+        addItemToCart(productWithDate, quantity);
+        setIsAdded("Added to cart");
+      }
+    },
+    [addItemToCart, product, quantity]
+  );
 
   useEffect(() => {
-    const isInCart = cartItems.some((item) => item.id === product.id);
+    const isInCart = cartItems.some(
+      (item) => item.id.toString() === product.plantId
+    );
     if (!isInCart) {
       setIsAdded("Add to cart");
     }
-  }, [cartItems, product.id]);
+  }, [cartItems, product.plantId]);
 
   return (
     <div className="details__buttons">

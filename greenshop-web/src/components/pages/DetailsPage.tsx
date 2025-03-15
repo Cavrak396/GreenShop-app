@@ -20,6 +20,7 @@ function DetailsPage() {
           setLoading(true);
           const fetchedProduct = await fetchPlantById(id);
           setProduct(fetchedProduct);
+          console.log(product);
         } catch (error) {
           setError("Failed to fetch product details");
         } finally {

@@ -4,7 +4,9 @@ import linkedin from "../../../assets/images/reusable/Linkedin.svg";
 import union from "../../../assets/images/reusable/Union.svg";
 import bin from "../../../assets/images/reusable/bin.svg";
 import edit from "../../../assets/images/reusable/edit.svg";
-import { ButtonOrSizeType, CommentsType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
+import { ButtonOrSizeType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
+import { CartItemTypes } from "../../cart/types/cartTypes";
+import { Comment } from "../../../context/types/reviewsTypes";
 
 export const sizes: ButtonOrSizeType[] = [
   { id: 1, text: "S" },
@@ -35,7 +37,7 @@ export const infoButtons: ButtonOrSizeType[] = [
   { id: 2, text: "Reviews" },
 ];
 
-export function calculateRatingPercentages(comments: CommentsType[]) {
+export function calculateRatingPercentages(comments: Comment[]) {
   const totalComments = comments.length;
 
   const ratingsCount = Array(5).fill(0);
@@ -54,7 +56,7 @@ export function calculateRatingPercentages(comments: CommentsType[]) {
 }
 
 
-export function calculateAverageRating(comments: CommentsType[]) {
+export function calculateAverageRating(comments: Comment[]) {
   if (!Array.isArray(comments)) {
     console.error("Comments nije niz:", comments);
     return 0;
@@ -63,3 +65,16 @@ export function calculateAverageRating(comments: CommentsType[]) {
   const totalRating = comments.reduce((acc, { rating }) => acc + rating, 0);
   return comments.length > 0 ? totalRating / comments.length : 0;
 }
+
+export const createCartItem = (product: any, dateAdded: Date): CartItemTypes => {
+  const { plantId, name, price, image } = product;
+
+  return {
+    id: plantId,
+    label: name,
+    price,
+    src: image,
+    alt: `Image of ${name}`,
+    dateAdded,
+  };
+};

@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react";
-import { CartItem } from "../components/cart/types/cartTypes";
+import { CartItemTypes } from "../components/cart/types/cartTypes";
 import { CartContextType } from "./types/cartTypes";
 import { syncCart, updateCart } from "../services/cart/cart";
 import { useUser } from "../context/AuthContext";
@@ -17,7 +17,7 @@ const CartContext = React.createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const { token } = useUser();
-  const [cartItems, setCartItems] = useState<CartItem[]>(
+  const [cartItems, setCartItems] = useState<CartItemTypes[]>(
     getFromLocalStorage("cartItems")
   );
   const [quantities, setQuantities] = useState<{ [key: number]: number }>(
@@ -40,37 +40,40 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, []);
 
-  const addItemToCart = useCallback((newItem: CartItem, quantity: number) => {
-    setCartItems((prevCartItems) => {
-      const existingItemIndex = prevCartItems.findIndex(
-        (item) => item.id === newItem.id
-      );
+  const addItemToCart = useCallback(
+    (newItem: CartItemTypes, quantity: number) => {
+      setCartItems((prevCartItems) => {
+        const existingItemIndex = prevCartItems.findIndex(
+          (item) => item.id === newItem.id
+        );
 
-      if (existingItemIndex !== -1) {
-        setQuantities((prevQuantities) => {
-          const updatedQuantities = {
-            ...prevQuantities,
-            [newItem.id]: (prevQuantities[newItem.id] || 0) + quantity,
-          };
-          saveToLocalStorage("quantities", updatedQuantities);
-          return updatedQuantities;
-        });
-        return prevCartItems;
-      } else {
-        setQuantities((prevQuantities) => {
-          const updatedQuantities = {
-            ...prevQuantities,
-            [newItem.id]: quantity,
-          };
-          saveToLocalStorage("quantities", updatedQuantities);
-          return updatedQuantities;
-        });
-        const updatedCartItems = [...prevCartItems, newItem];
-        saveToLocalStorage("cartItems", updatedCartItems);
-        return updatedCartItems;
-      }
-    });
-  }, []);
+        if (existingItemIndex !== -1) {
+          setQuantities((prevQuantities) => {
+            const updatedQuantities = {
+              ...prevQuantities,
+              [newItem.id]: (prevQuantities[newItem.id] || 0) + quantity,
+            };
+            saveToLocalStorage("quantities", updatedQuantities);
+            return updatedQuantities;
+          });
+          return prevCartItems;
+        } else {
+          setQuantities((prevQuantities) => {
+            const updatedQuantities = {
+              ...prevQuantities,
+              [newItem.id]: quantity,
+            };
+            saveToLocalStorage("quantities", updatedQuantities);
+            return updatedQuantities;
+          });
+          const updatedCartItems = [...prevCartItems, newItem];
+          saveToLocalStorage("cartItems", updatedCartItems);
+          return updatedCartItems;
+        }
+      });
+    },
+    []
+  );
 
   const removeItem = useCallback((itemId: number) => {
     setCartItems((prevCartItems) => {

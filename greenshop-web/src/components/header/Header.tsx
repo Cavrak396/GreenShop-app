@@ -1,6 +1,6 @@
 import HeaderNav from "./HeaderNav";
 import HeaderUserToolbar from "./HeaderUserToolbar";
-import Logo from "../../reusable/Logo";
+import Logo from "../../reusable/logo/Logo";
 import "./header.css";
 import HeaderResponsiveMessage from "./headerResponsive/HeaderResponsiveMessage";
 

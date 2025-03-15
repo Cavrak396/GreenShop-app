@@ -6,8 +6,8 @@ import { useCallback } from "react";
 import { useCart } from "../../../../context/CartContext";
 import { HomePageShopArticleProps, ProductType } from "../shopTypes";
 import HomePageShopSale from "./HomePageShopSale";
-import { CartItem } from "../../../cart/types/cartTypes";
-import ProductImage from "../../../../assets/images/banner/banner-image.png";
+import { CartItemTypes } from "../../../cart/types/cartTypes";
+import ProductImage from "../../../../assets/images/banner/banner-image.webp";
 
 function HomePageShopArticle({
   isOnSale,
@@ -22,8 +22,8 @@ function HomePageShopArticle({
   const addingItemsToCart = useCallback(
     (item: ProductType) => {
       const dateAdded = new Date();
-      const cartItem: CartItem = {
-        id: item.plantId,
+      const cartItem: CartItemTypes = {
+        id: Number(item.plantId),
         label: item.name,
         price: item.price,
         sale: item.sale_Percent,

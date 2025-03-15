@@ -1,4 +1,4 @@
-import Logo from "../../../reusable/Logo";
+import Logo from "../../../reusable/logo/Logo";
 import FooterInfoItem from "./FooterInfoItem";
 import { footerInfos } from "./utils/footerInfoUtils";
 

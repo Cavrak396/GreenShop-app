@@ -36,8 +36,7 @@ function AuthContent() {
         // Login
         if (email && password) {
           const loginResponse = await login({ email, password });
-
-          if (loginResponse && loginResponse.jwt) {
+          if ('jwt' in loginResponse) {
             setUser({ email });
             setToken(loginResponse.jwt);
             toast.success("Successfully logged in!");
