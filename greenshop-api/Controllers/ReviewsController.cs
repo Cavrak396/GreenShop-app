@@ -104,7 +104,14 @@ namespace greenshop_api.Controllers
 
             return NoContent();
         }
-        
+
+        [HttpGet("{plantId}/total-number")]
+        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant(string plantId)
+        {
+            var count = await this.db.Reviews.CountAsync(r => r.PlantId == plantId);
+            return Ok(count);
+        }
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
