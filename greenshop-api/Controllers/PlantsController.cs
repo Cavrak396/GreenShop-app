@@ -125,6 +125,22 @@ namespace greenshop_api.Controllers
             return Ok(categoryCounts);
         }
 
+        [HttpGet("size-number")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsBySize()
+        {
+            var sizeCounts = new Dictionary<string, int>();
+
+            var smallCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.S);
+            var mediumCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.M);
+            var largeCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
+
+            sizeCounts["small"] = smallCount;
+            sizeCounts["medium"] = mediumCount;
+            sizeCounts["large"] = largeCount;
+
+            return Ok(sizeCounts);
+        }
+
         [HttpGet("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
         public async Task<IActionResult> GetPlantById(string plantId)
