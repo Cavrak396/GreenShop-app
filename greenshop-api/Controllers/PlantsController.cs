@@ -104,9 +104,16 @@ namespace greenshop_api.Controllers
             return Ok(plants);
         }
 
-        [HttpGet("number")]
+        [HttpGet("total-number")]
+        public async Task<IActionResult> GetTotalNumberOfPlants()
+        {
+            var count = await this.db.Plants.CountAsync();
+            return Ok(count);
+        }
+
+        [HttpGet("category-number")]
         [TypeFilter(typeof(Plant_ValidateGetPlantNumberFilterAttribute))]
-        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlants([FromQuery] string[] categories)
+        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery] string[] categories)
         {
             var categoryCounts = new Dictionary<string, int>();
 
