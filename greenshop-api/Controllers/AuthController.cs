@@ -127,19 +127,18 @@ namespace greenshop_api.Controllers
             return Ok(userDto);
         }
 
-        [HttpPut("user")]
+        [HttpPut("user/{isSubscribed}")]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
-        public async Task<IActionResult> UpdateUser([FromBody] UserDto user)
+        //[TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
+        public async Task<IActionResult> UpdateUserIsSubscribed(bool isSubscribed)
         {
             var jwt = Request.Cookies["jwt"];
             var token = jwtService.Verify(jwt);
             var userId = token.Issuer.ToString();
             var userToUpdate = await this.repository.GetUserByIdAsync(userId);
 
-            userToUpdate.UserName = user.UserName ?? user.UserName;
-            userToUpdate.IsSubscribed = user.IsSubscribed;
+            userToUpdate.IsSubscribed = isSubscribed;
 
             var subscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == userToUpdate.UserEmail);
 
