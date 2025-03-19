@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using greenshop_api.Modules.ActionFilterErrors;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateGetHeadersFilterAttribute : IAsyncActionFilter
+    public class Plant_ValidateGetHeadersActionFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -18,7 +19,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 !string.Equals(groupHeaderValue, "new", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(groupHeaderValue, "sale", StringComparison.OrdinalIgnoreCase))
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Group", "Group is invalid.");
+                BadRequestActionFilterError.Add(context, "Group", "Group is not valid.");
                 return;
             }
 
@@ -27,7 +28,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 !string.Equals(sizeHeaderValue, "medium", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(sizeHeaderValue, "large", StringComparison.OrdinalIgnoreCase))
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Group", "Size Type is invalid.");
+                BadRequestActionFilterError.Add(context, "Group", "Size Type is not valid.");
                 return;
             }
 
@@ -37,7 +38,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 {
                     if (priceMinHeaderValue < 0)
                     {
-                        ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Minimum Price cannot be negative.");
+                        BadRequestActionFilterError.Add(context, "PriceMin", "Minimum Price cannot be negative.");
                         return;
                     }
                 }
@@ -49,7 +50,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 {
                     if (priceMaxHeaderValue <= 0)
                     {
-                        ModelErrors.AddBadRequestActionModelError(context, "PriceMin", "Maximum Price must be greater than 0.");
+                        BadRequestActionFilterError.Add(context, "PriceMax", "Maximum Price must be greater than 0.");
                         return;
                     }
                 }
@@ -63,7 +64,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
                 {
                     if(priceMaxHeaderValue <= priceMinHeaderValue)
                     {
-                        ModelErrors.AddBadRequestActionModelError(context, "Price", "Minimum Price must be lower than Maximum Price.");
+                        BadRequestActionFilterError.Add(context, "Price", "Minimum Price must be lower than Maximum Price.");
                         return;
                     }
                 }

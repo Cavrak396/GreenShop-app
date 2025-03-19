@@ -1,17 +1,18 @@
 ﻿using greenshop_api.Authority;
 using greenshop_api.Data;
+using greenshop_api.Modules.ActionFilterErrors;
 using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateJwtTokenFilterAttribute : IAsyncActionFilter
+    public class User_ValidateJwtTokenActionFilter : IAsyncActionFilter
     {
         private readonly IUserRepository repository;
         private readonly JwtService jwtService;
 
-        public User_ValidateJwtTokenFilterAttribute(IUserRepository repository, JwtService jwtService)
+        public User_ValidateJwtTokenActionFilter(IUserRepository repository, JwtService jwtService)
         {
             this.repository = repository;
             this.jwtService = jwtService;
@@ -28,7 +29,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
             }
             catch (Exception)
             {
-                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Unauthenticated user.");
+                UnauthorizedActionFilterError.Add(context, "User", "Unauthenticated user.");
                 return;
             }
 

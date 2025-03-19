@@ -1,15 +1,16 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Models;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
-    public class Subscriber_ValidateCreateSubscriberFilterAttribute : IAsyncActionFilter
+    public class Subscriber_ValidateCreateSubscriberActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public Subscriber_ValidateCreateSubscriberFilterAttribute(ApplicationDbContext db)
+        public Subscriber_ValidateCreateSubscriberActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -20,7 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 
             if (subscriber == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Subscriber", "Subscriber object cannot be null.");
+                BadRequestActionFilterError.Add(context, "Subscriber", "Subscriber object is not valid.");
                 return;
             }
 
@@ -31,7 +32,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 
             if (existingSubscriber != null)
             {
-                ModelErrors.AddConflictActionModelError(context, "Subscriber", "Subscriber is already added.");
+                ConflictActionFilterError.Add(context, "Subscriber", "Subscriber is already added.");
                 return;
             }
 

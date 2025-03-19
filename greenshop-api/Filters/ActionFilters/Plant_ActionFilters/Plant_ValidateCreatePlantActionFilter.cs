@@ -1,15 +1,16 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateCreatePlantFilterAttribute : IAsyncActionFilter
+    public class Plant_ValidateCreatePlantActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public Plant_ValidateCreatePlantFilterAttribute(ApplicationDbContext db)
+        public Plant_ValidateCreatePlantActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -20,7 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (plant == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
+                BadRequestActionFilterError.Add(context, "Plant", "Plant object is not valid.");
                 return;
             }
 
@@ -32,7 +33,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (existingPlant != null)
             {
-                ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
+                ConflictActionFilterError.Add(context, "Plant", "Plant already exists.");
                 return;
             }
 

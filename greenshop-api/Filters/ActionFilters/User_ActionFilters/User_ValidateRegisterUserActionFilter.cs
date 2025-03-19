@@ -1,15 +1,16 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateRegisterUserFilterAttribute : IAsyncActionFilter
+    public class User_ValidateRegisterUserActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public User_ValidateRegisterUserFilterAttribute(ApplicationDbContext db)
+        public User_ValidateRegisterUserActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -20,7 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             if (registerDto == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
+                BadRequestActionFilterError.Add(context, "Register", "Register data is not valid.");
                 return;
             }
 
@@ -34,7 +35,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             if (existingUser != null)
             {
-                ModelErrors.AddConflictActionModelError(context, "User", "User is already added.");
+                ConflictActionFilterError.Add(context, "User", "User is already added.");
                 return;
             }
 

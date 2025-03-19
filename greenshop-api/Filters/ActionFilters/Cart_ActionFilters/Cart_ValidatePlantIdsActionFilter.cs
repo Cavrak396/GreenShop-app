@@ -1,14 +1,15 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
-    public class Cart_ValidatePlantIdsFilterAttribute : IAsyncActionFilter
+    public class Cart_ValidatePlantIdsActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public Cart_ValidatePlantIdsFilterAttribute(ApplicationDbContext db)
+        public Cart_ValidatePlantIdsActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -22,7 +23,7 @@ namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
                 var plant = await this.db.Plants.FindAsync(cartItem.PlantId);
                 if(plant == null)
                 {
-                    ModelErrors.AddNotFoundActionModelError(context, "CartItem", "One or more plants in cart doesn't exist.");
+                    NotFoundActionFilterError.Add(context, "CartItem", "One or more plants in cart doesn't exist.");
                     return;
                 }
             }

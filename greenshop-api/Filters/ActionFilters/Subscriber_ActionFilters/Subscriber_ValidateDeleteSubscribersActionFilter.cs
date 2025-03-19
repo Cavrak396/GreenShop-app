@@ -1,13 +1,14 @@
 ﻿using greenshop_api.Data;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
-    public class Subscriber_ValidateDeleteSubscribersFilterAttribute : IAsyncActionFilter
+    public class Subscriber_ValidateDeleteSubscribersActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
-        public Subscriber_ValidateDeleteSubscribersFilterAttribute(ApplicationDbContext db)
+        public Subscriber_ValidateDeleteSubscribersActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -17,7 +18,7 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 
             if (allSubscribers.Count() == 0)
             {
-                ModelErrors.AddNotFoundActionModelError(context, "Subscriber", "No subscribers found to delete.");
+                NotFoundActionFilterError.Add(context, "Subscriber", "No subscribers found to delete.");
                 return;
             }
 

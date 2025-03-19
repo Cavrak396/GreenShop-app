@@ -11,7 +11,6 @@ namespace greenshop_api.Services
         public JwtService(IConfiguration configuration)
         {
             this.configuration = configuration;
-
         }
 
         public string Generate(string id)

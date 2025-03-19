@@ -1,9 +1,10 @@
 ﻿using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
-    public class Cart_ValidateSyncCartItemsFilterAttribute : IAsyncActionFilter
+    public class Cart_ValidateSyncCartItemsActionFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -11,7 +12,7 @@ namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 
             if (cartItems == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Cart", "List of cart items cannot be null.");
+                BadRequestActionFilterError.Add(context, "CartItem", "CartItems are not valid.");
                 return;
             }
 

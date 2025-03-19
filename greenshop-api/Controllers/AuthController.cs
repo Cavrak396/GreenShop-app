@@ -36,7 +36,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("register")]
-        [TypeFilter(typeof(User_ValidateRegisterUserFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var user = new User
@@ -81,7 +81,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("login")]
-        [TypeFilter(typeof(User_ValidateLoginUserFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await this.repository.GetUserByEmailAsync(loginDto.Email);
@@ -109,7 +109,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("user")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetUser()
         {
             var jwt = Request.Cookies["jwt"];
@@ -129,7 +129,7 @@ namespace greenshop_api.Controllers
 
         [HttpPut("user/{isSubscribed}")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         //[TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
         public async Task<IActionResult> UpdateUserIsSubscribed(bool isSubscribed)
         {
@@ -166,7 +166,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("user")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> DeleteUser()
         {
             var jwt = Request.Cookies["jwt"];
@@ -183,7 +183,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpDelete("users")]
-        [TypeFilter(typeof(User_ValidateDeleteUsersFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateDeleteUsersActionFilter))]
         public async Task<IActionResult> DeleteAllUsers()
         {
             var allUsers = await this.db.Users.ToListAsync();

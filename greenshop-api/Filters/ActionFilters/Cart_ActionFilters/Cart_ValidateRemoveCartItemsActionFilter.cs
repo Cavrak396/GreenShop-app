@@ -1,20 +1,20 @@
 ﻿using greenshop_api.Authority;
 using greenshop_api.Data;
+using greenshop_api.Modules.ActionFilterErrors;
 using greenshop_api.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
-namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
+namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
-    public class Review_ValidateReviewExistsFilterAttribute : IAsyncActionFilter
+    public class Cart_ValidateRemoveCartItemsActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
-        private readonly IUserRepository repository;
         private readonly JwtService jwtService;
 
-        public Review_ValidateReviewExistsFilterAttribute(ApplicationDbContext db, IUserRepository repository, JwtService jwtService)
+        public Cart_ValidateRemoveCartItemsActionFilter(ApplicationDbContext db, JwtService jwtService)
         {
             this.db = db;
-            this.repository = repository;
             this.jwtService = jwtService;
         }
 
@@ -24,13 +24,14 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             var token = jwtService.Verify(jwt);
             var userId = token.Issuer.ToString();
 
-            var plantId = context.ActionArguments["plantId"] as string;
+            var cart = await this.db.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Plant)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            var review = await this.db.Reviews.FindAsync(userId, plantId);
-            if (review == null)
+            if (cart == null)
             {
-                ModelErrors.AddNotFoundActionModelError(context, "Review", "Review isn't added.");
-                return;
+                NotFoundActionFilterError.Add(context, "Cart", "Cart doesn't exist.");
             }
 
             await next();
