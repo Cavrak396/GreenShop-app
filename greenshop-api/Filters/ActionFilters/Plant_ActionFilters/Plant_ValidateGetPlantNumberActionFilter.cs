@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using greenshop_api.Modules.ActionFilterErrors;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateGetPlantNumberFilterAttribute : IAsyncActionFilter
+    public class Plant_ValidateGetPlantNumberActionFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -10,7 +11,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if(categories == null || categories.Length == 0)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Category", "Categories must be provided.");
+                BadRequestActionFilterError.Add(context, "Category", "Categories are not valid.");
                 return;
             }
 

@@ -1,13 +1,14 @@
 ﻿using greenshop_api.Data;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
-    public class Subscriber_ValidateSubscriberIdFilterAttribute : IAsyncActionFilter
+    public class Subscriber_ValidateSubscriberIdActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public Subscriber_ValidateSubscriberIdFilterAttribute(ApplicationDbContext db)
+        public Subscriber_ValidateSubscriberIdActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -17,14 +18,14 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 
             if (string.IsNullOrEmpty(subscriberId))
             {
-                ModelErrors.AddBadRequestActionModelError(context, "SubscriberId", "Subscriber Id must be provided.");
+                BadRequestActionFilterError.Add(context, "SubscriberId", "SubscriberId is not valid.");
                 return;
             }
 
             var subscriber = await db.Subscribers.FindAsync(subscriberId);
             if (subscriber == null)
             {
-                ModelErrors.AddNotFoundActionModelError(context, "SubscriberId", "Subscriber isn't added.");
+                NotFoundActionFilterError.Add(context, "Subscriber", "Subscriber isn't added.");
                 return;
             }
 

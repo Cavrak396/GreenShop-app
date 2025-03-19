@@ -1,15 +1,16 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateLoginUserFilterAttribute : IAsyncActionFilter
+    public class User_ValidateLoginUserActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public User_ValidateLoginUserFilterAttribute(ApplicationDbContext db)
+        public User_ValidateLoginUserActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -20,20 +21,20 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             if (loginDto == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "User", "User object cannot be null.");
+                BadRequestActionFilterError.Add(context, "Login", "Login data is not valid.");
                 return;
             }
 
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserEmail == loginDto.Email);
             if (user == null)
             {
-                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                UnauthorizedActionFilterError.Add(context, "User", "Invalid credentials.");
                 return;
             }
 
             if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.UserPassword))
             {
-                ModelErrors.AddUnauthorizedActionModelError(context, "User", "Invalid credentials.");
+                UnauthorizedActionFilterError.Add(context, "User", "Invalid credentials.");
                 return;
             }
 

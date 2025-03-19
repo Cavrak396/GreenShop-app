@@ -1,12 +1,12 @@
 ﻿using greenshop_api.Authority;
 using greenshop_api.Data;
 using greenshop_api.Dtos;
-using greenshop_api.Services;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
-    public class Review_ValidateUpdateReviewFilterAttribute : IAsyncActionFilter
+    public class Review_ValidateUpdateReviewActionFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -16,7 +16,7 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 
             if (!string.IsNullOrEmpty(plantId) && review != null && plantId != review.PlantId)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is not the same as provided id.");
+                BadRequestActionFilterError.Add(context, "PlantId", "PlantId is not the same as provided id.");
                 return;
             }
 

@@ -1,15 +1,16 @@
 ﻿using greenshop_api.Data;
 using greenshop_api.Dtos;
+using greenshop_api.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateUpdatePlantFilterAttribute : IAsyncActionFilter
+    public class Plant_ValidateUpdatePlantActionFilter : IAsyncActionFilter
     {
         private readonly ApplicationDbContext db;
 
-        public Plant_ValidateUpdatePlantFilterAttribute(ApplicationDbContext db)
+        public Plant_ValidateUpdatePlantActionFilter(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -20,13 +21,13 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (plant == null)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "Plant", "Plant object cannot be null.");
+                BadRequestActionFilterError.Add(context, "Plant", "Plant object is not valid.");
                 return;
             }
 
             if (!string.IsNullOrEmpty(plantId) && plant != null && plantId != plant.PlantId)
             {
-                ModelErrors.AddBadRequestActionModelError(context, "PlantId", "Plant Id is not the same as provided id.");
+                BadRequestActionFilterError.Add(context, "PlantId", "PlantId is not the same as provided id.");
                 return;
             }
             
@@ -38,7 +39,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (existingPlant != null && existingPlant.PlantId != plant.PlantId)
             {
-                ModelErrors.AddConflictActionModelError(context, "Plant", "Plant already exists.");
+                ConflictActionFilterError.Add(context, "Plant", "Plant already exists.");
                 return;
             }
 

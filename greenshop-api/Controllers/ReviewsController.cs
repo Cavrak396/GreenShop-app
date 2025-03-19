@@ -32,8 +32,8 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{plantId}")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateJwtTokenFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        [TypeFilter(typeof(Review_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviews(
              string plantId,
             [FromQuery] int page = 1,
@@ -83,9 +83,8 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/user")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateReviewExistsFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviewByUser(string plantId)
         {
             var jwt = Request.Cookies["jwt"];
@@ -106,7 +105,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{plantId}/total-number")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant(string plantId)
         {
             var count = await this.db.Reviews.CountAsync(r => r.PlantId == plantId);
@@ -115,8 +114,8 @@ namespace greenshop_api.Controllers
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateCreateReviewFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(Review_ValidateCreateReviewActionFilter))]
         public async Task<IActionResult> CreateReview([FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
@@ -141,11 +140,11 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateReviewExistsFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateUpdateReviewFilterAttribute))]
-        [TypeFilter(typeof(Review_HandleUpdateExceptionFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
+        [TypeFilter(typeof(Review_ValidateUpdateReviewActionFilter))]
+        [TypeFilter(typeof(Review_HandleUpdateExceptionFilter))]
         public async Task<IActionResult> UpdateReview(string plantId, [FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
@@ -165,9 +164,9 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Review_ValidateReviewExistsFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
         public async Task<IActionResult> DeleteReview(string plantId)
         {
             var jwt = Request.Cookies["jwt"];

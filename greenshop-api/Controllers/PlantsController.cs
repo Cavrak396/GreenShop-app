@@ -28,7 +28,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(Plant_ValidateGetHeadersFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidateGetHeadersActionFilter))]
         public async Task<IActionResult> GetPlants(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 9,
@@ -112,7 +112,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("category-number")]
-        [TypeFilter(typeof(Plant_ValidateGetPlantNumberFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidateGetPlantNumberActionFilter))]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery] string[] categories)
         {
             var categoryCounts = new Dictionary<string, int>();
@@ -142,7 +142,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{plantId}")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetPlantById(string plantId)
         {
             var plant = await this.db.Plants.FindAsync(plantId);
@@ -152,7 +152,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{plantId}/related")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetRelatedProducts(string plantId, [FromQuery] int relatedProductsSize = 5)
         {
             var plant = await this.db.Plants.FindAsync(plantId);
@@ -196,7 +196,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost]
-        [TypeFilter(typeof(Plant_ValidateCreatePlantFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
         public async Task<IActionResult> CreatePlant([FromBody]PlantDto plant)
         {
             var plantToCreate = mapper.Map<Plant>(plant);
@@ -230,9 +230,9 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPut("{plantId}")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
-        [TypeFilter(typeof(Plant_ValidateUpdatePlantFilterAttribute))]
-        [TypeFilter(typeof(Plant_HandleUpdateExceptionFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
+        [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
         public async Task <IActionResult> UpdatePlant(string plantId, [FromBody]PlantDto plant)
         {
             var plantToUpdate = await this.db.Plants.FindAsync(plantId);
@@ -258,7 +258,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpDelete("{plantId}")]
-        [TypeFilter(typeof(Plant_ValidatePlantIdFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task <IActionResult> DeletePlant(string plantId)
         {
             var plantToDelete = await this.db.Plants.FindAsync(plantId);
@@ -270,7 +270,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpDelete]
-        [TypeFilter(typeof(Plant_ValidateDeletePlantsFilterAttribute))]
+        [TypeFilter(typeof(Plant_ValidateDeletePlantsActionFilter))]
         public async Task<IActionResult> DeleteAllPlants()
         {
             var allPlants = this.db.Plants.ToList();

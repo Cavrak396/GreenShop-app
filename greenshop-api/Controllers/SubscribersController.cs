@@ -29,7 +29,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost]
-        [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberFilterAttribute))]
+        [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberActionFilter))]
         public async Task<IActionResult> CreateSubscriber([FromBody]Subscriber subscriber)
         {
             subscriber.SubscriberId = Guid.NewGuid().ToString();
@@ -52,7 +52,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpDelete("{subscriberId}")]
-        [TypeFilter(typeof(Subscriber_ValidateSubscriberIdFilterAttribute))]
+        [TypeFilter(typeof(Subscriber_ValidateSubscriberIdActionFilter))]
         public async Task<IActionResult> DeleteSubscriber(string subscriberId)
         {
             var subscriberToDelete = await this.db.Subscribers.FindAsync(subscriberId);
@@ -64,7 +64,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpDelete]
-        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersFilterAttribute))]
+        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersActionFilter))]
         public async Task<IActionResult> DeleteAllSubscribers()
         {
             var allSubscribers = this.db.Subscribers.ToList();

@@ -23,11 +23,11 @@ namespace greenshop_api.Controllers
             this.jwtService = jwtService;
         }
 
-        [HttpPost("sync")]
+        [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Cart_ValidateSyncCartItemsFilterAttribute))]
-        [TypeFilter(typeof(Cart_ValidatePlantIdsFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(Cart_ValidateSyncCartItemsActionFilter))]
+        [TypeFilter(typeof(Cart_ValidatePlantIdsActionFilter))]
         public async Task<IActionResult> SyncCart([FromBody] List<CartItemDto> cartItems)
         {
             var jwt = Request.Cookies["jwt"];
@@ -110,8 +110,8 @@ namespace greenshop_api.Controllers
 
         [HttpPut]
         [EnableCors("WithCredentialsPolicy")]
-        [TypeFilter(typeof(User_ValidateJwtTokenFilterAttribute))]
-        [TypeFilter(typeof(Cart_ValidateRemoveCartItemsFilterAttribute))]
+        [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(Cart_ValidateRemoveCartItemsActionFilter))]
 
         public async Task<IActionResult> RemoveCartItems()
         {
