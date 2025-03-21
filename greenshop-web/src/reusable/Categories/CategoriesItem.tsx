@@ -1,9 +1,4 @@
-interface CategoryItemProps {
-  label: string;
-  size: number;
-  isActive: boolean;
-  onClick: () => void;
-}
+import { CategoryItemProps } from "../types/categoriesTypes";
 
 function CategoryItem({ label, size, isActive, onClick }: CategoryItemProps) {
   return (
