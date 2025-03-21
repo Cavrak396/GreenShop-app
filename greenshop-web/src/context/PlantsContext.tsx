@@ -5,7 +5,10 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { fetchPlants } from "../services/plants/plants";
+import {
+  fetchPlants,
+  fetchPlantsNumberByCategories,
+} from "../services/plants/plants";
 import { PlantsContextType } from "./types/contextTypes";
 import { PlantsParams } from "../services/plants/plantsTypes";
 import { ProductType } from "../components/homepage-shop/shop/shopTypes";
@@ -18,6 +21,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   const [searchedData, setSearchedData] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [categoriesData, setCategoriesData] = useState<any>({});
   const [filters, setFilters] = useState<{
     category: string | null;
     size: string | null;
@@ -32,6 +36,8 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     priceMax: null,
   });
 
+  const CATEGORIES = ["House Plants", "Potter Plants", "Gardening"];
+
   const loadPlants = async (params: PlantsParams) => {
     setLoading(true);
     setError(null);
@@ -45,6 +51,22 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
+
+  const loadPlantsNumberByCategories = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchPlantsNumberByCategories(CATEGORIES);
+      setCategoriesData(data);
+    } catch (error) {
+      setError("Failed to fetch plant numbers by categories.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadPlantsNumberByCategories();
+  }, []);
 
   useEffect(() => {
     loadPlants({
@@ -70,6 +92,8 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
         filters,
         setFilters,
         loadPlants,
+        loadPlantsNumberByCategories,
+        categoriesData,
         setSearchedData,
         setActiveCategoryId: (id: number | null) =>
           setFilters((prev) => ({

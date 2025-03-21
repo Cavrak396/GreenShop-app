@@ -1,24 +1,21 @@
-import { CategoriesTypes } from "../types/categoriesTypes";
+import { usePlants } from "../../context/PlantsContext";
 import CategoryItem from "./CategoriesItem";
-
-interface CategoriesListProps {
-  categories: CategoriesTypes[];
-  activeCategory: string | null;
-  onCategoryClick: (label: string) => void;
-}
+import { CategoriesListProps } from "../types/categoriesTypes";
 
 function CategoriesList({
   categories,
   activeCategory,
   onCategoryClick,
 }: CategoriesListProps) {
+  const { categoriesData } = usePlants();
+
   return (
     <ul className="homepageshop__categories-list">
       {categories.map((item) => (
         <CategoryItem
           key={item.id}
           label={item.label}
-          size={item.size}
+          size={categoriesData[item.label] || 0}
           isActive={item.label === activeCategory}
           onClick={() => onCategoryClick(item.label)}
         />

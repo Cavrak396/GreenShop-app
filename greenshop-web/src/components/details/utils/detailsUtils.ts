@@ -4,9 +4,9 @@ import linkedin from "../../../assets/images/reusable/Linkedin.svg";
 import union from "../../../assets/images/reusable/Union.svg";
 import bin from "../../../assets/images/reusable/bin.svg";
 import edit from "../../../assets/images/reusable/edit.svg";
-import { ButtonOrSizeType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
 import { CartItemTypes } from "../../cart/types/cartTypes";
 import { Comment } from "../../../context/types/reviewsTypes";
+import { ButtonOrSizeType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
 
 export const sizes: ButtonOrSizeType[] = [
   { id: 1, text: "S" },

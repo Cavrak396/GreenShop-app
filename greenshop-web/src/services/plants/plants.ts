@@ -29,7 +29,6 @@ export const fetchPlants = async ({
                 pageSize,
             },
         });
-
         return response.data;
     } catch (error) {
         console.error("Error fetching plants:", error);
@@ -43,6 +42,24 @@ export const fetchPlantById = async (id: string): Promise<ProductType> => {
         return response.data;
     } catch (error) {
         console.error("Error fetching plant by ID:", error);
+        throw error;
+    }
+};
+
+export const fetchPlantsNumberByCategories = async (categories: string[]) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/number`, {
+            params: {
+                categories: categories,
+            },
+            paramsSerializer: () => {
+                return categories.map((c) => `categories=${encodeURIComponent(c)}`).join("&");
+            },
+            withCredentials: false,
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching plants number by categories:", error);
         throw error;
     }
 };

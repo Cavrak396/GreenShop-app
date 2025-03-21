@@ -4,6 +4,8 @@ import { PlantsParams } from "../../services/plants/plantsTypes";
 export interface PlantsContextType {
   sortedData: ProductType[];
   setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  setSearchedData: React.Dispatch<React.SetStateAction<string>>;
+  categoriesData: { [key: string]: number };
   data: ProductType[];
   loading: boolean;
   error: string | null;
@@ -22,7 +24,7 @@ export interface PlantsContextType {
     priceMax: number | null;
   }>>;
   loadPlants: (params: PlantsParams) => void;
-  setSearchedData: React.Dispatch<React.SetStateAction<string>>;
+  loadPlantsNumberByCategories: () => void;
   setActiveCategoryId: (id: number | null) => void;
   setActiveSizeId: (id: number | null) => void;
   setCategoriesData: (data: ProductType[]) => void;

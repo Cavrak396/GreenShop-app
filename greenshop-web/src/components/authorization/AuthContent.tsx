@@ -1,19 +1,17 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
-import { authInstructions, emailRegex } from "./utils/authUtils";
 import AuthForm from "./AuthForm";
-import { useSubscriber } from "../../context/SubscribersContext";
 import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
-import { toast } from "react-toastify";
+import { authInstructions, emailRegex } from "./utils/authUtils";
 import "./authorization.css";
+import { toast } from "react-toastify";
 
 function AuthContent() {
   const [activatedId, setActivatedId] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
   const { login, register, setUser, setToken, loading } = useUser();
-  const { subscribe } = useSubscriber();
 
   const togglePasswordVisibility = useCallback((id: number) => {
     setShowPassword((prev) => ({
@@ -36,7 +34,7 @@ function AuthContent() {
         // Login
         if (email && password) {
           const loginResponse = await login({ email, password });
-          if ('jwt' in loginResponse) {
+          if ("jwt" in loginResponse) {
             setUser({ email });
             setToken(loginResponse.jwt);
             toast.success("Successfully logged in!");
@@ -64,23 +62,18 @@ function AuthContent() {
           return;
         }
 
-        await register({
+        const registrationResponse = await register({
           name,
           email,
           password,
           isSubscribed: subscribeEmail ? true : false,
         });
 
-        if (subscribeEmail) {
-          const subscribeResponse = await subscribe(subscribeEmail);
-
-          if (subscribeResponse.success) {
-            toast.success("Successfully registered and subscribed!");
-          } else {
-            toast.success("Successfully registered!");
-          }
-        } else {
+        if (registrationResponse) {
           toast.success("Successfully registered!");
+          setActivatedId(1);
+        } else {
+          toast.error("Registration failed! Please try again.");
         }
       }
     } catch (err: unknown) {
