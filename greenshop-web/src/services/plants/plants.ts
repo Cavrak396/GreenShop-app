@@ -48,7 +48,7 @@ export const fetchPlantById = async (id: string): Promise<ProductType> => {
 
 export const fetchPlantsNumberByCategories = async (categories: string[]) => {
     try {
-        const response = await axios.get(`${BASE_URL}/number`, {
+        const response = await axios.get(`${BASE_URL}/category-number`, {
             params: {
                 categories: categories,
             },
