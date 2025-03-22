@@ -8,8 +8,9 @@ import {
 import {
   fetchPlants,
   fetchPlantsNumberByCategories,
+  fetchTotalPlantsNumber,
 } from "../services/plants/plants";
-import { PlantsContextType } from "./types/contextTypes";
+import { PlantsContextType } from "./types/plantsTypes";
 import { PlantsParams } from "../services/plants/plantsTypes";
 import { ProductType } from "../components/homepage-shop/shop/shopTypes";
 
@@ -22,6 +23,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [categoriesData, setCategoriesData] = useState<any>({});
+  const [plantsTotal, setPlantsTotal] = useState<number>(0);
   const [filters, setFilters] = useState<{
     category: string | null;
     size: string | null;
@@ -64,8 +66,21 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const loadTotalPlantsNumber = async () => {
+    setLoading(true);
+    try {
+      const total = await fetchTotalPlantsNumber();
+      setPlantsTotal(total);
+    } catch (error) {
+      setError("Failed to fetch total number of plants.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadPlantsNumberByCategories();
+    loadTotalPlantsNumber();
   }, []);
 
   useEffect(() => {
@@ -94,6 +109,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
         loadPlants,
         loadPlantsNumberByCategories,
         categoriesData,
+        plantsTotal,
         setSearchedData,
         setActiveCategoryId: (id: number | null) =>
           setFilters((prev) => ({

@@ -6,8 +6,7 @@ import { useState } from "react";
 import "./homepageshop.css";
 
 function HomePageShop() {
-  const { loadPlants } = usePlants();
-  const [totalItems] = useState(50);
+  const { loadPlants, plantsTotal } = usePlants();
   const [itemsPerPage] = useState(9);
 
   return (
@@ -18,7 +17,7 @@ function HomePageShop() {
           <HomePageShopContent />
         </div>
         <Pagination
-          totalItems={totalItems}
+          totalItems={plantsTotal}
           itemsPerPage={itemsPerPage}
           loadItems={loadPlants}
         />
