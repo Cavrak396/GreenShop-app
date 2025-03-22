@@ -63,3 +63,15 @@ export const fetchPlantsNumberByCategories = async (categories: string[]) => {
         throw error;
     }
 };
+
+export const fetchTotalPlantsNumber = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/total-number`, {
+            withCredentials: false,
+        });
+        return response.data; 
+    } catch (error) {
+        console.error("Error fetching total plants number:", error);
+        throw error;
+    }
+};

@@ -6,6 +6,7 @@ export interface PlantsContextType {
   setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
   setSearchedData: React.Dispatch<React.SetStateAction<string>>;
   categoriesData: { [key: string]: number };
+  plantsTotal: number;
   data: ProductType[];
   loading: boolean;
   error: string | null;

@@ -5,9 +5,9 @@ import {
   getVisiblePages,
   handlePageClick as handlePageClickUtil,
 } from "./utils/paginationUtils";
-import arrow from "../../assets/images/shop/pagination/arrow-right.svg";
 import PaginationList from "./PaginationList";
 import { PaginationItemsProps } from "../types/paginationTypes";
+import arrow from "../../assets/images/shop/pagination/arrow-right.svg";
 import "./pagination.css";
 
 function Pagination({
