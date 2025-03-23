@@ -69,9 +69,21 @@ export const fetchTotalPlantsNumber = async () => {
         const response = await axios.get(`${BASE_URL}/total-number`, {
             withCredentials: false,
         });
-        return response.data; 
+        return response.data;
     } catch (error) {
         console.error("Error fetching total plants number:", error);
+        throw error;
+    }
+};
+
+export const fetchPlantsNumberBySize = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/size-number`, {
+            withCredentials: false,
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching plants number by size:", error);
         throw error;
     }
 };

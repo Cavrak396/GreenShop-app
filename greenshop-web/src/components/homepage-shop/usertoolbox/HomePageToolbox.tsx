@@ -32,6 +32,7 @@ function HomePageToolbox() {
         categories={categories}
         activeCategory={filters.category}
         onCategoryClick={handleCategoryClick}
+        isSizeCategory={false}
       />
       <Title className="homepageshop__categories-title small-title">
         Price Range
@@ -42,6 +43,7 @@ function HomePageToolbox() {
         categories={categoriesSize}
         activeCategory={filters.size}
         onCategoryClick={handleSizeClick}
+        isSizeCategory={true}
       />
       <HomePageAdvertisement />
     </div>

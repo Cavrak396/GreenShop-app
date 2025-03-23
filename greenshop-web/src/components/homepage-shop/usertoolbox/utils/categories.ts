@@ -1,15 +1,15 @@
 import { CategoriesTypes } from "../../../../reusable/types/categoriesTypes";
 
 export const categories: CategoriesTypes[] = [
-  { id: 1, label: "House Plants", size: 33 },
-  { id: 2, label: "Potter Plants", size: 12 },
-  { id: 3, label: "Gardening", size: 13 },
+  { id: 1, label: "House Plants" },
+  { id: 2, label: "Potter Plants" },
+  { id: 3, label: "Gardening" },
 ];
 
 export const categoriesSize: CategoriesTypes[] = [
-  { id: 1, label: "Small", size: 33 },
-  { id: 2, label: "Medium", size: 33 },
-  { id: 3, label: "Large", size: 33 },
+  { id: 1, label: "small" },
+  { id: 2, label: "medium" },
+  { id: 3, label: "large" },
 ];
 
 export const MIN_PRICE = 0;
