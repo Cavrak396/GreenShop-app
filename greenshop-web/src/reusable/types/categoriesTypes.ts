@@ -1,13 +1,13 @@
 export interface CategoriesTypes {
   id: number;
   label: string;
-  size: number;
 }
 
 export interface CategoriesListProps {
   categories: CategoriesTypes[];
   activeCategory: string | null;
   onCategoryClick: (label: string) => void;
+  isSizeCategory: boolean;
 }
 
 export interface CategoryItemProps {
