@@ -18,7 +18,6 @@ export const userBarItems: userBarTypes[] = [
     id: 4,
     alt: "user account",
     src: user,
-    path: "/account",
     specialClass: false,
   },
 ];
