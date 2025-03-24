@@ -20,8 +20,10 @@ export interface CommentsContextType {
     userComment: Comment | null;
     loading: boolean;
     rating: number;
+    totalReviews: number | null;
     fetchComments: (plantId: string) => Promise<void>;
     fetchUserComment: (plantId: string) => Promise<void>;
+    fetchTotalNumberOfReviews: (plantId: string) => Promise<void>;
     addComment: (plantId: string, comment: string, rating: number) => Promise<void>;
     removeComment: (plantId: string) => Promise<void>;
     updateComment: (plantId: string, comment: string, rating: number) => Promise<void>;

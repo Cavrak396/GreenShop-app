@@ -12,6 +12,7 @@ import {
   getUserReview,
   deleteReview,
   updateReview,
+  getTotalNumberOfReviews,
 } from "../services/reviews/reviews";
 import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
 
@@ -24,6 +25,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [userComment, setUserComment] = useState<Comment | null>(null);
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState<number>(0);
+  const [totalReviews, setTotalReviews] = useState<number | null>(null);
   const { user } = useUser();
 
   const fetchComments = useCallback(async (plantId: string) => {
@@ -73,6 +75,21 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     [user]
   );
 
+  const fetchTotalNumberOfReviews = useCallback(async (plantId: string) => {
+    if (!plantId) return;
+
+    setLoading(true);
+    try {
+      const total = await getTotalNumberOfReviews(plantId);
+      setTotalReviews(total);
+    } catch (error) {
+      console.error("Failed to fetch total number of reviews:", error);
+      setTotalReviews(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const addComment = async (
     plantId: string,
     comment: string,
@@ -93,6 +110,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       if (response) {
         await fetchComments(plantId);
         await fetchUserComment(plantId);
+        await fetchTotalNumberOfReviews(plantId);
       } else {
         console.error("Error adding comment:", response);
       }
@@ -119,6 +137,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       await updateReview(plantId, reviewDto);
       await fetchComments(plantId);
       await fetchUserComment(plantId);
+      await fetchTotalNumberOfReviews(plantId);
     } catch (error) {
       console.error("Error updating comment:", error);
     }
@@ -132,6 +151,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       await fetchComments(plantId);
       setUserComment(null);
       setRating(0);
+      await fetchTotalNumberOfReviews(plantId);
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -148,9 +168,11 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         userComment,
         loading,
         rating,
+        totalReviews,
         changeRating,
         fetchComments,
         fetchUserComment,
+        fetchTotalNumberOfReviews,
         addComment,
         removeComment,
         updateComment,
