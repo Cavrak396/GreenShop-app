@@ -1,23 +1,28 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userBarItemType } from "./types/userBarTypes";
 import Portal from "../../reusable/Portal/Portal";
 import Cart from "../cart/Cart";
 import UserAccount from "../user-account/UserAccount";
+import { useUser } from "../../context/AuthContext";
+import AuthContent from "../authorization/AuthContent";
 
 function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
   const navigate = useNavigate();
-  const [isAppear, setIsAppear] = useState(false);
-  const [isUserAccountOpen, setIsUserAccountOpen] = useState(false);
+  const [activePortal, setActivePortal] = useState<string | null>(null);
+  const { token } = useUser();
 
   function handleNavigation() {
     setActiveId(item.id);
 
     if (item.alt === "cart") {
-      setIsAppear(true);
-      navigate("/");
+      setActivePortal("cart");
     } else if (item.alt === "user account") {
-      setIsUserAccountOpen(true);
+      if (token) {
+        setActivePortal("userAccount");
+      } else {
+        setActivePortal("authContent");
+      }
     } else if (item.path) {
       navigate(item.path);
     } else {
@@ -26,10 +31,10 @@ function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
   }
 
   useEffect(() => {
-    if (!isAppear && item.alt === "cart" && isActive && item.id !== 1) {
+    if (!activePortal) {
       setActiveId(1);
     }
-  }, [isAppear, item.alt, isActive, item.id, setActiveId]);
+  }, [activePortal, setActiveId]);
 
   return (
     <>
@@ -42,15 +47,11 @@ function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
         <img src={item.src} alt={item.alt} className="userbar__list-image" />
       </li>
 
-      {isAppear && (
-        <Portal setIsAppear={setIsAppear}>
-          <Cart />
-        </Portal>
-      )}
-
-      {isUserAccountOpen && (
-        <Portal setIsAppear={setIsUserAccountOpen}>
-          <UserAccount />
+      {activePortal && (
+        <Portal setIsAppear={() => setActivePortal(null)}>
+          {activePortal === "cart" && <Cart />}
+          {activePortal === "userAccount" && <UserAccount />}
+          {activePortal === "authContent" && <AuthContent />}
         </Portal>
       )}
     </>
