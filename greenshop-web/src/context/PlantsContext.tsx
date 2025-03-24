@@ -60,7 +60,6 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const data = await fetchPlantsNumberByCategories(CATEGORIES);
-      console.log(data);
       setCategoriesData(data);
     } catch (error) {
       setError("Failed to fetch plant numbers by categories.");
@@ -73,7 +72,6 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const data = await fetchPlantsNumberBySize();
-      console.log(data);
       setPlantsNumberBySize(data);
     } catch (error) {
       setError("Failed to fetch plant numbers by size.");

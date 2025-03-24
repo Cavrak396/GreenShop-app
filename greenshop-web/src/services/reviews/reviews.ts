@@ -69,5 +69,14 @@ export const deleteReview = async (plantId: string): Promise<ReviewDto | null> =
   }
 };
 
+export const getTotalNumberOfReviews = async (plantId: string): Promise<number | null> => {
+  try {
+    const response = await axiosInstance.get<number>(`/reviews/${plantId}/total-number`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    return null;
+  }
+};
 
 export default axiosInstance;
