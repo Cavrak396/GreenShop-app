@@ -134,6 +134,10 @@
     max-height: 15px;
   }
 
+  .header__usertoolbar-account-image {
+    display: none;
+  }
+
   .header__usertoolbar-search-bar {
     display: block;
     opacity: 1;
