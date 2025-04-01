@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { sizes } from "../utils/detailsUtils";
-import ProductSizesItem from "./ProductSizesItem";
+import ProductSizesItem from "./DetailsProductSizesItem";
 
 function ProductSizesList() {
   const [isActive, setIsActive] = useState<number>(1);

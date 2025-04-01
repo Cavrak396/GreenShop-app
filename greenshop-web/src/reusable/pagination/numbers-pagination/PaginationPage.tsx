@@ -1,4 +1,4 @@
-import { PaginationPropsTypes } from "../types/paginationTypes";
+import { PaginationPropsTypes } from "../../types/paginationTypes";
 
 function PaginationPage({ page, isActive, handleClick }: PaginationPropsTypes) {
   return (

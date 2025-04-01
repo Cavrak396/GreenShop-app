@@ -1,5 +1,5 @@
 import PaginationPage from "./PaginationPage";
-import { PaginationTypes } from "../types/paginationTypes";
+import { PaginationTypes } from "../../types/paginationTypes";
 
 function PaginationList({
   visiblePages,

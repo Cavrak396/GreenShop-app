@@ -13,7 +13,7 @@ export interface PaginationPropsTypes {
 export interface PaginationItemsProps {
   totalItems: number;
   itemsPerPage: number;
-  loadItems: (params: { page: number; pageSize: number }) => void;
+  loadItems: (params: { plantId?: string; page: number; pageSize: number }) => void;
 }
 
 export interface SetPageFunctions {
@@ -24,4 +24,14 @@ export interface SetPageFunctions {
 export interface VisiblePagesParams {
   rangeStartPage: number;
   numOfPages: number;
+}
+
+export interface ArrowProps {
+  id: number;
+  img: string;
+  alt: string;
+}
+
+export interface ArrowPaginationItemProps {
+  arrow: ArrowProps;
 }

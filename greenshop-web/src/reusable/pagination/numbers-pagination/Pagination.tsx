@@ -4,11 +4,11 @@ import {
   handleMoveToLastPage,
   getVisiblePages,
   handlePageClick as handlePageClickUtil,
-} from "./utils/paginationUtils";
+} from "../utils/paginationUtils";
 import PaginationList from "./PaginationList";
-import { PaginationItemsProps } from "../types/paginationTypes";
-import arrow from "../../assets/images/shop/pagination/arrow-right.svg";
-import "./pagination.css";
+import { PaginationItemsProps } from "../../types/paginationTypes";
+import arrow from "../../../assets/images/shop/pagination/arrow-right.svg";
+import "../pagination.css";
 
 function Pagination({
   totalItems,

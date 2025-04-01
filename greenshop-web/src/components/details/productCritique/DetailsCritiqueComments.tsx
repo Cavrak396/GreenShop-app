@@ -5,9 +5,8 @@ import LoadingSpinner from "../../../reusable/LoadingSpinner/LoadingSpinner";
 import DetailsCritiqueCommentsFeedback from "./productComments/productCommentsFeedback/DetailsCritiqueCommentsFeedback";
 import { useUser } from "../../../context/AuthContext";
 import { useComments } from "../../../context/ReviewsContext";
-import Pagination from "../../../reusable/pagination/Pagination";
-import { usePlants } from "../../../context/PlantsContext";
 import { useParams } from "react-router-dom";
+import ArrowPagination from "../../../reusable/pagination/arrows-pagination/ArrowPagination";
 
 function DetailsCritiqueComments() {
   const { token } = useUser();
@@ -18,7 +17,7 @@ function DetailsCritiqueComments() {
     fetchTotalNumberOfReviews,
     totalReviews,
   } = useComments();
-  const { loadPlants } = usePlants();
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -38,13 +37,7 @@ function DetailsCritiqueComments() {
             <DetailsCritiqueCommentsPersonal comment={userComment} />
           )}
           <DetailsCritiqueCommentsList comments={comments} />
-          {totalReviews !== null && totalReviews > 5 && (
-            <Pagination
-              totalItems={totalReviews}
-              itemsPerPage={5}
-              loadItems={loadPlants}
-            />
-          )}
+          <ArrowPagination />
         </>
       )}
     </div>

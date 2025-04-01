@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 import { subscribeToNewsletter } from "../services/subscribers/subscribers";
-import { SubscriberContextType } from "./types/SubscriberTypes";
+import { SubscriberContextType } from "./types/subscriberTypes";
 import { ApiError } from "../services/reusable/reusableTypes";
 
 const SubscriberContext = createContext<SubscriberContextType | undefined>(
