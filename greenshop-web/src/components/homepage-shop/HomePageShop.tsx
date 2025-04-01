@@ -1,6 +1,6 @@
 import HomePageToolbox from "./usertoolbox/HomePageToolbox";
 import HomePageShopContent from "./shop/HomePageShopContent";
-import Pagination from "../../reusable/pagination/Pagination";
+import Pagination from "../../reusable/pagination/numbers-pagination/Pagination";
 import { usePlants } from "../../context/PlantsContext";
 import { useState } from "react";
 import "./homepageshop.css";

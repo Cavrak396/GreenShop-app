@@ -3,6 +3,8 @@ import {
   VisiblePagesParams,
 } from "../../types/paginationTypes";
 
+import arrow from "../../../assets/images/shop/pagination/arrow-right.svg";
+
 export function getVisiblePages({
   rangeStartPage,
   numOfPages,
@@ -42,3 +44,8 @@ export function handlePageClick(
     setRangeStartPage(rangeStartPage - 1);
   }
 }
+
+export const paginationArrows = [
+  { id: 1, alt: "Pagination arrow left", img: arrow },
+  { id: 2, alt: "Pagination arrow right", img: arrow },
+];

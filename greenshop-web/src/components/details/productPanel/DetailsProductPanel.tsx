@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import DetailsProductDescription from "../DetailsProductDescription";
-import ProductSizesList from "./ProductSizesList";
+import ProductSizesList from "./DetailsProductSizesList";
 import DetailsQuantity from "./DetailsQuantity";
 import DetailsOrderButtons from "./DetailsOrderButtons";
 import DetailsSocialList from "./DetailsSocialList";
@@ -15,14 +15,15 @@ function DetailsProductPanel() {
   const product = useProduct();
   const { comments, fetchComments, fetchUserComment } = useComments();
   const { id } = useParams();
+  const { currentPage, currentPageSize } = useComments();
   const { avgRating } = useRatings(comments);
 
   useEffect(() => {
     if (id) {
-      fetchComments(id);
+      fetchComments(id, currentPage, currentPageSize);
       fetchUserComment(id);
     }
-  }, [id, fetchComments, fetchUserComment]);
+  }, [id, currentPage, currentPageSize]);
 
   const calculatedSalePrice = useMemo(() => {
     return product.sale_Percent

@@ -37,6 +37,31 @@
   color: rgba(255, 255, 255, 1);
 }
 
+.arrow-pagination-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.arrow-pagination-item {
+  max-width: 25px;
+  max-height: 25px;
+  flex: 1 1 25px;
+}
+
+.arrow-pagination-arrow {
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.arrow-pagination-arrow--left {
+  transform: rotate(180deg);
+}
+
+.disabled {
+  opacity: 0.4;
+}
+
 @media screen and (max-width: 975px) {
   .homepageshop__pagination {
     width: 100%;

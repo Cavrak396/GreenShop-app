@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         setError(error.message);
       } else {
         setUser(response as User);
-        console.log(response);
       }
     } catch (err: any) {
       const error: ApiError = {
@@ -164,7 +163,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     try {
       setLoading(true);
       const response = await updateUser(dto);
-      console.log(response);
 
       if (!response) {
         setError("No data returned from the server.");

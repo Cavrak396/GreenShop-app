@@ -23,34 +23,40 @@ const CommentsContext = createContext<CommentsContextType | undefined>(
 export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [userComment, setUserComment] = useState<Comment | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
   const [totalReviews, setTotalReviews] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(1);
+
   const { user } = useUser();
 
-  const fetchComments = useCallback(async (plantId: string) => {
-    if (!plantId) return;
+  const fetchComments = useCallback(
+    async (plantId: string, page: number, pageSize: number) => {
+      if (!plantId) return;
 
-    setLoading(true);
-    try {
-      const data = await getPlantReviews(plantId);
-      if (Array.isArray(data)) {
-        const formattedComments: Comment[] = data.map((review) => ({
-          ...review,
-          userName: review.userName ?? "",
-          creationDate: review.creationDate ?? new Date().toISOString(),
-        }));
-        setComments(formattedComments);
-      } else {
-        console.error("Invalid data received from API:", data);
-        setComments([]);
+      setLoading(true);
+      try {
+        const data = await getPlantReviews(plantId, page, pageSize);
+        if (Array.isArray(data)) {
+          const formattedComments: Comment[] = data.map((review) => ({
+            ...review,
+            userName: review.userName ?? "",
+            creationDate: review.creationDate ?? new Date().toISOString(),
+          }));
+          setComments(formattedComments);
+        } else {
+          console.error("Invalid data received from API:", data);
+          setComments([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to fetch comments:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const fetchUserComment = useCallback(
     async (plantId: string) => {
@@ -108,7 +114,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await createReview(reviewDto);
       if (response) {
-        await fetchComments(plantId);
+        await fetchComments(plantId, currentPage, currentPageSize);
         await fetchUserComment(plantId);
         await fetchTotalNumberOfReviews(plantId);
       } else {
@@ -133,9 +139,10 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       userName: user.userName ?? "",
       creationDate: new Date().toISOString(),
     };
+
     try {
       await updateReview(plantId, reviewDto);
-      await fetchComments(plantId);
+      await fetchComments(plantId, currentPage, currentPageSize);
       await fetchUserComment(plantId);
       await fetchTotalNumberOfReviews(plantId);
     } catch (error) {
@@ -148,7 +155,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await deleteReview(plantId);
-      await fetchComments(plantId);
+      await fetchComments(plantId, currentPage, currentPageSize);
       setUserComment(null);
       setRating(0);
       await fetchTotalNumberOfReviews(plantId);
@@ -176,6 +183,10 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         addComment,
         removeComment,
         updateComment,
+        currentPage,
+        currentPageSize,
+        setCurrentPage,
+        setCurrentPageSize,
       }}
     >
       {children}
