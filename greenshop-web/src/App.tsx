@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { CommentsProvider } from "./context/ReviewsContext";
 import { ToastContainer } from "react-toastify";
 import { SubscriberProvider } from "./context/SubscribersContext";
+import { PaginationProvider } from "./context/PaginationContext";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -20,19 +21,21 @@ function App() {
       <AuthProvider>
         <SubscriberProvider>
           <CartProvider>
-            <CommentsProvider>
-              <Router>
-                <Header />
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/details/:id" element={<DetailsPage />} />
-                  <Route path="/developers" element={<DevelopersPage />} />
-                </Routes>
-                <Footer />
-                <UserBar />
-              </Router>
-              <ToastContainer position="top-right" autoClose={3000} />
-            </CommentsProvider>
+            <Router>
+              <CommentsProvider>
+                <PaginationProvider>
+                  <Header />
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/details/:id" element={<DetailsPage />} />
+                    <Route path="/developers" element={<DevelopersPage />} />
+                  </Routes>
+                  <Footer />
+                  <UserBar />
+                  <ToastContainer position="top-right" autoClose={3000} />
+                </PaginationProvider>
+              </CommentsProvider>
+            </Router>
           </CartProvider>
         </SubscriberProvider>
       </AuthProvider>
