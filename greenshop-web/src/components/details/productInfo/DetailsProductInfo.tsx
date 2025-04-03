@@ -1,21 +1,23 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import DetailsInfoButtons from "./DetailsInfoButtons";
 import DetailsInfoContent from "./DetailsInfoContent";
+import { usePagination } from "../../../context/PaginationContext";
 
 function DetailsProductInfo() {
-  const [activatedButtonId, setActivatedButtonId] = useState(1);
+  const { activeDetailsInfoButton, setActiveDetailsInfoButton } =
+    usePagination();
 
   const handleButtonClick = useCallback((id: number) => {
-    setActivatedButtonId(id);
+    setActiveDetailsInfoButton(id);
   }, []);
 
   return (
     <div className="details__info">
       <DetailsInfoButtons
-        activatedButtonId={activatedButtonId}
+        activatedButtonId={activeDetailsInfoButton}
         handleButtonClick={handleButtonClick}
       />
-      <DetailsInfoContent activatedButtonId={activatedButtonId} />
+      <DetailsInfoContent activatedButtonId={activeDetailsInfoButton} />
     </div>
   );
 }
