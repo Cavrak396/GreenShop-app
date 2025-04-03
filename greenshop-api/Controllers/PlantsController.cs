@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using greenshop_api.Data;
+using greenshop_api.Application.Models;
+using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
-using greenshop_api.Models;
-using greenshop_api.Services;
+using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static greenshop_api.Models.Plant;
+using static greenshop_api.Domain.Models.Plant;
 
 namespace greenshop_api.Controllers
 {
@@ -17,13 +18,13 @@ namespace greenshop_api.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly NewsletterService newsletterService;
+        private readonly INewsletterSender newsletterSender;
         private readonly IMapper mapper;
 
-        public PlantsController(ApplicationDbContext db, NewsletterService newsletterService, IMapper mapper)
+        public PlantsController(ApplicationDbContext db, INewsletterSender newsletterSender, IMapper mapper)
         {
             this.db = db;
-            this.newsletterService = newsletterService;
+            this.newsletterSender = newsletterSender;
             this.mapper = mapper;
         }
 
@@ -134,9 +135,9 @@ namespace greenshop_api.Controllers
             var mediumCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.M);
             var largeCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
 
-            sizeCounts["small"] = smallCount;
-            sizeCounts["medium"] = mediumCount;
-            sizeCounts["large"] = largeCount;
+            sizeCounts["Small"] = smallCount;
+            sizeCounts["Medium"] = mediumCount;
+            sizeCounts["Large"] = largeCount;
 
             return Ok(sizeCounts);
         }
@@ -207,20 +208,18 @@ namespace greenshop_api.Controllers
 
             var subscribers = await this.db.Subscribers.ToListAsync();
 
-            if (subscribers.Count()!=0) 
+            if (subscribers.Count != 0) 
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await newsletterService.SendNewsletterMessage(
-                        subscriber.SubscriberEmail,
-                        "New Plant in the shop!",
-                        "Are you ready for new purchase?",
-                        $"We have a new arrival - {plantToCreate.Name}. If you are ready to decorate " +
-                        $"your ambient with this amazing product, check it out on our website " +
-                        $"for price and details. And hurry up - this plant may not be forever in " +
-                        $"our shop!"
+                    await this.newsletterSender.SendNewsletterAsync(
+                        "newPlant",
+                        new NewsletterHeader
+                        {
+                            Recipient = subscriber.SubscriberEmail,
+                            Details = plantToCreate.Name
+                        }
                     );
-
                 }
             }
 

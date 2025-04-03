@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using greenshop_api.Authority;
-using greenshop_api.Data;
+using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.Review_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters;
-using greenshop_api.Models;
-using greenshop_api.Services;
+using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +20,14 @@ namespace greenshop_api.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly IUserRepository repository;
-        private readonly JwtService jwtService;
+        private readonly IJwtService jwtHandler;
         private readonly IMapper mapper;
 
-        public ReviewsController(ApplicationDbContext db, IUserRepository repository, JwtService jwtService, IMapper mapper)
+        public ReviewsController(ApplicationDbContext db, IUserRepository repository, IJwtService jwtHandler, IMapper mapper)
         {
             this.db = db;
             this.repository = repository;
-            this.jwtService = jwtService;
+            this.jwtHandler = jwtHandler;
             this.mapper = mapper;
         }
 
@@ -46,7 +46,7 @@ namespace greenshop_api.Controllers
             var reviews = await reviewsQuery.ToListAsync();
 
             var userIds = reviews.Select(r => r.UserId).ToList();
-            var users = await repository.GetUsersByIdsAsync(userIds);
+            var users = await repository.GetUsersByIdsAsync(userIds!);
 
             var reviewDtos = reviews.Select(review =>
             {
@@ -63,7 +63,7 @@ namespace greenshop_api.Controllers
             var jwt = Request.Cookies["jwt"];
             if (!string.IsNullOrEmpty(jwt))
             {
-                var token = jwtService.Verify(jwt);
+                var token = jwtHandler.Verify(jwt);
                 var userId = token.Issuer.ToString();
                 var currentUser = users.FirstOrDefault(u => u.UserId == userId);
 
@@ -88,7 +88,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetReviewByUser(string plantId)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
@@ -119,7 +119,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> CreateReview([FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await repository.GetUserByIdAsync(userId);
 
@@ -148,12 +148,12 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> UpdateReview(string plantId, [FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             var reviewToUpdate = await this.db.Reviews.FindAsync(userId, plantId);
 
-            reviewToUpdate.Rating = review.Rating;
+            reviewToUpdate!.Rating = review.Rating;
             reviewToUpdate.Creation_Date = DateTime.Now;
             reviewToUpdate.Comment = review.Comment;
 
@@ -170,13 +170,13 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> DeleteReview(string plantId)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
             var reviewToDelete = await this.db.Reviews.FindAsync(userId, plantId);
 
-            this.db.Reviews.Remove(reviewToDelete);
+            this.db.Reviews.Remove(reviewToDelete!);
             await this.db.SaveChangesAsync();
 
             return NoContent();

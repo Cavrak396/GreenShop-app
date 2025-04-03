@@ -1,4 +1,4 @@
-﻿using greenshop_api.Models;
+﻿using greenshop_api.Domain.Models;
 
 namespace greenshop_api.Authority
 {

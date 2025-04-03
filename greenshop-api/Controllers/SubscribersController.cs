@@ -1,7 +1,8 @@
-﻿using greenshop_api.Data;
+﻿using greenshop_api.Application.Models;
+using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Models;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
-using greenshop_api.Models;
-using greenshop_api.Services;
+using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,12 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly NewsletterService newsletterService;
+        private readonly INewsletterSender newsletterSender;
 
-        public SubscribersController(ApplicationDbContext db, NewsletterService newsletterService)
+        public SubscribersController(ApplicationDbContext db, INewsletterSender newsletterSender)
         {
             this.db = db;
-            this.newsletterService = newsletterService;
+            this.newsletterSender = newsletterSender;
         }
 
         [HttpGet]
@@ -37,14 +38,12 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();
 
-            await newsletterService.SendNewsletterMessage(
-                subscriber.SubscriberEmail,
-                "Welcome to Miso Greenshop Newsettler!",
-                "You will never miss a thing from now on!",
-                "We are so happy to have you here! Whenever there is a new product " +
-                "in our store, you will be informed right away. This way, you can purchase " +
-                "the plant while it's still in stock with the best prize."
-            );
+            await this.newsletterSender.SendNewsletterAsync(
+                "subscription",
+                new NewsletterHeader
+                {
+                    Recipient = subscriber.SubscriberEmail
+                });
 
             return CreatedAtAction(nameof(GetSubscribers),
                 new { id = subscriber.SubscriberId },

@@ -1,6 +1,6 @@
-﻿using greenshop_api.Data;
-using greenshop_api.Models;
-using greenshop_api.Modules.ActionFilterErrors;
+﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+using greenshop_api.Domain.Models;
+using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 

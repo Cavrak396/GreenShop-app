@@ -1,4 +1,4 @@
-﻿using greenshop_api.Modules.ActionFilterErrors;
+﻿using greenshop_api.Application.Modules.ActionFilterErrors;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters

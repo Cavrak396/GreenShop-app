@@ -1,9 +1,12 @@
-﻿using greenshop_api.Authority;
-using greenshop_api.Data;
+﻿using greenshop_api.Application.Models;
+using greenshop_api.Authority;
+using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
-using greenshop_api.Models;
-using greenshop_api.Services;
+using greenshop_api.Infrastructure.Persistance;
+using greenshop_api.Infrastructure.Services.Newsletter;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,15 +19,15 @@ namespace greenshop_api.Controllers
     {
         private readonly IUserRepository repository;
         private readonly ApplicationDbContext db;
-        private readonly JwtService jwtService;
-        private readonly NewsletterService newsletterService;
+        private readonly IJwtService jwtHandler;
+        private readonly INewsletterSender newsletterSender;
 
-        public AuthController(IUserRepository repository, ApplicationDbContext db, JwtService jwtService, NewsletterService newsletterService) 
+        public AuthController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterSender newsletterSender) 
         {
             this.repository = repository;
             this.db = db;
-            this.jwtService = jwtService;
-            this.newsletterService = newsletterService;
+            this.jwtHandler = jwtHandler;
+            this.newsletterSender = newsletterSender;
         }
 
         [HttpGet("users")]
@@ -66,14 +69,13 @@ namespace greenshop_api.Controllers
                 this.db.Subscribers.Add(subscriber);
             }
 
-            await newsletterService.SendNewsletterMessage(
-                registerDto.Email,
-                "You successfully joined Miso Greenshop family!",
-                $"Hello, {registerDto.Name}, your register proccess was successfull!",
-                "Now you can login and shop all your favorite products " +
-                "for awesome prices! You can also leave reviews for the " +
-                "the products you purchased and many other features!"
-            );
+            await this.newsletterSender.SendNewsletterAsync(
+                "registration",
+                new NewsletterHeader
+                {
+                    Recipient = registerDto.Email,
+                    Details = registerDto.Name
+                });
 
             await this.repository.CreateUserAsync(user);
 
@@ -84,9 +86,9 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var user = await this.repository.GetUserByEmailAsync(loginDto.Email);
+            var user = await this.repository.GetUserByEmailAsync(loginDto.Email!);
 
-            var jwt = jwtService.Generate(user.UserId);
+            var jwt = jwtHandler.Generate(user.UserId!);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
@@ -113,7 +115,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetUser()
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
@@ -134,7 +136,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> UpdateUserIsSubscribed(bool isSubscribed)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var userToUpdate = await this.repository.GetUserByIdAsync(userId);
 
@@ -170,7 +172,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> DeleteUser()
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = jwtHandler.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var userToDelete = await this.repository.GetUserByIdAsync(userId);
 

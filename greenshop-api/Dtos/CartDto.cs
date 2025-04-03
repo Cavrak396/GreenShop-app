@@ -1,4 +1,4 @@
-﻿using greenshop_api.Models;
+﻿using greenshop_api.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace greenshop_api.Dtos
