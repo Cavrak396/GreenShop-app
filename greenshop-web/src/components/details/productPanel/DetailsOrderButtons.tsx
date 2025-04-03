@@ -29,7 +29,7 @@ function DetailsOrderButtons() {
 
   useEffect(() => {
     const isInCart = cartItems.some(
-      (item) => item.id.toString() === product.plantId
+      (item) => item && item.id && item.id.toString() === product.plantId
     );
     if (!isInCart) {
       setIsAdded("Add to cart");

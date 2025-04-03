@@ -26,8 +26,6 @@ function ConfirmationButtons({
     if (user && userUpdate) {
       const userToUpdate = {
         ...userUpdate,
-        userEmail: user.userEmail,
-        userName: "anton",
       };
 
       updateUserDetails(userToUpdate).then(() => {
