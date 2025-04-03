@@ -3,11 +3,14 @@ import FormInput from "../../reusable/inputs/FormInput";
 import { HeaderSearchBarProps } from "./types/headerTypes";
 import { usePlants } from "../../context/PlantsContext";
 import useDebounce from "../../customHooks/useDebounce";
+import { useLocation } from "react-router-dom";
 
 function HeaderSearchBar({ isAppear }: HeaderSearchBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const { setSearchedData, setFilters, loadPlants } = usePlants();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     if (debouncedSearchQuery === "") {
@@ -32,6 +35,10 @@ function HeaderSearchBar({ isAppear }: HeaderSearchBarProps) {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
+  if (!isHomePage) {
+    return null;
+  }
 
   return (
     <li className={`header__usertoolbar-item ${isAppear ? "visible" : ""}`}>
