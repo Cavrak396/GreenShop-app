@@ -3,11 +3,13 @@ import HomePageShopContent from "./shop/HomePageShopContent";
 import Pagination from "../../reusable/pagination/numbers-pagination/Pagination";
 import { usePlants } from "../../context/PlantsContext";
 import { useState } from "react";
+import { usePagination } from "../../context/PaginationContext";
 import "./homepageshop.css";
 
 function HomePageShop() {
   const { loadPlants, plantsTotal } = usePlants();
   const [itemsPerPage] = useState(9);
+  const { currentShopPage, setCurrentShopPage } = usePagination();
 
   return (
     <div className="homepageshop">
@@ -17,6 +19,8 @@ function HomePageShop() {
           <HomePageShopContent />
         </div>
         <Pagination
+          activePage={currentShopPage}
+          setActivePage={setCurrentShopPage}
           totalItems={plantsTotal}
           itemsPerPage={itemsPerPage}
           loadItems={loadPlants}

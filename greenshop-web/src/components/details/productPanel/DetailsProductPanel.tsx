@@ -15,15 +15,15 @@ function DetailsProductPanel() {
   const product = useProduct();
   const { comments, fetchComments, fetchUserComment } = useComments();
   const { id } = useParams();
-  const { currentPage, currentPageSize } = useComments();
+  const { currentCommentsPage, currentPageSize } = useComments();
   const { avgRating } = useRatings(comments);
 
   useEffect(() => {
     if (id) {
-      fetchComments(id, currentPage, currentPageSize);
+      fetchComments(id, currentCommentsPage, currentPageSize);
       fetchUserComment(id);
     }
-  }, [id, currentPage, currentPageSize]);
+  }, [id, currentCommentsPage, currentPageSize]);
 
   const calculatedSalePrice = useMemo(() => {
     return product.sale_Percent

@@ -14,12 +14,13 @@ function Pagination({
   totalItems,
   itemsPerPage,
   loadItems,
+  activePage,
+  setActivePage,
 }: PaginationItemsProps) {
-  const numOfPages = Math.ceil(totalItems / itemsPerPage);
-  const [activePage, setActivePage] = useState(1);
-  const [rangeStartPage, setRangeStartPage] = useState(1);
-
   const prevActivePage = useRef(activePage);
+
+  const [rangeStartPage, setRangeStartPage] = useState<number>(1);
+  const numOfPages = Math.ceil(totalItems / itemsPerPage);
 
   const visiblePages = useMemo(
     () => getVisiblePages({ rangeStartPage, numOfPages }),

@@ -13,18 +13,24 @@ const PaginationContext = createContext<any>(null);
 export function PaginationProvider({ children }: { children: ReactNode }) {
   const [activeDetailsInfoButton, setActiveDetailsInfoButton] =
     useState<number>(1);
+  const [currentShopPage, setCurrentShopPage] = useState<number>(1);
 
-  const { setCurrentPage } = useComments();
+  const { setCurrentCommentsPage } = useComments();
   const location = useLocation();
 
   useEffect(() => {
     setActiveDetailsInfoButton(1);
-    setCurrentPage(1);
+    setCurrentCommentsPage(1);
   }, [location]);
 
   return (
     <PaginationContext.Provider
-      value={{ activeDetailsInfoButton, setActiveDetailsInfoButton }}
+      value={{
+        activeDetailsInfoButton,
+        setActiveDetailsInfoButton,
+        currentShopPage,
+        setCurrentShopPage,
+      }}
     >
       {children}
     </PaginationContext.Provider>

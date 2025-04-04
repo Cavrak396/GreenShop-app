@@ -2,19 +2,23 @@ import { useComments } from "../../../context/ReviewsContext";
 import { ArrowPaginationItemProps } from "../../types/paginationTypes";
 
 function ArrowPaginationItem({ arrow }: ArrowPaginationItemProps) {
-  const { currentPage, totalReviews, currentPageSize, setCurrentPage } =
-    useComments();
+  const {
+    currentCommentsPage,
+    totalReviews,
+    currentPageSize,
+    setCurrentCommentsPage,
+  } = useComments();
 
   const totalReviewsValue = totalReviews ?? 0;
   const totalPages = Math.ceil(totalReviewsValue / currentPageSize);
-  const isLastPage = currentPage === totalPages;
-  const isFirstPage = currentPage === 1;
+  const isLastPage = currentCommentsPage === totalPages;
+  const isFirstPage = currentCommentsPage === 1;
 
   function handleClick() {
     if (arrow.id === 1) {
-      setCurrentPage((prevPage: number) => Math.max(prevPage - 1, 1));
+      setCurrentCommentsPage((prevPage: number) => Math.max(prevPage - 1, 1));
     } else if (arrow.id === 2 && !isLastPage) {
-      setCurrentPage((prevPage: number) => prevPage + 1);
+      setCurrentCommentsPage((prevPage: number) => prevPage + 1);
     }
   }
 

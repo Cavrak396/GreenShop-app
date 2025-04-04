@@ -26,7 +26,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
   const [totalReviews, setTotalReviews] = useState<number | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
   const [currentPageSize, setCurrentPageSize] = useState<number>(1);
 
   const { user } = useUser();
@@ -114,7 +114,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await createReview(reviewDto);
       if (response) {
-        await fetchComments(plantId, currentPage, currentPageSize);
+        await fetchComments(plantId, currentCommentsPage, currentPageSize);
         await fetchUserComment(plantId);
         await fetchTotalNumberOfReviews(plantId);
       } else {
@@ -142,7 +142,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await updateReview(plantId, reviewDto);
-      await fetchComments(plantId, currentPage, currentPageSize);
+      await fetchComments(plantId, currentCommentsPage, currentPageSize);
       await fetchUserComment(plantId);
       await fetchTotalNumberOfReviews(plantId);
     } catch (error) {
@@ -155,7 +155,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await deleteReview(plantId);
-      await fetchComments(plantId, currentPage, currentPageSize);
+      await fetchComments(plantId, currentCommentsPage, currentPageSize);
       setUserComment(null);
       setRating(0);
       await fetchTotalNumberOfReviews(plantId);
@@ -183,9 +183,9 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         addComment,
         removeComment,
         updateComment,
-        currentPage,
+        currentCommentsPage,
         currentPageSize,
-        setCurrentPage,
+        setCurrentCommentsPage,
         setCurrentPageSize,
       }}
     >
