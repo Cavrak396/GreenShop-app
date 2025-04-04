@@ -13,6 +13,8 @@ export interface PaginationPropsTypes {
 export interface PaginationItemsProps {
   totalItems: number;
   itemsPerPage: number;
+  activePage: number,
+  setActivePage: React.Dispatch<React.SetStateAction<number>>;
   loadItems: (params: { plantId?: string; page: number; pageSize: number }) => void;
 }
 

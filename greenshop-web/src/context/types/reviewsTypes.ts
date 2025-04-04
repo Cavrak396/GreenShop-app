@@ -28,9 +28,9 @@ export interface CommentsContextType {
     removeComment: (plantId: string) => Promise<void>;
     updateComment: (plantId: string, comment: string, rating: number) => Promise<void>;
     changeRating: (newRating: number) => void;
-    currentPage: number;
+    currentCommentsPage: number;
     currentPageSize: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+    setCurrentCommentsPage: React.Dispatch<React.SetStateAction<number>>;
     setCurrentPageSize: React.Dispatch<React.SetStateAction<number>>;
 }
 
