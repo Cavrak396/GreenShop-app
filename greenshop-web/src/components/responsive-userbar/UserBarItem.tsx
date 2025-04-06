@@ -1,40 +1,49 @@
-import { memo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { memo, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { userBarItemType } from "./types/userBarTypes";
 import Portal from "../../reusable/Portal/Portal";
 import Cart from "../cart/Cart";
 import UserAccount from "../user-account/UserAccount";
 import { useUser } from "../../context/AuthContext";
 import AuthContent from "../authorization/AuthContent";
+import { userBarItems, handleNavigationLogic } from "./utils/userBarUtils";
 
-function UserBarItem({ item, isActive, setActiveId }: userBarItemType) {
+function UserBarItem({
+  item,
+  isActive,
+  setActiveId,
+  activePortal,
+  setActivePortal,
+}: userBarItemType) {
   const navigate = useNavigate();
-  const [activePortal, setActivePortal] = useState<string | null>(null);
+  const location = useLocation();
   const { token } = useUser();
 
   function handleNavigation() {
-    setActiveId(item.id);
-
-    if (item.alt === "cart") {
-      setActivePortal("cart");
-    } else if (item.alt === "user account") {
-      if (token) {
-        setActivePortal("userAccount");
-      } else {
-        setActivePortal("authContent");
-      }
-    } else if (item.path) {
-      navigate(item.path);
-    } else {
-      navigate("/");
-    }
+    handleNavigationLogic({
+      item,
+      setActiveId,
+      setActivePortal,
+      token,
+      navigate,
+    });
   }
 
   useEffect(() => {
     if (!activePortal) {
-      setActiveId(1);
+      const currentPath = location.pathname.slice(1);
+      const matchedItem = userBarItems.find(
+        (barItem) => barItem.alt === currentPath
+      );
+      if (matchedItem) {
+        setActiveId(matchedItem.id);
+      } else if (currentPath === "") {
+        setActiveId(1);
+      } else {
+        setActiveId(1);
+      }
     }
-  }, [activePortal, setActiveId]);
+  }, [activePortal, location.pathname, setActiveId]);
 
   return (
     <>

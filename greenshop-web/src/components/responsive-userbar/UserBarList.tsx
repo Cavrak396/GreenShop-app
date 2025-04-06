@@ -1,10 +1,10 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import UserBarItem from "./UserBarItem";
-import { userBarItems } from "./utils/userBarItems";
-import { useState } from "react";
+import { userBarItems } from "./utils/userBarUtils";
 
 function UserBarList() {
   const [activeId, setActiveId] = useState<number>(1);
+  const [activePortal, setActivePortal] = useState<string | null>(null);
 
   return (
     <ul className="userbar__list">
@@ -14,6 +14,8 @@ function UserBarList() {
           item={item}
           isActive={activeId === item.id}
           setActiveId={setActiveId}
+          activePortal={activePortal}
+          setActivePortal={setActivePortal}
         />
       ))}
     </ul>
