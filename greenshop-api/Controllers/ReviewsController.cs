@@ -132,9 +132,7 @@ namespace greenshop_api.Controllers
             this.db.Reviews.Add(reviewToCreate);
             await this.db.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetReviewByUser), new { 
-                userId = reviewToCreate.UserId, 
-                plantId = reviewToCreate.PlantId });
+            return NoContent();
         }
 
         [HttpPut("{plantId}")]
