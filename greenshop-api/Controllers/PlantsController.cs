@@ -223,9 +223,7 @@ namespace greenshop_api.Controllers
                 }
             }
 
-            return CreatedAtAction(nameof(GetPlantById),
-                new { plantId = plant.PlantId },
-                mapper.Map<PlantDto>(plantToCreate));
+            return NoContent();
         }
 
         [HttpPut("{plantId}")]

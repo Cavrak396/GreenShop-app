@@ -15,22 +15,14 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class AuthController : ControllerBase
+    public class UsersController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterService newsletterSender) : ControllerBase
     {
-        private readonly IUserRepository repository;
-        private readonly ApplicationDbContext db;
-        private readonly IJwtService jwtHandler;
-        private readonly INewsletterSender newsletterSender;
+        private readonly IUserRepository repository = repository;
+        private readonly ApplicationDbContext db = db;
+        private readonly IJwtService jwtHandler = jwtHandler;
+        private readonly INewsletterSender newsletterSender = newsletterSender;
 
-        public AuthController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterService newsletterSender) 
-        {
-            this.repository = repository;
-            this.db = db;
-            this.jwtHandler = jwtHandler;
-            this.newsletterSender = newsletterSender;
-        }
-
-        [HttpGet("users")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await this.db.Users.ToListAsync();
@@ -109,7 +101,7 @@ namespace greenshop_api.Controllers
             return NoContent();
         }
 
-        [HttpGet("user")]
+        [HttpGet]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetUser()
@@ -129,7 +121,7 @@ namespace greenshop_api.Controllers
             return Ok(userDto);
         }
 
-        [HttpPut("user/{isSubscribed}")]
+        [HttpPut("{isSubscribed}")]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         //[TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
@@ -166,7 +158,7 @@ namespace greenshop_api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("user")]
+        [HttpDelete]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> DeleteUser()
@@ -184,7 +176,7 @@ namespace greenshop_api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("users")]
+        [HttpDelete("all")]
         [TypeFilter(typeof(User_ValidateDeleteUsersActionFilter))]
         public async Task<IActionResult> DeleteAllUsers()
         {
