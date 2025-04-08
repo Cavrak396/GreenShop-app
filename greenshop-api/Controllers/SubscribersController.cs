@@ -45,9 +45,7 @@ namespace greenshop_api.Controllers
                     Recipient = subscriber.SubscriberEmail
                 });
 
-            return CreatedAtAction(nameof(GetSubscribers),
-                new { id = subscriber.SubscriberId },
-                subscriber);
+            return NoContent();
         }
 
         [HttpDelete("{subscriberId}")]

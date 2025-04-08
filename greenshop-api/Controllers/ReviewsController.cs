@@ -134,8 +134,7 @@ namespace greenshop_api.Controllers
 
             return CreatedAtAction(nameof(GetReviewByUser), new { 
                 userId = reviewToCreate.UserId, 
-                plantId = reviewToCreate.PlantId },
-                review);
+                plantId = reviewToCreate.PlantId });
         }
 
         [HttpPut("{plantId}")]
