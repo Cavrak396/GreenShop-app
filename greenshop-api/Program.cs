@@ -1,6 +1,12 @@
+using greenshop_api.Application.Models;
 using greenshop_api.Authority;
-using greenshop_api.Data;
-using greenshop_api.Services;
+using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Infrastructure.Bootstrap;
+using greenshop_api.Infrastructure.Newsletter;
+using greenshop_api.Infrastructure.Persistance;
+using greenshop_api.Infrastructure.Services;
+using greenshop_api.Infrastructure.Services.Newsletter;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -51,8 +57,26 @@ builder.Services.AddControllers()
         options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
         options.SerializerSettings.Formatting = Formatting.None;
     });
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<JwtService>();
+
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<SmtpOptions>(
+    builder.Configuration.GetSection("SMTP"));
+
+builder.Services.AddSmtpClient();
+
+builder.Services.AddSingleton<IJwtService, JwtService>();
+
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IJwtService, JwtService>();
+
+builder.Services.AddScoped<INewsletterContent, NewsletterContentHandler>();
+builder.Services.AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
+builder.Services.AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
+builder.Services.AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
+builder.Services.AddScoped<INewsletterSender, NewsletterService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -78,9 +102,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-//svuda samo koristi userId iz tokena, to promeni u metodama
-//mapiraj korpu kako treba
-//dodaj metodu za dobijanje svih reviews za jedan plant
-//podesi max quantity za cart
-//obrisi nekoriscene bibl  komentare

@@ -1,4 +1,4 @@
-﻿using greenshop_api.Models.Validations;
+﻿using greenshop_api.Domain.Models.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace greenshop_api.Dtos

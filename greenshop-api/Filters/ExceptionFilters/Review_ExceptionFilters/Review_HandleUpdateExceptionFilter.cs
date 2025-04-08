@@ -1,6 +1,6 @@
-﻿using greenshop_api.Data;
-using greenshop_api.Modules.ExceptionFilterErrors;
-using greenshop_api.Services;
+﻿using greenshop_api.Application.Modules.ExceptionFilterErrors;
+using greenshop_api.Infrastructure.Persistance;
+using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters

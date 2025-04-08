@@ -1,6 +1,6 @@
-﻿using greenshop_api.Models.Validations;
+﻿using greenshop_api.Domain.Models.Validations;
 using System.ComponentModel.DataAnnotations;
-using static greenshop_api.Models.Plant;
+using static greenshop_api.Domain.Models.Plant;
 
 namespace greenshop_api.Dtos
 {

@@ -1,5 +1,5 @@
-﻿using greenshop_api.Data;
-using greenshop_api.Models;
+﻿using greenshop_api.Domain.Models;
+using greenshop_api.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Authority

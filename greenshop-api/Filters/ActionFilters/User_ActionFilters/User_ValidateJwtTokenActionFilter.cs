@@ -1,8 +1,6 @@
-﻿using greenshop_api.Authority;
-using greenshop_api.Data;
-using greenshop_api.Modules.ActionFilterErrors;
-using greenshop_api.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+using greenshop_api.Authority;
+using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
@@ -23,7 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             try
             {
-                var token = jwtService.Verify(jwt);
+                var token = jwtService.Verify(jwt!);
                 var userId = token.Issuer.ToString();
                 var user = await repository.GetUserByIdAsync(userId);
             }
