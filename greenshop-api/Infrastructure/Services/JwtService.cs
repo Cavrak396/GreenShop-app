@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace greenshop_api.Infrastructure.Services.Jwt
+namespace greenshop_api.Infrastructure.Services
 {
     public class JwtService(IOptions<JwtOptions> jwtOptions) : IJwtService
     {

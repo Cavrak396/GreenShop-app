@@ -2,7 +2,7 @@
 using greenshop_api.Authority;
 using greenshop_api.Dtos;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services.Jwt;
+using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters

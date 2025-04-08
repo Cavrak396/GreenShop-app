@@ -1,7 +1,7 @@
 ﻿using greenshop_api.Application.Modules.ActionFilterErrors;
 using greenshop_api.Authority;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services.Jwt;
+using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 

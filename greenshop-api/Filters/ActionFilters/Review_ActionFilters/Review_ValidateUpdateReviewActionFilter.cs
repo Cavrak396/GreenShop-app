@@ -1,6 +1,5 @@
 ﻿using greenshop_api.Application.Modules.ActionFilterErrors;
 using greenshop_api.Authority;
-using greenshop_api.Data;
 using greenshop_api.Dtos;
 using Microsoft.AspNetCore.Mvc.Filters;
 

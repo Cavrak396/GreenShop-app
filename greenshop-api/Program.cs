@@ -2,10 +2,10 @@ using greenshop_api.Application.Models;
 using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Interfaces.Newsletter;
-using greenshop_api.Domain.Interfaces.Smtp;
-using greenshop_api.Infrastructure.Factories;
+using greenshop_api.Infrastructure.Bootstrap;
+using greenshop_api.Infrastructure.Newsletter;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services.Jwt;
+using greenshop_api.Infrastructure.Services;
 using greenshop_api.Infrastructure.Services.Newsletter;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -17,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-builder.Services.AddTransient<NewsletterSender>();
+builder.Services.AddTransient<NewsletterService>();
 builder.Services.AddMvc();
 
 builder.Services.AddCors(options =>
@@ -58,9 +58,13 @@ builder.Services.AddControllers()
         options.SerializerSettings.Formatting = Formatting.None;
     });
 
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<SmtpOptions>(
+    builder.Configuration.GetSection("SMTP"));
 
-builder.Services.AddSingleton<ISmtpClientFactory, SmtpClientFactory>();
+builder.Services.AddSmtpClient();
+
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -71,7 +75,7 @@ builder.Services.AddScoped<INewsletterContent, NewsletterContentHandler>();
 builder.Services.AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
-builder.Services.AddScoped<INewsletterSender, NewsletterSender>();
+builder.Services.AddScoped<INewsletterSender, NewsletterService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

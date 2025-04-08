@@ -1,4 +1,4 @@
-﻿using greenshop_api.Models.Validations;
+﻿using greenshop_api.Domain.Models.Validations;
 using System.ComponentModel.DataAnnotations;
 using static greenshop_api.Domain.Models.Plant;
 

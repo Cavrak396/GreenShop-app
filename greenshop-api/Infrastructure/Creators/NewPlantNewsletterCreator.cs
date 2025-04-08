@@ -2,7 +2,7 @@
 using greenshop_api.Domain.Interfaces.Newsletter;
 using System.Net.Mail;
 
-namespace greenshop_api.Infrastructure.Services.Newsletter
+namespace greenshop_api.Infrastructure.Newsletter
 {
     public class NewPlantNewsletterCreator(INewsletterContent newsletterContent) : INewsletterCreator
     {

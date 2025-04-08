@@ -1,22 +1,26 @@
 ﻿using greenshop_api.Application.Models;
 using greenshop_api.Domain.Interfaces.Newsletter;
-using greenshop_api.Domain.Interfaces.Smtp;
+using greenshop_api.Infrastructure.Newsletter;
+using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
-namespace greenshop_api.Infrastructure.Services.Newsletter
+namespace greenshop_api.Infrastructure.Services
 {
-    public class NewsletterSender : INewsletterSender
+    public class NewsletterService : INewsletterSender
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ISmtpClientFactory _smtpClientFactory;
+        private readonly string _smtpUsername;
+        private readonly SmtpClient _smtpClient;
         private readonly Dictionary<string, Type> _newsletterTypeMap;
 
-        public NewsletterSender(
+        public NewsletterService(
             IServiceProvider serviceProvider,
-            ISmtpClientFactory smtpClientFactory)
+            IOptions<SmtpOptions> smtpOptions,
+            SmtpClient smtpClient)
         {
             _serviceProvider = serviceProvider;
-            _smtpClientFactory = smtpClientFactory;
+            _smtpUsername = smtpOptions.Value.Username!;
+            _smtpClient = smtpClient;
             _newsletterTypeMap = new Dictionary<string, Type>
             {
                 { "registration", typeof(RegistrationNewsletterCreator) },
@@ -27,17 +31,14 @@ namespace greenshop_api.Infrastructure.Services.Newsletter
 
         public async Task SendNewsletterAsync(string type, NewsletterHeader header)
         {
-            string from = _smtpClientFactory.CreateClient().Credentials!.GetCredential("", 0, "")!.UserName;
-
             var newsletterType = _newsletterTypeMap[type];
-            INewsletterCreator creator = (INewsletterCreator)_serviceProvider.GetService(newsletterType)!;
+            INewsletterCreator creator = (INewsletterCreator)ActivatorUtilities.CreateInstance(_serviceProvider, newsletterType);
 
-            MailMessage newsletter = creator.CreateNewsletter(from, header);
+            MailMessage newsletter = creator.CreateNewsletter(_smtpUsername, header);
 
-            using var client = _smtpClientFactory.CreateClient();
             try
             {
-                await client.SendMailAsync(newsletter);
+                await _smtpClient.SendMailAsync(newsletter);
                 Console.WriteLine("Email sent successfully!");
             }
             catch (Exception ex)

@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Infrastructure\Services\Newsletter\NewsletterContent.cs" />
+    <None Include="Infrastructure\Modules\NewsletterContent.cs" />
   </ItemGroup>
 
   <ItemGroup>

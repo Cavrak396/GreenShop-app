@@ -6,7 +6,7 @@ using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services.Newsletter;
+using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ namespace greenshop_api.Controllers
         private readonly IJwtService jwtHandler;
         private readonly INewsletterSender newsletterSender;
 
-        public AuthController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterSender newsletterSender) 
+        public AuthController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterService newsletterSender) 
         {
             this.repository = repository;
             this.db = db;
