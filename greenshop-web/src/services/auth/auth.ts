@@ -27,7 +27,9 @@ const handleApiError = (error: any): ApiError => {
 
 export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post<AuthResponse>('/auth/login', dto);
+        const response = await axiosInstance.post<AuthResponse>('/users/login', dto, {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -36,20 +38,18 @@ export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError>
 
 export const registerUser = async (dto: RegisterDTO): Promise<AuthResponse | ApiError> => {
     try {
-        console.log('Registering user with data:', dto);
-        const response = await axiosInstance.post<AuthResponse>('/auth/register', dto);
+        const response = await axiosInstance.post<AuthResponse>('/users/register', dto, {
+            withCredentials: false,
+        });
         return response.data;
     } catch (error) {
-        console.error('Registration error:', error);
         return handleApiError(error);
     }
 };
 
 export const logoutUser = async () => {
     try {
-        const response = await axiosInstance.post('/auth/logout', null, {
-            withCredentials: true,
-        });
+        const response = await axiosInstance.post('/users/logout', null);
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -58,21 +58,16 @@ export const logoutUser = async () => {
 
 export const getCurrentUser = async () => {
     try {
-        const response = await axiosInstance.get<User>('/auth/user/', {
-            withCredentials: true
-        });
+        const response = await axiosInstance.get<User>('/users');
         return response.data;
     } catch (error) {
-        console.error('Error fetching current user:', error);
         return handleApiError(error);
     }
 };
 
 export const deleteUser = async () => {
     try {
-        const response = await axiosInstance.delete<{ message: string }>('/auth/user', {
-            withCredentials: true
-        });
+        const response = await axiosInstance.delete<{ message: string }>('/users');
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -81,7 +76,7 @@ export const deleteUser = async () => {
 
 export const getUsers = async (): Promise<User[] | ApiError> => {
     try {
-        const response = await axiosInstance.get<User[]>('/auth/users', {
+        const response = await axiosInstance.get<User[]>('/users/all', {
             withCredentials: false,
         });
         return response.data;
@@ -92,23 +87,9 @@ export const getUsers = async (): Promise<User[] | ApiError> => {
 
 export const updateUser = async (dto: UserDTO): Promise<void | ApiError> => {
     try {
-        const response = await axiosInstance.put('/auth/user', dto, {
-            withCredentials: true,
-        });
+        const response = await axiosInstance.put('/users/' + dto.isSubscribed, null);
         return response.data;
     } catch (error) {
         return handleApiError(error);
     }
 };
-
-export const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-};
-
-export const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,20}$/;
-    return passwordRegex.test(password);
-};
-
-export default axiosInstance;
