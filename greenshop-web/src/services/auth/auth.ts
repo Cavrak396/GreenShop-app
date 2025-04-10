@@ -87,7 +87,9 @@ export const getUsers = async (): Promise<User[] | ApiError> => {
 
 export const updateUser = async (dto: UserDTO): Promise<void | ApiError> => {
     try {
-        const response = await axiosInstance.put('/users/' + dto.isSubscribed, null);
+        const response = await axiosInstance.put(`/users/${dto.isSubscribed}`, null, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);

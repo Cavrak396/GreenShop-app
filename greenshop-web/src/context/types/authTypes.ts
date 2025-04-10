@@ -34,6 +34,10 @@ export interface UserDto {
     isSubscribed?: boolean;
 }
 
+export type UpdateUserResult =
+    | { success: true }
+    | { success: false; message: string };
+
 export interface AuthContextProps {
     user: User | null;
     token: string | null;
@@ -43,7 +47,8 @@ export interface AuthContextProps {
     register: (dto: RegisterDTO) => Promise<AuthResponse | ApiError>;
     logout: () => void;
     deleteAccount: () => Promise<ApiError | { message: string }>;
-    updateUserDetails: (dto: UserDto) => Promise<User | ApiError>;
+    updateUserDetails: (dto: UserDto) => Promise<UpdateUserResult>;
+
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setToken: React.Dispatch<React.SetStateAction<string | null>>;
 }

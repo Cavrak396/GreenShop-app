@@ -153,35 +153,37 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const updateUserDetails = async (dto: UserDto) => {
+  const updateUserDetails = async (
+    dto: UserDto
+  ): Promise<{ success: true } | { success: false; message: string }> => {
     if (!token) {
-      const error: ApiError = { message: "User not authenticated." };
-      setError(error.message);
-      return error;
+      const message = "User not authenticated.";
+      setError(message);
+      return { success: false, message };
     }
 
     try {
       setLoading(true);
       const response = await updateUser(dto);
 
-      if (!response) {
-        setError("No data returned from the server.");
-        return { message: "No data returned from the server." } as ApiError;
+      if (response && "message" in response) {
+        setError(response.message);
+        return { success: false, message: response.message };
       }
 
-      if ("message" in response) {
-        setError(response.message);
-        return response;
-      } else {
-        setUser(response);
-        return response;
-      }
+      setUser((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          isSubscribed: dto.isSubscribed,
+        };
+      });
+
+      return { success: true };
     } catch (err: any) {
-      const error: ApiError = {
-        message: err.message || "Failed to update user.",
-      };
-      setError(error.message);
-      return error;
+      const message = err.message || "Failed to update user.";
+      setError(message);
+      return { success: false, message };
     } finally {
       setLoading(false);
     }
