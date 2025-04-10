@@ -16,7 +16,7 @@ function UserAccountInfo() {
         {user?.userName || "No Name Provided"}
       </Title>
       <span className="useraccount__profile-mail">
-        {user?.userEmail || "No Email Provided"}
+        {user?.email || "No Email Provided"}
       </span>
     </div>
   );
