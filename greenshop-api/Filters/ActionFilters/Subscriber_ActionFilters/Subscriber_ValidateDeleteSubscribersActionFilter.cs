@@ -1,24 +1,30 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
-    public class Subscriber_ValidateDeleteSubscribersActionFilter : IAsyncActionFilter
+    public class Subscriber_ValidateDeleteSubscribersActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-        public Subscriber_ValidateDeleteSubscribersActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var allSubscribers = await this.db.Subscribers.ToListAsync();
+            var allSubscribers = await _dbContext.Subscribers.ToListAsync();
 
-            if (allSubscribers.Count() == 0)
+            if (allSubscribers.Count == 0)
             {
-                NotFoundActionFilterError.Add(context, "Subscriber", "No subscribers found to delete.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "Subscriber",
+                     "No Subscribers found to delete.",
+                     404,
+                     problemDetails => new NotFoundObjectResult(problemDetails));
                 return;
             }
 

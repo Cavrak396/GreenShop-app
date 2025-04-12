@@ -1,37 +1,41 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
-using greenshop_api.Authority;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Infrastructure.Creators;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
-    public class Cart_ValidateRemoveCartItemsActionFilter : IAsyncActionFilter
+    public class Cart_ValidateRemoveCartItemsActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator, 
+        IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-        private readonly JwtService jwtService;
-
-        public Cart_ValidateRemoveCartItemsActionFilter(ApplicationDbContext db, JwtService jwtService)
-        {
-            this.db = db;
-            this.jwtService = jwtService;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IJwtService _jwtService = jwtService;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var jwt = context.HttpContext.Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
-            var cart = await this.db.Carts
-                .Include(c => c.CartItems)
+            var cart = await _dbContext.Carts
+                .Include(c => c.CartItems!)
                 .ThenInclude(ci => ci.Plant)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (cart == null)
             {
-                NotFoundActionFilterError.Add(context, "Cart", "Cart doesn't exist.");
+                _actionErrorCreator.CreateActionError(
+                      context,
+                      "Cart",
+                      "Cart does not exist.",
+                      404,
+                      problemDetails => new NotFoundObjectResult(problemDetails));
             }
 
             await next();

@@ -1,4 +1,4 @@
-﻿namespace greenshop_api.Domain.Interfaces.Newsletter
+﻿namespace greenshop_api.Domain.Interfaces.Modules
 {
     public interface INewsletterContent
     {

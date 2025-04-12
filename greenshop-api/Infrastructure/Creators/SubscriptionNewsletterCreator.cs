@@ -1,5 +1,6 @@
 ﻿using greenshop_api.Application.Models;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Modules;
 using System.Net.Mail;
 
 namespace greenshop_api.Infrastructure.Newsletter

@@ -1,34 +1,42 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidatePlantIdActionFilter : IAsyncActionFilter
+    public class Plant_ValidatePlantIdActionFilter(
+        ApplicationDbContext dbContext,
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
 
-        public Plant_ValidatePlantIdActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var plantId = context.ActionArguments["plantId"] as string;
 
             if (string.IsNullOrEmpty(plantId))
             {
-                BadRequestActionFilterError.Add(context, "PlantId", "PlantId is not valid.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "PlantId",
+                    "Invalid PlantId.",
+                    400,
+                    problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
-
-            var plant = await db.Plants.FindAsync(plantId);
+            var plant = await _dbContext.Plants.FindAsync(plantId);
             if (plant == null)
             {
-                NotFoundActionFilterError.Add(context, "Plant", "Plant doesn't exist.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "Plant",
+                    "Plant does not exist.",
+                    404,
+                    problemDetails => new NotFoundObjectResult(problemDetails));
                 return;
             }
-
             await next();
         }
     }

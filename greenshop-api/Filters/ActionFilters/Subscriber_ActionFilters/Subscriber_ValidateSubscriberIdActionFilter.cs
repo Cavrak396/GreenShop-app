@@ -1,31 +1,41 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
-    public class Subscriber_ValidateSubscriberIdActionFilter : IAsyncActionFilter
+    public class Subscriber_ValidateSubscriberIdActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
 
-        public Subscriber_ValidateSubscriberIdActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var subscriberId = context.ActionArguments["subscriberId"] as string;
 
             if (string.IsNullOrEmpty(subscriberId))
             {
-                BadRequestActionFilterError.Add(context, "SubscriberId", "SubscriberId is not valid.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "SubscriberId",
+                     "Invalid SubscriberId.",
+                     400,
+                     problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 
-            var subscriber = await db.Subscribers.FindAsync(subscriberId);
+            var subscriber = await _dbContext.Subscribers.FindAsync(subscriberId);
             if (subscriber == null)
             {
-                NotFoundActionFilterError.Add(context, "Subscriber", "Subscriber isn't added.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "Subscriber",
+                    "Subscriber is not added.",
+                    404,
+                    problemDetails => new NotFoundObjectResult(problemDetails));
                 return;
             }
 

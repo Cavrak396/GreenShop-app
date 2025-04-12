@@ -1,24 +1,20 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
-using greenshop_api.Authority;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Dtos;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
-    public class Review_ValidateCreateReviewActionFilter : IAsyncActionFilter
+    public class Review_ValidateCreateReviewActionFilter(
+        ApplicationDbContext dbContext,
+        IActionErrorCreator actionErrorCreator,
+        IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-        private readonly IUserRepository repository;
-        private readonly JwtService jwtService;
-
-        public Review_ValidateCreateReviewActionFilter(ApplicationDbContext db, IUserRepository repository, JwtService jwtService)
-        {
-            this.db = db;
-            this.repository = repository;
-            this.jwtService = jwtService;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IJwtService _jwtService = jwtService;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -26,18 +22,28 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 
             if (review == null)
             {
-                BadRequestActionFilterError.Add(context, "Review", "Review object is not valid.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "Review",
+                     "Invalid Review.",
+                     400,
+                     problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 
             var jwt = context.HttpContext.Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
-            var existingReview = await this.db.Reviews.FindAsync(userId, review.PlantId);
+            var existingReview = await _dbContext.Reviews.FindAsync(userId, review.PlantId);
             if(existingReview != null)
             {
-                ConflictActionFilterError.Add(context, "Review", "Review is already added.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "Review",
+                     "Review is already added.",
+                     409,
+                     problemDetails => new ConflictObjectResult(problemDetails));
                 return;
             }
 

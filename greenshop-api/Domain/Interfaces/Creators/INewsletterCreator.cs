@@ -1,7 +1,7 @@
 ﻿using greenshop_api.Application.Models;
 using System.Net.Mail;
 
-namespace greenshop_api.Domain.Interfaces.Newsletter
+namespace greenshop_api.Domain.Interfaces.Creators
 {
     public interface INewsletterCreator
     {

@@ -1,5 +1,5 @@
 ﻿using greenshop_api.Application.Models;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using greenshop_api.Infrastructure.Persistance;
@@ -13,9 +13,9 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly INewsletterSender newsletterSender;
+        private readonly INewsletterService newsletterSender;
 
-        public SubscribersController(ApplicationDbContext db, INewsletterSender newsletterSender)
+        public SubscribersController(ApplicationDbContext db, INewsletterService newsletterSender)
         {
             this.db = db;
             this.newsletterSender = newsletterSender;
