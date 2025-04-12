@@ -1,19 +1,18 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Dtos;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateCreatePlantActionFilter : IAsyncActionFilter
+    public class Plant_ValidateCreatePlantActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-
-        public Plant_ValidateCreatePlantActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -21,11 +20,16 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (plant == null)
             {
-                BadRequestActionFilterError.Add(context, "Plant", "Plant object is not valid.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "Plant",
+                    "Invalid Plant.",
+                    400,
+                    problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 
-            var existingPlant = await db.Plants.FirstOrDefaultAsync(p =>
+            var existingPlant = await _dbContext.Plants.FirstOrDefaultAsync(p =>
             !string.IsNullOrWhiteSpace(plant.Name) &&
             !string.IsNullOrWhiteSpace(p.Name) &&
             plant.Name.ToLower() == p.Name.ToLower() &&
@@ -33,7 +37,12 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
             if (existingPlant != null)
             {
-                ConflictActionFilterError.Add(context, "Plant", "Plant already exists.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "Plant",
+                    "Plant already exists.",
+                    409,
+                    problemDetails => new ConflictObjectResult(problemDetails));
                 return;
             }
 

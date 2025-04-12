@@ -1,8 +1,11 @@
 using greenshop_api.Application.Models;
 using greenshop_api.Authority;
+using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Modules;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Infrastructure.Bootstrap;
+using greenshop_api.Infrastructure.Creators;
 using greenshop_api.Infrastructure.Newsletter;
 using greenshop_api.Infrastructure.Persistance;
 using greenshop_api.Infrastructure.Services;
@@ -67,15 +70,17 @@ builder.Services.AddSmtpClient();
 
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
+builder.Services.AddScoped<INewsletterService, NewsletterService>();
+
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<IJwtService, JwtService>();
-
-builder.Services.AddScoped<INewsletterContent, NewsletterContentHandler>();
+builder.Services.AddScoped<INewsletterContent, NewsletterContent>();
 builder.Services.AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
-builder.Services.AddScoped<INewsletterSender, NewsletterService>();
+
+builder.Services.AddScoped<IActionErrorCreator, ActionErrorCreator>();
+builder.Services.AddScoped<IExceptionCreator, ExceptionCreator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -102,3 +107,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//primary constructors
+//underscore interfaces
+//remove warnings
+//remove usings
+//beautify code

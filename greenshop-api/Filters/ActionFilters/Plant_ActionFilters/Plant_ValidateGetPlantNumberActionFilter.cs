@@ -1,17 +1,25 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateGetPlantNumberActionFilter : IAsyncActionFilter
+    public class Plant_ValidateGetPlantNumberActionFilter(IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var categories = context.ActionArguments["categories"] as string[];
 
             if(categories == null || categories.Length == 0)
             {
-                BadRequestActionFilterError.Add(context, "Category", "Categories are not valid.");
+                _actionErrorCreator.CreateActionError(
+                    context,
+                    "Category",
+                    "Invalid Categories.",
+                    400,
+                    problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 

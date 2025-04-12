@@ -1,8 +1,8 @@
-﻿using greenshop_api.Domain.Interfaces.Newsletter;
+﻿using greenshop_api.Domain.Interfaces.Modules;
 
 namespace greenshop_api.Infrastructure.Services.Newsletter
 {
-    public class NewsletterContentHandler : INewsletterContent
+    public class NewsletterContent : INewsletterContent
     {
         public string GenerateContent(string title, string body)
         {

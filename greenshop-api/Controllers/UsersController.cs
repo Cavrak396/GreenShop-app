@@ -1,7 +1,7 @@
 ﻿using greenshop_api.Application.Models;
 using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Jwt;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
@@ -20,7 +20,7 @@ namespace greenshop_api.Controllers
         private readonly IUserRepository repository = repository;
         private readonly ApplicationDbContext db = db;
         private readonly IJwtService jwtHandler = jwtHandler;
-        private readonly INewsletterSender newsletterSender = newsletterSender;
+        private readonly INewsletterService newsletterSender = newsletterSender;
 
         [HttpGet("all")]
         public async Task<IActionResult> GetUsers()
@@ -59,6 +59,7 @@ namespace greenshop_api.Controllers
                     SubscriberEmail = registerDto.Email
                 };
                 this.db.Subscribers.Add(subscriber);
+                await this.db.SaveChangesAsync();
             }
 
             await this.newsletterSender.SendNewsletterAsync(

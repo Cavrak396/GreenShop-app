@@ -1,17 +1,25 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateUpdateUserIsSubscribedActionFilter : IAsyncActionFilter
+    public class User_ValidateUpdateUserIsSubscribedActionFilter(IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var isSubscribed = context.ActionArguments["isSubscribed"];
 
             if(isSubscribed == null)
             {
-                BadRequestActionFilterError.Add(context, "IsSubscribed", "IsSubscribed is missing.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "IsSubscribed",
+                     "Invalid IsSubscribed.",
+                     400,
+                     problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 

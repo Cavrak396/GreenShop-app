@@ -1,12 +1,13 @@
 ﻿using greenshop_api.Application.Models;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Infrastructure.Newsletter;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
 namespace greenshop_api.Infrastructure.Services
 {
-    public class NewsletterService : INewsletterSender
+    public class NewsletterService : INewsletterService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly string _smtpUsername;

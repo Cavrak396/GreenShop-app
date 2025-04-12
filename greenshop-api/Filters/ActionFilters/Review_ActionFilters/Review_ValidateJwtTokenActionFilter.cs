@@ -1,20 +1,20 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
-using greenshop_api.Authority;
-using greenshop_api.Infrastructure.Services;
+﻿using greenshop_api.Authority;
+using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Jwt;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
-    public class Review_ValidateJwtTokenActionFilter : IAsyncActionFilter
+    public class Review_ValidateJwtTokenActionFilter(
+        IUserRepository usersRepository, 
+        IActionErrorCreator actionErrorCreator, 
+        IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly IUserRepository repository;
-        private readonly JwtService jwtService;
+        private readonly IUserRepository _usersRepository = usersRepository;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IJwtService _jwtService = jwtService;
 
-        public Review_ValidateJwtTokenActionFilter(IUserRepository repository, JwtService jwtService)
-        {
-            this.repository = repository;
-            this.jwtService = jwtService;
-        }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var jwt = context.HttpContext.Request.Cookies["jwt"];
@@ -23,13 +23,18 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             {
                 try
                 {
-                    var token = jwtService.Verify(jwt);
+                    var token = _jwtService.Verify(jwt);
                     var userId = token.Issuer.ToString();
-                    var user = await repository.GetUserByIdAsync(userId);
+                    var user = await _usersRepository.GetUserByIdAsync(userId);
                 }
                 catch (Exception)
                 {
-                    UnauthorizedActionFilterError.Add(context, "User", "Unauthenticated user.");
+                    _actionErrorCreator.CreateActionError(
+                     context,
+                     "User",
+                     "Unauthenticated User.",
+                     401,
+                     problemDetails => new UnauthorizedObjectResult(problemDetails));
                     return;
                 }
             }

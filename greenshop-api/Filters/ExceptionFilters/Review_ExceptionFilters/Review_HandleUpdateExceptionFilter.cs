@@ -1,32 +1,36 @@
-﻿using greenshop_api.Application.Modules.ExceptionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters
 {
-    public class Review_HandleUpdateExceptionFilter : IAsyncExceptionFilter
+    public class Review_HandleUpdateExceptionFilter(
+        ApplicationDbContext dbContext, 
+        IExceptionCreator exceptionCreator, 
+        IJwtService jwtService) : IAsyncExceptionFilter
     {
-        private readonly ApplicationDbContext db;
-        private readonly JwtService jwtService;
-
-        public Review_HandleUpdateExceptionFilter(ApplicationDbContext db, JwtService jwtService)
-        {
-            this.db = db;
-            this.jwtService = jwtService;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IExceptionCreator _exceptionCreator = exceptionCreator;
+        private readonly IJwtService _jwtService = jwtService;
 
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             var jwt = context.HttpContext.Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             var plantId = context.RouteData.Values["plantId"] as string;
 
-            if (await db.Reviews.FindAsync(userId, plantId) == null)
+            if (await _dbContext.Reviews.FindAsync(userId, plantId) == null)
             {
-                NotFoundExceptionFilterError.Add(context, "Review", "Review doesn't exist anymore.");
+                _exceptionCreator.CreateException(
+                     context,
+                     "Review",
+                     "Review does not exist anymore.",
+                     404,
+                     problemDetails => new NotFoundObjectResult(problemDetails));
             }
         }
     }

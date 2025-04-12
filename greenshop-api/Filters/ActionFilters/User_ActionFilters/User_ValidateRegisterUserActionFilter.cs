@@ -1,19 +1,18 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Dtos;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateRegisterUserActionFilter : IAsyncActionFilter
+    public class User_ValidateRegisterUserActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-
-        public User_ValidateRegisterUserActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -21,11 +20,16 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             if (registerDto == null)
             {
-                BadRequestActionFilterError.Add(context, "Register", "Register data is not valid.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "Register",
+                     "Invalid Register Data.",
+                     400,
+                     problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
             }
 
-            var existingUser = await db.Users.FirstOrDefaultAsync(u =>
+            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u =>
             !string.IsNullOrWhiteSpace(registerDto.Email) &&
             !string.IsNullOrWhiteSpace(u.UserEmail) &&
             !string.IsNullOrWhiteSpace(registerDto.Name) &&
@@ -35,7 +39,12 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             if (existingUser != null)
             {
-                ConflictActionFilterError.Add(context, "User", "User is already added.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "User",
+                     "User is already added.",
+                     409,
+                     problemDetails => new ConflictObjectResult(problemDetails));
                 return;
             }
 

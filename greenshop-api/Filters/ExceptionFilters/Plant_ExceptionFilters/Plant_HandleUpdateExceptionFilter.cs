@@ -1,25 +1,29 @@
-﻿using greenshop_api.Application.Modules.ExceptionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters
 {
-    public class Plant_HandleUpdateExceptionFilter : IAsyncExceptionFilter
+    public class Plant_HandleUpdateExceptionFilter(
+        ApplicationDbContext dbContext,
+        IExceptionCreator exceptionCreator) : IAsyncExceptionFilter
     {
-        private readonly ApplicationDbContext db;
-
-        public Plant_HandleUpdateExceptionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IExceptionCreator _exceptionCreator = exceptionCreator;
 
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             var plantId = context.RouteData.Values["plantId"] as string;
 
-            if (await db.Plants.FindAsync(plantId) == null)
+            if (await _dbContext.Plants.FindAsync(plantId) == null)
             {
-                NotFoundExceptionFilterError.Add(context, "PlantId", "Plant doesn't exist anymore.");
+                _exceptionCreator.CreateException(
+                     context,
+                     "Plant",
+                     "Plant does not exist anymore.",
+                     404,
+                     problemDetails => new NotFoundObjectResult(problemDetails));
             }
         }
     }

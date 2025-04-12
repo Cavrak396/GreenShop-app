@@ -1,24 +1,30 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
-    public class User_ValidateDeleteUsersActionFilter : IAsyncActionFilter
+    public class User_ValidateDeleteUsersActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-        public User_ValidateDeleteUsersActionFilter(ApplicationDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var allUsers = await this.db.Users.ToListAsync();
+            var allUsers = await _dbContext.Users.ToListAsync();
 
             if (allUsers.Count() == 0)
             {
-                NotFoundActionFilterError.Add(context, "User", "No users found to delete.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "User",
+                     "No Users found to delete.",
+                     404,
+                     problemDetails => new NotFoundObjectResult(problemDetails));
                 return;
             }
 

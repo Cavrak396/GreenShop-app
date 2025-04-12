@@ -1,36 +1,37 @@
-﻿using greenshop_api.Application.Modules.ActionFilterErrors;
-using greenshop_api.Authority;
+﻿using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
-    public class Review_ValidateReviewExistsActionFilter : IAsyncActionFilter
+    public class Review_ValidateReviewExistsActionFilter(
+        ApplicationDbContext dbContext, 
+        IActionErrorCreator actionErrorCreator, 
+        IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext db;
-        private readonly IUserRepository repository;
-        private readonly JwtService jwtService;
-
-        public Review_ValidateReviewExistsActionFilter(ApplicationDbContext db, IUserRepository repository, JwtService jwtService)
-        {
-            this.db = db;
-            this.repository = repository;
-            this.jwtService = jwtService;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IJwtService _jwtService = jwtService;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var jwt = context.HttpContext.Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
+            var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             var plantId = context.ActionArguments["plantId"] as string;
 
-            var review = await this.db.Reviews.FindAsync(userId, plantId);
+            var review = await _dbContext.Reviews.FindAsync(userId, plantId);
             if (review == null)
             {
-                NotFoundActionFilterError.Add(context, "Review", "Review isn't added.");
+                _actionErrorCreator.CreateActionError(
+                     context,
+                     "Review",
+                     "Review is not added.",
+                     404,
+                     problemDetails => new NotFoundObjectResult(problemDetails));
                 return;
             }
 

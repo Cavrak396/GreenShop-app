@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using greenshop_api.Application.Models;
-using greenshop_api.Domain.Interfaces.Newsletter;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
 using greenshop_api.Dtos;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
@@ -18,10 +18,10 @@ namespace greenshop_api.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly INewsletterSender newsletterSender;
+        private readonly INewsletterService newsletterSender;
         private readonly IMapper mapper;
 
-        public PlantsController(ApplicationDbContext db, INewsletterSender newsletterSender, IMapper mapper)
+        public PlantsController(ApplicationDbContext db, INewsletterService newsletterSender, IMapper mapper)
         {
             this.db = db;
             this.newsletterSender = newsletterSender;
