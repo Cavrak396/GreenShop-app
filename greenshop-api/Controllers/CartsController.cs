@@ -15,23 +15,22 @@ namespace greenshop_api.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly IJwtService jwtHandler;
+        private readonly IJwtService jwtService;
 
-        public CartsController(ApplicationDbContext db, IJwtService jwtHandler)
+        public CartsController(ApplicationDbContext db, IJwtService jwtService)
         {
             this.db = db;
-            this.jwtHandler = jwtHandler;
+            this.jwtService = jwtService;
         }
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
-        [TypeFilter(typeof(Cart_ValidateSyncCartItemsActionFilter))]
         [TypeFilter(typeof(Cart_ValidatePlantIdsActionFilter))]
-        public async Task<IActionResult> SyncCart([FromBody] List<CartItemDto> cartItems)
+        public async Task<IActionResult> SyncCart([FromBody]List<CartItemDto> cartItems)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             CartDto cartDto;
@@ -116,7 +115,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> RemoveCartItems()
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             var cart = await this.db.Carts

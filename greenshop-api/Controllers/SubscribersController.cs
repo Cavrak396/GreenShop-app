@@ -13,12 +13,12 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly INewsletterService newsletterSender;
+        private readonly INewsletterService newsletterService;
 
-        public SubscribersController(ApplicationDbContext db, INewsletterService newsletterSender)
+        public SubscribersController(ApplicationDbContext db, INewsletterService newsletterService)
         {
             this.db = db;
-            this.newsletterSender = newsletterSender;
+            this.newsletterService = newsletterService;
         }
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace greenshop_api.Controllers
             this.db.Subscribers.Add(subscriber);
             await this.db.SaveChangesAsync();
 
-            await this.newsletterSender.SendNewsletterAsync(
+            await this.newsletterService.SendNewsletterAsync(
                 "subscription",
                 new NewsletterHeader
                 {
@@ -50,11 +50,11 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{subscriberId}")]
         [TypeFilter(typeof(Subscriber_ValidateSubscriberIdActionFilter))]
-        public async Task<IActionResult> DeleteSubscriber(string subscriberId)
+        public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberId)
         {
             var subscriberToDelete = await this.db.Subscribers.FindAsync(subscriberId);
 
-            this.db.Subscribers.Remove(subscriberToDelete);
+            this.db.Subscribers.Remove(subscriberToDelete!);
             await this.db.SaveChangesAsync();
 
             return NoContent();

@@ -18,13 +18,13 @@ namespace greenshop_api.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly INewsletterService newsletterSender;
+        private readonly INewsletterService newsletterService;
         private readonly IMapper mapper;
 
-        public PlantsController(ApplicationDbContext db, INewsletterService newsletterSender, IMapper mapper)
+        public PlantsController(ApplicationDbContext db, INewsletterService newsletterService, IMapper mapper)
         {
             this.db = db;
-            this.newsletterSender = newsletterSender;
+            this.newsletterService = newsletterService;
             this.mapper = mapper;
         }
 
@@ -114,13 +114,13 @@ namespace greenshop_api.Controllers
 
         [HttpGet("category-number")]
         [TypeFilter(typeof(Plant_ValidateGetPlantNumberActionFilter))]
-        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery] string[] categories)
+        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery]string[] categories)
         {
             var categoryCounts = new Dictionary<string, int>();
 
             foreach (var category in categories)
             {
-                var count = await this.db.Plants.CountAsync(p => p.Category.ToLower().Trim() == category.ToLower().Trim());
+                var count = await this.db.Plants.CountAsync(p => p.Category!.ToLower().Trim() == category.ToLower().Trim());
                 categoryCounts[category] = count;
             }
             return Ok(categoryCounts);
@@ -154,11 +154,11 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/related")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> GetRelatedProducts(string plantId, [FromQuery] int relatedProductsSize = 5)
+        public async Task<IActionResult> GetRelatedProducts([FromRoute]string plantId, [FromQuery]int relatedProductsSize = 5)
         {
             var plant = await this.db.Plants.FindAsync(plantId);
 
-            if (string.IsNullOrEmpty(plant.Tags))
+            if (string.IsNullOrEmpty(plant!.Tags))
             {
                 var categoryRelatedProducts = await this.db.Plants
                     .Where(p => p.PlantId != plantId && p.Category == plant.Category)
@@ -183,7 +183,7 @@ namespace greenshop_api.Controllers
                 .Select(p => new
                 {
                     Plant = p,
-                    RelativityScore = p.Tags.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    RelativityScore = p.Tags?.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
                                             .Count(tag => tags.Contains(tag))
                 })
                 .OrderByDescending(p => p.RelativityScore)
@@ -212,7 +212,7 @@ namespace greenshop_api.Controllers
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await this.newsletterSender.SendNewsletterAsync(
+                    await this.newsletterService.SendNewsletterAsync(
                         "newPlant",
                         new NewsletterHeader
                         {
@@ -230,11 +230,11 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
-        public async Task <IActionResult> UpdatePlant(string plantId, [FromBody]PlantDto plant)
+        public async Task <IActionResult> UpdatePlant([FromRoute]string plantId, [FromBody]PlantDto plant)
         {
             var plantToUpdate = await this.db.Plants.FindAsync(plantId);
 
-            plantToUpdate.Name = plant.Name;
+            plantToUpdate!.Name = plant.Name;
             plantToUpdate.Short_Description = plant.Short_Description;
             plantToUpdate.Long_Description = plant.Long_Description;
             plantToUpdate.Size = plant.Size;
@@ -256,11 +256,11 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task <IActionResult> DeletePlant(string plantId)
+        public async Task <IActionResult> DeletePlant([FromRoute]string plantId)
         {
             var plantToDelete = await this.db.Plants.FindAsync(plantId);
 
-            this.db.Plants.Remove(plantToDelete);
+            this.db.Plants.Remove(plantToDelete!);
             await this.db.SaveChangesAsync();
 
             return NoContent();

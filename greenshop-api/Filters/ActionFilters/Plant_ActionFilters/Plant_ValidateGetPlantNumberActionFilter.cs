@@ -12,12 +12,12 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         {
             var categories = context.ActionArguments["categories"] as string[];
 
-            if(categories == null || categories.Length == 0)
+            if(categories?.Length == 0)
             {
                 _actionErrorCreator.CreateActionError(
                     context,
                     "Category",
-                    "Invalid Categories.",
+                    "Category List is empty.",
                     400,
                     problemDetails => new BadRequestObjectResult(problemDetails));
                 return;
