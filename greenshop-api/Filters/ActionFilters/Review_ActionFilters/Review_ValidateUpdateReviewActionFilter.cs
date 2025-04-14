@@ -1,5 +1,5 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Reviews;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -13,9 +13,9 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
         {
             var plantId = context.ActionArguments["plantId"] as string;
 
-            var review = context.ActionArguments["review"] as ReviewDto;
+            var review = context.ActionArguments["review"] as PostReviewDto;
 
-            if (!string.IsNullOrEmpty(plantId) && review != null && plantId != review.PlantId)
+            if (plantId != review!.PlantId)
             {
                 _actionErrorCreator.CreateActionError(
                      context,

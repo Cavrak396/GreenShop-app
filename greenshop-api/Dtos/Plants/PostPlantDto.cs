@@ -1,20 +1,11 @@
-﻿using greenshop_api.Domain.Validations;
+﻿using static greenshop_api.Domain.Models.Plant;
 using System.ComponentModel.DataAnnotations;
+using greenshop_api.Domain.Validations;
 
-namespace greenshop_api.Domain.Models
+namespace greenshop_api.Dtos.Plants
 {
-    public class Plant
+    public class PostPlantDto
     {
-        public enum SizeValue
-        {
-            S,
-            M,
-            L,
-            XL
-        }
-
-        [Key]
-        public string? PlantId { get; set; }
         [Required]
         public string? Name { get; set; }
         [Required]
@@ -41,6 +32,5 @@ namespace greenshop_api.Domain.Models
         public string? LivingRoom_Description { get; set; }
         public string? DiningRoom_Description { get; set; }
         public string? Office_Description { get; set; }
-        public List<Review>? Reviews { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace greenshop_api.Dtos
+namespace greenshop_api.Dtos.CartItems
 {
     public class CartItemDto
     {

@@ -2,7 +2,7 @@
 using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Models;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Reviews;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.Review_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
@@ -48,16 +48,15 @@ namespace greenshop_api.Controllers
             var userIds = reviews.Select(r => r.UserId).ToList();
             var users = await repository.GetUsersByIdsAsync(userIds!);
 
-            var reviewDtos = reviews.Select(review =>
+            var getReviewDtos = reviews.Select(review =>
             {
-                var reviewDto = mapper.Map<ReviewDto>(review);
-                reviewDto.UserName = users.FirstOrDefault(u => u.UserId == review.UserId)?.UserName;
+                var reviewDto = mapper.Map<GetReviewDto>(review);
                 return reviewDto;
             }).ToList();
 
-            if (reviewDtos == null)
+            if (getReviewDtos == null)
             {
-                return Ok(new List<ReviewDto>());
+                return Ok(new List<GetReviewDto>());
             }
 
             var jwt = Request.Cookies["jwt"];
@@ -69,16 +68,16 @@ namespace greenshop_api.Controllers
 
                 if (currentUser != null)
                 {
-                    var currentUserReview = reviewDtos.FirstOrDefault(r => r.UserName == currentUser.UserName);
+                    var currentUserReview = getReviewDtos.FirstOrDefault(r => r.UserName == currentUser.UserName);
 
                     if (currentUserReview != null)
                     {
-                        reviewDtos.Remove(currentUserReview);
+                        getReviewDtos.Remove(currentUserReview);
                     }
                 }
             }
             
-            return Ok(reviewDtos);
+            return Ok(getReviewDtos);
         }
 
         [HttpGet("{plantId}/user")]
@@ -90,14 +89,12 @@ namespace greenshop_api.Controllers
             var jwt = Request.Cookies["jwt"];
             var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
-            var user = await this.repository.GetUserByIdAsync(userId);
 
             var review = await this.db.Reviews.FindAsync(userId, plantId);
 
             if(review != null)
             {
-                var reviewDto = mapper.Map<ReviewDto>(review);
-                reviewDto.UserName = user.UserName;
+                var reviewDto = mapper.Map<GetReviewDto>(review);
                 return Ok(reviewDto);
             }
 
@@ -115,16 +112,12 @@ namespace greenshop_api.Controllers
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
-        [TypeFilter(typeof(Review_ValidateCreateReviewActionFilter))]
-        public async Task<IActionResult> CreateReview([FromBody] ReviewDto review)
+        [TypeFilter(typeof(Review_ValidateReviewConflictActionFilter))]
+        public async Task<IActionResult> CreateReview([FromBody]PostReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
             var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
-            var user = await repository.GetUserByIdAsync(userId);
-
-            review.UserName = user.UserName;
-            review.Creation_Date = DateTime.Now;
 
             var reviewToCreate = mapper.Map<Review>(review);
             reviewToCreate.UserId = userId;
@@ -142,7 +135,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
         [TypeFilter(typeof(Review_ValidateUpdateReviewActionFilter))]
         [TypeFilter(typeof(Review_HandleUpdateExceptionFilter))]
-        public async Task<IActionResult> UpdateReview([FromRoute]string plantId, [FromBody] ReviewDto review)
+        public async Task<IActionResult> UpdateReview([FromRoute]string plantId, [FromBody]PostReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
             var token = jwtService.Verify(jwt!);

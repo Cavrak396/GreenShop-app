@@ -1,4 +1,4 @@
-﻿using greenshop_api.Domain.Models.Validations;
+﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

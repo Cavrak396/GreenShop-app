@@ -1,9 +1,9 @@
-﻿using greenshop_api.Domain.Models.Validations;
+﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace greenshop_api.Dtos
+namespace greenshop_api.Dtos.Reviews
 {
-    public class ReviewDto
+    public class GetReviewDto
     {
         [Required]
         [UsernameIsValid]

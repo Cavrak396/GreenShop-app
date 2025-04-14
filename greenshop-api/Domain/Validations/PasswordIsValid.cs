@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace greenshop_api.Domain.Models.Validations
+namespace greenshop_api.Domain.Validations
 {
     public class PasswordIsValid : ValidationAttribute
     {

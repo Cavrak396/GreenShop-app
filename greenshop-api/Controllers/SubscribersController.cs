@@ -1,6 +1,8 @@
-﻿using greenshop_api.Application.Models;
+﻿using AutoMapper;
+using greenshop_api.Application.Models;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
+using greenshop_api.Dtos.Subscribers;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,13 @@ namespace greenshop_api.Controllers
     public class SubscribersController : ControllerBase
     {
         private readonly ApplicationDbContext db;
+        private readonly IMapper mapper;    
         private readonly INewsletterService newsletterService;
 
-        public SubscribersController(ApplicationDbContext db, INewsletterService newsletterService)
+        public SubscribersController(ApplicationDbContext db, IMapper mapper, INewsletterService newsletterService)
         {
             this.db = db;
+            this.mapper = mapper;
             this.newsletterService = newsletterService;
         }
 
@@ -25,17 +29,18 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetSubscribers()
         {
             var subscribers = await this.db.Subscribers.ToListAsync();
+            var subscriberDtos = mapper.Map<List<SubscriberDto>>(subscribers);
 
-            return Ok(subscribers);
+            return Ok(subscriberDtos);
         }
 
         [HttpPost]
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberActionFilter))]
-        public async Task<IActionResult> CreateSubscriber([FromBody]Subscriber subscriber)
+        public async Task<IActionResult> CreateSubscriber([FromBody]SubscriberDto subscriber)
         {
-            subscriber.SubscriberId = Guid.NewGuid().ToString();
+            var subscriberToCreate = mapper.Map<Subscriber>(subscriber);
 
-            this.db.Subscribers.Add(subscriber);
+            this.db.Subscribers.Add(subscriberToCreate);
             await this.db.SaveChangesAsync();
 
             await this.newsletterService.SendNewsletterAsync(

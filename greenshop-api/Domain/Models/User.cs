@@ -1,4 +1,4 @@
-﻿using greenshop_api.Domain.Models.Validations;
+﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace greenshop_api.Domain.Models
@@ -18,7 +18,7 @@ namespace greenshop_api.Domain.Models
         public string? UserPassword { get; set; }
         [Required]
         public bool IsSubscribed { get; set; } = false;
-        public ICollection<Review>? Reviews { get; set; }
-        public ICollection<Cart>? Carts { get; set; }
+        public List<Review>? Reviews { get; set; }
+        public List<Cart>? Carts { get; set; }
     }
 }
