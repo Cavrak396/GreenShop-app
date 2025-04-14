@@ -15,12 +15,12 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class UsersController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtHandler, NewsletterService newsletterSender) : ControllerBase
+    public class UsersController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtService, NewsletterService newsletterService) : ControllerBase
     {
         private readonly IUserRepository repository = repository;
         private readonly ApplicationDbContext db = db;
-        private readonly IJwtService jwtHandler = jwtHandler;
-        private readonly INewsletterService newsletterSender = newsletterSender;
+        private readonly IJwtService jwtService = jwtService;
+        private readonly INewsletterService newsletterService = newsletterService;
 
         [HttpGet("all")]
         public async Task<IActionResult> GetUsers()
@@ -32,7 +32,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost("register")]
         [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
-        public async Task<IActionResult> Register(RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
             var user = new User
             {
@@ -62,7 +62,7 @@ namespace greenshop_api.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            await this.newsletterSender.SendNewsletterAsync(
+            await this.newsletterService.SendNewsletterAsync(
                 "registration",
                 new NewsletterHeader
                 {
@@ -77,11 +77,11 @@ namespace greenshop_api.Controllers
 
         [HttpPost("login")]
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
             var user = await this.repository.GetUserByEmailAsync(loginDto.Email!);
 
-            var jwt = jwtHandler.Generate(user.UserId!);
+            var jwt = jwtService.Generate(user.UserId!);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
@@ -108,7 +108,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetUser()
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
@@ -125,11 +125,10 @@ namespace greenshop_api.Controllers
         [HttpPut("{isSubscribed}")]
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
-        //[TypeFilter(typeof(User_ValidateUpdateUserFilterAttribute))]
-        public async Task<IActionResult> UpdateUserIsSubscribed(bool isSubscribed)
+        public async Task<IActionResult> UpdateUserIsSubscribed([FromRoute]bool isSubscribed)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var userToUpdate = await this.repository.GetUserByIdAsync(userId);
 
@@ -165,7 +164,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> DeleteUser()
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var userToDelete = await this.repository.GetUserByIdAsync(userId);
 

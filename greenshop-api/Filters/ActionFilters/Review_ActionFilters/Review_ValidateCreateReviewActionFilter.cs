@@ -20,17 +20,6 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
         {
             var review = context.ActionArguments["review"] as ReviewDto;
 
-            if (review == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                     context,
-                     "Review",
-                     "Invalid Review.",
-                     400,
-                     problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var jwt = context.HttpContext.Request.Cookies["jwt"];
             var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();

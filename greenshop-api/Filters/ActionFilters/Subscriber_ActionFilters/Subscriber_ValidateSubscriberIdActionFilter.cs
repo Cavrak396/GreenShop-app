@@ -16,17 +16,6 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
         {
             var subscriberId = context.ActionArguments["subscriberId"] as string;
 
-            if (string.IsNullOrEmpty(subscriberId))
-            {
-                _actionErrorCreator.CreateActionError(
-                     context,
-                     "SubscriberId",
-                     "Invalid SubscriberId.",
-                     400,
-                     problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var subscriber = await _dbContext.Subscribers.FindAsync(subscriberId);
             if (subscriber == null)
             {

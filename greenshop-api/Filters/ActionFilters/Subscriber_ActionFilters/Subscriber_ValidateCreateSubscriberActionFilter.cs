@@ -18,19 +18,8 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
         {
             var subscriber = context.ActionArguments["subscriber"] as Subscriber;
 
-            if (subscriber == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                     context,
-                     "Subscriber",
-                     "Invalid Subscriber.",
-                     400,
-                     problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var existingSubscriber = await _dbContext.Subscribers.FirstOrDefaultAsync(s =>
-            !string.IsNullOrWhiteSpace(subscriber.SubscriberEmail) &&
+            !string.IsNullOrWhiteSpace(subscriber!.SubscriberEmail) &&
             !string.IsNullOrWhiteSpace(s.SubscriberEmail) &&
             subscriber.SubscriberEmail.ToLower() == s.SubscriberEmail.ToLower());
 

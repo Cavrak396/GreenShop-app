@@ -20,14 +20,14 @@ namespace greenshop_api.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly IUserRepository repository;
-        private readonly IJwtService jwtHandler;
+        private readonly IJwtService jwtService;
         private readonly IMapper mapper;
 
-        public ReviewsController(ApplicationDbContext db, IUserRepository repository, IJwtService jwtHandler, IMapper mapper)
+        public ReviewsController(ApplicationDbContext db, IUserRepository repository, IJwtService jwtService, IMapper mapper)
         {
             this.db = db;
             this.repository = repository;
-            this.jwtHandler = jwtHandler;
+            this.jwtService = jwtService;
             this.mapper = mapper;
         }
 
@@ -63,7 +63,7 @@ namespace greenshop_api.Controllers
             var jwt = Request.Cookies["jwt"];
             if (!string.IsNullOrEmpty(jwt))
             {
-                var token = jwtHandler.Verify(jwt);
+                var token = jwtService.Verify(jwt);
                 var userId = token.Issuer.ToString();
                 var currentUser = users.FirstOrDefault(u => u.UserId == userId);
 
@@ -85,10 +85,10 @@ namespace greenshop_api.Controllers
         [EnableCors("WithCredentialsPolicy")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
-        public async Task<IActionResult> GetReviewByUser(string plantId)
+        public async Task<IActionResult> GetReviewByUser([FromRoute]string plantId)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
@@ -106,7 +106,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/total-number")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant(string plantId)
+        public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant([FromRoute]string plantId)
         {
             var count = await this.db.Reviews.CountAsync(r => r.PlantId == plantId);
             return Ok(count);
@@ -119,7 +119,7 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> CreateReview([FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
             var user = await repository.GetUserByIdAsync(userId);
 
@@ -142,10 +142,10 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
         [TypeFilter(typeof(Review_ValidateUpdateReviewActionFilter))]
         [TypeFilter(typeof(Review_HandleUpdateExceptionFilter))]
-        public async Task<IActionResult> UpdateReview(string plantId, [FromBody] ReviewDto review)
+        public async Task<IActionResult> UpdateReview([FromRoute]string plantId, [FromBody] ReviewDto review)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
             var reviewToUpdate = await this.db.Reviews.FindAsync(userId, plantId);
@@ -164,12 +164,11 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
-        public async Task<IActionResult> DeleteReview(string plantId)
+        public async Task<IActionResult> DeleteReview([FromRoute]string plantId)
         {
             var jwt = Request.Cookies["jwt"];
-            var token = jwtHandler.Verify(jwt!);
+            var token = jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
-            var user = await this.repository.GetUserByIdAsync(userId);
 
             var reviewToDelete = await this.db.Reviews.FindAsync(userId, plantId);
 

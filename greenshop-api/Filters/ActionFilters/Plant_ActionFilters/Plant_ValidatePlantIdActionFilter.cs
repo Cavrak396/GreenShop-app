@@ -16,16 +16,6 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         {
             var plantId = context.ActionArguments["plantId"] as string;
 
-            if (string.IsNullOrEmpty(plantId))
-            {
-                _actionErrorCreator.CreateActionError(
-                    context,
-                    "PlantId",
-                    "Invalid PlantId.",
-                    400,
-                    problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
             var plant = await _dbContext.Plants.FindAsync(plantId);
             if (plant == null)
             {

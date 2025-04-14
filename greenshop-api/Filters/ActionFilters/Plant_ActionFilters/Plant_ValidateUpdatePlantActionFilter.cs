@@ -19,17 +19,6 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
             var plantId = context.ActionArguments["plantId"] as string;
             var plant = context.ActionArguments["plant"] as PlantDto;
 
-            if (plant == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                    context,
-                    "Plant",
-                    "Invalid Plant.",
-                    400,
-                    problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             if (!string.IsNullOrEmpty(plantId) && plant != null && plantId != plant.PlantId)
             {
                 _actionErrorCreator.CreateActionError(

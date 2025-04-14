@@ -18,19 +18,8 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         {
             var plant = context.ActionArguments["plant"] as PlantDto;
 
-            if (plant == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                    context,
-                    "Plant",
-                    "Invalid Plant.",
-                    400,
-                    problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var existingPlant = await _dbContext.Plants.FirstOrDefaultAsync(p =>
-            !string.IsNullOrWhiteSpace(plant.Name) &&
+            !string.IsNullOrWhiteSpace(plant!.Name) &&
             !string.IsNullOrWhiteSpace(p.Name) &&
             plant.Name.ToLower() == p.Name.ToLower() &&
             plant.Size == p.Size);

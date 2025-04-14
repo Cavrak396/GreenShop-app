@@ -17,7 +17,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         {
             var allUsers = await _dbContext.Users.ToListAsync();
 
-            if (allUsers.Count() == 0)
+            if (allUsers.Count == 0)
             {
                 _actionErrorCreator.CreateActionError(
                      context,

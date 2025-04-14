@@ -18,17 +18,6 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         {
             var registerDto = context.ActionArguments["registerDto"] as RegisterDto;
 
-            if (registerDto == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                     context,
-                     "Register",
-                     "Invalid Register Data.",
-                     400,
-                     problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u =>
             !string.IsNullOrWhiteSpace(registerDto.Email) &&
             !string.IsNullOrWhiteSpace(u.UserEmail) &&

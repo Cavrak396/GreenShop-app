@@ -18,17 +18,6 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
         {
             var loginDto = context.ActionArguments["loginDto"] as LoginDto;
 
-            if (loginDto == null)
-            {
-                _actionErrorCreator.CreateActionError(
-                     context,
-                     "Login",
-                     "Invalid Login Data.",
-                     400,
-                     problemDetails => new BadRequestObjectResult(problemDetails));
-                return;
-            }
-
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserEmail == loginDto.Email);
             if (user == null)
             {
@@ -41,7 +30,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
                 return;
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.UserPassword))
+            if (!BCrypt.Net.BCrypt.Verify(loginDto!.Password, user.UserPassword))
             {
                 _actionErrorCreator.CreateActionError(
                      context,
