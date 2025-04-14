@@ -1,12 +1,12 @@
-﻿using greenshop_api.Application.Models;
+﻿using AutoMapper;
+using greenshop_api.Application.Models;
 using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Users;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Infrastructure.Persistance;
-using greenshop_api.Infrastructure.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +15,11 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class UsersController(IUserRepository repository, ApplicationDbContext db, IJwtService jwtService, NewsletterService newsletterService) : ControllerBase
+    public class UsersController(IUserRepository repository, ApplicationDbContext db, IMapper mapper, IJwtService jwtService, INewsletterService newsletterService) : ControllerBase
     {
         private readonly IUserRepository repository = repository;
         private readonly ApplicationDbContext db = db;
+        private readonly IMapper mapper = mapper;
         private readonly IJwtService jwtService = jwtService;
         private readonly INewsletterService newsletterService = newsletterService;
 
@@ -34,14 +35,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
-            var user = new User
-            {
-                UserId = Guid.NewGuid().ToString(),
-                UserName = registerDto.Name,
-                UserEmail = registerDto.Email,
-                UserPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
-                IsSubscribed = registerDto.IsSubscribed
-            };
+            var user = mapper.Map<User>(registerDto);
 
             var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == registerDto.Email);
 
@@ -53,11 +47,7 @@ namespace greenshop_api.Controllers
 
             if (foundSubscriber == null && registerDto.IsSubscribed == true)
             {
-                var subscriber = new Subscriber
-                {
-                    SubscriberId = Guid.NewGuid().ToString(),
-                    SubscriberEmail = registerDto.Email
-                };
+                var subscriber = mapper.Map<Subscriber>(registerDto);
                 this.db.Subscribers.Add(subscriber);
                 await this.db.SaveChangesAsync();
             }
@@ -112,14 +102,9 @@ namespace greenshop_api.Controllers
             var userId = token.Issuer.ToString();
             var user = await this.repository.GetUserByIdAsync(userId);
 
-            var userDto = new UserDto
-            {
-                UserEmail = user.UserEmail,
-                UserName = user.UserName,
-                IsSubscribed = user.IsSubscribed,
-            };
+            var getUserDto = mapper.Map<GetUserDto>(user);
 
-            return Ok(userDto);
+            return Ok(getUserDto);
         }
 
         [HttpPut("{isSubscribed}")]
@@ -140,11 +125,7 @@ namespace greenshop_api.Controllers
             {
                 if (subscriber == null)
                 {
-                    var subscriberToCreate = new Subscriber
-                    {
-                        SubscriberId = Guid.NewGuid().ToString(),
-                        SubscriberEmail = userToUpdate.UserEmail
-                    };
+                    var subscriberToCreate = mapper.Map<Subscriber>(userToUpdate);
                     this.db.Subscribers.Add(subscriberToCreate);
                 }
             }

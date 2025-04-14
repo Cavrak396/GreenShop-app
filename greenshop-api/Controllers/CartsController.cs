@@ -1,6 +1,8 @@
-﻿using greenshop_api.Domain.Interfaces.Jwt;
+﻿using AutoMapper;
+using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Models;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.CartItems;
+using greenshop_api.Dtos.Carts;
 using greenshop_api.Filters.ActionFilters.Cart_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Infrastructure.Persistance;
@@ -15,11 +17,13 @@ namespace greenshop_api.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
+        private readonly IMapper mapper;
         private readonly IJwtService jwtService;
 
-        public CartsController(ApplicationDbContext db, IJwtService jwtService)
+        public CartsController(ApplicationDbContext db, IMapper mapper, IJwtService jwtService)
         {
             this.db = db;
+            this.mapper = mapper;
             this.jwtService = jwtService;
         }
 
@@ -34,7 +38,6 @@ namespace greenshop_api.Controllers
             var userId = token.Issuer.ToString();
 
             CartDto cartDto;
-            ICollection<CartItemDto> cartItemDtos;
 
             var cart = await this.db.Carts!
                .Include(c => c.CartItems!)
@@ -47,7 +50,8 @@ namespace greenshop_api.Controllers
                 {
                     CartId = Guid.NewGuid().ToString(),
                     UserId = userId,
-                    CartItems = new List<CartItem>()
+                    CartPrice = 0,
+                    CartItems = []
                 };
                 this.db.Carts.Add(cart);
             }
@@ -58,23 +62,22 @@ namespace greenshop_api.Controllers
 
             if (cartsMatch)
             {
-                cartDto = new CartDto
-                {
-                    CartItems = cart.CartItems,
-                    CartPrice = cart.CartPrice,
-                };
+                cartDto = mapper.Map<CartDto>(cart);
                 
                 return Ok(cartDto);
             }
+            var test = cart.CartId;
+
+            var cartItemsToAdd = mapper.Map<List<CartItem>>(cartItems, opt => opt.Items["CartId"] = cart.CartId);
 
             var plantIds = cartItems.Select(ci => ci.PlantId).ToList();
             var plants = await this.db.Plants
                 .Where(p => plantIds.Contains(p.PlantId))
-                .ToDictionaryAsync(p => p.PlantId);
+                .ToDictionaryAsync(p => p.PlantId!);
 
-            double cartPrice = 0;
+            double cartPrice = cart.CartPrice;
 
-            foreach (var cartItem in cartItems)
+            foreach (var cartItem in cartItemsToAdd)
             {
                 var existingItem = cart.CartItems!.FirstOrDefault(ci => ci.PlantId == cartItem.PlantId);
                 if (existingItem != null)
@@ -84,25 +87,16 @@ namespace greenshop_api.Controllers
 
                 else
                 {
-                    cart.CartItems!.Add(new CartItem
-                    {
-                        CartId = cart.CartId,
-                        PlantId = cartItem.PlantId,
-                        Quantity = cartItem.Quantity
-                    });
+                    cart.CartItems!.Add(cartItem);
                 }
-                var plant = plants.GetValueOrDefault(cartItem.PlantId);
+                var plant = plants!.GetValueOrDefault(cartItem.PlantId);
                 cartPrice += (double)plant!.Price! * cartItem.Quantity;
             }
             cart.CartPrice = cartPrice;
 
             await this.db.SaveChangesAsync();
 
-            cartDto = new CartDto
-            {
-                CartItems = cart.CartItems,
-                CartPrice = cart.CartPrice,
-            };
+            cartDto = mapper.Map<CartDto>(cart);
 
             return Ok(cartDto);
         }
@@ -128,11 +122,7 @@ namespace greenshop_api.Controllers
             cart.CartPrice = 0;
             await this.db.SaveChangesAsync();
 
-            var cartDto = new CartDto
-            {
-                CartItems = cart.CartItems,
-                CartPrice = cart.CartPrice,
-            };
+            var cartDto = mapper.Map<CartDto>(cart);
 
             return Ok(cartDto);
         }

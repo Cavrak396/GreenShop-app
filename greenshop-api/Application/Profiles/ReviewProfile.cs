@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using greenshop_api.Domain.Models;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Reviews;
 
 namespace greenshop_api.Application.Profiles
 {
@@ -8,13 +8,11 @@ namespace greenshop_api.Application.Profiles
     {
         public ReviewProfile()
         {
-            CreateMap<Review, ReviewDto>()
+            CreateMap<Review, GetReviewDto>()
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
 
-            CreateMap<ReviewDto, Review>()
-                .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.User, opt => opt.Ignore())
-                .ForMember(dest => dest.Plant, opt => opt.Ignore());
+            CreateMap<PostReviewDto, Review>()
+                .ForMember(dest => dest.Creation_Date, opt => opt.MapFrom(src => DateTime.Now));
         }
 
     }

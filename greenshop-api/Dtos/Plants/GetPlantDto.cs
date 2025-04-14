@@ -1,10 +1,10 @@
-﻿using greenshop_api.Domain.Models.Validations;
+﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
 using static greenshop_api.Domain.Models.Plant;
 
-namespace greenshop_api.Dtos
+namespace greenshop_api.Dtos.Plants
 {
-    public class PlantDto
+    public class GetPlantDto
     {
         [Required]
         public string? PlantId { get; set; }

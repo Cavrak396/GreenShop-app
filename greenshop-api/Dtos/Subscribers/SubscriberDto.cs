@@ -1,12 +1,10 @@
 ﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace greenshop_api.Domain.Models
+namespace greenshop_api.Dtos.Subscribers
 {
-    public class Subscriber
+    public class SubscriberDto
     {
-        [Key]
-        public string? SubscriberId { get; set; }
         [Required]
         [EmailIsValid]
         public string? SubscriberEmail { get; set; }

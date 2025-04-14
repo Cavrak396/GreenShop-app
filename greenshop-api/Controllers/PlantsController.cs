@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 using greenshop_api.Application.Models;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Plants;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
 using greenshop_api.Infrastructure.Persistance;
@@ -69,7 +69,7 @@ namespace greenshop_api.Controllers
 
             if (!string.IsNullOrEmpty(category))
             {
-                plantsQuery = plantsQuery.Where(p => p.Category.ToLower() == category.ToLower());
+                plantsQuery = plantsQuery.Where(p => p.Category!.ToLower() == category.ToLower());
             }
 
             if (!string.IsNullOrEmpty(size))
@@ -100,9 +100,9 @@ namespace greenshop_api.Controllers
 
             plantsQuery = plantsQuery.Skip((page - 1) * pageSize).Take(pageSize);
 
-            var plants = await plantsQuery.ProjectTo<PlantDto>(mapper.ConfigurationProvider).ToListAsync();
+            var getPlantDtos = await plantsQuery.ProjectTo<GetPlantDto>(mapper.ConfigurationProvider).ToListAsync();
 
-            return Ok(plants);
+            return Ok(getPlantDtos);
         }
 
         [HttpGet("total-number")]
@@ -147,9 +147,9 @@ namespace greenshop_api.Controllers
         public async Task<IActionResult> GetPlantById(string plantId)
         {
             var plant = await this.db.Plants.FindAsync(plantId);
-            var plantDto = mapper.Map<PlantDto>(plant);
+            var getPlantDto = mapper.Map<GetPlantDto>(plant);
 
-            return Ok(plantDto);
+            return Ok(getPlantDto);
         }
 
         [HttpGet("{plantId}/related")]
@@ -191,17 +191,16 @@ namespace greenshop_api.Controllers
                 .Select(p => p.Plant)
                 .ToList();
 
-            var tagsRelatedProductsDto = mapper.Map<List<PlantDto>>(tagsRelatedProducts);
+            var tagsRelatedProductDtos = mapper.Map<List<GetPlantDto>>(tagsRelatedProducts);
 
-            return Ok(tagsRelatedProductsDto);
+            return Ok(tagsRelatedProductDtos);
         }
 
         [HttpPost]
         [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
-        public async Task<IActionResult> CreatePlant([FromBody]PlantDto plant)
+        public async Task<IActionResult> CreatePlant([FromBody]PostPlantDto plant)
         {
             var plantToCreate = mapper.Map<Plant>(plant);
-            plantToCreate.PlantId = Guid.NewGuid().ToString();
 
             this.db.Plants.Add(plantToCreate);
             await this.db.SaveChangesAsync();
@@ -228,9 +227,9 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
+        [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
-        public async Task <IActionResult> UpdatePlant([FromRoute]string plantId, [FromBody]PlantDto plant)
+        public async Task <IActionResult> UpdatePlant([FromRoute]string plantId, [FromBody]PostPlantDto plant)
         {
             var plantToUpdate = await this.db.Plants.FindAsync(plantId);
 

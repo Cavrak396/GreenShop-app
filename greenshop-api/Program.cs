@@ -1,4 +1,5 @@
 using greenshop_api.Application.Models;
+using greenshop_api.Application.Profiles;
 using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
@@ -51,7 +52,7 @@ builder.Services.AddCors(options =>
     }
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(CartProfile), typeof(CartItemProfile));
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>

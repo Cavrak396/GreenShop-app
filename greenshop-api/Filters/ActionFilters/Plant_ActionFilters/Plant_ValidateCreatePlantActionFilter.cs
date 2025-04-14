@@ -1,5 +1,5 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
-using greenshop_api.Dtos;
+using greenshop_api.Dtos.Plants;
 using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,7 +16,7 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var plant = context.ActionArguments["plant"] as PlantDto;
+            var plant = context.ActionArguments["plant"] as PostPlantDto;
 
             var existingPlant = await _dbContext.Plants.FirstOrDefaultAsync(p =>
             !string.IsNullOrWhiteSpace(plant!.Name) &&
