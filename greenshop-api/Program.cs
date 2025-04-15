@@ -57,6 +57,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(CartProfile), typeof(CartItemProfile));
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -78,6 +79,7 @@ builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<ISubscribersRepository, SubscribersRepository>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
