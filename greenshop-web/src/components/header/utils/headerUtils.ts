@@ -5,9 +5,7 @@ import cart from "../../../assets/images/header/cart.svg";
 
 export const navigationList: NavigationItem[] = [
   { id: 1, label: "Home" },
-  { id: 2, label: "Shop" },
-  { id: 3, label: "Devs" },
-  { id: 4, label: "Blogs" },
+  { id: 2, label: "Devs" },
 ];
 
 export const toolbarItems: ToolbarItem[] = [

@@ -1,12 +1,16 @@
-import HeaderNavItem from "./HeaderNavItem";
 import { useState, useCallback } from "react";
+import HeaderNavItem from "./HeaderNavItem";
 import { navigationList } from "./utils/headerUtils";
 
 function HeaderNav() {
-  const [activeLink, setActiveLink] = useState<number>(1);
+  const [activeLink, setActiveLink] = useState<number>(() => {
+    const stored = sessionStorage.getItem("activeLink");
+    return stored ? parseInt(stored) : 1;
+  });
 
   const handleLinkClick = useCallback((id: number) => {
     setActiveLink(id);
+    sessionStorage.setItem("activeLink", id.toString());
   }, []);
 
   return (
