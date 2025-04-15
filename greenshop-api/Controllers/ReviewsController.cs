@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Domain.Models;
 using greenshop_api.Dtos.Reviews;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
@@ -19,11 +19,11 @@ namespace greenshop_api.Controllers
     public class ReviewsController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly IUserRepository repository;
+        private readonly IUsersRepository repository;
         private readonly IJwtService jwtService;
         private readonly IMapper mapper;
 
-        public ReviewsController(ApplicationDbContext db, IUserRepository repository, IJwtService jwtService, IMapper mapper)
+        public ReviewsController(ApplicationDbContext db, IUsersRepository repository, IJwtService jwtService, IMapper mapper)
         {
             this.db = db;
             this.repository = repository;

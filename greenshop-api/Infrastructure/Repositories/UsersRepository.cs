@@ -20,6 +20,13 @@ namespace greenshop_api.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.UserId == id);
         }
 
+        public async Task<List<User>> GetUsersByIdsAsync(List<string> ids)
+        {
+            return await _dbContext.Users
+                .Where(u => ids.Contains(u.UserId!))
+                .ToListAsync();
+        }
+
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _dbContext.Users
