@@ -7,9 +7,9 @@ export const categories: CategoriesTypes[] = [
 ];
 
 export const categoriesSize: CategoriesTypes[] = [
-  { id: 1, label: "small" },
-  { id: 2, label: "medium" },
-  { id: 3, label: "large" },
+  { id: 1, label: "Small" },
+  { id: 2, label: "Medium" },
+  { id: 3, label: "Large" },
 ];
 
 export const MIN_PRICE = 0;
