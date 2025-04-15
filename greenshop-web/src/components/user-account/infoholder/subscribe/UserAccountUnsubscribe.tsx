@@ -4,21 +4,22 @@ import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes"
 
 function UserAccountUnsubscribe({ setIsAppear }: ConfirmationTypes) {
   const { user } = useUser();
-  const isSubscribed = user?.isSubscribed;
+  const isSubscribed = user?.isSubscribed ?? false;
 
-  const handleUnsubscribeClick = () => {
+  const handleClick = () => {
     setIsAppear(true);
   };
 
+  const message = isSubscribed
+    ? "If you wish to stop receiving notifications, simply click the unsubscribe button."
+    : "You're currently unsubscribed. Click the button below to start receiving notifications.";
+
   return (
     <div className="useraccount__unsubscribe">
-      <p className="useraccount__unsubscribe-text">
-        If you wish to stop receiving notifications, simply click the
-        unsubscribe button.
-      </p>
+      <p className="useraccount__unsubscribe-text">{message}</p>
       <Button
         className="useraccount__unsubscribe-button button"
-        onClick={handleUnsubscribeClick}
+        onClick={handleClick}
       >
         {isSubscribed ? "Unsubscribe" : "Subscribe"}
       </Button>
