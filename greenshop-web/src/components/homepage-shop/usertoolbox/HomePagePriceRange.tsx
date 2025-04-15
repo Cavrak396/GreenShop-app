@@ -78,7 +78,7 @@ function HomePagePriceRange() {
       />
 
       <div className="homepageshop__price-info" aria-live="polite">
-        <span>Cena: </span>
+        <span>Price: </span>
         <span className="homepageshop__price-prices">
           ${minPrice} - ${maxPrice}
         </span>

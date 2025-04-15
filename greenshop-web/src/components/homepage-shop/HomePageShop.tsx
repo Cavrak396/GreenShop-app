@@ -18,13 +18,16 @@ function HomePageShop() {
           <HomePageToolbox />
           <HomePageShopContent />
         </div>
-        <Pagination
-          activePage={currentShopPage}
-          setActivePage={setCurrentShopPage}
-          totalItems={plantsTotal}
-          itemsPerPage={itemsPerPage}
-          loadItems={loadPlants}
-        />
+        {plantsTotal > 9}
+        {
+          <Pagination
+            activePage={currentShopPage}
+            setActivePage={setCurrentShopPage}
+            totalItems={plantsTotal}
+            itemsPerPage={itemsPerPage}
+            loadItems={loadPlants}
+          />
+        }
       </div>
     </div>
   );
