@@ -23,7 +23,7 @@ const handleApiError = (error: any): ApiError => {
 
 export const syncCart = async (cartItems: CartApiItemDto[]): Promise<CartDto | ApiError> => {
     try {
-        const response = await axiosInstance.post<CartDto>("/carts/sync", cartItems);
+        const response = await axiosInstance.post<CartDto>("/carts", cartItems);
         return response.data;
     } catch (error) {
         return handleApiError(error);
