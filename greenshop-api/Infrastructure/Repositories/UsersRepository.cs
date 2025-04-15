@@ -16,8 +16,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<User?> GetUserByIdAsync(string id)
         {
-            return await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.UserId == id);
+            return await _dbContext.Users.FindAsync(id);
         }
 
         public async Task<List<User>> GetUsersByIdsAsync(List<string> ids)

@@ -1,19 +1,17 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
-using greenshop_api.Infrastructure.Creators;
-using greenshop_api.Infrastructure.Persistance;
+using greenshop_api.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
     public class Cart_ValidateRemoveCartItemsActionFilter(
-        ApplicationDbContext dbContext, 
+        ICartsRepository cartsRepository, 
         IActionErrorCreator actionErrorCreator, 
         IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly ICartsRepository _cartsRepository = cartsRepository;
         private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
         private readonly IJwtService _jwtService = jwtService;
 
@@ -23,10 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
             var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
-            var cart = await _dbContext.Carts
-                .Include(c => c.CartItems!)
-                .ThenInclude(ci => ci.Plant)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+            var cart = await _cartsRepository.GetCartByUserIdAsync(userId);
 
             if (cart == null)
             {

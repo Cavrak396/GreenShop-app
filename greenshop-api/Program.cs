@@ -77,8 +77,11 @@ builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
+builder.Services.AddScoped<IPlantsRepository, PlantsRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<ISubscribersRepository, SubscribersRepository>();
+builder.Services.AddScoped<ICartsRepository, CartsRepository>();
+builder.Services.AddScoped<ICartItemsRepository, CartItemsRepository>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
