@@ -5,6 +5,8 @@ import ProfilePhoto from "../../../../assets/images/account/user.png";
 function UserAccountInfo() {
   const { user } = useUser();
 
+  console.log(user);
+
   return (
     <div className="useraccount__profile-info">
       <img
@@ -16,7 +18,7 @@ function UserAccountInfo() {
         {user?.userName || "No Name Provided"}
       </Title>
       <span className="useraccount__profile-mail">
-        {user?.email || "No Email Provided"}
+        {user?.userEmail || "No Email Provided"}
       </span>
     </div>
   );
