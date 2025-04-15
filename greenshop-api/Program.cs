@@ -1,6 +1,5 @@
 using greenshop_api.Application.Models;
 using greenshop_api.Application.Profiles;
-using greenshop_api.Authority;
 using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Interfaces.Modules;
@@ -78,7 +77,6 @@ builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
-builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<ISubscribersRepository, SubscribersRepository>();
 
