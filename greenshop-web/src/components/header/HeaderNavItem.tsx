@@ -22,16 +22,18 @@ function HeaderNavItem({
     }
   };
 
+  const handleClick = () => {
+    handleLinkClick(id);
+    handleNavigation(label);
+  };
+
   return (
-    <li className="header__navigation-item" key={id}>
+    <li className="header__navigation-item">
       <a
         className={`header__navigation-link ${
           activeLink === id ? "header__navigation-link--activated" : ""
         }`}
-        onClick={() => {
-          handleLinkClick(id);
-          handleNavigation(label);
-        }}
+        onClick={handleClick}
         aria-label={label}
         aria-current={activeLink === id ? "page" : undefined}
       >
