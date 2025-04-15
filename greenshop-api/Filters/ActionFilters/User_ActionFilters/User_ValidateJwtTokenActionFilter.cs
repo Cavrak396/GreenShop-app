@@ -1,17 +1,17 @@
-﻿using greenshop_api.Authority;
-using greenshop_api.Domain.Interfaces.Creators;
+﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
     public class User_ValidateJwtTokenActionFilter(
-        IUserRepository usersRepository, 
+        IUsersRepository usersRepository, 
         IActionErrorCreator actionErrorCreator, 
         IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly IUserRepository _usersRepository = usersRepository;
+        private readonly IUsersRepository _usersRepository = usersRepository;
         private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
         private readonly IJwtService _jwtService = jwtService;
 

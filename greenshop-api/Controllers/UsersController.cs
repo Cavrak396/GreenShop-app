@@ -1,56 +1,39 @@
-﻿using AutoMapper;
+﻿using greenshop_api.Application.Commands.Users;
 using greenshop_api.Application.Models;
-using greenshop_api.Authority;
-using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Application.Queries.Users;
 using greenshop_api.Domain.Interfaces.Service;
-using greenshop_api.Domain.Models;
 using greenshop_api.Dtos.Users;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
-using greenshop_api.Infrastructure.Persistance;
+using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class UsersController(IUserRepository repository, ApplicationDbContext db, IMapper mapper, IJwtService jwtService, INewsletterService newsletterService) : ControllerBase
+    public class UsersController(
+        INewsletterService newsletterService, 
+        IMediator mediator) : ControllerBase
     {
-        private readonly IUserRepository repository = repository;
-        private readonly ApplicationDbContext db = db;
-        private readonly IMapper mapper = mapper;
-        private readonly IJwtService jwtService = jwtService;
         private readonly INewsletterService newsletterService = newsletterService;
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet("all")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await this.db.Users.ToListAsync();
-
-            return Ok(users);
+            var getUserDtos = await _mediator.Send(new GetAllUsersQuery());
+            return Ok(getUserDtos);
         }
 
         [HttpPost("register")]
         [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
-            var user = mapper.Map<User>(registerDto);
-
-            var foundSubscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == registerDto.Email);
-
-            if(foundSubscriber != null && registerDto.IsSubscribed == false)
+            await _mediator.Send(new AddUserCommand
             {
-                this.db.Subscribers.Remove(foundSubscriber);
-                await this.db.SaveChangesAsync();
-            }
-
-            if (foundSubscriber == null && registerDto.IsSubscribed == true)
-            {
-                var subscriber = mapper.Map<Subscriber>(registerDto);
-                this.db.Subscribers.Add(subscriber);
-                await this.db.SaveChangesAsync();
-            }
+                RegisterDto = registerDto
+            });
 
             await this.newsletterService.SendNewsletterAsync(
                 "registration",
@@ -60,8 +43,6 @@ namespace greenshop_api.Controllers
                     Details = registerDto.Name
                 });
 
-            await this.repository.CreateUserAsync(user);
-
             return NoContent();
         }
 
@@ -69,9 +50,10 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
-            var user = await this.repository.GetUserByEmailAsync(loginDto.Email!);
-
-            var jwt = jwtService.Generate(user.UserId!);
+            var jwt = await _mediator.Send(new GetJwtQuery
+            {
+                LoginDto = loginDto
+            });
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
@@ -97,13 +79,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetUser()
         {
-            var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt!);
-            var userId = token.Issuer.ToString();
-            var user = await this.repository.GetUserByIdAsync(userId);
-
-            var getUserDto = mapper.Map<GetUserDto>(user);
-
+            var getUserDto = await _mediator.Send(new GetUserQuery());
             return Ok(getUserDto);
         }
 
@@ -112,29 +88,10 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> UpdateUserIsSubscribed([FromRoute]bool isSubscribed)
         {
-            var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt!);
-            var userId = token.Issuer.ToString();
-            var userToUpdate = await this.repository.GetUserByIdAsync(userId);
-
-            userToUpdate.IsSubscribed = isSubscribed;
-
-            var subscriber = await this.db.Subscribers.FirstOrDefaultAsync(s => s.SubscriberEmail == userToUpdate.UserEmail);
-
-            if (userToUpdate.IsSubscribed && subscriber == null)
-            {
-                if (subscriber == null)
-                {
-                    var subscriberToCreate = mapper.Map<Subscriber>(userToUpdate);
-                    this.db.Subscribers.Add(subscriberToCreate);
-                }
-            }
-            else if(!userToUpdate.IsSubscribed && subscriber != null)
-            {
-                 this.db.Subscribers.Remove(subscriber);
-            }
-
-            await this.db.SaveChangesAsync();
+            await _mediator.Send(new UpdateUserIsSubscribedCommand 
+            { 
+                IsSubscribed = isSubscribed 
+            });
 
             return NoContent();
         }
@@ -144,27 +101,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> DeleteUser()
         {
-            var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt!);
-            var userId = token.Issuer.ToString();
-            var userToDelete = await this.repository.GetUserByIdAsync(userId);
-
-            this.db.Users.Remove(userToDelete);
-            await this.db.SaveChangesAsync();
-
-            Response.Cookies.Delete("jwt");
-
-            return NoContent();
-        }
-
-        [HttpDelete("all")]
-        [TypeFilter(typeof(User_ValidateDeleteUsersActionFilter))]
-        public async Task<IActionResult> DeleteAllUsers()
-        {
-            var allUsers = await this.db.Users.ToListAsync();
-
-            this.db.Users.RemoveRange(allUsers);
-            await this.db.SaveChangesAsync();
+            await _mediator.Send(new DeleteUserCommand());
 
             Response.Cookies.Delete("jwt");
 
