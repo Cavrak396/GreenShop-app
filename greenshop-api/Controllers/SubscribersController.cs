@@ -1,36 +1,27 @@
-﻿using AutoMapper;
+﻿using greenshop_api.Application.Commands.Subscribers;
 using greenshop_api.Application.Models;
+using greenshop_api.Application.Queries.Subscribers;
 using greenshop_api.Domain.Interfaces.Service;
-using greenshop_api.Domain.Models;
 using greenshop_api.Dtos.Subscribers;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
-using greenshop_api.Infrastructure.Persistance;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class SubscribersController : ControllerBase
+    public class SubscribersController(
+        INewsletterService newsletterService, 
+        IMediator mediator) : ControllerBase
     {
-        private readonly ApplicationDbContext db;
-        private readonly IMapper mapper;    
-        private readonly INewsletterService newsletterService;
-
-        public SubscribersController(ApplicationDbContext db, IMapper mapper, INewsletterService newsletterService)
-        {
-            this.db = db;
-            this.mapper = mapper;
-            this.newsletterService = newsletterService;
-        }
+        private readonly INewsletterService _newsletterService = newsletterService;
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet]
         public async Task<IActionResult> GetSubscribers()
         {
-            var subscribers = await this.db.Subscribers.ToListAsync();
-            var subscriberDtos = mapper.Map<List<SubscriberDto>>(subscribers);
-
+            var subscriberDtos = await _mediator.Send(new GetAllSubscribersQuery());
             return Ok(subscriberDtos);
         }
 
@@ -38,12 +29,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberActionFilter))]
         public async Task<IActionResult> CreateSubscriber([FromBody]SubscriberDto subscriber)
         {
-            var subscriberToCreate = mapper.Map<Subscriber>(subscriber);
+            await _mediator.Send(new AddSubscriberCommand
+            {
+                Subscriber = subscriber
+            });
 
-            this.db.Subscribers.Add(subscriberToCreate);
-            await this.db.SaveChangesAsync();
-
-            await this.newsletterService.SendNewsletterAsync(
+            await _newsletterService.SendNewsletterAsync(
                 "subscription",
                 new NewsletterHeader
                 {
@@ -53,26 +44,14 @@ namespace greenshop_api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{subscriberId}")]
-        [TypeFilter(typeof(Subscriber_ValidateSubscriberIdActionFilter))]
-        public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberId)
+        [HttpDelete("{subscriberEmail}")]
+        [TypeFilter(typeof(Subscriber_ValidateSubscriberEmailActionFilter))]
+        public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberEmail)
         {
-            var subscriberToDelete = await this.db.Subscribers.FindAsync(subscriberId);
-
-            this.db.Subscribers.Remove(subscriberToDelete!);
-            await this.db.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [TypeFilter(typeof(Subscriber_ValidateDeleteSubscribersActionFilter))]
-        public async Task<IActionResult> DeleteAllSubscribers()
-        {
-            var allSubscribers = this.db.Subscribers.ToList();
-
-            this.db.Subscribers.RemoveRange(allSubscribers);
-            await this.db.SaveChangesAsync();
+            await _mediator.Send(new DeleteSubscriberByEmailCommand
+            {
+                Email = subscriberEmail
+            });
 
             return NoContent();
         }

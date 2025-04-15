@@ -1,27 +1,23 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
+using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Dtos.Subscribers;
-using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
     public class Subscriber_ValidateCreateSubscriberActionFilter(
-        ApplicationDbContext dbContext, 
+        ISubscribersRepository subscribersRepository, 
         IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly ISubscribersRepository _subscribersRepository = subscribersRepository;
         private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var subscriber = context.ActionArguments["subscriber"] as SubscriberDto;
 
-            var existingSubscriber = await _dbContext.Subscribers.FirstOrDefaultAsync(s =>
-            !string.IsNullOrWhiteSpace(subscriber!.SubscriberEmail) &&
-            !string.IsNullOrWhiteSpace(s.SubscriberEmail) &&
-            subscriber.SubscriberEmail.ToLower() == s.SubscriberEmail.ToLower());
+            var existingSubscriber = await _subscribersRepository.GetSubscriberByEmailAsync(subscriber!.SubscriberEmail!);
 
             if (existingSubscriber != null)
             {
