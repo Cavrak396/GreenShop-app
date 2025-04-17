@@ -30,9 +30,9 @@ namespace greenshop_api.Application.Handlers.Carts
 
             await _cartItemsRepository.DeleteCartItemsAsync(cart!.CartItems!);
             cart.CartItems!.Clear();
-            await _cartsRepository.UpdateCartPriceAsync(cart, 0);
+            var result = await _cartsRepository.UpdateCartPriceAsync(cart, 0);
 
-            return _mapper.Map<CartDto>(cart);
+            return _mapper.Map<CartDto>(result);
         }
     }
 }

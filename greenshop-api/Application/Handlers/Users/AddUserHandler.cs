@@ -18,16 +18,16 @@ namespace greenshop_api.Application.Handlers.Users
         public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request.RegisterDto);
-            var foundSubscriber = await _subscribersRepository.GetSubscriberByEmailAsync(request.RegisterDto!.Email!);
+            var subscriber = await _subscribersRepository.GetSubscriberByEmailAsync(request.RegisterDto!.Email!);
 
-            if (foundSubscriber != null && request.RegisterDto.IsSubscribed == false)
+            if (subscriber != null && request.RegisterDto.IsSubscribed == false)
             {
-                await _subscribersRepository.DeleteSubscriberByEmailAsync(request.RegisterDto!.Email!);
+                await _subscribersRepository.DeleteSubscriberAsync(subscriber);
             }
 
-            if (foundSubscriber == null && request.RegisterDto.IsSubscribed == true)
+            if (subscriber == null && request.RegisterDto.IsSubscribed == true)
             {
-                var subscriber = _mapper.Map<Subscriber>(request.RegisterDto);
+                subscriber = _mapper.Map<Subscriber>(request.RegisterDto);
                 await _subscribersRepository.AddSubscriberAsync(subscriber);
             }
 

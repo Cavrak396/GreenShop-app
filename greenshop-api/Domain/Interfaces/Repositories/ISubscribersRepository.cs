@@ -7,7 +7,7 @@ namespace greenshop_api.Domain.Interfaces.Repositories
         Task<List<Subscriber>> GetAllSubscribersAsync();
         Task<Subscriber?> GetSubscriberByEmailAsync(string email);
         Task AddSubscriberAsync(Subscriber subscriber);
-        Task DeleteSubscriberByEmailAsync(string email);
+        Task DeleteSubscriberAsync(Subscriber subscriber);
         Task DeleteAllSubscribersAsync();
     }
 }

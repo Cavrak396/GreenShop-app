@@ -26,12 +26,9 @@ namespace greenshop_api.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
         
-        public async Task DeleteSubscriberByEmailAsync(string email)
+        public async Task DeleteSubscriberAsync(Subscriber subscriber)
         {
-            var subscriberToDelete = await _dbContext.Subscribers
-                .FirstOrDefaultAsync(s => s.SubscriberEmail == email);
-
-            _dbContext.Subscribers.Remove(subscriberToDelete!);
+            _dbContext.Subscribers.Remove(subscriber);
             await _dbContext.SaveChangesAsync();
         }
 

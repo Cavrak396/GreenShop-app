@@ -48,7 +48,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateSubscriberEmailActionFilter))]
         public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberEmail)
         {
-            await _mediator.Send(new DeleteSubscriberByEmailCommand
+            await _mediator.Send(new DeleteSubscriberCommand
             {
                 Email = subscriberEmail
             });
