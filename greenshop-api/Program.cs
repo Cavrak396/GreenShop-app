@@ -89,6 +89,7 @@ builder.Services.AddScoped<INewsletterContent, NewsletterContent>();
 builder.Services.AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
 builder.Services.AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
+builder.Services.AddScoped<INewsletterCreator, PurchaseNewsletterCreator>();
 
 builder.Services.AddScoped<IActionErrorCreator, ActionErrorCreator>();
 builder.Services.AddScoped<IExceptionCreator, ExceptionCreator>();

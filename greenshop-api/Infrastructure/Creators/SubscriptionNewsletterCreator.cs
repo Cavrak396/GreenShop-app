@@ -5,9 +5,9 @@ using System.Net.Mail;
 
 namespace greenshop_api.Infrastructure.Newsletter
 {
-    public class SubscriptionNewsletterCreator(INewsletterContent newsletterContentHandler) : INewsletterCreator
+    public class SubscriptionNewsletterCreator(INewsletterContent newsletterContent) : INewsletterCreator
     {
-        private readonly INewsletterContent _newsletterContentHandler = newsletterContentHandler;
+        private readonly INewsletterContent _newsletterContent = newsletterContent;
 
         public MailMessage CreateNewsletter(string from, NewsletterHeader header)
         {
@@ -17,7 +17,7 @@ namespace greenshop_api.Infrastructure.Newsletter
                           "in our store, you will be informed right away. This way, you can purchase " +
                           "the plant while it's still in stock with the best prize.";
 
-            string content = _newsletterContentHandler.GenerateContent(title, body);
+            string content = _newsletterContent.GenerateContent(title, body);
 
             return new MailMessage(from, header.Recipient!)
             {
