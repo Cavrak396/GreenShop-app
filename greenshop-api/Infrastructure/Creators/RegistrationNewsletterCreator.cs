@@ -5,9 +5,9 @@ using System.Net.Mail;
 
 namespace greenshop_api.Infrastructure.Newsletter
 {
-    public class RegistrationNewsletterCreator(INewsletterContent newsletterContentHandler) : INewsletterCreator
+    public class RegistrationNewsletterCreator(INewsletterContent newsletterContent) : INewsletterCreator
     {
-        private readonly INewsletterContent _newsletterContentHandler = newsletterContentHandler;
+        private readonly INewsletterContent _newsletterContent = newsletterContent;
 
         public MailMessage CreateNewsletter(string from, NewsletterHeader header)
         {
@@ -17,7 +17,7 @@ namespace greenshop_api.Infrastructure.Newsletter
                           "for awesome prices! You can also leave reviews for the " +
                           "products you purchased and enjoy many other features!";
 
-            string content = _newsletterContentHandler.GenerateContent(title, body);
+            string content = _newsletterContent.GenerateContent(title, body);
 
             return new MailMessage(from, header.Recipient!)
             {

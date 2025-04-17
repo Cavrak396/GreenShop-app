@@ -1,4 +1,7 @@
 ﻿using greenshop_api.Application.Commands.Carts;
+using greenshop_api.Application.Models;
+using greenshop_api.Application.Queries.Users;
+using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.CartItems;
 using greenshop_api.Filters.ActionFilters.Cart_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
@@ -10,8 +13,11 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class CartsController(IMediator mediator) : ControllerBase
+    public class CartsController(
+        INewsletterService newsletterService,
+        IMediator mediator) : ControllerBase
     {
+        private readonly INewsletterService _newsletterService = newsletterService;
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
@@ -33,9 +39,19 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidateRemoveCartItemsActionFilter))]
 
-        public async Task<IActionResult> RemoveCartItems()
+        public async Task<IActionResult> PurchaseCart()
         {
             var cartDto = await _mediator.Send(new DeleteCartItemsCommand());
+            var getUserDto = await _mediator.Send(new GetUserQuery());
+
+            await _newsletterService.SendNewsletterAsync(
+                "purchase",
+                new NewsletterHeader
+                {
+                    Recipient = getUserDto.UserEmail,
+                    Details = getUserDto.UserName
+                });
+
             return Ok(cartDto);
         }
     }
