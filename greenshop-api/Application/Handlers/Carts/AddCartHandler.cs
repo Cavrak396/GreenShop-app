@@ -80,9 +80,9 @@ namespace greenshop_api.Application.Handlers.Carts
                 cartPrice += plantPrice * cartItem.Quantity;
             }
 
-            await _cartsRepository.UpdateCartPriceAsync(cart, cartPrice);
+            var result = await _cartsRepository.UpdateCartPriceAsync(cart, cartPrice);
 
-            return _mapper.Map<CartDto>(cart);
+            return _mapper.Map<CartDto>(result);
         }
     }
 }

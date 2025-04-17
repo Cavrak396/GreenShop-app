@@ -37,7 +37,7 @@ namespace greenshop_api.Application.Handlers.Users
             
             if (!userToUpdate.IsSubscribed && subscriber != null)
             {
-                await _subscribersRepository.DeleteSubscriberByEmailAsync(subscriber.SubscriberEmail!);
+                await _subscribersRepository.DeleteSubscriberAsync(subscriber);
             }
 
             await _usersRepository.UpdateUserIsSubscribedAsync(userToUpdate!, request.IsSubscribed);
