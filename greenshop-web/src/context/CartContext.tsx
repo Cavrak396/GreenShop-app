@@ -20,19 +20,19 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItemTypes[]>(
     getFromLocalStorage("cartItems")
   );
-  const [quantities, setQuantities] = useState<{ [key: number]: number }>(
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>(
     getFromLocalStorage("quantities")
   );
 
   const totalPrice = useMemo(() => {
     return cartItems.reduce((accumulator, item) => {
-      const quantity = quantities[item.id] || 1;
+      const quantity = quantities[item.id.toString()] || 1;
       const price = item.sale ? item.price * (1 - item.sale / 100) : item.price;
       return accumulator + price * quantity;
     }, 0);
   }, [cartItems, quantities]);
 
-  const setQuantity = useCallback((productId: number, quantity: number) => {
+  const setQuantity = useCallback((productId: string, quantity: number) => {
     setQuantities((prevQuantities) => {
       const updatedQuantities = { ...prevQuantities, [productId]: quantity };
       saveToLocalStorage("quantities", updatedQuantities);
@@ -42,6 +42,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addItemToCart = useCallback(
     (newItem: CartItemTypes, quantity: number) => {
+      const itemId = newItem.id.toString();
+
       setCartItems((prevCartItems) => {
         const existingItemIndex = prevCartItems.findIndex(
           (item) => item.id === newItem.id
@@ -51,7 +53,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           setQuantities((prevQuantities) => {
             const updatedQuantities = {
               ...prevQuantities,
-              [newItem.id]: (prevQuantities[newItem.id] || 0) + quantity,
+              [itemId]: (prevQuantities[itemId] || 0) + quantity,
             };
             saveToLocalStorage("quantities", updatedQuantities);
             return updatedQuantities;
@@ -61,7 +63,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           setQuantities((prevQuantities) => {
             const updatedQuantities = {
               ...prevQuantities,
-              [newItem.id]: quantity,
+              [itemId]: quantity,
             };
             saveToLocalStorage("quantities", updatedQuantities);
             return updatedQuantities;
@@ -75,10 +77,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     []
   );
 
-  const removeItem = useCallback((itemId: number) => {
+  const removeItem = useCallback((itemId: string) => {
     setCartItems((prevCartItems) => {
       const updatedCartItems = prevCartItems.filter(
-        (item) => item.id !== itemId
+        (item) => item.id.toString() !== itemId
       );
       saveToLocalStorage("cartItems", updatedCartItems);
       return updatedCartItems;
@@ -93,13 +95,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const syncCartWithApi = useCallback(async () => {
-    if (!token) {
-      return;
-    }
+    if (!token) return;
 
     const cartItemDtos = cartItems.map((item) => ({
       plantId: item.id,
-      quantity: quantities[item.id] || 1,
+      quantity: quantities[item.id.toString()] || 1,
     }));
 
     try {

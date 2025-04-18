@@ -8,11 +8,11 @@ function DetailsQuantity() {
   const quantity = quantities[Number(product.plantId)] || 1;
 
   const handleDecrease = () => {
-    setQuantity(Number(product.plantId), Math.max(1, quantity - 1));
+    setQuantity(product.plantId, Math.max(1, quantity - 1));
   };
 
   const handleIncrease = () => {
-    setQuantity(Number(product.plantId), quantity + 1);
+    setQuantity(product.plantId, quantity + 1);
   };
 
   return (
