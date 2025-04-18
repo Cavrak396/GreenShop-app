@@ -8,6 +8,8 @@ import "./cart.css";
 function Cart() {
   const { cartItems, totalPrice } = useCart();
 
+  console.log(cartItems);
+
   return (
     <div className="cart">
       <Title className="cart__title small-title"> Your Orders:</Title>

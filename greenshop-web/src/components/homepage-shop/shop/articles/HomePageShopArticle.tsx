@@ -23,7 +23,7 @@ function HomePageShopArticle({
     (item: ProductType) => {
       const dateAdded = new Date();
       const cartItem: CartItemTypes = {
-        id: Number(item.plantId),
+        id: item.plantId,
         label: item.name,
         price: item.price,
         sale: item.sale_Percent,

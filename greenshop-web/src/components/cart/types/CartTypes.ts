@@ -1,5 +1,5 @@
 export interface CartItemTypes {
-  id: number;
+  id: string;
   label: string;
   price: number;
   sale?: number;
@@ -21,12 +21,12 @@ export interface CartItemProps {
   item: CartItemTypes;
   quantity: number;
   index: number;
-  setQuantity: (index: number, quantity: number) => void;
-  removeItem: (itemId: number) => void;
+  setQuantity: (productId: string, quantity: number) => void;
+  removeItem: (itemId: string) => void;
 }
 
 export interface CartItemsListType {
   cartItems: CartItemTypes[];
   quantities: number[];
-  setQuantity: (index: number, quantity: number) => void;
+  setQuantity: (productId: string, quantity: number) => void;
 }

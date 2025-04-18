@@ -1,5 +1,5 @@
 export interface CartApiItemDto {
-    plantId: number;
+    plantId: string;
     quantity: number;
 }
 
