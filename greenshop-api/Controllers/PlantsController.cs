@@ -102,7 +102,11 @@ namespace greenshop_api.Controllers
 
             var getPlantDtos = await plantsQuery.ProjectTo<GetPlantDto>(mapper.ConfigurationProvider).ToListAsync();
 
-            return Ok(getPlantDtos);
+            return Ok(new 
+            { 
+                Plants = getPlantDtos,
+                TotalNumber = getPlantDtos.Count
+            });
         }
 
         [HttpGet("total-number")]
