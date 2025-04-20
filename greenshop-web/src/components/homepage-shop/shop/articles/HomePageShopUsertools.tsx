@@ -1,4 +1,4 @@
-import { HomePageShopUserToolsProps } from "../shopTypes";
+import { HomePageShopUserToolsProps } from "../../types/shopTypes";
 
 function HomePageShopUserTools({
   userTools,

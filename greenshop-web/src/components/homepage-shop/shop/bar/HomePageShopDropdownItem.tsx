@@ -1,5 +1,4 @@
-import { HomePageShopDropdownItemProps} from "../shopTypes";
-
+import { HomePageShopDropdownItemProps } from "../../types/shopTypes";
 
 function HomePageShopDropdownItem({
   item,

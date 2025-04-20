@@ -3,7 +3,7 @@ import { usePlants } from "../../../../context/PlantsContext";
 import HomePageShopBarItem from "./HomePageShopBarItem";
 import { barItems } from "./utils/barUtils";
 import "../../homepageshop.css";
-import { BarItemsTypes } from "../shopTypes";
+import { BarItemsTypes } from "../../types/shopTypes";
 
 function HomePageShopBar() {
   const { setFilters } = usePlants();
