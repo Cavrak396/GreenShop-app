@@ -1,6 +1,6 @@
 import { PlantsParams } from "./plantsTypes";
 import axios from "axios";
-import { ProductType } from "../../components/homepage-shop/shop/shopTypes";
+import { ProductType } from "../../components/homepage-shop/types/shopTypes";
 
 const BASE_URL = "http://localhost:8080/Plants";
 

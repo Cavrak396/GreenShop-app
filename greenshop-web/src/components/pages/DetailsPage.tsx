@@ -5,7 +5,7 @@ import { ProductProvider } from "../../context/ProductContext";
 import { fetchPlantById } from "../../services/plants/plants";
 import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../../reusable/error/ErrorMessage";
-import { ProductType } from "../homepage-shop/shop/shopTypes";
+import { ProductType } from "../homepage-shop/types/shopTypes";
 
 function DetailsPage() {
   const { id } = useParams();

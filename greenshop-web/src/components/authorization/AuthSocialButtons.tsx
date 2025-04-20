@@ -5,7 +5,7 @@ import type { AuthSocialButtonsProps } from "./types/authTypes";
 function AuthSocialButtons({ activatedId }: AuthSocialButtonsProps) {
   const actionTypeText = activatedId === 1 ? "Login" : "Continue";
   return (
-    <div>
+    <>
       {socialAccountWays.map((item) => (
         <Button className="authorization__form-social-button" key={item.id}>
           <img
@@ -18,7 +18,7 @@ function AuthSocialButtons({ activatedId }: AuthSocialButtonsProps) {
           </span>
         </Button>
       ))}
-    </div>
+    </>
   );
 }
 

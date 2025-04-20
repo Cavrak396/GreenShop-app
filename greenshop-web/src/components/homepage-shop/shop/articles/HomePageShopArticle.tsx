@@ -4,7 +4,7 @@ import HomePageShopPrice from "./HomePageShopPrice";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useCart } from "../../../../context/CartContext";
-import { HomePageShopArticleProps, ProductType } from "../shopTypes";
+import { HomePageShopArticleProps, ProductType } from "../../types/shopTypes";
 import HomePageShopSale from "./HomePageShopSale";
 import { CartItemTypes } from "../../../cart/types/cartTypes";
 import ProductImage from "../../../../assets/images/banner/banner-image.webp";

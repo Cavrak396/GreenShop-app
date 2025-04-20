@@ -1,4 +1,4 @@
-import { HomePageShopBarItemProps } from "../shopTypes";
+import { HomePageShopBarItemProps } from "../../types/shopTypes";
 
 function HomePageShopBarItem({
   item,

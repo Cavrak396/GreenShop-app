@@ -1,4 +1,4 @@
-import { HomePageShopPriceProps } from "../shopTypes";
+import { HomePageShopPriceProps } from "../../types/shopTypes";
 
 function HomePageShopPrice({
   isOnSale,

@@ -1,5 +1,5 @@
-import { DropdownItemType, SortOptions } from "../../shopTypes";
-import { BarItemsTypes } from "../../shopTypes";
+import { DropdownItemType, SortOptions } from "../../../types/shopTypes";
+import { BarItemsTypes } from "../../../types/shopTypes";
 
 export const dropdownItems: readonly DropdownItemType[] = [
     { id: 1, label: SortOptions.DEFAULT },

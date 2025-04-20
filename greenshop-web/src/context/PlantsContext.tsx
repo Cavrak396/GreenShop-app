@@ -11,9 +11,13 @@ import {
   fetchTotalPlantsNumber,
   fetchPlantsNumberBySize,
 } from "../services/plants/plants";
-import { PlantsContextType } from "./types/plantsTypes";
+import {
+  PlantsContextType,
+  FiltersType,
+  CategoryCount,
+} from "./types/plantsTypes";
 import { PlantsParams } from "../services/plants/plantsTypes";
-import { ProductType } from "../components/homepage-shop/shop/shopTypes";
+import { ProductType } from "../components/homepage-shop/types/shopTypes";
 
 const PlantsContext = createContext<PlantsContextType | undefined>(undefined);
 
@@ -23,16 +27,12 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   const [searchedData, setSearchedData] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [categoriesData, setCategoriesData] = useState<any>({});
+  const [categoriesData, setCategoriesData] = useState<CategoryCount>({});
   const [plantsTotal, setPlantsTotal] = useState<number>(0);
-  const [plantsNumberBySize, setPlantsNumberBySize] = useState<any>({});
-  const [filters, setFilters] = useState<{
-    category: string | null;
-    size: string | null;
-    group: string;
-    priceMin: number | null;
-    priceMax: number | null;
-  }>({
+  const [plantsNumberBySize, setPlantsNumberBySize] = useState<CategoryCount>(
+    {}
+  );
+  const [filters, setFilters] = useState<FiltersType>({
     category: null,
     size: null,
     group: "",
@@ -42,7 +42,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
 
   const CATEGORIES = ["House Plants", "Potter Plants", "Gardening"];
 
-  const loadPlants = async (params: PlantsParams) => {
+  const loadPlants = async (params: PlantsParams): Promise<void> => {
     setLoading(true);
     setError(null);
     try {
@@ -57,7 +57,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const loadPlantsNumberByCategories = async () => {
+  const loadPlantsNumberByCategories = async (): Promise<void> => {
     setLoading(true);
     try {
       const data = await fetchPlantsNumberByCategories(CATEGORIES);
@@ -69,7 +69,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const loadPlantsNumberBySize = async () => {
+  const loadPlantsNumberBySize = async (): Promise<void> => {
     setLoading(true);
     try {
       const data = await fetchPlantsNumberBySize();
@@ -81,7 +81,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const loadTotalPlantsNumber = async () => {
+  const loadTotalPlantsNumber = async (): Promise<void> => {
     setLoading(true);
     try {
       const total = await fetchTotalPlantsNumber();
@@ -138,7 +138,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
             ...prev,
             size: id !== null ? String(id) : null,
           })),
-        setCategoriesData: (data: ProductType[]) => setData(data),
+        setCategoriesData: (data: CategoryCount) => setCategoriesData(data),
         setPriceRange: (minPrice: number, maxPrice: number) =>
           setFilters((prev) => ({
             ...prev,

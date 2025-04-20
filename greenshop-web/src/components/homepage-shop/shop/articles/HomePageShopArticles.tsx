@@ -1,6 +1,6 @@
 import HomePageShopArticle from "./HomePageShopArticle";
 import { userTools } from "./utils/articlesUtils";
-import { HomePageShopArticlesProps } from "../shopTypes";
+import { HomePageShopArticlesProps } from "../../types/shopTypes";
 import "./articles.css";
 
 function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {

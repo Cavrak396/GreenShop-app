@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { ProductType, SortOptions } from "../shopTypes";
+import { ProductType, SortOptions } from "../../types/shopTypes";
 import HomePageShopDropdownItem from "./HomePageShopDropdownItem";
-import { HomePageShopDropdownProps } from "../shopTypes";
+import { HomePageShopDropdownProps } from "../../types/shopTypes";
 import { dropdownItems } from "./utils/barUtils";
 import { usePlants } from "../../../../context/PlantsContext";
 
