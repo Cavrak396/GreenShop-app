@@ -47,7 +47,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       const data = await fetchPlants(params);
-      setSortedData(data);
+      setSortedData(data.plants);
       setData(data);
       console.log(data);
     } catch (error) {
