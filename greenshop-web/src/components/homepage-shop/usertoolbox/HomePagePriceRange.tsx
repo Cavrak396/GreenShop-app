@@ -85,7 +85,7 @@ function HomePagePriceRange() {
       </div>
 
       <Button className="homepageshop__price-button button" type="submit">
-        Filtriraj
+        Filter
       </Button>
     </form>
   );
