@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using greenshop_api.Application.Models;
+using greenshop_api.Application.Queries.Plants;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Domain.Models;
 using greenshop_api.Dtos.Plants;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
 using greenshop_api.Infrastructure.Persistance;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static greenshop_api.Domain.Models.Plant;
@@ -20,12 +21,14 @@ namespace greenshop_api.Controllers
         private readonly ApplicationDbContext db;
         private readonly INewsletterService newsletterService;
         private readonly IMapper mapper;
+        private readonly IMediator _mediator;
 
-        public PlantsController(ApplicationDbContext db, INewsletterService newsletterService, IMapper mapper)
+        public PlantsController(ApplicationDbContext db, INewsletterService newsletterService, IMapper mapper, IMediator mediator)
         {
             this.db = db;
             this.newsletterService = newsletterService;
             this.mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -34,73 +37,25 @@ namespace greenshop_api.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 9,
             [FromHeader(Name = "Authorized")] bool authorized = false,
-            [FromHeader(Name = "SearchValue")] string? search = null,
+            [FromHeader(Name = "SearchValue")] string? key = null,
             [FromHeader(Name = "CategoryValue")] string? category = null,
             [FromHeader(Name = "SizeType")] string? size = null,
             [FromHeader(Name = "Group")] string? group = null,
             [FromHeader(Name = "PriceMin")] double? priceMin = null,
             [FromHeader(Name = "PriceMax")] double? priceMax = null)
         {
-            IQueryable<Plant> plantsQuery = this.db.Plants.AsQueryable();
-
-            if (!string.IsNullOrEmpty(group))
+            var getPlantDtos = await _mediator.Send(new GetAllPlantsQuery
             {
-                if (string.Equals(group, "new", StringComparison.OrdinalIgnoreCase))
-                {
-                    plantsQuery = plantsQuery.OrderByDescending(p => p.Acquisition_Date).Take(9);
-                }
-                else if (string.Equals(group, "sale", StringComparison.OrdinalIgnoreCase))
-                {
-                    if(authorized)
-                    {
-                        plantsQuery = plantsQuery.Where(p => p.Sale_Percent_Private > 0);
-                    }
-                    else
-                    {
-                        plantsQuery = plantsQuery.Where(p => p.Sale_Percent > 0);
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                plantsQuery = plantsQuery.Where(p => p.Name != null && p.Name.Contains(search));
-            }
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                plantsQuery = plantsQuery.Where(p => p.Category!.ToLower() == category.ToLower());
-            }
-
-            if (!string.IsNullOrEmpty(size))
-            {
-                if (string.Equals(size, "small", StringComparison.OrdinalIgnoreCase))
-                {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.S);
-                }
-                else if (string.Equals(size, "medium", StringComparison.OrdinalIgnoreCase))
-                {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.M);
-                }
-                else if (string.Equals(size, "large", StringComparison.OrdinalIgnoreCase))
-                {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
-                }
-            }
-
-            if(priceMin != null)
-            {
-                plantsQuery = plantsQuery.Where(p => p.Price >= priceMin);
-            }
-
-            if (priceMax != null)
-            {
-                plantsQuery = plantsQuery.Where(p => p.Price <= priceMax);
-            }
-
-            plantsQuery = plantsQuery.Skip((page - 1) * pageSize).Take(pageSize);
-
-            var getPlantDtos = await plantsQuery.ProjectTo<GetPlantDto>(mapper.ConfigurationProvider).ToListAsync();
+                Page = page,
+                PageSize = pageSize,
+                Authorized = authorized,
+                Key = key,
+                Category = category,
+                Size = size,
+                Group = group,
+                PriceMin = priceMin,
+                PriceMax = priceMax
+            });
 
             return Ok(new 
             { 
@@ -112,21 +67,18 @@ namespace greenshop_api.Controllers
         [HttpGet("total-number")]
         public async Task<IActionResult> GetTotalNumberOfPlants()
         {
-            var count = await this.db.Plants.CountAsync();
+            var count = await _mediator.Send(new GetTotalNumberOfPlantsQuery());
             return Ok(count);
         }
 
         [HttpGet("category-number")]
         [TypeFilter(typeof(Plant_ValidateGetPlantNumberActionFilter))]
-        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery]string[] categories)
+        public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery]List<string> categories)
         {
-            var categoryCounts = new Dictionary<string, int>();
-
-            foreach (var category in categories)
+            var categoryCounts = await _mediator.Send(new GetNumberOfPlantsByCategoriesQuery
             {
-                var count = await this.db.Plants.CountAsync(p => p.Category!.ToLower().Trim() == category.ToLower().Trim());
-                categoryCounts[category] = count;
-            }
+                Categories = categories
+            });
             return Ok(categoryCounts);
         }
 
@@ -150,8 +102,10 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetPlantById(string plantId)
         {
-            var plant = await this.db.Plants.FindAsync(plantId);
-            var getPlantDto = mapper.Map<GetPlantDto>(plant);
+            var getPlantDto = await _mediator.Send(new GetPlantByIdQuery
+            {
+                Id = plantId
+            });
 
             return Ok(getPlantDto);
         }

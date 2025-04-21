@@ -21,7 +21,7 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             try
             {
-                var token = _jwtService.Verify(jwt!);
+                var token = _jwtService.Verify(jwt);
                 var userId = token.Issuer.ToString();
                 var user = await _usersRepository.GetUserByIdAsync(userId);
             }
