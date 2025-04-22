@@ -44,7 +44,7 @@ namespace greenshop_api.Controllers
             [FromHeader(Name = "PriceMin")] double? priceMin = null,
             [FromHeader(Name = "PriceMax")] double? priceMax = null)
         {
-            var getPlantDtos = await _mediator.Send(new GetAllPlantsQuery
+            var getPlantsResponse = await _mediator.Send(new GetAllPlantsQuery
             {
                 Page = page,
                 PageSize = pageSize,
@@ -57,11 +57,7 @@ namespace greenshop_api.Controllers
                 PriceMax = priceMax
             });
 
-            return Ok(new 
-            { 
-                Plants = getPlantDtos,
-                TotalNumber = getPlantDtos.Count
-            });
+            return Ok(getPlantsResponse);
         }
 
         [HttpGet("total-number")]

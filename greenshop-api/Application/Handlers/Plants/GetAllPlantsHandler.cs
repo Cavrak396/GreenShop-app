@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using greenshop_api.Application.Models;
 using greenshop_api.Application.Queries.Plants;
 using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Dtos.Plants;
@@ -11,12 +12,12 @@ namespace greenshop_api.Application.Handlers.Plants
 {
     public class GetAllPlantsHandler(
         IPlantsRepository plantsRepository,
-        IMapper mapper) : IRequestHandler<GetAllPlantsQuery, List<GetPlantDto>>
+        IMapper mapper) : IRequestHandler<GetAllPlantsQuery, GetPlantsResponse>
     {
         private readonly IPlantsRepository _plantsRepository = plantsRepository;
         private readonly IMapper _mapper = mapper;  
 
-        public async Task<List<GetPlantDto>> Handle(GetAllPlantsQuery request, CancellationToken cancellationToken)
+        public async Task<GetPlantsResponse> Handle(GetAllPlantsQuery request, CancellationToken cancellationToken)
         {
             var plantsQuery = _plantsRepository.GetAllPlantsQueryable();
 
@@ -75,9 +76,19 @@ namespace greenshop_api.Application.Handlers.Plants
                 plantsQuery = plantsQuery.Where(p => p.Price <= request.PriceMax);
             }
 
+            var totalNumber = await plantsQuery.CountAsync(cancellationToken);
+
             plantsQuery = plantsQuery.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize);
 
-            return await plantsQuery.ProjectTo<GetPlantDto>(_mapper.ConfigurationProvider).ToListAsync();
+            var plants = await plantsQuery
+                .ProjectTo<GetPlantDto>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken: cancellationToken);
+
+            return new GetPlantsResponse
+            {
+                Plants = plants,
+                TotalNumber = totalNumber,
+            };
         }
     }
 }
