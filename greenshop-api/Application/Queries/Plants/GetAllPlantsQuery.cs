@@ -1,9 +1,9 @@
-﻿using greenshop_api.Dtos.Plants;
+﻿using greenshop_api.Application.Models;
 using MediatR;
 
 namespace greenshop_api.Application.Queries.Plants
 {
-    public class GetAllPlantsQuery : IRequest<List<GetPlantDto>>
+    public class GetAllPlantsQuery : IRequest<GetPlantsResponse>
     {
         public int Page { get; set; }
         public int PageSize { get; set; }

@@ -9,12 +9,10 @@ using Microsoft.EntityFrameworkCore;
 namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 {
     public class User_ValidateJwtTokenActionFilter(
-        ApplicationDbContext dbContext,
         IUsersRepository usersRepository, 
         IActionErrorCreator actionErrorCreator, 
         IJwtService jwtService) : IAsyncActionFilter
     {
-        ApplicationDbContext _dbContext = dbContext;
         private readonly IUsersRepository _usersRepository = usersRepository;
         private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
         private readonly IJwtService _jwtService = jwtService;
@@ -25,9 +23,9 @@ namespace greenshop_api.Filters.ActionFilters.User_ActionFilters
 
             try
             {
-                var token = _jwtService.Verify(jwt);
+                var token = _jwtService.Verify(jwt!);
                 var userId = token.Issuer.ToString();
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+                var user = await _usersRepository.GetUserByIdAsync(userId);
             }
             catch (Exception)
             {
