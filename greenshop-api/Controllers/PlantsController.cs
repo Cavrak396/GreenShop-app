@@ -1,35 +1,24 @@
-﻿using AutoMapper;
+﻿using greenshop_api.Application.Commands.Plants;
 using greenshop_api.Application.Models;
 using greenshop_api.Application.Queries.Plants;
+using greenshop_api.Application.Queries.Subscribers;
 using greenshop_api.Domain.Interfaces.Service;
-using greenshop_api.Domain.Models;
 using greenshop_api.Dtos.Plants;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
-using greenshop_api.Infrastructure.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using static greenshop_api.Domain.Models.Plant;
 
 namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class PlantsController : ControllerBase
+    public class PlantsController(
+        INewsletterService newsletterService, 
+        IMediator mediator) : ControllerBase
     {
-        private readonly ApplicationDbContext db;
-        private readonly INewsletterService newsletterService;
-        private readonly IMapper mapper;
-        private readonly IMediator _mediator;
-
-        public PlantsController(ApplicationDbContext db, INewsletterService newsletterService, IMapper mapper, IMediator mediator)
-        {
-            this.db = db;
-            this.newsletterService = newsletterService;
-            this.mapper = mapper;
-            _mediator = mediator;
-        }
+        private readonly INewsletterService _newsletterService = newsletterService;
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet]
         [TypeFilter(typeof(Plant_ValidateGetHeadersActionFilter))]
@@ -81,15 +70,7 @@ namespace greenshop_api.Controllers
         [HttpGet("size-number")]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsBySize()
         {
-            var sizeCounts = new Dictionary<string, int>();
-
-            var smallCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.S);
-            var mediumCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.M);
-            var largeCount = await this.db.Plants.CountAsync(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
-
-            sizeCounts["Small"] = smallCount;
-            sizeCounts["Medium"] = mediumCount;
-            sizeCounts["Large"] = largeCount;
+            var sizeCounts = await _mediator.Send(new GetNumberOfPlantsBySizesQuery());
 
             return Ok(sizeCounts);
         }
@@ -108,64 +89,33 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/related")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> GetRelatedProducts([FromRoute]string plantId, [FromQuery]int relatedProductsSize = 5)
+        public async Task<IActionResult> GetRelatedPlants([FromRoute]string plantId, [FromQuery]int relatedPlantsCount = 5)
         {
-            var plant = await this.db.Plants.FindAsync(plantId);
-
-            if (string.IsNullOrEmpty(plant!.Tags))
+            var relatedPlants = await _mediator.Send(new GetRelatedPlantsQuery
             {
-                var categoryRelatedProducts = await this.db.Plants
-                    .Where(p => p.PlantId != plantId && p.Category == plant.Category)
-                    .Take(5)
-                    .ToListAsync();
+                Id = plantId,
+                Count = relatedPlantsCount
+            });
 
-                return Ok(categoryRelatedProducts);
-            }
-
-            var tags = plant.Tags.
-                Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).
-                ToHashSet();
-
-            var otherPlants = await this.db.Plants
-                .Where(p => p.PlantId != plantId)
-                .ToListAsync();
-
-            var tagsRelatedProducts = otherPlants
-                .Where(p => p.Tags != null &&
-                             p.Tags.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                   .Any(tag => tags.Contains(tag)))
-                .Select(p => new
-                {
-                    Plant = p,
-                    RelativityScore = p.Tags?.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                            .Count(tag => tags.Contains(tag))
-                })
-                .OrderByDescending(p => p.RelativityScore)
-                .Take(relatedProductsSize)
-                .Select(p => p.Plant)
-                .ToList();
-
-            var tagsRelatedProductDtos = mapper.Map<List<GetPlantDto>>(tagsRelatedProducts);
-
-            return Ok(tagsRelatedProductDtos);
+            return Ok(relatedPlants);
         }
 
         [HttpPost]
         [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
         public async Task<IActionResult> CreatePlant([FromBody]PostPlantDto plant)
         {
-            var plantToCreate = mapper.Map<Plant>(plant);
+            var plantToCreate = await _mediator.Send(new AddPlantCommand
+            {
+                Plant = plant
+            });
 
-            this.db.Plants.Add(plantToCreate);
-            await this.db.SaveChangesAsync();
-
-            var subscribers = await this.db.Subscribers.ToListAsync();
+            var subscribers = await _mediator.Send(new GetAllSubscribersQuery());
 
             if (subscribers.Count != 0) 
             {
                 foreach (var subscriber in subscribers)
                 {
-                    await this.newsletterService.SendNewsletterAsync(
+                    await _newsletterService.SendNewsletterAsync(
                         "newPlant",
                         new NewsletterHeader
                         {
@@ -181,28 +131,15 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
+        [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
         public async Task <IActionResult> UpdatePlant([FromRoute]string plantId, [FromBody]PostPlantDto plant)
         {
-            var plantToUpdate = await this.db.Plants.FindAsync(plantId);
-
-            plantToUpdate!.Name = plant.Name;
-            plantToUpdate.Short_Description = plant.Short_Description;
-            plantToUpdate.Long_Description = plant.Long_Description;
-            plantToUpdate.Size = plant.Size;
-            plantToUpdate.Category = plant.Category;
-            plantToUpdate.Price = plant.Price;
-            plantToUpdate.Image = plant.Image;
-            plantToUpdate.Acquisition_Date = plant.Acquisition_Date;
-            plantToUpdate.Tags = plant.Tags;
-            plantToUpdate.Sale_Percent = plant.Sale_Percent;
-            plantToUpdate.Sale_Percent_Private = plant.Sale_Percent_Private;
-            plantToUpdate.LivingRoom_Description = plant.LivingRoom_Description;
-            plantToUpdate.DiningRoom_Description = plant.DiningRoom_Description;
-            plantToUpdate.Office_Description = plant.Office_Description;
-
-            await this.db.SaveChangesAsync();
+            await _mediator.Send(new UpdatePlantCommand
+            {
+                Id = plantId,
+                Plant = plant
+            });
 
             return NoContent();
         }
@@ -211,22 +148,10 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task <IActionResult> DeletePlant([FromRoute]string plantId)
         {
-            var plantToDelete = await this.db.Plants.FindAsync(plantId);
-
-            this.db.Plants.Remove(plantToDelete!);
-            await this.db.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [TypeFilter(typeof(Plant_ValidateDeletePlantsActionFilter))]
-        public async Task<IActionResult> DeleteAllPlants()
-        {
-            var allPlants = this.db.Plants.ToList();
-
-            this.db.Plants.RemoveRange(allPlants);
-            await this.db.SaveChangesAsync();
+            await _mediator.Send(new DeletePlantCommand
+            {
+                Id = plantId
+            });
 
             return NoContent();
         }

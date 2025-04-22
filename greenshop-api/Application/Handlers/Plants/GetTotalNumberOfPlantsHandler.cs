@@ -10,7 +10,7 @@ namespace greenshop_api.Application.Handlers.Plants
 
         public Task<int> Handle(GetTotalNumberOfPlantsQuery request, CancellationToken cancellationToken)
         {
-            return _plantsRepository.GetTotalNumberOfPlants();
+            return _plantsRepository.GetTotalNumberOfPlantsAsync();
         }
     }
 }

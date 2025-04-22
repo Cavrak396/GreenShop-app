@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
-    public class Plant_ValidateCreatePlantActionFilter(
-        IPlantsRepository plantsRepository, 
+    public class Plant_ValidateUpdatePlantActionFilter(
+        IPlantsRepository plantsRepository,
         IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
         private readonly IPlantsRepository _plantsRepository = plantsRepository;
@@ -15,11 +15,12 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var plantId = context.ActionArguments["plantId"] as string;
             var plant = context.ActionArguments["plant"] as PostPlantDto;
 
             var existingPlant = await _plantsRepository.GetPlantByNameAndSizeAsync(plant!.Name!, plant.Size);
 
-            if (existingPlant != null)
+            if (existingPlant != null && existingPlant.PlantId != plantId)
             {
                 _actionErrorCreator.CreateActionError(
                     context,
