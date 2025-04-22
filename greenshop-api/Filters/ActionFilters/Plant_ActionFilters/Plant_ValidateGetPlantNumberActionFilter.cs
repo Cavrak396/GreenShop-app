@@ -10,9 +10,9 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var categories = context.ActionArguments["categories"] as string[];
+            var categories = context.ActionArguments["categories"] as List<string>;
 
-            if(categories?.Length == 0)
+            if(categories?.Count == 0)
             {
                 _actionErrorCreator.CreateActionError(
                     context,

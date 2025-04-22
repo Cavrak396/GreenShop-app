@@ -14,7 +14,7 @@ namespace greenshop_api.Application.Handlers.Plants
 
             foreach (var category in request.Categories!)
             {
-                var count = await _plantsRepository.GetNumberOfPlantsByCategory(category);
+                var count = await _plantsRepository.GetNumberOfPlantsByCategoryAsync(category);
                 categoryCounts[category.Trim()] = count;
             }
             return categoryCounts;
