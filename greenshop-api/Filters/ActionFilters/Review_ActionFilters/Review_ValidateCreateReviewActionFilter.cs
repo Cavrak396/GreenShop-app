@@ -1,18 +1,18 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
+using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Dtos.Reviews;
-using greenshop_api.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
 {
-    public class Review_ValidateReviewConflictActionFilter(
-        ApplicationDbContext dbContext,
+    public class Review_ValidateCreateReviewActionFilter(
+        IReviewsRepository reviewsRepository,
         IActionErrorCreator actionErrorCreator,
         IJwtService jwtService) : IAsyncActionFilter
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IReviewsRepository _reviewsRepository = reviewsRepository;
         private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
         private readonly IJwtService _jwtService = jwtService;
 
@@ -24,7 +24,7 @@ namespace greenshop_api.Filters.ActionFilters.Review_ActionFilters
             var token = _jwtService.Verify(jwt!);
             var userId = token.Issuer.ToString();
 
-            var existingReview = await _dbContext.Reviews.FindAsync(userId, review!.PlantId);
+            var existingReview = await _reviewsRepository.GetReviewByIdsAsync(userId, review!.PlantId!);
             if(existingReview != null)
             {
                 _actionErrorCreator.CreateActionError(
