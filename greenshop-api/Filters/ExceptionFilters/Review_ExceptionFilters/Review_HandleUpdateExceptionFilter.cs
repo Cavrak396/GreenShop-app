@@ -1,17 +1,17 @@
 ﻿using greenshop_api.Domain.Interfaces.Creators;
 using greenshop_api.Domain.Interfaces.Jwt;
-using greenshop_api.Infrastructure.Persistance;
+using greenshop_api.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters
 {
     public class Review_HandleUpdateExceptionFilter(
-        ApplicationDbContext dbContext, 
+        IReviewsRepository reviewsRepository, 
         IExceptionCreator exceptionCreator, 
         IJwtService jwtService) : IAsyncExceptionFilter
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly IReviewsRepository _reviewsRepository = reviewsRepository;
         private readonly IExceptionCreator _exceptionCreator = exceptionCreator;
         private readonly IJwtService _jwtService = jwtService;
 
@@ -23,7 +23,7 @@ namespace greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters
 
             var plantId = context.RouteData.Values["plantId"] as string;
 
-            if (await _dbContext.Reviews.FindAsync(userId, plantId) == null)
+            if (await _reviewsRepository.GetReviewByIdsAsync(userId, plantId!) == null)
             {
                 _exceptionCreator.CreateException(
                      context,
