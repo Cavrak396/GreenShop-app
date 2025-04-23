@@ -13,7 +13,7 @@ namespace greenshop_api.Domain.Validations
                 return new ValidationResult("Value for Email must be provided.");
             }
 
-            string emailValue = value.ToString();
+            string emailValue = value.ToString()!;
 
             try
             {
@@ -24,7 +24,7 @@ namespace greenshop_api.Domain.Validations
             {
                 return new ValidationResult("Email validation timed out.");
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return new ValidationResult("Email format is invalid.");
             }

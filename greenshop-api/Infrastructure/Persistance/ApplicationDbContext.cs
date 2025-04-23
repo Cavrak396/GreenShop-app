@@ -1,20 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using greenshop_api.Domain.Models;
+using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Infrastructure.Persistance
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     {
-        public DbSet<Plant> Plants { get; set; }
-        public DbSet<Subscriber> Subscribers { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Plant>? Plants { get; set; }
+        public DbSet<Subscriber>? Subscribers { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<Review>? Reviews { get; set; }
+        public DbSet<Cart>? Carts { get; set; }
+        public DbSet<CartItem>? CartItems { get; set; }
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -88,7 +86,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "soil and sunny locations, but can tolerate partial shade, making it a " +
                     "versatile option for both garden beds and pots. Indoors, it can be grown " +
                     "as a houseplant under bright, indirect light.",
-                    Size = Plant.SizeValue.M,
+                    Size = Size.M,
                     Category = "Potter Plants",
                     Price = 119.00,
                     Image = "barbertonDaisy.png",
@@ -121,7 +119,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "the year, providing continuous color and interest. The Angel Wing begonia is also known for its ability to " +
                     "improve indoor air quality, making it a beneficial addition to homes and offices alike. Its unique foliage " +
                     "and striking flowers make it a favorite among plant enthusiasts and decorators.",
-                    Size = Plant.SizeValue.L,
+                    Size = Size.L,
                     Category = "Potter Plants",
                     Price = 169.00,
                     Image = "angelWingBegonia.png",
@@ -158,7 +156,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "environments, making them a popular choice for both beginners and experienced gardeners. " +
                     "Additionally, they can be propagated easily through leaf cuttings, allowing enthusiasts to share " +
                     "their beauty with friends and family.",
-                    Size = Plant.SizeValue.M,
+                    Size = Size.M,
                     Category = "House Plants",
                     Price = 179.00,
                     Image = "africanViolet.png",
@@ -193,7 +191,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "gardens or as a border plant, where it can create a stunning display against the backdrop of " +
                     "the ocean. Additionally, its low maintenance requirements make it an excellent choice for " +
                     "gardeners looking to add tropical flair to their outdoor spaces.",
-                    Size = Plant.SizeValue.L,
+                    Size = Size.L,
                     Category = "Gardening",
                     Price = 129.00,
                     Image = "beachSpiderLilly.png",
@@ -218,7 +216,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "for both novice and experienced gardeners. It absorbs water through its central \"tank,\" where" +
                     " moisture and nutrients can collect. With its compact size and low maintenance needs, this plant " +
                     "brings a splash of tropical color to living spaces, offices, or even outdoor patios.",
-                    Size = Plant.SizeValue.XL,
+                    Size = Size.XL,
                     Category = "House Plants",
                     Price = 139.00,
                     Image = "blushingBromeliad.png",
@@ -252,7 +250,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "or small indoor spaces. The plant's vibrant foliage adds a unique texture and visual interest " +
                     "to any room. Easy to care for, the aluminum plant is a great option for both beginners and " +
                     "experienced plant lovers.",
-                    Size = Plant.SizeValue.M,
+                    Size = Size.M,
                     Category = "Potter Plants",
                     Price = 179.00,
                     Image = "aluminumPlant.png",
@@ -285,7 +283,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "regular misting or a humidity tray to maintain moisture and prefers well-draining soil to " +
                     "avoid root rot. Its bold, architectural shape makes it a stunning centerpiece or accent in " +
                     "both homes and offices.",
-                    Size = Plant.SizeValue.S,
+                    Size = Size.S,
                     Category = "House Plants",
                     Price = 99.00,
                     Image = "birdsNestFern.png",
@@ -321,7 +319,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "appeal but also offers shelter for birds and other wildlife. Easy to maintain, " +
                     "this palm requires minimal care and can withstand drought once established, making " +
                     "it an excellent addition to low-maintenance gardens.",
-                    Size = Plant.SizeValue.S,
+                    Size = Size.S,
                     Category = "Gardening",
                     Price = 59.00,
                     Image = "broadleafLadyPalm.png",
@@ -348,7 +346,7 @@ namespace greenshop_api.Infrastructure.Persistance
                     "environment in which it grows. Given its hardiness and easy care, the Chinese " +
                     "evergreen is a favorite among gardeners looking to add life and color to shaded " +
                     "or low-light areas.",
-                    Size = Plant.SizeValue.S,
+                    Size = Size.S,
                     Category = "Gardening",
                     Price = 39.00,
                     Image = "chineseEvergreen.png",
