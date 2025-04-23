@@ -1,17 +1,11 @@
 ﻿using greenshop_api.Domain.Validations;
 using System.ComponentModel.DataAnnotations;
+using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Domain.Models
 {
     public class Plant
     {
-        public enum SizeValue
-        {
-            S,
-            M,
-            L,
-            XL
-        }
 
         [Key]
         public string? PlantId { get; set; }
@@ -22,7 +16,7 @@ namespace greenshop_api.Domain.Models
         [Required]
         public string? Long_Description { get; set; }
         [Required]
-        public SizeValue Size { get; set; }
+        public Size Size { get; set; }
         [Required]
         public string? Category { get; set; }
         [Required]

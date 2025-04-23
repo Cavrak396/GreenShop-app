@@ -7,12 +7,12 @@ namespace greenshop_api.Domain.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+            if (value == null || string.IsNullOrWhiteSpace(value!.ToString()))
             {
                 return new ValidationResult("Value for Password must be provided.");
             }
 
-            string passwordValue = value.ToString();
+            string passwordValue = value!.ToString()!;
 
             if (passwordValue.Length < 8 || passwordValue.Length > 20
                 || !Regex.IsMatch(passwordValue, "[A-Z]")

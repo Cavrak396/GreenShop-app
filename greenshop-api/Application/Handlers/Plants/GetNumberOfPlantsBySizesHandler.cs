@@ -1,7 +1,7 @@
 ﻿using greenshop_api.Application.Queries.Plants;
 using greenshop_api.Domain.Interfaces.Repositories;
 using MediatR;
-using static greenshop_api.Domain.Models.Plant;
+using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Application.Handlers.Plants
 {
@@ -13,10 +13,10 @@ namespace greenshop_api.Application.Handlers.Plants
         {
             var sizeCounts = new Dictionary<string, int>();
 
-            var smallCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(SizeValue.S);
-            var mediumCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(SizeValue.M);
-            var largeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(SizeValue.L);
-            var extraLargeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(SizeValue.XL);
+            var smallCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.S);
+            var mediumCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.M);
+            var largeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.L);
+            var extraLargeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.XL);
 
             sizeCounts["Small"] = smallCount;
             sizeCounts["Medium"] = mediumCount;

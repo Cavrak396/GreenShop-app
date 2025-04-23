@@ -6,11 +6,10 @@ namespace greenshop_api.Domain.Validations
     {
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            if (value == null)
+            if(value == null)
             {
                 return new ValidationResult("Value for Date must be provided.");
             }
-
             var dateValue = value as DateTime? ?? new DateTime();
 
             if (dateValue.Date > DateTime.Now.Date)

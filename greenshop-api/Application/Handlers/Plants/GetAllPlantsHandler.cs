@@ -6,7 +6,7 @@ using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Dtos.Plants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static greenshop_api.Domain.Models.Plant;
+using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Application.Handlers.Plants
 {
@@ -54,15 +54,15 @@ namespace greenshop_api.Application.Handlers.Plants
             {
                 if (string.Equals(request.Size, "small", StringComparison.OrdinalIgnoreCase))
                 {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.S);
+                    plantsQuery = plantsQuery.Where(p => p.Size == Size.S);
                 }
                 else if (string.Equals(request.Size, "medium", StringComparison.OrdinalIgnoreCase))
                 {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.M);
+                    plantsQuery = plantsQuery.Where(p => p.Size == Size.M);
                 }
                 else if (string.Equals(request.Size, "large", StringComparison.OrdinalIgnoreCase))
                 {
-                    plantsQuery = plantsQuery.Where(p => p.Size == SizeValue.L || p.Size == SizeValue.XL);
+                    plantsQuery = plantsQuery.Where(p => p.Size == Size.L || p.Size == Size.XL);
                 }
             }
 

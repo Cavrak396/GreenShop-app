@@ -2,7 +2,7 @@
 using greenshop_api.Domain.Models;
 using greenshop_api.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
-using static greenshop_api.Domain.Models.Plant;
+using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Infrastructure.Repositories
 {
@@ -26,7 +26,7 @@ namespace greenshop_api.Infrastructure.Repositories
             return await _dbContext.Plants.FindAsync(id);
         }
 
-        public async Task<Plant?> GetPlantByNameAndSizeAsync(string name, SizeValue size)
+        public async Task<Plant?> GetPlantByNameAndSizeAsync(string name, Size size)
         {
             return await _dbContext.Plants
                 .FirstOrDefaultAsync(p => p.Name!.ToLower().Trim() == name.ToLower().Trim() 
@@ -51,7 +51,7 @@ namespace greenshop_api.Infrastructure.Repositories
                 .CountAsync(p => p.Category!.ToLower().Trim() == category.ToLower().Trim());
         }
 
-        public async Task<int> GetNumberOfPlantsBySizeAsync(SizeValue size)
+        public async Task<int> GetNumberOfPlantsBySizeAsync(Size size)
         {
             return await _dbContext.Plants
                 .CountAsync(p => p.Size == size);

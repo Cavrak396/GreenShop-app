@@ -45,7 +45,8 @@ namespace greenshop_api.Application.Handlers.Carts
                               request.CartItems!.Count == cart.CartItems!.Count &&
                               request.CartItems!
                                 .All(ci => cart.CartItems
-                                .Any(c => c.PlantId == ci.PlantId && c.Quantity == ci.Quantity));
+                                .Any(c => c.PlantId == ci.PlantId 
+                                && c.Quantity == ci.Quantity));
 
             if (cartsMatch)
             {
@@ -66,8 +67,11 @@ namespace greenshop_api.Application.Handlers.Carts
 
             foreach (var cartItem in cartItemsToAdd)
             {
-                var plantPrice = (double)(plants!.GetValueOrDefault(cartItem.PlantId)!.Price)!;
-                var existingItem = cart.CartItems!.FirstOrDefault(ci => ci.PlantId == cartItem.PlantId);
+                var plantPrice = (double)(plants!
+                    .GetValueOrDefault(cartItem.PlantId)!.Price)!;
+                var existingItem = cart.CartItems!
+                    .FirstOrDefault(ci => ci.PlantId == cartItem.PlantId);
+
                 if (existingItem != null)
                 {
                     cartPrice -= plantPrice * existingItem.Quantity;
@@ -80,7 +84,8 @@ namespace greenshop_api.Application.Handlers.Carts
                 cartPrice += plantPrice * cartItem.Quantity;
             }
 
-            var result = await _cartsRepository.UpdateCartPriceAsync(cart, cartPrice);
+            var result = await _cartsRepository
+                .UpdateCartPriceAsync(cart, cartPrice);
 
             return _mapper.Map<CartDto>(result);
         }

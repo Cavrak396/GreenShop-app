@@ -7,11 +7,11 @@ namespace greenshop_api.Domain.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+            if (value == null || string.IsNullOrWhiteSpace(value!.ToString()))
             {
                 return new ValidationResult("Value for Username must be provided.");
             }
-            string usernameValue = value.ToString();
+            string usernameValue = value!.ToString()!;
 
             if (usernameValue.Length < 5 || usernameValue.Length > 20
                 || !Regex.IsMatch(usernameValue, @"^[a-zA-Z0-9][a-zA-Z0-9_-]*$"))
