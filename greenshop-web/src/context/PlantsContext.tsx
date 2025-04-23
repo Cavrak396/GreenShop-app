@@ -24,7 +24,8 @@ const PlantsContext = createContext<PlantsContextType | undefined>(undefined);
 export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   const [sortedData, setSortedData] = useState<ProductType[]>([]);
   const [data, setData] = useState<ProductType[]>([]);
-  const [searchedData, setSearchedData] = useState("");
+  const [dataPlantsTotal, setDataPlantsTotal] = useState<number>(0);
+  const [searchedData, setSearchedData] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoryCount>({});
@@ -49,6 +50,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       const data = await fetchPlants(params);
       setSortedData(data.plants);
       setData(data);
+      setDataPlantsTotal(data.totalNumber);
       console.log(data);
     } catch (error) {
       setError("Failed to fetch plants. Please try again later.");
@@ -118,6 +120,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
         sortedData,
         setSortedData,
         data,
+        dataPlantsTotal,
         loading,
         error,
         filters,

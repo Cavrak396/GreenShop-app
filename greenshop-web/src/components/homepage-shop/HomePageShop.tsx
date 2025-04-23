@@ -7,7 +7,7 @@ import { usePagination } from "../../context/PaginationContext";
 import "./homepageshop.css";
 
 function HomePageShop() {
-  const { loadPlants, plantsTotal } = usePlants();
+  const { loadPlants, data, filters, dataPlantsTotal } = usePlants();
   const [itemsPerPage] = useState(9);
   const { currentShopPage, setCurrentShopPage } = usePagination();
 
@@ -18,16 +18,25 @@ function HomePageShop() {
           <HomePageToolbox />
           <HomePageShopContent />
         </div>
-        {plantsTotal > 9}
-        {
+        {data && dataPlantsTotal > itemsPerPage && (
           <Pagination
             activePage={currentShopPage}
             setActivePage={setCurrentShopPage}
-            totalItems={plantsTotal}
+            totalItems={dataPlantsTotal}
             itemsPerPage={itemsPerPage}
-            loadItems={loadPlants}
+            loadItems={(params) =>
+              loadPlants({
+                ...params,
+                searchValue: "",
+                categoryValue: filters.category,
+                sizeType: filters.size,
+                group: filters.group,
+                priceMin: filters.priceMin,
+                priceMax: filters.priceMax,
+              })
+            }
           />
-        }
+        )}
       </div>
     </div>
   );

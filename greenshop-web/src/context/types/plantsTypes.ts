@@ -19,6 +19,7 @@ export interface PlantsContextType {
   setSearchedData: React.Dispatch<React.SetStateAction<string>>;
   categoriesData: CategoryCount;
   plantsNumberBySize: CategoryCount;
+  dataPlantsTotal: number;
   plantsTotal: number;
   data: ProductType[];
   loading: boolean;

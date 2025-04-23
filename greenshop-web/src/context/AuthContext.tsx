@@ -74,6 +74,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     try {
       setLoading(true);
       const response = await loginUser(dto);
+      console.log(response);
       if (response.jwt) {
         setToken(response.jwt);
         localStorage.setItem("token", response.jwt);

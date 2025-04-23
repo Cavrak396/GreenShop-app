@@ -106,12 +106,3 @@ export interface PlantsParams {
   page: number;
   pageSize: number;
 }
-
-export interface PlantsContextType {
-  sortedData: ProductType[];
-  setSortedData: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  data: ProductType[];
-  loading: boolean;
-  error: string | null;
-  loadPlants: (params: PlantsParams) => void;
-}
