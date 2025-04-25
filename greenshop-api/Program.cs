@@ -13,7 +13,6 @@ using greenshop_api.Infrastructure.Repositories;
 using greenshop_api.Infrastructure.Services;
 using greenshop_api.Infrastructure.Services.Newsletter;
 using MediatR;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -35,6 +34,8 @@ builder.Services.AddCors(options =>
     {
         options.AddPolicy("DefaultPolicy", policy =>
             policy.WithOrigins(
+                "https://localhost:5173",
+                "https://localhost:3000",
                 "http://localhost:5173", 
                 "http://localhost:3000",
                 "http://127.0.0.1:5173",
@@ -46,6 +47,8 @@ builder.Services.AddCors(options =>
         );
         options.AddPolicy("WithCredentialsPolicy", policy =>
            policy.WithOrigins(
+               "https://localhost:5173",
+               "https://localhost:3000",
                "http://localhost:5173",
                "http://localhost:3000",
                "http://127.0.0.1:5173",
