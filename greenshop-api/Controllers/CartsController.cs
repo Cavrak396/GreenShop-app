@@ -8,6 +8,7 @@ using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace greenshop_api.Controllers
 {
@@ -22,6 +23,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("TokenBucketIpAddressLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidatePlantIdsActionFilter))]
         public async Task<IActionResult> SyncCart([FromBody]List<CartItemDto> cartItems)
@@ -36,6 +38,7 @@ namespace greenshop_api.Controllers
 
         [HttpPut]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("TokenBucketIpAddressLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidateRemoveCartItemsActionFilter))]
 

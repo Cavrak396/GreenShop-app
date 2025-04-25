@@ -8,6 +8,7 @@ using greenshop_api.Filters.ExceptionFilters.Review_ExceptionFilters;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace greenshop_api.Controllers
 {
@@ -18,6 +19,7 @@ namespace greenshop_api.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpGet("{plantId}")]
+        [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Review_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviews(
@@ -37,6 +39,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/user")]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviewByUser([FromRoute]string plantId)
@@ -55,6 +58,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpGet("{plantId}/total-number")]
+        [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant([FromRoute]string plantId)
         {
@@ -67,6 +71,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateCreateReviewActionFilter))]
         public async Task<IActionResult> CreateReview([FromBody]PostReviewDto review)
@@ -81,6 +86,7 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
@@ -99,6 +105,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
+        [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
