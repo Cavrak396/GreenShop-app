@@ -106,6 +106,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHsts();
+}
 
 app.UseRouting();
 
@@ -120,9 +124,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-//primary constructors
-//underscore interfaces
-//remove warnings
-//remove usings
-//beautify code
