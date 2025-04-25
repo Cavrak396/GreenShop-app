@@ -57,7 +57,9 @@ namespace greenshop_api.Controllers
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
             });
 
             return Ok(new
