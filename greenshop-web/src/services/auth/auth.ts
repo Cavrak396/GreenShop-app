@@ -8,7 +8,7 @@ import {
     User,
 } from './authTypes';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://localhost:7178';
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -49,7 +49,7 @@ export const registerUser = async (dto: RegisterDTO): Promise<AuthResponse | Api
 
 export const logoutUser = async () => {
     try {
-        const response = await axiosInstance.post('/users/logout', null);
+        const response = await axiosInstance.post('/users/logout', null, { withCredentials: false });
         return response.data;
     } catch (error) {
         return handleApiError(error);

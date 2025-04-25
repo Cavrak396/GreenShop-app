@@ -2,7 +2,7 @@ import { PlantsParams } from "./plantsTypes";
 import axios from "axios";
 import { ProductType } from "../../components/homepage-shop/types/shopTypes";
 
-const BASE_URL = "http://localhost:8080/Plants";
+const BASE_URL = "https://localhost:7178/Plants";
 
 export const fetchPlants = async ({
     searchValue,
