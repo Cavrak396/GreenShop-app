@@ -36,6 +36,8 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                 "https://localhost:5173",
                 "https://localhost:3000",
+                "https://127.0.0.1:5173",
+                "https://127.0.0.1:3000",
                 "http://localhost:5173", 
                 "http://localhost:3000",
                 "http://127.0.0.1:5173",
@@ -49,6 +51,8 @@ builder.Services.AddCors(options =>
            policy.WithOrigins(
                "https://localhost:5173",
                "https://localhost:3000",
+               "https://127.0.0.1:5173",
+               "https://127.0.0.1:3000",
                "http://localhost:5173",
                "http://localhost:3000",
                "http://127.0.0.1:5173",
@@ -80,10 +84,11 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
             factory: _ => new SlidingWindowRateLimiterOptions
             {
-                PermitLimit = 10,
+                PermitLimit = 60,
                 Window = TimeSpan.FromMinutes(1),
                 SegmentsPerWindow = 6,
-                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 10
             }
         )
     );
@@ -93,11 +98,11 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
             factory: _ => new SlidingWindowRateLimiterOptions
             {
-                PermitLimit = 5,
+                PermitLimit = 30,
                 Window = TimeSpan.FromMinutes(1),
                 SegmentsPerWindow = 3,
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 1
+                QueueLimit = 5
             }
         )
     );
@@ -107,11 +112,11 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
             factory: _ => new TokenBucketRateLimiterOptions
             {
-                TokenLimit = 10,
+                TokenLimit = 20,
                 TokensPerPeriod = 1,
                 ReplenishmentPeriod = TimeSpan.FromSeconds(5),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 1
+                QueueLimit = 2
             }
         )
     );
@@ -121,7 +126,7 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
             factory: _ => new TokenBucketRateLimiterOptions
             {
-                TokenLimit = 5,
+                TokenLimit = 10,
                 TokensPerPeriod = 1,
                 ReplenishmentPeriod = TimeSpan.FromSeconds(10),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
@@ -135,7 +140,7 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
             factory: _ => new ConcurrencyLimiterOptions
             {
-                PermitLimit = 3,
+                PermitLimit = 5,
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 10
             }
