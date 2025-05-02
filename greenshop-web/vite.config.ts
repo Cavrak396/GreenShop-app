@@ -14,8 +14,8 @@ export default defineConfig({
   ],
   server: {
     https: {
-      key: fs.readFileSync('../localhost-key.pem'),
-      cert: fs.readFileSync('../localhost-cert.pem'),
+      key: fs.readFileSync('C:/Users/Cavrak/Desktop/GreenShop-app/localhost-key.pem'),
+      cert: fs.readFileSync('C:/Users/Cavrak/Desktop/GreenShop-app/localhost-cert.pem'),
     },
   },
 });
