@@ -1,5 +1,6 @@
 import { DropdownItemType, SortOptions } from "../../../types/shopTypes";
 import { BarItemsTypes } from "../../../types/shopTypes";
+import Refresh from "../../../../../assets/images/shop/refresh.svg"
 
 export const dropdownItems: readonly DropdownItemType[] = [
     { id: 1, label: SortOptions.DEFAULT },
@@ -9,6 +10,7 @@ export const dropdownItems: readonly DropdownItemType[] = [
 ];
 
 export const barItems: BarItemsTypes[] = [
+    { id: 0, label: 'Reset', src: Refresh },
     { id: 1, label: "All Plants" },
     { id: 2, label: "New" },
     { id: 3, label: "Sale" },]

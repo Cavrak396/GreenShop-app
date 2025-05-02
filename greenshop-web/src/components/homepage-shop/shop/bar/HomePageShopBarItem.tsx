@@ -10,7 +10,15 @@ function HomePageShopBarItem({
       className={`homepageshop__bar-item ${isActive ? "active" : ""}`}
       onClick={() => onItemClick(item)}
     >
-      {item.label}
+      {item.src ? (
+        <img
+          src={item.src}
+          alt={item.label}
+          className="homepageshop__bar-icon"
+        />
+      ) : (
+        item.label
+      )}
     </li>
   );
 }
