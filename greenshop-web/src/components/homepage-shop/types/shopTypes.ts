@@ -26,6 +26,7 @@ export interface UserToolsType {
 export interface BarItemsTypes {
   id: number;
   label: string;
+  src?: string;
 }
 
 export interface HomePageShopBarProps {

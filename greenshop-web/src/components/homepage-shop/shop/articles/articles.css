@@ -17,6 +17,7 @@
 
 .homepageshop__bar-items {
   display: flex;
+  align-items: center;
   gap: 10px;
   font-weight: 600;
 }
@@ -24,6 +25,12 @@
 .homepageshop__bar-item,
 .homepageshop__sort-btn {
   cursor: pointer;
+}
+
+.homepageshop__bar-icon {
+  max-width: 20px;
+  max-height: 20px;
+  opacity: 0.8;
 }
 
 .homepageshop__sort-btn {
@@ -220,6 +227,11 @@
 
   .homepageshop__bar-item {
     font-size: 12px;
+  }
+
+  .homepageshop__bar-icon {
+    max-width: 15px;
+    max-height: 15px;
   }
 
   .homepageshop__sort-btn,

@@ -11,7 +11,18 @@ function HomePageShopBar() {
 
   function handleBarItemClick(item: BarItemsTypes) {
     const { id, label } = item;
-    setActiveItemId(id);
+    setActiveItemId(id === 0 ? 1 : id);
+
+    if (label === "Reset") {
+      setFilters({
+        category: null,
+        size: null,
+        group: "",
+        priceMin: null,
+        priceMax: null,
+      });
+      return;
+    }
 
     const groupValue = label === "All Plants" ? "" : label;
 
