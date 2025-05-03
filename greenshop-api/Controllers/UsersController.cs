@@ -50,6 +50,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("login")]
+        [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressRestrictLimiter")]
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
@@ -73,6 +74,7 @@ namespace greenshop_api.Controllers
         }
 
         [HttpPost("logout")]
+        [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
         public async Task<IActionResult> Logout()
         {
