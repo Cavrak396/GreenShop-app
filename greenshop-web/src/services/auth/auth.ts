@@ -28,7 +28,7 @@ const handleApiError = (error: any): ApiError => {
 export const loginUser = async (dto: LoginDTO): Promise<AuthResponse | ApiError> => {
     try {
         const response = await axiosInstance.post<AuthResponse>('/users/login', dto, {
-            withCredentials: false,
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
@@ -49,7 +49,9 @@ export const registerUser = async (dto: RegisterDTO): Promise<AuthResponse | Api
 
 export const logoutUser = async () => {
     try {
-        const response = await axiosInstance.post('/users/logout', null, { withCredentials: false });
+        const response = await axiosInstance.post('/users/logout', null, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return handleApiError(error);
