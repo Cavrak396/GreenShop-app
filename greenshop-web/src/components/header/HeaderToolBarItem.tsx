@@ -1,7 +1,7 @@
 import "./header.css";
 import Button from "../../reusable/button/Button";
 import { ToolbarItemProps } from "./types/headerTypes";
-import Portal from "../../reusable/Portal/Portal";
+import Portal from "../../reusable/portal/Portal";
 import Cart from "../cart/Cart";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";

@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { userBarItemType } from "./types/userBarTypes";
-import Portal from "../../reusable/Portal/Portal";
+import Portal from "../../reusable/portal/Portal";
 import Cart from "../cart/Cart";
 import UserAccount from "../user-account/UserAccount";
 import { useUser } from "../../context/AuthContext";

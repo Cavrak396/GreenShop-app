@@ -1,4 +1,4 @@
-import LazyImage from "../../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../../reusable/lazyImage/LazyImage";
 import { HomePageShopImageProps } from "../../types/shopTypes";
 
 function HomePageShopImage({ src, alt, onClick }: HomePageShopImageProps) {

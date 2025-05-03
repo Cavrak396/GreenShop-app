@@ -1,4 +1,4 @@
-import Portal from "../../reusable/Portal/Portal";
+import Portal from "../../reusable/portal/Portal";
 import UserAccount from "../user-account/UserAccount";
 import accountImage from "../../assets/images/account/user.png";
 import { useState } from "react";

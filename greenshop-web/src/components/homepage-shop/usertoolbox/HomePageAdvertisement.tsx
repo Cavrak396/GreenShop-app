@@ -1,5 +1,5 @@
 import advertisement from "../../../assets/images/toolbox/toolbox-advertisement.webp";
-import LazyImage from "../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../reusable/lazyImage/LazyImage";
 
 function HomePageAdvertisement() {
   return (

@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback } from "react";
 import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
 import AuthForm from "./AuthForm";
-import LoadingSpinner from "../../reusable/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../reusable/loadingSpinner/LoadingSpinner";
 import { authInstructions, emailRegex } from "./utils/authUtils";
 import "./authorization.css";
 import { toast } from "react-toastify";

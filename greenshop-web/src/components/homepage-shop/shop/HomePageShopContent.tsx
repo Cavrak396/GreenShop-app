@@ -2,7 +2,7 @@ import HomePageShopBar from "./bar/HomePageShopBar";
 import HomePageShopArticles from "./articles/HomePageShopArticles";
 import ErrorMessage from "../../../reusable/error/ErrorMessage";
 import { usePlants } from "../../../context/PlantsContext";
-import LoadingSpinner from "../../../reusable/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../reusable/loadingSpinner/LoadingSpinner";
 
 function HomePageShopContent() {
   const { sortedData, loading, error } = usePlants();
