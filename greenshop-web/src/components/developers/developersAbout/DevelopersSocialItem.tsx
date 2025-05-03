@@ -1,4 +1,4 @@
-import LazyImage from "../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../reusable/lazyImage/LazyImage";
 import { SocialTypes } from "../types/developersTypes";
 
 function DevelopersSocialItem({ social }: { social: SocialTypes }) {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DetailsProductReview from "./DetailsProductReview";
 import DetailsProductPanel from "./productPanel/DetailsProductPanel";
-import Portal from "../../reusable/Portal/Portal";
+import Portal from "../../reusable/portal/Portal";
 import DetailsProductInfo from "./productInfo/DetailsProductInfo";
 import ProductImage from "../../assets/images/banner/banner-image.webp";
 import "./details.css";

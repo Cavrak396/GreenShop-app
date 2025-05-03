@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useComments } from "../../../../../context/ReviewsContext";
 import emptyStar from "../../../../../assets/images/reusable/empty-star.svg";
 import fullStar from "../../../../../assets/images/reusable/star.svg";
-import LazyImage from "../../../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../../../reusable/lazyImage/LazyImage";
 import "../../../details.css";
 
 function DetailsCritiqueCommentsStars() {

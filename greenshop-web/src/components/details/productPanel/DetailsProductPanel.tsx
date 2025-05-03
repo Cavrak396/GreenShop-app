@@ -10,20 +10,30 @@ import { useProduct } from "../../../context/ProductContext";
 import { useRatings } from "../../../customHooks/useRating";
 import { useComments } from "../../../context/ReviewsContext";
 import { useParams } from "react-router-dom";
+import { useUser } from "../../../context/AuthContext";
 
 function DetailsProductPanel() {
   const product = useProduct();
-  const { comments, fetchComments, fetchUserComment } = useComments();
+  const {
+    comments,
+    fetchComments,
+    fetchUserComment,
+    currentCommentsPage,
+    currentPageSize,
+  } = useComments();
   const { id } = useParams();
-  const { currentCommentsPage, currentPageSize } = useComments();
+  const { user } = useUser();
   const { avgRating } = useRatings(comments);
 
   useEffect(() => {
     if (id) {
       fetchComments(id, currentCommentsPage, currentPageSize);
-      fetchUserComment(id);
+
+      if (user) {
+        fetchUserComment(id);
+      }
     }
-  }, [id, currentCommentsPage, currentPageSize]);
+  }, [id, currentCommentsPage, currentPageSize, user]);
 
   const calculatedSalePrice = useMemo(() => {
     return product.sale_Percent

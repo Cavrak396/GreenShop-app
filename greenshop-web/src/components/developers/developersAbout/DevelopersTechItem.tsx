@@ -1,4 +1,4 @@
-import LazyImage from "../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../reusable/lazyImage/LazyImage";
 import { TechnologyTypes } from "../types/developersTypes";
 
 function DevelopersTechItem({ technology }: { technology: TechnologyTypes }) {

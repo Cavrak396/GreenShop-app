@@ -1,4 +1,4 @@
-import LazyImage from "../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../reusable/lazyImage/LazyImage";
 import { DevelopersTypes } from "../types/developersTypes";
 
 function DevelopersImage({ developer }: { developer: DevelopersTypes }) {

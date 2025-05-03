@@ -1,7 +1,7 @@
 import Button from "../../reusable/button/Button";
 import login from "../../assets/images/header/login-icon.svg";
 import { useState } from "react";
-import Portal from "../../reusable/Portal/Portal";
+import Portal from "../../reusable/portal/Portal";
 import AuthContent from "../authorization/AuthContent";
 
 function LoginButton() {

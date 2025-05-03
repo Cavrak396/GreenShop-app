@@ -1,5 +1,5 @@
 import rateStar from "../../../../assets/images/reusable/star.svg";
-import LazyImage from "../../../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../../../reusable/lazyImage/LazyImage";
 import { useRatings } from "../../../../customHooks/useRating";
 import { useComments } from "../../../../context/ReviewsContext";
 

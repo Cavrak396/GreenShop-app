@@ -1,6 +1,6 @@
 import magnifier from "../../assets/images/reusable/magnifier.svg";
 import { ProductReviewType } from "./types/detailsTypes";
-import LazyImage from "../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../reusable/lazyImage/LazyImage";
 import ProductImage from "../../assets/images/banner/banner-image.webp";
 
 function DetailsProductReview({ setIsAppear }: ProductReviewType) {

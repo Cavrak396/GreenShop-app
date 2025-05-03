@@ -1,6 +1,6 @@
 import Title from "../../../reusable/titles/Title";
 import HomePagePriceRange from "./HomePagePriceRange";
-import CategoriesList from "../../../reusable/Categories/CategoriesList";
+import CategoriesList from "../../../reusable/categories/CategoriesList";
 import HomePageAdvertisement from "./HomePageAdvertisement";
 import { categories, categoriesSize } from "./utils/categories";
 import { usePlants } from "../../../context/PlantsContext";

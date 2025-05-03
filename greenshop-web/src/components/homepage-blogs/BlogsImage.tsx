@@ -1,4 +1,4 @@
-import LazyImage from "../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../reusable/lazyImage/LazyImage";
 import { BlogItemProps } from "./types/blogsTypes";
 
 function BlogsImage({ item }: BlogItemProps) {

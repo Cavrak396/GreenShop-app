@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import DetailsCritiqueCommentsList from "./productComments/DetailsCritiqueCommentsList";
 import DetailsCritiqueCommentsPersonal from "./productComments/DetailsCritiqueCommentsPersonal";
-import LoadingSpinner from "../../../reusable/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../reusable/loadingSpinner/LoadingSpinner";
 import DetailsCritiqueCommentsFeedback from "./productComments/productCommentsFeedback/DetailsCritiqueCommentsFeedback";
 import { useUser } from "../../../context/AuthContext";
 import { useComments } from "../../../context/ReviewsContext";
@@ -37,7 +37,7 @@ function DetailsCritiqueComments() {
             <DetailsCritiqueCommentsPersonal comment={userComment} />
           )}
           <DetailsCritiqueCommentsList comments={comments} />
-          {totalReviews != null && totalReviews > 1 && <ArrowPagination />}
+          {totalReviews != null && totalReviews > 10 && <ArrowPagination />}
         </>
       )}
     </div>

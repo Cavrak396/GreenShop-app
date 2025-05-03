@@ -1,4 +1,4 @@
-import LazyImage from "../../reusable/LazyImage/LazyImage";
+import LazyImage from "../../reusable/lazyImage/LazyImage";
 import { AboutItemImageProps } from "./types/aboutTypes";
 
 function AboutItemImage({ src, alt }: AboutItemImageProps) {
