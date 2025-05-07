@@ -20,13 +20,26 @@ function UserBarItem({
   const { token } = useUser();
 
   function handleNavigation() {
-    handleNavigationLogic({
-      item,
-      setActiveId,
-      setActivePortal,
-      token,
-      navigate,
-    });
+    if (activePortal) {
+      setActivePortal(null);
+      setTimeout(() => {
+        handleNavigationLogic({
+          item,
+          setActiveId,
+          setActivePortal,
+          token,
+          navigate,
+        });
+      }, 0);
+    } else {
+      handleNavigationLogic({
+        item,
+        setActiveId,
+        setActivePortal,
+        token,
+        navigate,
+      });
+    }
   }
 
   useEffect(() => {
@@ -37,8 +50,6 @@ function UserBarItem({
       );
       if (matchedItem) {
         setActiveId(matchedItem.id);
-      } else if (currentPath === "") {
-        setActiveId(1);
       } else {
         setActiveId(1);
       }
@@ -59,8 +70,8 @@ function UserBarItem({
       {activePortal && (
         <Portal setIsAppear={() => setActivePortal(null)}>
           {activePortal === "cart" && <Cart />}
-          {activePortal === "userAccount" && <UserAccount />}
-          {activePortal === "authContent" && <AuthContent />}
+          {token && activePortal === "userAccount" && <UserAccount />}
+          {!token && activePortal === "authContent" && <AuthContent />}
         </Portal>
       )}
     </>
