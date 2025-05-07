@@ -29,14 +29,15 @@ export const subscribeToNewsletter = async (
     email: string
 ): Promise<SubscribeSuccessResponse | ApiError> => {
     try {
-        const response = await axiosInstance.post<SubscribeApiResponse>("/subscribers", {
+        await axiosInstance.post<SubscribeApiResponse>("/subscribers", {
             subscriberEmail: email,
         });
 
         return {
             success: true,
-            message: `Subscription successful! Welcome, ${response.data.subscriberEmail}`,
+            message: "Thanks for subscribing to our newsletter! 🎉",
         };
+
     } catch (error) {
         const apiError = handleApiError(error);
         console.log("Error during subscription:", apiError);
