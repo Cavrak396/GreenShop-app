@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace greenshop_api.Filters.ActionFilters.Cart_ActionFilters
 {
-    public class Cart_ValidateRemoveCartItemsActionFilter(
+    public class Cart_ValidateCartExistsActionFilter(
         ICartsRepository cartsRepository, 
         IActionErrorCreator actionErrorCreator, 
         IJwtService jwtService) : IAsyncActionFilter

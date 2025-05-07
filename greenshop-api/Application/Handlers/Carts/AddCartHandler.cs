@@ -10,12 +10,14 @@ namespace greenshop_api.Application.Handlers.Carts
 {
     public class AddCartHandler(
         ICartsRepository cartsRepository,
+        ICartItemsRepository cartItemsRepository,
         IPlantsRepository plantsRepository,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
         IMapper mapper) : IRequestHandler<AddCartCommand, CartDto>
     {
         private readonly ICartsRepository _cartsRepository = cartsRepository;
+        private readonly ICartItemsRepository _cartItemsRepository = cartItemsRepository;
         private readonly IPlantsRepository _plantsRepository = plantsRepository;
         private readonly IJwtService _jwtService = jwtService;
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -69,17 +71,17 @@ namespace greenshop_api.Application.Handlers.Carts
             {
                 var plantPrice = (double)(plants!
                     .GetValueOrDefault(cartItem.PlantId)!.Price)!;
-                var existingItem = cart.CartItems!
-                    .FirstOrDefault(ci => ci.PlantId == cartItem.PlantId);
+ 
+                var existingCartItem = await _cartItemsRepository.GetCartItemByIdsAsync(cart.CartId!, cartItem.PlantId!);
 
-                if (existingItem != null)
+                if (existingCartItem != null)
                 {
-                    cartPrice -= plantPrice * existingItem.Quantity;
-                    existingItem.Quantity = cartItem.Quantity;
+                    cartPrice -= plantPrice * existingCartItem.Quantity;
+                    await _cartItemsRepository.UpdateCartItemQuantity(existingCartItem, cartItem.Quantity);
                 }
                 else
                 {
-                    cart.CartItems!.Add(cartItem);
+                    await _cartItemsRepository.AddCartItem(cartItem);
                 }
                 cartPrice += plantPrice * cartItem.Quantity;
             }
