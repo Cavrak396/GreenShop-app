@@ -27,6 +27,12 @@ namespace greenshop_api.Infrastructure.Repositories
                 .CountAsync(r => r.PlantId == plantId);
         }
 
+        public async Task<int> GetNumberOfReviewsByRatingAndPlantIdAsync(string plantId, int rating)
+        {
+            return await _dbContext.Reviews
+                .CountAsync (r => r.PlantId == plantId && r.Rating == rating);
+        }
+
         public async Task AddReviewAsync(Review review)
         {
             _dbContext.Reviews.Add(review);

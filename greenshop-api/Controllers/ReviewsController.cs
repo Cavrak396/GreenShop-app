@@ -69,6 +69,18 @@ namespace greenshop_api.Controllers
             return Ok(count);
         }
 
+        [HttpGet("{plantId}/rating-number")]
+        [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
+        public async Task<ActionResult<Dictionary<int, int>>> GetNumberOfReviewsByRatingsPerPlant([FromRoute]string plantId)
+        {
+            var ratingCounts = await _mediator.Send(new GetNumberOfReviewsByRatingsQuery
+            {
+                PlantId = plantId
+            });
+            return Ok(ratingCounts);
+        }
+
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
