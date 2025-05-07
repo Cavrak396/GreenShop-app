@@ -11,7 +11,7 @@ namespace greenshop_api.Domain.Models
         public string? PlantId { get; set; }
         public Plant? Plant { get; set; }
         [Required]
-        [Range(0, 20, ErrorMessage = "Quantity cannot be negative or greater than 20.")]
+        [Range(1, 20, ErrorMessage = "Quantity must be greater than 0 and cannot be over 20.")]
         public int Quantity { get; set; }
     }
 }

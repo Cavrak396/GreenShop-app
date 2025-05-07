@@ -3,7 +3,7 @@ using MediatR;
 
 namespace greenshop_api.Application.Commands.Carts
 {
-    public class DeleteCartItemsCommand : IRequest<CartDto>
+    public class RemoveCartItemsCommand : IRequest<CartDto>
     {
     }
 }

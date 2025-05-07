@@ -11,14 +11,14 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<Cart?> GetCartByUserIdAsync(string id)
         {
-            return await _dbContext.Carts
+            return await _dbContext.Carts!
                 .Include(c => c.CartItems!)
                 .ThenInclude(ci => ci.Plant)
                 .FirstOrDefaultAsync(c => c.UserId == id);
         }
         public async Task<Cart> AddCartAsync(Cart cart)
         {
-            var result = _dbContext.Carts.Add(cart);
+            var result = _dbContext.Carts!.Add(cart);
             await _dbContext.SaveChangesAsync();
             return result.Entity;
         }

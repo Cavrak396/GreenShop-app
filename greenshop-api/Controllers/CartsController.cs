@@ -40,11 +40,11 @@ namespace greenshop_api.Controllers
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
-        [TypeFilter(typeof(Cart_ValidateRemoveCartItemsActionFilter))]
+        [TypeFilter(typeof(Cart_ValidateCartExistsActionFilter))]
 
         public async Task<IActionResult> PurchaseCart()
         {
-            var cartDto = await _mediator.Send(new DeleteCartItemsCommand());
+            var cartDto = await _mediator.Send(new RemoveCartItemsCommand());
             var getUserDto = await _mediator.Send(new GetUserQuery());
 
             await _newsletterService.SendNewsletterAsync(
