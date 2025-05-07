@@ -23,7 +23,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidateCartExistsActionFilter))]
         [TypeFilter(typeof(CartItem_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> AddCartItem([FromBody]CartItemDto cartItem)
+        public async Task<IActionResult> CreateCartItem([FromBody]CartItemDto cartItem)
         {
             await _mediator.Send(new AddCardItemCommand
             {
@@ -39,7 +39,7 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Cart_ValidateCartExistsActionFilter))]
         [TypeFilter(typeof(CartItem_ValidateCartItemExistsActionFIlter))]
-        public async Task<IActionResult> RemoveCartItem([FromRoute]string plantId)
+        public async Task<IActionResult> DeleteCartItem([FromRoute]string plantId)
         {
             await _mediator.Send(new DeleteCartItemCommand
             {
