@@ -4,7 +4,7 @@ import { useRatings } from "../../../../customHooks/useRating";
 import { useComments } from "../../../../context/ReviewsContext";
 
 function DetailsCritiqueRate() {
-  const { ratingNumbers, comments } = useComments();
+  const { ratingNumbers, totalReviews } = useComments();
   const { avgRating } = useRatings(ratingNumbers || {});
 
   return (
@@ -25,7 +25,7 @@ function DetailsCritiqueRate() {
         className="details__critique-rate-number"
         id="rating-stat-description"
       >
-        {comments.length} users rated this
+        {`${totalReviews} users rated this`}
       </span>
     </div>
   );
