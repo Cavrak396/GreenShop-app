@@ -4,8 +4,8 @@ import { useRatings } from "../../../../customHooks/useRating";
 import { useComments } from "../../../../context/ReviewsContext";
 
 function DetailsCritiqueRate() {
-  const { comments } = useComments();
-  const { avgRating } = useRatings(comments);
+  const { ratingNumbers, comments } = useComments();
+  const { avgRating } = useRatings(ratingNumbers || {});
 
   return (
     <div className="details__critique-rate" aria-live="polite">

@@ -51,7 +51,6 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       setSortedData(data.plants);
       setData(data);
       setDataPlantsTotal(data.totalNumber);
-      console.log(data);
     } catch (error) {
       setError("Failed to fetch plants. Please try again later.");
     } finally {

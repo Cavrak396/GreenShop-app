@@ -99,4 +99,17 @@ export const getTotalNumberOfReviews = async (plantId: string): Promise<number |
   }
 };
 
+export const getRatingNumbers = async (plantId: string): Promise<{ [key: string]: number } | null> => {
+  try {
+    const response = await axiosInstance.get<{ [key: string]: number }>(`/reviews/${plantId}/rating-number`);
+    return response.data;
+  } catch (error) {
+    const apiError = handleApiError(error as AxiosError);
+    if (apiError.message.includes("Plant not found")) {
+      throw new Error("Plant not found");
+    }
+    return null;
+  }
+};
+
 export default axiosInstance;

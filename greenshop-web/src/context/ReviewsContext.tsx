@@ -13,6 +13,7 @@ import {
   deleteReview,
   updateReview,
   getTotalNumberOfReviews,
+  getRatingNumbers,
 } from "../services/reviews/reviews";
 import { Comment, CommentsContextType, ReviewDto } from "./types/reviewsTypes";
 
@@ -28,6 +29,9 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [totalReviews, setTotalReviews] = useState<number | null>(null);
   const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
   const [currentPageSize, setCurrentPageSize] = useState<number>(10);
+  const [ratingNumbers, setRatingNumbers] = useState<{
+    [key: string]: number;
+  } | null>(null);
 
   const { user } = useUser();
 
@@ -38,6 +42,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       try {
         const data = await getPlantReviews(plantId, page, pageSize);
+        await fetchRatingNumbers(plantId);
         if (Array.isArray(data)) {
           const formattedComments: Comment[] = data.map((review) => ({
             ...review,
@@ -96,6 +101,21 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const fetchRatingNumbers = useCallback(async (plantId: string) => {
+    if (!plantId) return;
+
+    setLoading(true);
+    try {
+      const data = await getRatingNumbers(plantId);
+      setRatingNumbers(data);
+    } catch (error) {
+      console.error("Failed to fetch rating numbers:", error);
+      setRatingNumbers(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const addComment = async (
     plantId: string,
     comment: string,
@@ -117,6 +137,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         await fetchComments(plantId, currentCommentsPage, currentPageSize);
         await fetchUserComment(plantId);
         await fetchTotalNumberOfReviews(plantId);
+        await fetchRatingNumbers(plantId);
       } else {
         console.error("Error adding comment:", response);
       }
@@ -145,6 +166,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       await fetchComments(plantId, currentCommentsPage, currentPageSize);
       await fetchUserComment(plantId);
       await fetchTotalNumberOfReviews(plantId);
+      await fetchRatingNumbers(plantId);
     } catch (error) {
       console.error("Error updating comment:", error);
     }
@@ -159,6 +181,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
       setUserComment(null);
       setRating(0);
       await fetchTotalNumberOfReviews(plantId);
+      await fetchRatingNumbers(plantId);
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -176,10 +199,12 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
         loading,
         rating,
         totalReviews,
+        ratingNumbers,
         changeRating,
         fetchComments,
         fetchUserComment,
         fetchTotalNumberOfReviews,
+        fetchRatingNumbers,
         addComment,
         removeComment,
         updateComment,
