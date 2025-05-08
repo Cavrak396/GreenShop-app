@@ -33,7 +33,7 @@ function DetailsCritiqueComments() {
       ) : (
         <>
           {token && <DetailsCritiqueCommentsFeedback />}
-          {userComment && (
+          {userComment && token && (
             <DetailsCritiqueCommentsPersonal comment={userComment} />
           )}
           <DetailsCritiqueCommentsList comments={comments} />
