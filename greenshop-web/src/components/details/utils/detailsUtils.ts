@@ -37,33 +37,28 @@ export const infoButtons: ButtonOrSizeType[] = [
   { id: 2, text: "Reviews" },
 ];
 
-export function calculateRatingPercentages(comments: Comment[]) {
-  const totalComments = comments.length;
+export function calculateRatingPercentages(ratingNumbers: { [key: number]: number }) {
+  const totalVotes = Object.values(ratingNumbers).reduce(
+    (total, count) => total + count,
+    0
+  );
 
-  const ratingsCount = Array(5).fill(0);
+  if (totalVotes === 0) return [];
 
-  comments.forEach(({ rating }) => {
-    if (rating >= 1 && rating <= 5) {
-      ratingsCount[rating - 1]++;
-    }
+  return Object.keys(ratingNumbers).map((rating) => {
+    const count = ratingNumbers[parseInt(rating)];
+    const percentage = (count / totalVotes) * 100;
+    return { rating: parseInt(rating), percentage };
   });
-
-  return ratingsCount.map((count, index) => ({
-    rating: index + 1,
-    count,
-    percentage: totalComments ? (count / totalComments) * 100 : 0,
-  }));
 }
 
-
-export function calculateAverageRating(comments: Comment[]) {
-  if (!Array.isArray(comments)) {
-    console.error("Comments nije niz:", comments);
+export function calculateAverageRating(ratings: Comment[]) {
+  if (!Array.isArray(ratings)) {
     return 0;
   }
 
-  const totalRating = comments.reduce((acc, { rating }) => acc + rating, 0);
-  return comments.length > 0 ? totalRating / comments.length : 0;
+  const totalRating = ratings.reduce((acc, { rating }) => acc + rating, 0);
+  return ratings.length > 0 ? totalRating / ratings.length : 0;
 }
 
 export const createCartItem = (product: any, dateAdded: Date): CartItemTypes => {

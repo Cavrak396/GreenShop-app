@@ -15,7 +15,7 @@ import { useUser } from "../../../context/AuthContext";
 function DetailsProductPanel() {
   const product = useProduct();
   const {
-    comments,
+    ratingNumbers,
     fetchComments,
     fetchUserComment,
     currentCommentsPage,
@@ -23,7 +23,7 @@ function DetailsProductPanel() {
   } = useComments();
   const { id } = useParams();
   const { user } = useUser();
-  const { avgRating } = useRatings(comments);
+  const { avgRating } = useRatings(ratingNumbers || {});
 
   useEffect(() => {
     if (id) {

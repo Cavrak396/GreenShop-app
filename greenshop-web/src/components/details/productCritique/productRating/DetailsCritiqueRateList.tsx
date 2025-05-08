@@ -3,8 +3,8 @@ import ProgressBar from "../../../../reusable/progress/ProgressBar";
 import { calculateRatingPercentages } from "../../utils/detailsUtils";
 
 function DetailsCritiqueRateList() {
-  const { comments } = useComments();
-  const ratingPercentages = calculateRatingPercentages(comments);
+  const { ratingNumbers } = useComments();
+  const ratingPercentages = calculateRatingPercentages(ratingNumbers || {});
 
   const sortedRatings = ratingPercentages.sort(
     (a, b) => b.percentage - a.percentage
