@@ -21,6 +21,10 @@ export interface AuthSocialButtonsProps {
   activatedId: number;
 }
 
+export interface AuthContentProps {
+  onLoginSuccess?: () => void;
+};
+
 export interface AuthFormProps {
   activatedId: number;
   setActivatedId?: (id: number) => void;
