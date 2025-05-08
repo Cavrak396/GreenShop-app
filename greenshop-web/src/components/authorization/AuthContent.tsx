@@ -4,10 +4,11 @@ import AuthTypeOption from "./AuthTypeOption";
 import AuthForm from "./AuthForm";
 import LoadingSpinner from "../../reusable/loadingSpinner/LoadingSpinner";
 import { authInstructions, emailRegex } from "./utils/authUtils";
-import "./authorization.css";
+import { AuthContentProps } from "./types/authTypes";
 import { toast } from "react-toastify";
+import "./authorization.css";
 
-function AuthContent() {
+function AuthContent({ onLoginSuccess }: AuthContentProps) {
   const [activatedId, setActivatedId] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
@@ -38,6 +39,7 @@ function AuthContent() {
             setUser({ email });
             setToken(loginResponse.jwt);
             toast.success("Successfully logged in!");
+            if (onLoginSuccess) onLoginSuccess();
           } else if (!emailRegex.test(email)) {
             toast.error("Write a correct email.");
           } else {
