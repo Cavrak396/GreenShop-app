@@ -5,6 +5,7 @@ using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.CartItems;
 using greenshop_api.Filters.ActionFilters.Cart_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
+using greenshop_api.Filters.ExceptionFilters.Carts;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace greenshop_api.Controllers
         [EnableRateLimiting("TokenBucketIpAddressLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidatePlantIdsActionFilter))]
+        [TypeFilter(typeof(Cart_HandleUpdateCartExceptionFilter))]
         public async Task<IActionResult> SyncCart([FromBody]List<CartItemDto> cartItems)
         {
             var cartDto = await _mediator.Send(new AddCartCommand
@@ -41,6 +43,7 @@ namespace greenshop_api.Controllers
         [EnableRateLimiting("TokenBucketIpAddressLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidateCartExistsActionFilter))]
+        [TypeFilter(typeof(Cart_HandleUpdateCartExceptionFilter))]
 
         public async Task<IActionResult> PurchaseCart()
         {

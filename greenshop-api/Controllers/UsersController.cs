@@ -4,6 +4,7 @@ using greenshop_api.Application.Queries.Users;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.Users;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
+using greenshop_api.Filters.ExceptionFilters.User_ExceptionFilters;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -97,6 +98,7 @@ namespace greenshop_api.Controllers
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressRestrictLimiter")]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
+        [TypeFilter(typeof(User_HandleUpdateUserExceptionFilter))]
         public async Task<IActionResult> UpdateUserIsSubscribed([FromRoute]bool isSubscribed)
         {
             await _mediator.Send(new UpdateUserIsSubscribedCommand 
