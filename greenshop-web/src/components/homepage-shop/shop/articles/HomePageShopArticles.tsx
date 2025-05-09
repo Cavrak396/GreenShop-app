@@ -2,12 +2,16 @@ import HomePageShopArticle from "./HomePageShopArticle";
 import { userTools } from "./utils/articlesUtils";
 import { HomePageShopArticlesProps } from "../../types/shopTypes";
 import "./articles.css";
+import { useUser } from "../../../../context/AuthContext";
 
 function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
+  const { token } = useUser();
   return (
     <ul className="homepageshop__articles-list">
       {sortedData.map((item) => {
-        const publicSalePercent = item.sale_Percent || 0;
+        const publicSalePercent = token
+          ? item.sale_Percent_Private
+          : item.sale_Percent || 0;
 
         const isOnSale = publicSalePercent > 0;
 
