@@ -8,6 +8,7 @@ import { HomePageShopArticleProps, ProductType } from "../../types/shopTypes";
 import HomePageShopSale from "./HomePageShopSale";
 import { CartItemTypes } from "../../../cart/types/cartTypes";
 import ProductImage from "../../../../assets/images/banner/banner-image.webp";
+import { useUser } from "../../../../context/AuthContext";
 
 function HomePageShopArticle({
   isOnSale,
@@ -18,23 +19,26 @@ function HomePageShopArticle({
 }: HomePageShopArticleProps) {
   const { addItemToCart } = useCart();
   const navigate = useNavigate();
+  const { token } = useUser();
 
   const addingItemsToCart = useCallback(
-    (item: ProductType) => {
+    (product: ProductType) => {
       const dateAdded = new Date();
+
       const cartItem: CartItemTypes = {
-        id: item.plantId,
-        label: item.name,
-        price: item.price,
-        sale: item.sale_Percent,
-        src: item.image,
-        alt: item.name,
+        id: product.plantId,
+        label: product.name,
+        price: product.price,
+        sale: product.sale_Percent,
+        privateSale: product.sale_Percent_Private,
+        src: product.image,
+        alt: product.name,
         dateAdded,
       };
 
       addItemToCart(cartItem, 1);
     },
-    [addItemToCart]
+    [addItemToCart, token]
   );
 
   function goToDetailsPage() {

@@ -3,6 +3,7 @@ export interface CartItemTypes {
   label: string;
   price: number;
   sale?: number;
+  privateSale?: number;
   src: string;
   alt: string;
   dateAdded: Date;

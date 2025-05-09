@@ -138,6 +138,24 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    if (!token) return;
+
+    setCartItems((prevCartItems) => {
+      const updatedItems = prevCartItems.map((item) => {
+        console.log(item);
+        const updatedSale = item.privateSale ?? item.sale;
+        return {
+          ...item,
+          sale: updatedSale,
+        };
+      });
+
+      saveToLocalStorage("cartItems", updatedItems);
+      return updatedItems;
+    });
+  }, [token]);
+
+  useEffect(() => {
     if (token) {
       syncCartWithApi();
     }
