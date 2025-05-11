@@ -29,11 +29,29 @@ export const syncCart = async (cartItems: CartApiItemDto[]): Promise<CartDto | A
         return handleApiError(error);
     }
 };
-
 export const updateCart = async (): Promise<CartDto | ApiError> => {
     try {
         const response = await axiosInstance.put<CartDto>("/carts");
         return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const addCartItem = async (item: CartApiItemDto): Promise<null | ApiError> => {
+    try {
+        const response = await axiosInstance.post("/cartitems", item);
+        console.log(response);
+        return null;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const deleteCartItem = async (plantId: string): Promise<null | ApiError> => {
+    try {
+        await axiosInstance.delete(`/cartitems/${plantId}`);
+        return null;
     } catch (error) {
         return handleApiError(error);
     }

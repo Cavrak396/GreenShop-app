@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
+    const savedToken = sessionStorage.getItem("token");
     if (savedToken) {
       setToken(savedToken);
     }
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       console.log(response);
       if (response.jwt) {
         setToken(response.jwt);
-        localStorage.setItem("token", response.jwt);
+        sessionStorage.setItem("token", response.jwt);
         return response;
       } else {
         const error: ApiError = { message: "Login failed." };
@@ -99,7 +99,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       const response = await registerUser(dto);
       if (response.jwt) {
         setToken(response.jwt);
-        localStorage.setItem("token", response.jwt);
+        sessionStorage.setItem("token", response.jwt);
         return response;
       } else {
         const error: ApiError = { message: "Registration failed." };
@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       await logoutUser();
       setUser(null);
       setToken(null);
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
     } catch (err: any) {
       const error: ApiError = { message: err.message || "Logout failed." };
       setError(error.message);
@@ -141,7 +141,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       const response = await deleteUser();
       setUser(null);
       setToken(null);
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       return response;
     } catch (err: any) {
       const error: ApiError = {
