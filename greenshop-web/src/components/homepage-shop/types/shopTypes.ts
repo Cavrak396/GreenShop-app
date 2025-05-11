@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface ProductType {
   acquisition_Date: string;
   category: string;
@@ -106,4 +108,8 @@ export interface PlantsParams {
   priceMax?: number;
   page: number;
   pageSize: number;
+}
+
+export interface ShopPagePropType {
+  setCurrentShopPage: Dispatch<SetStateAction<number>>;
 }

@@ -8,10 +8,11 @@ import {
   handleMaxPriceChange,
 } from "./utils/categories";
 import { usePlants } from "../../../context/PlantsContext";
-import "./usertoolbox.css";
+import { ShopPagePropType } from "../types/shopTypes";
 import AccessibiltyText from "../../../reusable/accessibility-text/AccessibilityText";
+import "./usertoolbox.css";
 
-function HomePagePriceRange() {
+function HomePagePriceRange({ setCurrentShopPage }: ShopPagePropType) {
   const { filters, setFilters } = usePlants();
   const [minPrice, setMinPrice] = useState<number>(
     filters.priceMin ?? MIN_PRICE
@@ -41,6 +42,7 @@ function HomePagePriceRange() {
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setCurrentShopPage(1);
     setFilters((prevFilters) => ({
       ...prevFilters,
       priceMin: minPrice,

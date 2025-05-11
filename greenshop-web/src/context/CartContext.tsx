@@ -1,7 +1,12 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react";
 import { CartItemTypes } from "../components/cart/types/cartTypes";
 import { CartContextType } from "./types/cartTypes";
-import { syncCart, updateCart } from "../services/cart/cart";
+import {
+  syncCart,
+  updateCart,
+  addCartItem,
+  deleteCartItem,
+} from "../services/cart/cart";
 import { useUser } from "../context/AuthContext";
 import { ApiError } from "../services/reusable/reusableTypes";
 
@@ -41,7 +46,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const addItemToCart = useCallback(
-    (newItem: CartItemTypes, quantity: number) => {
+    async (newItem: CartItemTypes, quantity: number) => {
       const itemId = newItem.id.toString();
 
       setCartItems((prevCartItems) => {
@@ -73,26 +78,64 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           return updatedCartItems;
         }
       });
+
+      console.log(itemId, quantity);
+
+      if (token) {
+        try {
+          const result = await addCartItem({
+            plantId: itemId,
+            quantity,
+          });
+
+          if (result && (result as ApiError).message) {
+            console.error(
+              "Error adding item to cart:",
+              (result as ApiError).message
+            );
+          }
+        } catch (error) {
+          console.error("Unexpected error adding item to cart:", error);
+        }
+      }
     },
-    []
+    [token]
   );
 
-  const removeItem = useCallback((itemId: string) => {
-    setCartItems((prevCartItems) => {
-      const updatedCartItems = prevCartItems.filter(
-        (item) => item.id.toString() !== itemId
-      );
-      saveToLocalStorage("cartItems", updatedCartItems);
-      return updatedCartItems;
-    });
+  const removeItem = useCallback(
+    async (itemId: string) => {
+      setCartItems((prevCartItems) => {
+        const updatedCartItems = prevCartItems.filter(
+          (item) => item.id.toString() !== itemId
+        );
+        saveToLocalStorage("cartItems", updatedCartItems);
+        return updatedCartItems;
+      });
 
-    setQuantities((prevQuantities) => {
-      const updatedQuantities = { ...prevQuantities };
-      delete updatedQuantities[itemId];
-      saveToLocalStorage("quantities", updatedQuantities);
-      return updatedQuantities;
-    });
-  }, []);
+      setQuantities((prevQuantities) => {
+        const updatedQuantities = { ...prevQuantities };
+        delete updatedQuantities[itemId];
+        saveToLocalStorage("quantities", updatedQuantities);
+        return updatedQuantities;
+      });
+
+      if (token) {
+        try {
+          const result = await deleteCartItem(itemId);
+
+          if (result && (result as ApiError).message) {
+            console.error(
+              "Error deleting item from cart:",
+              (result as ApiError).message
+            );
+          }
+        } catch (error) {
+          console.error("Unexpected error deleting item from cart:", error);
+        }
+      }
+    },
+    [token]
+  );
 
   const syncCartWithApi = useCallback(async () => {
     if (!token) return;
@@ -142,7 +185,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     setCartItems((prevCartItems) => {
       const updatedItems = prevCartItems.map((item) => {
-        console.log(item);
         const updatedSale = item.privateSale ?? item.sale;
         return {
           ...item,

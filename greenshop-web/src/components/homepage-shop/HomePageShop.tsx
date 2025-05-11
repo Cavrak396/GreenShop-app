@@ -15,8 +15,8 @@ function HomePageShop() {
     <div className="homepageshop">
       <div className="wrap">
         <div className="homepageshop__line">
-          <HomePageToolbox />
-          <HomePageShopContent />
+          <HomePageToolbox setCurrentShopPage={setCurrentShopPage} />
+          <HomePageShopContent setCurrentShopPage={setCurrentShopPage} />
         </div>
         {data && dataPlantsTotal > itemsPerPage && (
           <Pagination

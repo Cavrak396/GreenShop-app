@@ -2,9 +2,10 @@ import HomePageShopBar from "./bar/HomePageShopBar";
 import HomePageShopArticles from "./articles/HomePageShopArticles";
 import ErrorMessage from "../../../reusable/error/ErrorMessage";
 import { usePlants } from "../../../context/PlantsContext";
+import { ShopPagePropType } from "../types/shopTypes";
 import LoadingSpinner from "../../../reusable/loadingSpinner/LoadingSpinner";
 
-function HomePageShopContent() {
+function HomePageShopContent({ setCurrentShopPage }: ShopPagePropType) {
   const { sortedData, loading, error } = usePlants();
 
   return (
@@ -13,7 +14,7 @@ function HomePageShopContent() {
       {error && (
         <ErrorMessage className="homepageshop__content-error" message={error} />
       )}
-      <HomePageShopBar />
+      <HomePageShopBar setCurrentShopPage={setCurrentShopPage} />
       {!loading && !error && sortedData.length === 0 && (
         <ErrorMessage
           className="homepageshop__content-error"

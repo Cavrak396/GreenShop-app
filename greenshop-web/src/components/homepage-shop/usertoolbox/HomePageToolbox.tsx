@@ -4,12 +4,14 @@ import CategoriesList from "../../../reusable/categories/CategoriesList";
 import HomePageAdvertisement from "./HomePageAdvertisement";
 import { categories, categoriesSize } from "./utils/categories";
 import { usePlants } from "../../../context/PlantsContext";
+import { ShopPagePropType } from "../types/shopTypes";
 import "./usertoolbox.css";
 
-function HomePageToolbox() {
+function HomePageToolbox({ setCurrentShopPage }: ShopPagePropType) {
   const { filters, setFilters } = usePlants();
 
   const handleCategoryClick = (label: string) => {
+    setCurrentShopPage(1);
     setFilters((prevFilters) => ({
       ...prevFilters,
       category: label,
@@ -17,6 +19,7 @@ function HomePageToolbox() {
   };
 
   const handleSizeClick = (label: string) => {
+    setCurrentShopPage(1);
     setFilters((prevFilters) => ({
       ...prevFilters,
       size: label,
@@ -37,7 +40,7 @@ function HomePageToolbox() {
       <Title className="homepageshop__categories-title small-title">
         Price Range
       </Title>
-      <HomePagePriceRange />
+      <HomePagePriceRange setCurrentShopPage={setCurrentShopPage}/>
       <Title className="homepageshop__categories-title small-title">Size</Title>
       <CategoriesList
         categories={categoriesSize}
