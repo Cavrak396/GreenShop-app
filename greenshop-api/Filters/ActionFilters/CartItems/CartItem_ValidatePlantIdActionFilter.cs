@@ -17,7 +17,7 @@ namespace greenshop_api.Filters.ActionFilters.CartItems_ActionFilters
             var cartItem = context.ActionArguments["cartItem"] as CartItemDto;
             var plant = _plantsRepository.GetPlantByIdAsync(cartItem!.PlantId!);
 
-            if(plant != null)
+            if(plant == null)
             {
                 _actionErrorCreator.CreateActionError(
                     context,
