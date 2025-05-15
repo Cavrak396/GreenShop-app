@@ -1,6 +1,6 @@
 import { PlantsParams } from "./plantsTypes";
-import axios from "axios";
 import { ProductType } from "../../components/homepage-shop/types/shopTypes";
+import axios from "axios";
 
 const BASE_URL = "https://localhost:7178/Plants";
 
@@ -15,6 +15,8 @@ export const fetchPlants = async ({
     pageSize,
 }: PlantsParams) => {
     try {
+        const token = sessionStorage.getItem("token");
+
         const response = await axios.get(BASE_URL, {
             headers: {
                 SearchValue: searchValue || "",
@@ -23,6 +25,7 @@ export const fetchPlants = async ({
                 Group: group || "",
                 PriceMin: priceMin || "",
                 PriceMax: priceMax || "",
+                Authorized: token ? true : false,
             },
             params: {
                 page,
