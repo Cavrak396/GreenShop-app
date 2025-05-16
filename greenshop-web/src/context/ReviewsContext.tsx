@@ -132,15 +132,11 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     try {
-      const response = await createReview(reviewDto);
-      if (response) {
-        await fetchComments(plantId, currentCommentsPage, currentPageSize);
-        await fetchUserComment(plantId);
-        await fetchTotalNumberOfReviews(plantId);
-        await fetchRatingNumbers(plantId);
-      } else {
-        console.error("Error adding comment:", response);
-      }
+      await createReview(reviewDto);
+      await fetchComments(plantId, currentCommentsPage, currentPageSize);
+      await fetchUserComment(plantId);
+      await fetchTotalNumberOfReviews(plantId);
+      await fetchRatingNumbers(plantId);
     } catch (error) {
       console.error("Error submitting comment:", error);
     }
