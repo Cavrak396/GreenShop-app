@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import TextInput from "../../../reusable/inputs/TextInput";
 import Title from "../../../reusable/titles/Title";
-import { subscribeToNewsletter } from "../../../services/subscribers/subscribers";
 import { toast } from "react-toastify";
+import { useSubscriber } from "../../../context/SubscribersContext";
 
 function FooterTopForm() {
   const [email, setEmail] = useState("");
+  const { subscribe, loading } = useSubscriber();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -17,7 +18,7 @@ function FooterTopForm() {
     }
 
     try {
-      const result = await subscribeToNewsletter(email);
+      const result = await subscribe(email);
       setEmail("");
 
       if (result.success) {
@@ -26,11 +27,7 @@ function FooterTopForm() {
         toast.error(result.message);
       }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message || "An unexpected error occurred.");
-      } else {
-        toast.error("Failed to connect to the server. Please try again later.");
-      }
+      toast.error("Something went wrong. Please try again later.");
     }
   };
 
@@ -45,7 +42,7 @@ function FooterTopForm() {
         placeholder="Enter your email address..."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        buttonText="Join"
+        buttonText={loading ? "Joining..." : "Join"}
         buttonClass="footer__top-form-button"
         onButtonClick={handleSubmit}
       />
