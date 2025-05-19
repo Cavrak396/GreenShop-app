@@ -40,8 +40,7 @@ export const updateCart = async (): Promise<CartDto | ApiError> => {
 
 export const addCartItem = async (item: CartApiItemDto): Promise<null | ApiError> => {
     try {
-        const response = await axiosInstance.post("/cartitems", item);
-        console.log(response);
+        await axiosInstance.post("/cartitems", item);
         return null;
     } catch (error) {
         return handleApiError(error);

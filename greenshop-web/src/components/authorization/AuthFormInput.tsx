@@ -7,7 +7,6 @@ function AuthFormInput({
   refHandler,
   showPassword,
   togglePasswordVisibility,
-  onChange,
 }: AuthFormInputProps) {
   return (
     <div className="authorization__input-holder">
@@ -16,7 +15,6 @@ function AuthFormInput({
         type={input.type === "password" && showPassword ? "text" : input.type}
         placeholder={input.placeholder}
         ref={refHandler}
-        onChange={onChange}
       />
       {input.type === "password" && input.icon && togglePasswordVisibility && (
         <Button

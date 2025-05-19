@@ -40,7 +40,6 @@ export interface AuthFormInputProps {
   refHandler: (el: HTMLInputElement | null) => void;
   showPassword?: boolean;
   togglePasswordVisibility?: (id: number) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface AuthCurrentDataTypes {

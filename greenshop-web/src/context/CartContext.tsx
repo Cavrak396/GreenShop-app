@@ -79,8 +79,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
       });
 
-      console.log(itemId, quantity);
-
       if (token) {
         try {
           const result = await addCartItem({
