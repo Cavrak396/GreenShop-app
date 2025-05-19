@@ -16,11 +16,15 @@ export function SubscriberProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       const response = await subscribeToNewsletter(email);
-      if (response && response.success !== undefined) {
+
+      if ("success" in response && response.success !== undefined) {
         return response;
-      } else {
-        throw new Error("Unexpected response format");
       }
+
+      return {
+        success: false,
+        message: response.message || "Something went wrong.",
+      };
     } catch (err: any) {
       setError({ message: err.message });
       return { success: false, message: err.message };
