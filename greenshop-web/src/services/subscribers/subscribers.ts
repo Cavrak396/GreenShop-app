@@ -40,7 +40,7 @@ export const subscribeToNewsletter = async (
 
     } catch (error) {
         const apiError = handleApiError(error);
-        console.log("Error during subscription:", apiError);
+        console.error("Error during subscription:", apiError);
         return apiError;
     }
 };
