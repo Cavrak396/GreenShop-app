@@ -61,6 +61,7 @@
 .footer__info-line {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 70px 0;
   border-top: 1px solid rgba(70, 163, 88, 0.3);
   border-bottom: 1px solid rgba(70, 163, 88, 0.3);
