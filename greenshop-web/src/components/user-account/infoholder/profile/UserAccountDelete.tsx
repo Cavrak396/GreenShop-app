@@ -1,29 +1,22 @@
+import { useUser } from "../../../../context/AuthContext";
 import Button from "../../../../reusable/button/Button";
 import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
-import { useUser } from "../../../../context/AuthContext";
 
-function UserAccountDelete({ setIsAppear }: ConfirmationTypes) {
-  const { deleteAccount, loading, token } = useUser();
+function UserAccountDelete({
+  setIsAppear,
+  setOnConfirmAction,
+}: ConfirmationTypes) {
+  const { deleteAccount } = useUser();
 
-  const handleDelete = async () => {
-    if (!token) {
-      alert("You are not authenticated. Please log in first.");
-      return;
-    }
+  const handleDeleteClick = () => {
+    setIsAppear(true);
 
-    try {
-      const response = await deleteAccount();
-      if (response && response.message) {
-        alert(response.message);
-      } else {
-        alert("Account deleted successfully.");
-      }
-    } catch (err) {
-      alert("An error occurred while deleting the account.");
-      console.error("Error deleting account:", err);
-    }
+    if (!setOnConfirmAction) return;
 
-    setIsAppear(false);
+    setOnConfirmAction(() => async () => {
+      await deleteAccount();
+      setIsAppear(false);
+    });
   };
 
   return (
@@ -34,10 +27,9 @@ function UserAccountDelete({ setIsAppear }: ConfirmationTypes) {
       </p>
       <Button
         className="useraccount__profile-button button"
-        onClick={handleDelete}
-        disabled={loading}
+        onClick={handleDeleteClick}
       >
-        {loading ? "Deleting..." : "Delete Account"}
+        Delete Account
       </Button>
     </div>
   );

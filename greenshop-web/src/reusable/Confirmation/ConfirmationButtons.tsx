@@ -1,47 +1,23 @@
 import Button from "../button/Button";
-import { ConfirmationButtonsProps } from "../types/confirmationTypes";
-import { useUser } from "../../context/AuthContext";
-import { toast } from "react-toastify";
+import { ConfirmationProps } from "../types/confirmationTypes";
 
 function ConfirmationButtons({
   setIsAppear,
   onConfirmAction,
-  type,
-}: ConfirmationButtonsProps) {
-  const { user, updateUserDetails } = useUser();
-
-  const handleSubscribe = async () => {
-    if (!user) return;
-
-    const dto = {
-      isSubscribed: type === "subscribe",
-    };
-
-    const result = await updateUserDetails(dto);
-
-    if (result.success) {
-      toast.success(
-        `You have successfully ${
-          type === "subscribe" ? "subscribed" : "unsubscribed"
-        }!`
-      );
+}: ConfirmationProps) {
+  const handleAction = async () => {
+    try {
       onConfirmAction?.();
+    } catch (error) {
+      console.error("Error during confirmation:", error);
+    } finally {
       setIsAppear(false);
-    } else {
-      toast.error(result.message);
-      console.error("Problem", result.message);
     }
   };
 
   return (
     <div className="confirmation__buttons">
-      <Button
-        className="confirmation__button button"
-        onClick={() => {
-          handleSubscribe();
-          if (onConfirmAction) onConfirmAction();
-        }}
-      >
+      <Button className="confirmation__button button" onClick={handleAction}>
         Yes
       </Button>
       <Button

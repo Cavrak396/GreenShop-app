@@ -1,13 +1,18 @@
+import { useUser } from "../../../../context/AuthContext";
 import Button from "../../../../reusable/button/Button";
-import { LogoutProps } from "../../types/userAccountTypes";
+import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
 
 function UserAccountLogout({
   setIsAppear,
   setOnConfirmAction,
-  logout,
-}: LogoutProps) {
+}: ConfirmationTypes) {
+  const { logout } = useUser();
+
   function handleLogout() {
     setIsAppear(true);
+
+    if (!setOnConfirmAction) return;
+
     setOnConfirmAction(() => async () => {
       logout();
       setIsAppear(false);
