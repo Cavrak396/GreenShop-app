@@ -3,9 +3,9 @@ import { Dispatch, SetStateAction } from "react";
 export interface ConfirmationTypes {
     message?: string;
     setIsAppear: Dispatch<SetStateAction<boolean>>;
-    type?: string
+    setOnConfirmAction?: Dispatch<SetStateAction<(() => void) | null>>;
 }
 
-export type ConfirmationButtonsProps = ConfirmationTypes & {
+export type ConfirmationProps = ConfirmationTypes & {
     onConfirmAction: (() => void) | null;
 };

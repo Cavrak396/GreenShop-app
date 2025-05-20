@@ -1,10 +1,3 @@
-import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
-
-export type LogoutProps = ConfirmationTypes & {
-    setOnConfirmAction: (action: () => void) => void;
-    logout: () => void;
-};
-
 export interface MenuType {
     id: number;
     title: string;
