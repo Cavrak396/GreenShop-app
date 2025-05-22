@@ -29,7 +29,6 @@ namespace greenshop_api.Application.Handlers.Carts
             var cart = await _cartsRepository.GetCartByUserIdAsync(userId);
 
             await _cartItemsRepository.DeleteCartItemsAsync(cart!.CartItems!);
-            //cart.CartItems!.Clear();
             var result = await _cartsRepository.UpdateCartPriceAsync(cart, 0);
 
             return _mapper.Map<CartDto>(result);

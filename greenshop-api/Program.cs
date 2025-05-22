@@ -155,7 +155,7 @@ builder.Services.Configure<SmtpOptions>(
 
 builder.Services.AddSmtpClient();
 
-builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
