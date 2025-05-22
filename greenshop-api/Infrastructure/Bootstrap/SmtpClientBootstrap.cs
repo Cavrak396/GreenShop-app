@@ -9,7 +9,7 @@ namespace greenshop_api.Infrastructure.Bootstrap
         public static IServiceCollection AddSmtpClient(
             this IServiceCollection services)
         {
-            services.AddSingleton(sp =>
+            services.AddScoped(sp =>
             {
                 var _smtpOptions = sp.GetRequiredService<IOptions<SmtpOptions>>().Value;
                 return new SmtpClient(_smtpOptions.Server, _smtpOptions.Port)
