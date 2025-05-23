@@ -5,11 +5,16 @@ namespace greenshop_api.Domain.Validations
 {
     public class PasswordIsValid : ValidationAttribute
     {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(
+            object? value, 
+            ValidationContext validationContext)
         {
-            if (value == null || string.IsNullOrWhiteSpace(value!.ToString()))
+            if (value == null || 
+                string.IsNullOrWhiteSpace(value!
+                .ToString()))
             {
-                return new ValidationResult("Value for Password must be provided.");
+                return new ValidationResult(
+                    "Value for Password must be provided.");
             }
 
             string passwordValue = value!.ToString()!;

@@ -7,26 +7,36 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
 {
     public class Plant_ValidatePlantIdActionFilter(
         IPlantsRepository plantsRepository,
-        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
+        IActionErrorCreator actionErrorCreator) : 
+        IAsyncActionFilter
     {
-        private readonly IPlantsRepository _plantsRepository = plantsRepository;
-        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IPlantsRepository _plantsRepository = 
+            plantsRepository;
+        private readonly IActionErrorCreator _actionErrorCreator = 
+            actionErrorCreator;
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context, 
+            ActionExecutionDelegate next)
         {
-            var plantId = context.ActionArguments["plantId"] as string;
+            var plantId = context
+                .ActionArguments["plantId"] as string;
 
-            var plant = await _plantsRepository.GetPlantByIdAsync(plantId!);
+            var plant = await _plantsRepository
+                .GetPlantByIdAsync(plantId!);
             if (plant == null)
             {
-                _actionErrorCreator.CreateActionError(
+                _actionErrorCreator
+                    .CreateActionError(
                     context,
                     "Plant",
                     "Plant does not exist.",
                     404,
                     problemDetails => new NotFoundObjectResult(problemDetails));
+
                 return;
             }
+
             await next();
         }
     }

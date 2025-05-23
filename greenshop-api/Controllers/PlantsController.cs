@@ -16,10 +16,13 @@ namespace greenshop_api.Controllers
     [Route("/[controller]")]
     public class PlantsController(
         INewsletterService newsletterService, 
-        IMediator mediator) : ControllerBase
+        IMediator mediator) : 
+        ControllerBase
     {
-        private readonly INewsletterService _newsletterService = newsletterService;
-        private readonly IMediator _mediator = mediator;
+        private readonly INewsletterService _newsletterService = 
+            newsletterService;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpGet]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
@@ -35,7 +38,8 @@ namespace greenshop_api.Controllers
             [FromHeader(Name = "PriceMin")] double? priceMin = null,
             [FromHeader(Name = "PriceMax")] double? priceMax = null)
         {
-            var getPlantsResponse = await _mediator.Send(new GetAllPlantsQuery
+            var getPlantsResponse = await _mediator.Send(
+            new GetAllPlantsQuery
             {
                 Page = page,
                 PageSize = pageSize,
@@ -55,7 +59,9 @@ namespace greenshop_api.Controllers
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         public async Task<IActionResult> GetTotalNumberOfPlants()
         {
-            var count = await _mediator.Send(new GetTotalNumberOfPlantsQuery());
+            var count = await _mediator.Send(
+                new GetTotalNumberOfPlantsQuery());
+
             return Ok(count);
         }
 
@@ -64,10 +70,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidateGetPlantNumberActionFilter))]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery]List<string> categories)
         {
-            var categoryCounts = await _mediator.Send(new GetNumberOfPlantsByCategoriesQuery
+            var categoryCounts = await _mediator.Send(
+            new GetNumberOfPlantsByCategoriesQuery
             {
                 Categories = categories
             });
+
             return Ok(categoryCounts);
         }
 
@@ -75,7 +83,8 @@ namespace greenshop_api.Controllers
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsBySize()
         {
-            var sizeCounts = await _mediator.Send(new GetNumberOfPlantsBySizesQuery());
+            var sizeCounts = await _mediator.Send(
+                new GetNumberOfPlantsBySizesQuery());
 
             return Ok(sizeCounts);
         }
@@ -85,7 +94,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetPlantById(string plantId)
         {
-            var getPlantDto = await _mediator.Send(new GetPlantByIdQuery
+            var getPlantDto = await _mediator.Send(
+            new GetPlantByIdQuery
             {
                 Id = plantId
             });
@@ -96,9 +106,12 @@ namespace greenshop_api.Controllers
         [HttpGet("{plantId}/related")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> GetRelatedPlants([FromRoute]string plantId, [FromQuery]int relatedPlantsCount = 5)
+        public async Task<IActionResult> GetRelatedPlants(
+            [FromRoute]string plantId, 
+            [FromQuery]int relatedPlantsCount = 5)
         {
-            var relatedPlants = await _mediator.Send(new GetRelatedPlantsQuery
+            var relatedPlants = await _mediator.Send(
+            new GetRelatedPlantsQuery
             {
                 Id = plantId,
                 Count = relatedPlantsCount
@@ -112,12 +125,14 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
         public async Task<IActionResult> CreatePlant([FromBody]PostPlantDto plant)
         {
-            var plantToCreate = await _mediator.Send(new AddPlantCommand
+            var plantToCreate = await _mediator.Send(
+            new AddPlantCommand
             {
                 Plant = plant
             });
 
-            var subscribers = await _mediator.Send(new GetAllSubscribersQuery());
+            var subscribers = await _mediator.Send(
+                new GetAllSubscribersQuery());
 
             if (subscribers.Count != 0) 
             {
@@ -142,9 +157,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
-        public async Task <IActionResult> UpdatePlant([FromRoute]string plantId, [FromBody]PostPlantDto plant)
+        public async Task <IActionResult> UpdatePlant(
+            [FromRoute]string plantId, 
+            [FromBody]PostPlantDto plant)
         {
-            await _mediator.Send(new UpdatePlantCommand
+            await _mediator.Send(
+            new UpdatePlantCommand
             {
                 Id = plantId,
                 Plant = plant
@@ -158,7 +176,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task <IActionResult> DeletePlant([FromRoute]string plantId)
         {
-            await _mediator.Send(new DeletePlantCommand
+            await _mediator.Send(
+            new DeletePlantCommand
             {
                 Id = plantId
             });

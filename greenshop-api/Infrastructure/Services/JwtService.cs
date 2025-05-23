@@ -7,14 +7,20 @@ using System.Text;
 
 namespace greenshop_api.Infrastructure.Services
 {
-    public class JwtService(IOptions<JwtOptions> jwtOptions) : IJwtService
+    public class JwtService(IOptions<JwtOptions> jwtOptions) : 
+        IJwtService
     {
-        private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+        private readonly JwtOptions _jwtOptions = 
+            jwtOptions.Value;
 
         public string Generate(string id)
         {
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecurityKey!));
-            var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
+            var symmetricSecurityKey = new SymmetricSecurityKey(
+                Encoding.UTF8
+                .GetBytes(_jwtOptions.SecurityKey!));
+            var credentials = new SigningCredentials(
+                symmetricSecurityKey, 
+                SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
 
             var payload = new JwtPayload(
@@ -25,22 +31,29 @@ namespace greenshop_api.Infrastructure.Services
                 DateTime.UtcNow.AddDays(1)
             );
 
-            var securityToken = new JwtSecurityToken(header, payload);
-            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+            var securityToken = new JwtSecurityToken(
+                header, 
+                payload);
+            return new JwtSecurityTokenHandler()
+                .WriteToken(securityToken);
         }
 
         public JwtSecurityToken Verify(string jwt)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtOptions.SecurityKey!);
+            var key = Encoding.ASCII
+                .GetBytes(_jwtOptions.SecurityKey!);
 
-            tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+            tokenHandler.ValidateToken(
+            jwt, 
+            new TokenValidationParameters
             {
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = false,
                 ValidateAudience = false,
-            }, out SecurityToken validatedToken);
+            }, 
+            out SecurityToken validatedToken);
 
             return (JwtSecurityToken)validatedToken;
         }

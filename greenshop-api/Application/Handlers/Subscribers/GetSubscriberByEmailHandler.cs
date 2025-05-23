@@ -8,15 +8,23 @@ namespace greenshop_api.Application.Handlers.Subscribers
 {
     public class GetSubscriberByEmailHandler(
         ISubscribersRepository subscribersRepository, 
-        IMapper mapper) : IRequestHandler<GetSubscriberByEmailQuery, SubscriberDto>
+        IMapper mapper) : 
+        IRequestHandler<GetSubscriberByEmailQuery, SubscriberDto>
     {
-        private readonly ISubscribersRepository _subscribersRepository = subscribersRepository;
-        private readonly IMapper _mapper = mapper;
+        private readonly ISubscribersRepository _subscribersRepository = 
+            subscribersRepository;
+        private readonly IMapper _mapper = 
+            mapper;
 
-        public async Task<SubscriberDto> Handle(GetSubscriberByEmailQuery request, CancellationToken cancellationToken)
+        public async Task<SubscriberDto> Handle(
+            GetSubscriberByEmailQuery request, 
+            CancellationToken cancellationToken)
         {
-            var subscriber = await _subscribersRepository.GetSubscriberByEmailAsync(request.Email!);
-            return _mapper.Map<SubscriberDto>(subscriber);
+            var subscriber = await _subscribersRepository
+                .GetSubscriberByEmailAsync(request.Email!);
+
+            return _mapper
+                .Map<SubscriberDto>(subscriber);
         }
     }
 }

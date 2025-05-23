@@ -5,6 +5,8 @@ namespace greenshop_api.Domain.Interfaces.Creators
 {
     public interface INewsletterCreator
     {
-        MailMessage CreateNewsletter(string from, NewsletterHeader header);
+        MailMessage CreateNewsletter(
+            string from, 
+            NewsletterHeader header);
     }
 }

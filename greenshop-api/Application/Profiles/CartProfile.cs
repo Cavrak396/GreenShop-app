@@ -9,7 +9,8 @@ namespace greenshop_api.Application.Profiles
         public CartProfile()
         {
             CreateMap<Cart, CartDto>()
-                .ForMember(dest => dest.CartItems, opt => opt.MapFrom(src => src.CartItems));
+                .ForMember(dest => dest.CartItems, opt => opt
+                .MapFrom(src => src.CartItems));
         }
     }
 }

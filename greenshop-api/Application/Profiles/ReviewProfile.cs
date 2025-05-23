@@ -9,10 +9,14 @@ namespace greenshop_api.Application.Profiles
         public ReviewProfile()
         {
             CreateMap<Review, GetReviewDto>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
+            .ForMember(dest => dest.UserName, opt => opt
+            .MapFrom(src => src.User != null ? 
+            src.User.UserName : 
+            null));
 
             CreateMap<PostReviewDto, Review>()
-                .ForMember(dest => dest.Creation_Date, opt => opt.MapFrom(src => DateTime.Now));
+                .ForMember(dest => dest.Creation_Date, opt => opt
+                .MapFrom(src => DateTime.Now));
         }
 
     }

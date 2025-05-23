@@ -13,9 +13,11 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class CartItemsController(IMediator mediator) : ControllerBase
+    public class CartItemsController(IMediator mediator) : 
+        ControllerBase
     {
-        private readonly IMediator _mediator = mediator;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
@@ -25,10 +27,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(CartItem_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> CreateCartItem([FromBody]CartItemDto cartItem)
         {
-            await _mediator.Send(new AddCardItemCommand
+            await _mediator.Send(
+            new AddCardItemCommand
             {
                 CartItem = cartItem
             });
+
             return NoContent();
         }
 
@@ -41,10 +45,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(CartItem_ValidateCartItemExistsActionFIlter))]
         public async Task<IActionResult> DeleteCartItem([FromRoute]string plantId)
         {
-            await _mediator.Send(new DeleteCartItemCommand
+            await _mediator.Send(
+            new DeleteCartItemCommand
             {
                 PlantId = plantId
             });
+
             return NoContent();
         }
     }

@@ -7,24 +7,33 @@ namespace greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters
 {
     public class Subscriber_ValidateSubscriberEmailActionFilter(
         ISubscribersRepository subscribersRepository, 
-        IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
+        IActionErrorCreator actionErrorCreator) : 
+        IAsyncActionFilter
     {
-        private readonly ISubscribersRepository _subscribersRepository = subscribersRepository;
-        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly ISubscribersRepository _subscribersRepository = 
+            subscribersRepository;
+        private readonly IActionErrorCreator _actionErrorCreator = 
+            actionErrorCreator;
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context, 
+            ActionExecutionDelegate next)
         {
-            var subscriberEmail = context.ActionArguments["subscriberEmail"] as string;
+            var subscriberEmail = context
+                .ActionArguments["subscriberEmail"] as string;
 
-            var subscriber = await _subscribersRepository.GetSubscriberByEmailAsync(subscriberEmail!);
+            var subscriber = await _subscribersRepository
+                .GetSubscriberByEmailAsync(subscriberEmail!);
             if (subscriber == null)
             {
-                _actionErrorCreator.CreateActionError(
+                _actionErrorCreator
+                    .CreateActionError(
                     context,
                     "Subscriber",
                     "Subscriber is not added.",
                     404,
                     problemDetails => new NotFoundObjectResult(problemDetails));
+                
                 return;
             }
 

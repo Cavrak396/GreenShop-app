@@ -11,25 +11,38 @@ namespace greenshop_api.Application.Handlers.Reviews
         IReviewsRepository reviewsRepository,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
-        IMapper mapper) : IRequestHandler<GetReviewByPlantIdForUserQuery, GetReviewDto?>
+        IMapper mapper) : 
+        IRequestHandler<GetReviewByPlantIdForUserQuery, GetReviewDto?>
     {
-        private readonly IReviewsRepository _reviewsRepository = reviewsRepository;
-        private readonly IJwtService _jwtService = jwtService;
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-        private readonly IMapper _mapper = mapper;
+        private readonly IReviewsRepository _reviewsRepository = 
+            reviewsRepository;
+        private readonly IJwtService _jwtService = 
+            jwtService;
+        private readonly IHttpContextAccessor _httpContextAccessor = 
+            httpContextAccessor;
+        private readonly IMapper _mapper = 
+            mapper;
 
         public async Task<GetReviewDto?> Handle(GetReviewByPlantIdForUserQuery request, CancellationToken cancellationToken)
         {
-            var jwt = _httpContextAccessor.HttpContext?.Request.Cookies["jwt"];
-            var token = _jwtService.Verify(jwt!);
-            var userId = token.Issuer.ToString();
+            var jwt = _httpContextAccessor.HttpContext?
+                .Request.Cookies["jwt"];
+            var token = _jwtService
+                .Verify(jwt!);
+            var userId = token.Issuer
+                .ToString();
 
-            var review = await _reviewsRepository.GetReviewByIdsAsync(userId, request.PlantId!);
+            var review = await _reviewsRepository
+                .GetReviewByIdsAsync(
+                userId, 
+                request.PlantId!);
 
             if (review != null)
             {
-                return _mapper.Map<GetReviewDto>(review);
+                return _mapper
+                    .Map<GetReviewDto>(review);
             }
+
             return null;
         }
     }
