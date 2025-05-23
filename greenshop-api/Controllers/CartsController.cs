@@ -17,10 +17,13 @@ namespace greenshop_api.Controllers
     [Route("/[controller]")]
     public class CartsController(
         INewsletterService newsletterService,
-        IMediator mediator) : ControllerBase
+        IMediator mediator) : 
+        ControllerBase
     {
-        private readonly INewsletterService _newsletterService = newsletterService;
-        private readonly IMediator _mediator = mediator;
+        private readonly INewsletterService _newsletterService = 
+            newsletterService;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
@@ -30,7 +33,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Cart_HandleUpdateCartExceptionFilter))]
         public async Task<IActionResult> SyncCart([FromBody]List<CartItemDto> cartItems)
         {
-            var cartDto = await _mediator.Send(new AddCartCommand
+            var cartDto = await _mediator.Send(
+            new AddCartCommand
             {
                 CartItems = cartItems
             });
@@ -47,8 +51,10 @@ namespace greenshop_api.Controllers
 
         public async Task<IActionResult> PurchaseCart()
         {
-            var cartDto = await _mediator.Send(new RemoveCartItemsCommand());
-            var getUserDto = await _mediator.Send(new GetUserQuery());
+            var cartDto = await _mediator.Send(
+                new RemoveCartItemsCommand());
+            var getUserDto = await _mediator.Send(
+                new GetUserQuery());
 
             await _newsletterService.SendNewsletterAsync(
                 "purchase",
@@ -56,7 +62,8 @@ namespace greenshop_api.Controllers
                 {
                     Recipient = getUserDto.UserEmail,
                     Details = getUserDto.UserName
-                });
+                }
+            );
 
             return Ok(cartDto);
         }

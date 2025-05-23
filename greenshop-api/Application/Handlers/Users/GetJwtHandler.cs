@@ -7,15 +7,23 @@ namespace greenshop_api.Application.Handlers.Users
 {
     public class GetJwtHandler(
         IUsersRepository usersRepository, 
-        IJwtService jwtService) : IRequestHandler<GetJwtQuery, string>
+        IJwtService jwtService) : 
+        IRequestHandler<GetJwtQuery, string>
     {
-        private readonly IUsersRepository _usersRepository = usersRepository;
-        private readonly IJwtService _jwtService = jwtService;
+        private readonly IUsersRepository _usersRepository = 
+            usersRepository;
+        private readonly IJwtService _jwtService = 
+            jwtService;
 
-        public async Task<string> Handle(GetJwtQuery request, CancellationToken cancellationToken)
+        public async Task<string> Handle(
+            GetJwtQuery request, 
+            CancellationToken cancellationToken)
         {
-            var user = await _usersRepository.GetUserByEmailAsync(request.LoginDto!.Email!);
-            return _jwtService.Generate(user!.UserId!);
+            var user = await _usersRepository
+                .GetUserByEmailAsync(request.LoginDto!.Email!);
+
+            return _jwtService
+                .Generate(user!.UserId!);
         }
     }
 }

@@ -14,9 +14,11 @@ namespace greenshop_api.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class ReviewsController(IMediator mediator) : ControllerBase
+    public class ReviewsController(IMediator mediator) : 
+        ControllerBase
     {
-        private readonly IMediator _mediator = mediator;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpGet("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
@@ -27,7 +29,8 @@ namespace greenshop_api.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
-            var getReviewDtos = await _mediator.Send(new GetAllReviewsByPlantIdQuery
+            var getReviewDtos = await _mediator.Send(
+            new GetAllReviewsByPlantIdQuery
             {
                 PlantId = plantId,
                 Page = page,
@@ -44,7 +47,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviewByUser([FromRoute]string plantId)
         {
-            var getReviewDto = await _mediator.Send(new GetReviewByPlantIdForUserQuery
+            var getReviewDto = await _mediator.Send(
+            new GetReviewByPlantIdForUserQuery
             {
                 PlantId = plantId
             });
@@ -62,10 +66,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant([FromRoute]string plantId)
         {
-            var count = await _mediator.Send(new GetTotalNumberOfReviewsByPlantIdQuery
+            var count = await _mediator.Send(
+            new GetTotalNumberOfReviewsByPlantIdQuery
             {
                 PlantId = plantId
             });
+
             return Ok(count);
         }
 
@@ -74,10 +80,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<ActionResult<Dictionary<int, int>>> GetNumberOfReviewsByRatingsPerPlant([FromRoute]string plantId)
         {
-            var ratingCounts = await _mediator.Send(new GetNumberOfReviewsByRatingsQuery
+            var ratingCounts = await _mediator.Send(
+            new GetNumberOfReviewsByRatingsQuery
             {
                 PlantId = plantId
             });
+
             return Ok(ratingCounts);
         }
 
@@ -88,7 +96,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Review_ValidateCreateReviewActionFilter))]
         public async Task<IActionResult> CreateReview([FromBody]PostReviewDto review)
         {
-            await _mediator.Send(new AddReviewCommand
+            await _mediator.Send(
+            new AddReviewCommand
             {
                 Review = review
             });
@@ -104,9 +113,12 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
         [TypeFilter(typeof(Review_ValidateUpdateReviewActionFilter))]
         [TypeFilter(typeof(Review_HandleUpdateExceptionFilter))]
-        public async Task<IActionResult> UpdateReview([FromRoute]string plantId, [FromBody]PostReviewDto review)
+        public async Task<IActionResult> UpdateReview(
+            [FromRoute]string plantId, 
+            [FromBody]PostReviewDto review)
         {
-            await _mediator.Send(new UpdateReviewCommand
+            await _mediator.Send(
+            new UpdateReviewCommand
             {
                 PlantId = plantId,
                 Review = review

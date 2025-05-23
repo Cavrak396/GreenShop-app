@@ -4,19 +4,25 @@ using MediatR;
 
 namespace greenshop_api.Application.Handlers.Plants
 {
-    public class GetNumberOfPlantsByCategoriesHandler(IPlantsRepository plantsRepository) : IRequestHandler<GetNumberOfPlantsByCategoriesQuery, Dictionary<string,int>>
+    public class GetNumberOfPlantsByCategoriesHandler(IPlantsRepository plantsRepository) : 
+        IRequestHandler<GetNumberOfPlantsByCategoriesQuery, Dictionary<string,int>>
     {
-        private readonly IPlantsRepository _plantsRepository = plantsRepository;
+        private readonly IPlantsRepository _plantsRepository = 
+            plantsRepository;
 
-        public async Task<Dictionary<string, int>> Handle(GetNumberOfPlantsByCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<Dictionary<string, int>> Handle(
+            GetNumberOfPlantsByCategoriesQuery request, 
+            CancellationToken cancellationToken)
         {
             var categoryCounts = new Dictionary<string, int>();
 
             foreach (var category in request.Categories!)
             {
-                var count = await _plantsRepository.GetNumberOfPlantsByCategoryAsync(category);
+                var count = await _plantsRepository
+                    .GetNumberOfPlantsByCategoryAsync(category);
                 categoryCounts[category.Trim()] = count;
             }
+
             return categoryCounts;
         }
     }
