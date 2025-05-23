@@ -5,22 +5,31 @@ using static greenshop_api.Domain.Models.Enums.SizeEnum;
 
 namespace greenshop_api.Application.Handlers.Plants
 {
-    public class GetNumberOfPlantsBySizesHandler(IPlantsRepository plantsRepository) : IRequestHandler<GetNumberOfPlantsBySizesQuery, Dictionary<string, int>>
+    public class GetNumberOfPlantsBySizesHandler(IPlantsRepository plantsRepository) : 
+        IRequestHandler<GetNumberOfPlantsBySizesQuery, Dictionary<string, int>>
     {
-        private readonly IPlantsRepository _plantsRepository = plantsRepository;
+        private readonly IPlantsRepository _plantsRepository = 
+            plantsRepository;
 
-        public async Task<Dictionary<string, int>> Handle(GetNumberOfPlantsBySizesQuery request, CancellationToken cancellationToken)
+        public async Task<Dictionary<string, int>> Handle(
+            GetNumberOfPlantsBySizesQuery request, 
+            CancellationToken cancellationToken)
         {
             var sizeCounts = new Dictionary<string, int>();
 
-            var smallCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.S);
-            var mediumCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.M);
-            var largeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.L);
-            var extraLargeCount = await _plantsRepository.GetNumberOfPlantsBySizeAsync(Size.XL);
+            var smallCount = await _plantsRepository
+                .GetNumberOfPlantsBySizeAsync(Size.S);
+            var mediumCount = await _plantsRepository
+                .GetNumberOfPlantsBySizeAsync(Size.M);
+            var largeCount = await _plantsRepository
+                .GetNumberOfPlantsBySizeAsync(Size.L);
+            var extraLargeCount = await _plantsRepository
+                .GetNumberOfPlantsBySizeAsync(Size.XL);
 
             sizeCounts["Small"] = smallCount;
             sizeCounts["Medium"] = mediumCount;
-            sizeCounts["Large"] = largeCount + extraLargeCount;
+            sizeCounts["Large"] = largeCount + 
+                extraLargeCount;
 
             return sizeCounts;
         }

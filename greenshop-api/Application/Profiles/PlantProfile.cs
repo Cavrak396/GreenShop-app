@@ -11,7 +11,9 @@ namespace greenshop_api.Application.Profiles
             CreateMap<Plant, GetPlantDto>();
 
             CreateMap<PostPlantDto, Plant>()
-                .ForMember(dest => dest.PlantId, opt => opt.MapFrom(src => Guid.NewGuid().ToString()));
+                .ForMember(dest => dest.PlantId, opt => opt
+                .MapFrom(src => Guid.NewGuid()
+                .ToString()));
         }
     }
 }

@@ -6,6 +6,8 @@ namespace greenshop_api.Domain.Interfaces.Repositories
     {
         Task<Cart?> GetCartByUserIdAsync(string id);
         Task<Cart> AddCartAsync(Cart cart);
-        Task<Cart> UpdateCartPriceAsync(Cart cart, double price);
+        Task<Cart> UpdateCartPriceAsync(
+            Cart cart, 
+            double price);
     }
 }

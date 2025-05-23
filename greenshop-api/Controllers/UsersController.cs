@@ -16,16 +16,21 @@ namespace greenshop_api.Controllers
     [Route("/[controller]")]
     public class UsersController(
         INewsletterService newsletterService, 
-        IMediator mediator) : ControllerBase
+        IMediator mediator) : 
+        ControllerBase
     {
-        private readonly INewsletterService newsletterService = newsletterService;
-        private readonly IMediator _mediator = mediator;
+        private readonly INewsletterService newsletterService = 
+            newsletterService;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpGet("all")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         public async Task<IActionResult> GetUsers()
         {
-            var getUserDtos = await _mediator.Send(new GetAllUsersQuery());
+            var getUserDtos = await _mediator.Send(
+                new GetAllUsersQuery());
+
             return Ok(getUserDtos);
         }
 
@@ -34,7 +39,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
-            await _mediator.Send(new AddUserCommand
+            await _mediator.Send(
+            new AddUserCommand
             {
                 RegisterDto = registerDto
             });
@@ -45,7 +51,8 @@ namespace greenshop_api.Controllers
                 {
                     Recipient = registerDto.Email,
                     Details = registerDto.Name
-                });
+                }
+            );
 
             return NoContent();
         }
@@ -56,12 +63,16 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
-            var jwt = await _mediator.Send(new GetJwtQuery
+            var jwt = await _mediator.Send(
+            new GetJwtQuery
             {
                 LoginDto = loginDto
             });
 
-            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            Response.Cookies.Append(
+            "jwt", 
+            jwt, 
+            new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -81,6 +92,7 @@ namespace greenshop_api.Controllers
         {
             await Task.CompletedTask;
             Response.Cookies.Delete("jwt");
+
             return NoContent();
         }
 
@@ -90,7 +102,9 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetUser()
         {
-            var getUserDto = await _mediator.Send(new GetUserQuery());
+            var getUserDto = await _mediator.Send(
+                new GetUserQuery());
+
             return Ok(getUserDto);
         }
 
@@ -101,7 +115,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_HandleUpdateUserExceptionFilter))]
         public async Task<IActionResult> UpdateUserIsSubscribed([FromRoute]bool isSubscribed)
         {
-            await _mediator.Send(new UpdateUserIsSubscribedCommand 
+            await _mediator.Send(
+            new UpdateUserIsSubscribedCommand 
             { 
                 IsSubscribed = isSubscribed 
             });
@@ -115,8 +130,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> DeleteUser()
         {
-            await _mediator.Send(new DeleteUserCommand());
-
+            await _mediator.Send(
+                new DeleteUserCommand());
             Response.Cookies.Delete("jwt");
 
             return NoContent();

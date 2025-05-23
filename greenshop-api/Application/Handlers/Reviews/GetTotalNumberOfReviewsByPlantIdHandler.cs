@@ -4,12 +4,17 @@ using MediatR;
 
 namespace greenshop_api.Application.Handlers.Reviews
 {
-    public class GetTotalNumberOfReviewsByPlantIdHandler(IReviewsRepository reviewsRepository) : IRequestHandler<GetTotalNumberOfReviewsByPlantIdQuery, int>
+    public class GetTotalNumberOfReviewsByPlantIdHandler(IReviewsRepository reviewsRepository) : 
+        IRequestHandler<GetTotalNumberOfReviewsByPlantIdQuery, int>
     {
-        private readonly IReviewsRepository _reviewsRepository = reviewsRepository;
-        public async Task<int> Handle(GetTotalNumberOfReviewsByPlantIdQuery request, CancellationToken cancellationToken)
+        private readonly IReviewsRepository _reviewsRepository = 
+            reviewsRepository;
+        public async Task<int> Handle(
+            GetTotalNumberOfReviewsByPlantIdQuery request, 
+            CancellationToken cancellationToken)
         {
-            return await _reviewsRepository.GetTotalNumberOfReviewsByPlantIdAsync(request.PlantId!);
+            return await _reviewsRepository
+                .GetTotalNumberOfReviewsByPlantIdAsync(request.PlantId!);
         }
     }
 }

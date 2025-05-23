@@ -11,6 +11,7 @@ namespace greenshop_api.Domain.Interfaces.Creators
             string message,
             int statusCode,
             Func<ValidationProblemDetails, TResult> resultFactory)
-            where TResult : ObjectResult;
+            where TResult : 
+            ObjectResult;
     }
 }

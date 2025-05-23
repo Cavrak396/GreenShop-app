@@ -14,16 +14,20 @@ namespace greenshop_api.Controllers
     [Route("/[controller]")]
     public class SubscribersController(
         INewsletterService newsletterService, 
-        IMediator mediator) : ControllerBase
+        IMediator mediator) : 
+        ControllerBase
     {
-        private readonly INewsletterService _newsletterService = newsletterService;
-        private readonly IMediator _mediator = mediator;
+        private readonly INewsletterService _newsletterService = 
+            newsletterService;
+        private readonly IMediator _mediator = 
+            mediator;
 
         [HttpGet]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         public async Task<IActionResult> GetSubscribers()
         {
-            var subscriberDtos = await _mediator.Send(new GetAllSubscribersQuery());
+            var subscriberDtos = await _mediator.Send(
+                new GetAllSubscribersQuery());
             return Ok(subscriberDtos);
         }
 
@@ -32,7 +36,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberActionFilter))]
         public async Task<IActionResult> CreateSubscriber([FromBody]SubscriberDto subscriber)
         {
-            await _mediator.Send(new AddSubscriberCommand
+            await _mediator.Send(
+            new AddSubscriberCommand
             {
                 Subscriber = subscriber
             });
@@ -42,7 +47,8 @@ namespace greenshop_api.Controllers
                 new NewsletterHeader
                 {
                     Recipient = subscriber.SubscriberEmail
-                });
+                }
+            );
 
             return NoContent();
         }
@@ -52,7 +58,8 @@ namespace greenshop_api.Controllers
         [TypeFilter(typeof(Subscriber_ValidateSubscriberEmailActionFilter))]
         public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberEmail)
         {
-            await _mediator.Send(new DeleteSubscriberCommand
+            await _mediator.Send(
+            new DeleteSubscriberCommand
             {
                 Email = subscriberEmail
             });

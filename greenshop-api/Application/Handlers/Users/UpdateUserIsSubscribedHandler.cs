@@ -12,35 +12,57 @@ namespace greenshop_api.Application.Handlers.Users
         ISubscribersRepository subscribersRepository,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
-        IMapper mapper) : IRequestHandler<UpdateUserIsSubscribedCommand, Unit>
+        IMapper mapper) : 
+        IRequestHandler<UpdateUserIsSubscribedCommand, Unit>
     {
-        private readonly IUsersRepository _usersRepository = usersRepository;
-        private readonly ISubscribersRepository _subscribersRepository = subscribersRepository;
-        private readonly IJwtService _jwtService = jwtService;
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-        private readonly IMapper _mapper = mapper;
+        private readonly IUsersRepository _usersRepository = 
+            usersRepository;
+        private readonly ISubscribersRepository _subscribersRepository = 
+            subscribersRepository;
+        private readonly IJwtService _jwtService = 
+            jwtService;
+        private readonly IHttpContextAccessor _httpContextAccessor = 
+            httpContextAccessor;
+        private readonly IMapper _mapper = 
+            mapper;
 
-        public async Task<Unit> Handle(UpdateUserIsSubscribedCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(
+            UpdateUserIsSubscribedCommand request, 
+            CancellationToken cancellationToken)
         {
-            var jwt = _httpContextAccessor.HttpContext?.Request.Cookies["jwt"];
-            var token = _jwtService.Verify(jwt!);
-            var userId = token.Issuer.ToString();
-            var userToUpdate = await _usersRepository.GetUserByIdAsync(userId);
+            var jwt = _httpContextAccessor.HttpContext?
+                .Request.Cookies["jwt"];
+            var token = _jwtService
+                .Verify(jwt!);
+            var userId = token.Issuer
+                .ToString();
+            var userToUpdate = await _usersRepository
+                .GetUserByIdAsync(userId);
 
-            var subscriber = await _subscribersRepository.GetSubscriberByEmailAsync(userToUpdate!.UserEmail!);
+            var subscriber = await _subscribersRepository
+                .GetSubscriberByEmailAsync(userToUpdate!.UserEmail!);
 
-            if (userToUpdate.IsSubscribed && subscriber == null)
+            if (userToUpdate.IsSubscribed && 
+                subscriber == null)
             {
-                var subscriberToCreate = _mapper.Map<Subscriber>(userToUpdate);
-                await _subscribersRepository.AddSubscriberAsync(subscriberToCreate);
+                var subscriberToCreate = _mapper
+                    .Map<Subscriber>(userToUpdate);
+                await _subscribersRepository
+                    .AddSubscriberAsync(subscriberToCreate);
             }
             
-            if (!userToUpdate.IsSubscribed && subscriber != null)
+            if (!userToUpdate.IsSubscribed && 
+                subscriber != null)
             {
-                await _subscribersRepository.DeleteSubscriberAsync(subscriber);
+                await _subscribersRepository
+                    .DeleteSubscriberAsync(subscriber);
             }
 
-            await _usersRepository.UpdateUserIsSubscribedAsync(userToUpdate!, request.IsSubscribed);
+            await _usersRepository
+                .UpdateUserIsSubscribedAsync(
+                userToUpdate!, 
+                request.IsSubscribed);
+
             return Unit.Value;
         }
     }

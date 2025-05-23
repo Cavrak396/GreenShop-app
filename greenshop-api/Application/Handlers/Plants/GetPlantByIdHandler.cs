@@ -8,15 +8,23 @@ namespace greenshop_api.Application.Handlers.Plants
 {
     public class GetPlantByIdHandler(
         IPlantsRepository plantsRepository,
-        IMapper mapper) : IRequestHandler<GetPlantByIdQuery, GetPlantDto>
+        IMapper mapper) : 
+        IRequestHandler<GetPlantByIdQuery, GetPlantDto>
     {
-        private readonly IPlantsRepository _plantsRepository = plantsRepository;
-        private readonly IMapper _mapper = mapper;
+        private readonly IPlantsRepository _plantsRepository = 
+            plantsRepository;
+        private readonly IMapper _mapper = 
+            mapper;
 
-        public async Task<GetPlantDto> Handle(GetPlantByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetPlantDto> Handle(
+            GetPlantByIdQuery request, 
+            CancellationToken cancellationToken)
         {
-            var plant = await _plantsRepository.GetPlantByIdAsync(request.Id!);
-            return _mapper.Map<GetPlantDto>(plant);
+            var plant = await _plantsRepository
+                .GetPlantByIdAsync(request.Id!);
+
+            return _mapper
+                .Map<GetPlantDto>(plant);
         }
     }
 }

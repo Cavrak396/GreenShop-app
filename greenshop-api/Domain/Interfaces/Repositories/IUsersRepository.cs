@@ -9,7 +9,9 @@ namespace greenshop_api.Domain.Interfaces.Repositories
         Task<List<User>> GetUsersByIdsAsync(List<string> ids);
         Task<User?> GetUserByEmailAsync(string email);
         Task AddUserAsync(User user);
-        Task UpdateUserIsSubscribedAsync(User user, bool isSubscribed);
+        Task UpdateUserIsSubscribedAsync(
+            User user, 
+            bool isSubscribed);
         Task DeleteUserAsync(User user);
     }
 }
