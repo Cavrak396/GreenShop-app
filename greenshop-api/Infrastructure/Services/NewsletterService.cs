@@ -32,21 +32,32 @@ namespace greenshop_api.Infrastructure.Services
             };
         }
 
-        public async Task SendNewsletterAsync(string type, NewsletterHeader header)
+        public async Task SendNewsletterAsync(
+            string type, 
+            NewsletterHeader header)
         {
             var newsletterType = _newsletterTypeMap[type];
-            INewsletterCreator creator = (INewsletterCreator)ActivatorUtilities.CreateInstance(_serviceProvider, newsletterType);
+            INewsletterCreator creator = (INewsletterCreator)
+                ActivatorUtilities.CreateInstance(
+                    _serviceProvider, 
+                    newsletterType);
 
-            MailMessage newsletter = creator.CreateNewsletter(_smtpUsername, header);
+            MailMessage newsletter = creator
+                .CreateNewsletter(
+                _smtpUsername, 
+                header);
 
             try
             {
-                await _smtpClient.SendMailAsync(newsletter);
-                Console.WriteLine("Email sent successfully!");
+                await _smtpClient
+                    .SendMailAsync(newsletter);
+                Console.WriteLine(
+                    "Email sent successfully!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine(
+                    $"Exception: {ex.Message}");
             }
         }
     }

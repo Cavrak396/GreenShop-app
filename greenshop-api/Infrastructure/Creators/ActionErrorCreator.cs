@@ -12,14 +12,20 @@ namespace greenshop_api.Infrastructure.Creators
             string message, 
             int statusCode, 
             Func<ValidationProblemDetails, TResult> resultFactory) 
-            where TResult : ObjectResult
+            where TResult : 
+            ObjectResult
         {
-            context.ModelState.AddModelError(key, message);
+            context.ModelState
+                .AddModelError(
+                key, 
+                message);
 
-            var problemDetails = new ValidationProblemDetails(context.ModelState)
+            var problemDetails = 
+            new ValidationProblemDetails(context.ModelState)
             {
                 Status = statusCode
             };
+
             context.Result = resultFactory(problemDetails);
         }
     }

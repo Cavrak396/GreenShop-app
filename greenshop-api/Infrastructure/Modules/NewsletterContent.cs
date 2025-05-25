@@ -4,7 +4,9 @@ namespace greenshop_api.Infrastructure.Services.Newsletter
 {
     public class NewsletterContent : INewsletterContent
     {
-        public string GenerateContent(string title, string body)
+        public string GenerateContent(
+            string title, 
+            string body)
         {
             return $@"
             <html>

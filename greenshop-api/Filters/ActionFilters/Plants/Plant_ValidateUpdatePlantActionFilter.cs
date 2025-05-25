@@ -10,24 +10,36 @@ namespace greenshop_api.Filters.ActionFilters.Plant_ActionFilters
         IPlantsRepository plantsRepository,
         IActionErrorCreator actionErrorCreator) : IAsyncActionFilter
     {
-        private readonly IPlantsRepository _plantsRepository = plantsRepository;
-        private readonly IActionErrorCreator _actionErrorCreator = actionErrorCreator;
+        private readonly IPlantsRepository _plantsRepository = 
+            plantsRepository;
+        private readonly IActionErrorCreator _actionErrorCreator = 
+            actionErrorCreator;
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context, 
+            ActionExecutionDelegate next)
         {
-            var plantId = context.ActionArguments["plantId"] as string;
-            var plant = context.ActionArguments["plant"] as PostPlantDto;
+            var plantId = context
+                .ActionArguments["plantId"] as string;
+            var plant = context
+                .ActionArguments["plant"] as PostPlantDto;
 
-            var existingPlant = await _plantsRepository.GetPlantByNameAndSizeAsync(plant!.Name!, plant.Size);
+            var existingPlant = await _plantsRepository
+                .GetPlantByNameAndSizeAsync(
+                plant!.Name!, 
+                plant.Size);
 
-            if (existingPlant != null && existingPlant.PlantId != plantId)
+            if (existingPlant != null && 
+                existingPlant.PlantId != plantId)
             {
-                _actionErrorCreator.CreateActionError(
+                _actionErrorCreator
+                    .CreateActionError(
                     context,
                     "Plant",
                     "Plant already exists.",
                     409,
                     problemDetails => new ConflictObjectResult(problemDetails));
+
                 return;
             }
 

@@ -9,16 +9,21 @@ namespace greenshop_api.Infrastructure.Bootstrap
         public static IServiceCollection AddSmtpClient(
             this IServiceCollection services)
         {
-            services.AddSingleton(sp =>
+            services.AddScoped(sp =>
             {
-                var _smtpOptions = sp.GetRequiredService<IOptions<SmtpOptions>>().Value;
-                return new SmtpClient(_smtpOptions.Server, _smtpOptions.Port)
+                var _smtpOptions = sp
+                .GetRequiredService<IOptions<SmtpOptions>>().Value;
+
+                return new SmtpClient(
+                    _smtpOptions.Server, 
+                    _smtpOptions.Port)
                 {
                     Credentials = new System.Net.NetworkCredential(
                         _smtpOptions.Username, _smtpOptions.Password),
                     EnableSsl = _smtpOptions.EnableSsl,
                 };
             });
+
             return services;
         }
     }

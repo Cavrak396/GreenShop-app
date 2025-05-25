@@ -5,24 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace greenshop_api.Infrastructure.Repositories
 {
-    public class UsersRepository(ApplicationDbContext dbContext) : IUsersRepository
+    public class UsersRepository(ApplicationDbContext dbContext) : 
+        IUsersRepository
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly ApplicationDbContext _dbContext = 
+            dbContext;
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.Users
+                .ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(string id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.Users
+                .FindAsync(id);
         }
 
         public async Task<List<User>> GetUsersByIdsAsync(List<string> ids)
         {
             return await _dbContext.Users
-                .Where(u => ids.Contains(u.UserId!))
+                .Where(u => ids
+                .Contains(u.UserId!))
                 .ToListAsync();
         }
 
@@ -34,20 +39,27 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task AddUserAsync(User user)
         {
-            _dbContext.Users.Add(user);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Users
+                .Add(user);
+            await _dbContext
+                .SaveChangesAsync();
         }
 
-        public async Task UpdateUserIsSubscribedAsync(User user, bool isSubscribed)
+        public async Task UpdateUserIsSubscribedAsync(
+            User user, 
+            bool isSubscribed)
         {
             user.IsSubscribed = isSubscribed;
-            await _dbContext.SaveChangesAsync();
+            await _dbContext
+                .SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(User user)
         {
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Users
+                .Remove(user);
+            await _dbContext
+                .SaveChangesAsync();
         }
     }
 }

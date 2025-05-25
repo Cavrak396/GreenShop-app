@@ -18,17 +18,28 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Threading.RateLimiting;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication
+    .CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("GreenshopManagement");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
-builder.Services.AddTransient<NewsletterService>();
-builder.Services.AddMvc();
+var connectionString = builder.Configuration
+    .GetConnectionString("GreenshopManagement");
+builder.Services
+    .AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.UseMySql(
+            connectionString,
+            ServerVersion
+            .AutoDetect(connectionString));
+    });
 
-builder.Services.AddCors(options =>
+builder.Services
+    .AddTransient<NewsletterService>();
+
+builder.Services
+    .AddMvc();
+
+builder.Services
+    .AddCors(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
@@ -64,24 +75,36 @@ builder.Services.AddCors(options =>
     }
 });
 
-builder.Services.AddAutoMapper(typeof(CartProfile), typeof(CartItemProfile));
-builder.Services.AddHttpContextAccessor();
+builder.Services
+    .AddAutoMapper(
+    typeof(CartProfile), 
+    typeof(CartItemProfile));
 
-builder.Services.AddControllers()
+builder.Services
+    .AddHttpContextAccessor();
+
+builder.Services
+    .AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-        options.SerializerSettings.Formatting = Formatting.None;
+        options.SerializerSettings.ReferenceLoopHandling = 
+        ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.PreserveReferencesHandling = 
+        PreserveReferencesHandling.None;
+        options.SerializerSettings.Formatting = 
+        Formatting.None;
     });
 
-builder.Services.AddRateLimiter(options =>
+builder.Services
+    .AddRateLimiter(options =>
 {
-    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.RejectionStatusCode = 
+    StatusCodes.Status429TooManyRequests;
 
     options.AddPolicy("SlidingWindowIpAddressLimiter", httpContext =>
         RateLimitPartition.GetSlidingWindowLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+            partitionKey: httpContext.Connection.RemoteIpAddress?
+            .ToString(),
             factory: _ => new SlidingWindowRateLimiterOptions
             {
                 PermitLimit = 120,
@@ -95,7 +118,8 @@ builder.Services.AddRateLimiter(options =>
 
     options.AddPolicy("SlidingWindowIpAddressRestrictLimiter", httpContext =>
         RateLimitPartition.GetSlidingWindowLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+            partitionKey: httpContext.Connection.RemoteIpAddress?
+            .ToString(),
             factory: _ => new SlidingWindowRateLimiterOptions
             {
                 PermitLimit = 10,
@@ -109,7 +133,8 @@ builder.Services.AddRateLimiter(options =>
 
     options.AddPolicy("TokenBucketIpAddressLimiter", httpContext =>
         RateLimitPartition.GetTokenBucketLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+            partitionKey: httpContext.Connection.RemoteIpAddress?
+            .ToString(),
             factory: _ => new TokenBucketRateLimiterOptions
             {
                 TokenLimit = 20,
@@ -123,7 +148,8 @@ builder.Services.AddRateLimiter(options =>
 
     options.AddPolicy("TokenBucketIpAddressRestrictLimiter", httpContext =>
         RateLimitPartition.GetTokenBucketLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+            partitionKey: httpContext.Connection.RemoteIpAddress?
+            .ToString(),
             factory: _ => new TokenBucketRateLimiterOptions
             {
                 TokenLimit = 10,
@@ -137,7 +163,8 @@ builder.Services.AddRateLimiter(options =>
 
     options.AddPolicy("ConcurrencyIpAddressLimiter", httpContext =>
         RateLimitPartition.GetConcurrencyLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+            partitionKey: httpContext.Connection.RemoteIpAddress?
+            .ToString(),
             factory: _ => new ConcurrencyLimiterOptions
             {
                 PermitLimit = 5,
@@ -148,38 +175,60 @@ builder.Services.AddRateLimiter(options =>
     );
 });
 
-builder.Services.Configure<JwtOptions>(
-    builder.Configuration.GetSection("JWT"));
-builder.Services.Configure<SmtpOptions>(
-    builder.Configuration.GetSection("SMTP"));
+builder.Services
+    .Configure<JwtOptions>(builder.Configuration
+    .GetSection("JWT"));
+builder.Services
+    .Configure<SmtpOptions>(builder.Configuration
+    .GetSection("SMTP"));
 
-builder.Services.AddSmtpClient();
+builder.Services
+    .AddSmtpClient();
 
-builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services
+    .AddScoped<IJwtService, JwtService>();
 
-builder.Services.AddScoped<INewsletterService, NewsletterService>();
+builder.Services
+    .AddScoped<INewsletterService, NewsletterService>();
 
-builder.Services.AddScoped<IPlantsRepository, PlantsRepository>();
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddScoped<ISubscribersRepository, SubscribersRepository>();
-builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
-builder.Services.AddScoped<ICartsRepository, CartsRepository>();
-builder.Services.AddScoped<ICartItemsRepository, CartItemsRepository>();
+builder.Services
+    .AddScoped<IPlantsRepository, PlantsRepository>();
+builder.Services
+    .AddScoped<IUsersRepository, UsersRepository>();
+builder.Services
+    .AddScoped<ISubscribersRepository, SubscribersRepository>();
+builder.Services
+    .AddScoped<IReviewsRepository, ReviewsRepository>();
+builder.Services
+    .AddScoped<ICartsRepository, CartsRepository>();
+builder.Services
+    .AddScoped<ICartItemsRepository, CartItemsRepository>();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+builder.Services
+    .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+        Assembly.GetExecutingAssembly()));
 
-builder.Services.AddScoped<INewsletterContent, NewsletterContent>();
-builder.Services.AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
-builder.Services.AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
-builder.Services.AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
-builder.Services.AddScoped<INewsletterCreator, PurchaseNewsletterCreator>();
+builder.Services
+    .AddScoped<INewsletterContent, NewsletterContent>();
+builder.Services
+    .AddScoped<INewsletterCreator, RegistrationNewsletterCreator>();
+builder.Services
+    .AddScoped<INewsletterCreator, NewPlantNewsletterCreator>();
+builder.Services
+    .AddScoped<INewsletterCreator, SubscriptionNewsletterCreator>();
+builder.Services
+    .AddScoped<INewsletterCreator, PurchaseNewsletterCreator>();
 
-builder.Services.AddScoped<IActionErrorCreator, ActionErrorCreator>();
-builder.Services.AddScoped<IExceptionCreator, ExceptionCreator>();
+builder.Services
+    .AddScoped<IActionErrorCreator, ActionErrorCreator>();
+builder.Services
+    .AddScoped<IExceptionCreator, ExceptionCreator>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddEndpointsApiExplorer();
 
+builder.Services
+    .AddSwaggerGen();
 
 var app = builder.Build();
 
