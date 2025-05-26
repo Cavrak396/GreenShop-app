@@ -13,19 +13,19 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _dbContext.Users
+            return await _dbContext.Users!
                 .ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(string id)
         {
-            return await _dbContext.Users
+            return await _dbContext.Users!
                 .FindAsync(id);
         }
 
         public async Task<List<User>> GetUsersByIdsAsync(List<string> ids)
         {
-            return await _dbContext.Users
+            return await _dbContext.Users!
                 .Where(u => ids
                 .Contains(u.UserId!))
                 .ToListAsync();
@@ -33,13 +33,13 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _dbContext.Users
+            return await _dbContext.Users!
                 .FirstOrDefaultAsync(u => u.UserEmail == email);
         }
 
         public async Task AddUserAsync(User user)
         {
-            _dbContext.Users
+            _dbContext.Users!
                 .Add(user);
             await _dbContext
                 .SaveChangesAsync();
@@ -56,7 +56,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task DeleteUserAsync(User user)
         {
-            _dbContext.Users
+            _dbContext.Users!
                 .Remove(user);
             await _dbContext
                 .SaveChangesAsync();

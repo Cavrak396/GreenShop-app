@@ -16,7 +16,8 @@ namespace greenshop_api.Application.Profiles
 
             CreateMap<PostReviewDto, Review>()
                 .ForMember(dest => dest.Creation_Date, opt => opt
-                .MapFrom(src => DateTime.Now));
+                .MapFrom(src => DateTime
+                .SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
         }
 
     }
