@@ -13,20 +13,20 @@ namespace greenshop_api.Infrastructure.Repositories
             dbContext;
         public IQueryable<Plant> GetAllPlantsQueryable()
         {
-            return _dbContext.Plants
+            return _dbContext.Plants!
                 .AsQueryable();
         }
 
         public async Task<List<Plant>> GetOtherPlantsAsync(string id)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .Where(p => p.PlantId != id)
                 .ToListAsync();
         }
 
         public async Task<Plant?> GetPlantByIdAsync(string id)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .FindAsync(id);
         }
 
@@ -34,7 +34,7 @@ namespace greenshop_api.Infrastructure.Repositories
             string name, 
             Size size)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .FirstOrDefaultAsync(p => p.Name!
                 .ToLower().Trim() == 
                 name.ToLower().Trim() 
@@ -43,7 +43,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<Dictionary<string, Plant>> GetPlantsByIdsAsync(List<string> ids)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .Where(p => ids
                 .Contains(p.PlantId!))
                 .ToDictionaryAsync(p => p.PlantId!);
@@ -51,13 +51,13 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<int> GetTotalNumberOfPlantsAsync()
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .CountAsync();
         }
 
         public async Task<int> GetNumberOfPlantsByCategoryAsync(string category)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .CountAsync(p => p.Category!
                 .ToLower().Trim() == 
                 category.ToLower().Trim());
@@ -65,13 +65,13 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<int> GetNumberOfPlantsBySizeAsync(Size size)
         {
-            return await _dbContext.Plants
+            return await _dbContext.Plants!
                 .CountAsync(p => p.Size == size);
         }
 
         public async Task<Plant> AddPlantAsync(Plant plant)
         {
-            var result = _dbContext.Plants
+            var result = _dbContext.Plants!
                 .Add(plant);
             await _dbContext
                 .SaveChangesAsync();
@@ -118,7 +118,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task DeletePlantAsync(Plant plant)
         {
-            _dbContext.Plants
+            _dbContext.Plants!
                 .Remove(plant);
             await _dbContext
                 .SaveChangesAsync();
