@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using greenshop_api.Infrastructure.Persistance;
 
 #nullable disable
@@ -18,21 +18,21 @@ namespace greenshop_api.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("greenshop_api.Domain.Models.Cart", b =>
                 {
                     b.Property<string>("CartId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<double>("CartPrice")
-                        .HasColumnType("double");
+                        .HasColumnType("double precision");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("CartId");
 
@@ -40,18 +40,50 @@ namespace greenshop_api.Migrations
                         .IsUnique();
 
                     b.ToTable("Carts");
+
+                    b.HasData(
+                        new
+                        {
+                            CartId = "087a1435-dae5-4dfd-9eba-8d480fe89f17",
+                            CartPrice = 0.0,
+                            UserId = "26945430-abed-4187-9088-3f8f2c531e9b"
+                        },
+                        new
+                        {
+                            CartId = "c528da8d-ea92-4755-8b28-3302c73e0c18",
+                            CartPrice = 0.0,
+                            UserId = "aaec19e4-0cdd-4b9c-800e-12525cc990a8"
+                        },
+                        new
+                        {
+                            CartId = "030c549a-dd21-4fbb-b827-b63732057c7b",
+                            CartPrice = 0.0,
+                            UserId = "3f81fe8b-852c-4190-8be3-91508c5ad2fa"
+                        },
+                        new
+                        {
+                            CartId = "8dfb9a93-d1c9-4678-b1b6-a58c53e9e65d",
+                            CartPrice = 0.0,
+                            UserId = "cb247c72-dfb0-4848-a3ef-1218ee97b97d"
+                        },
+                        new
+                        {
+                            CartId = "f99f9484-c108-465c-b1b4-86502fb069c8",
+                            CartPrice = 0.0,
+                            UserId = "7118530e-b675-4fe6-b190-0711822b943f"
+                        });
                 });
 
             modelBuilder.Entity("greenshop_api.Domain.Models.CartItem", b =>
                 {
                     b.Property<string>("CartId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlantId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("CartId", "PlantId");
 
@@ -66,56 +98,56 @@ namespace greenshop_api.Migrations
             modelBuilder.Entity("greenshop_api.Domain.Models.Plant", b =>
                 {
                     b.Property<string>("PlantId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("Acquisition_Date")
                         .IsRequired()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("DiningRoom_Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("LivingRoom_Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Long_Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Office_Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<double?>("Price")
                         .IsRequired()
-                        .HasColumnType("double");
+                        .HasColumnType("double precision");
 
                     b.Property<int>("Sale_Percent")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Sale_Percent_Private")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Short_Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("Size")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Tags")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("PlantId");
 
@@ -124,175 +156,508 @@ namespace greenshop_api.Migrations
                     b.HasData(
                         new
                         {
-                            PlantId = "c5f4802f-c1fd-4d03-9c4f-43f3a23658e2",
-                            Acquisition_Date = new DateTime(2024, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "a2e4a3dc-85e3-4b14-874e-4d803b4a3c8a",
+                            Acquisition_Date = new DateTime(2025, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "Potter Plants",
-                            DiningRoom_Description = "The Barberton daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
-                            Image = "barbertonDaisy.png",
-                            LivingRoom_Description = "The Barberton daisy is a vibrant, easy-to-care-for plant that brings a pop of color to any living room with its large, bright blooms. Its air-purifying qualities make it a beautiful and functional addition to indoor spaces.",
-                            Long_Description = "The Barberton daisy (Gerbera jamesonii), also known as the Transvaal or Gerbera daisy, is a vibrantperennial flowering plant native to South Africa.It is known for its large, brightly colored blooms that come in a variety of shades such as red, pink, orange, and yellow, making it a popular choice for gardens and floral arrangements.\nThe Barberton daisy typically blooms from late spring to fall, providing a long season of vibrant color. It thrives in well-drained soil and sunny locations, but can tolerate partial shade, making it a versatile option for both garden beds and pots. Indoors, it can be grown as a houseplant under bright, indirect light.",
+                            DiningRoom_Description = "The Barberton Daisy adds a cheerful touch to the dining room with its vivid, colorful flowers. Its ability to improve indoor air quality makes it a refreshing and attractive centerpiece for any dining space.",
+                            Image = "barbertonDaisy.webp",
+                            LivingRoom_Description = "The Barberton Daisy is a vibrant, easy-to-care-for plant that brings a pop of color to any living room with its large, bright blooms. Its air-purifying qualities make it a beautiful and functional addition to indoor spaces.",
+                            Long_Description = "The Barberton Daisy (Gerbera Jamesonii), also known as the Transvaal or Gerbera Daisy, is a vibrantperennial flowering plant native to South Africa.It is known for its large, brightly colored blooms that come in a variety of shades such as red, pink, orange, and yellow, making it a popular choice for gardens and floral arrangements.\nThe Barberton daisy typically blooms from late spring to fall, providing a long season of vibrant color. It thrives in well-drained soil and sunny locations, but can tolerate partial shade, making it a versatile option for both garden beds and pots. Indoors, it can be grown as a houseplant under bright, indirect light.",
                             Name = "Barberton Daisy",
-                            Office_Description = "The Barberton daisy brightens up the office with its bold, colorful blooms, adding a touch of nature to the workspace. Its air-purifying properties also help create a healthier, more productive environment.",
+                            Office_Description = "The Barberton Daisy brightens up the office with its bold, colorful blooms, adding a touch of nature to the workspace. Its air-purifying properties also help create a healthier, more productive environment.",
                             Price = 119.0,
                             Sale_Percent = 0,
                             Sale_Percent_Private = 20,
-                            Short_Description = "The Barberton daisy (Gerbera jamesonii), also known as the Transvaal or Gerbera daisy, is a vibrant, perennial flowering plant native to South Africa. It is known for its large, brightly colored blooms that come in a variety of shades such as red, pink, orange, and yellow, making it a popular choice for gardens and floral arrangements.",
+                            Short_Description = "The Barberton Daisy (Gerbera Jamesonii), also known as the Transvaal or Gerbera Daisy, is a vibrant, perennial flowering plant native to South Africa. It is known for its large, brightly colored blooms that come in a variety of shades such as red, pink, orange, and yellow, making it a popular choice for gardens and floral arrangements.",
                             Size = 1,
                             Tags = "Home, Garden, Plants"
                         },
                         new
                         {
-                            PlantId = "a1700f9e-ecbc-48ed-a81e-c013f4bac45a",
-                            Acquisition_Date = new DateTime(2024, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "d99ef046-f8bb-4c4c-aee3-f16258635f56",
+                            Acquisition_Date = new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "Potter Plants",
-                            DiningRoom_Description = "The Angel Wing begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
-                            Image = "angelWingBegonia.png",
-                            LivingRoom_Description = "The Angel Wing begonia brings a touch of elegance to the living room with its striking, wing-shaped leaves and vibrant clusters of tubular flowers. Its lush foliage and colorful blooms create a warm, inviting atmosphere while enhancing indoor air quality.",
-                            Long_Description = "The Angel Wing begonia (Begonia corymbosa) is a stunning houseplant with large, wing-shaped leaves featuring silvery spots. It produces vibrant clusters of tubular flowers in pink, red, or white, adding elegance to any indoor space.\nWith proper care, it can bloom throughout the year, providing continuous color and interest. The Angel Wing begonia is also known for its ability to improve indoor air quality, making it a beneficial addition to homes and offices alike. Its unique foliage and striking flowers make it a favorite among plant enthusiasts and decorators.",
+                            DiningRoom_Description = "The Angel Wing Begonia adds a charming focal point to the dining room with its unique, wing-shaped leaves and vibrant, tubular flowers. Its lush greenery and colorful blooms create a lively ambiance, making mealtime more inviting and enjoyable.",
+                            Image = "angelWingBegonia.webp",
+                            LivingRoom_Description = "The Angel Wing Begonia brings a touch of elegance to the living room with its striking, wing-shaped leaves and vibrant clusters of tubular flowers. Its lush foliage and colorful blooms create a warm, inviting atmosphere while enhancing indoor air quality.",
+                            Long_Description = "The Angel Wing Begonia (Begonia Corymbosa) is a stunning houseplant with large, wing-shaped leaves featuring silvery spots. It produces vibrant clusters of tubular flowers in pink, red, or white, adding elegance to any indoor space.\nWith proper care, it can bloom throughout the year, providing continuous color and interest. The Angel Wing begonia is also known for its ability to improve indoor air quality, making it a beneficial addition to homes and offices alike. Its unique foliage and striking flowers make it a favorite among plant enthusiasts and decorators.",
                             Name = "Angel Wing Begonia",
-                            Office_Description = "The Angel Wing begonia enhances the office environment with its distinctive wing-shaped leaves and bright, tubular flowers. Its lively appearance adds a touch of nature, helping to create a refreshing and inspiring workspace.",
-                            Price = 169.0,
+                            Office_Description = "The Angel Wing Begonia enhances the office environment with its distinctive wing-shaped leaves and bright, tubular flowers. Its lively appearance adds a touch of nature, helping to create a refreshing and inspiring workspace.",
+                            Price = 99.0,
                             Sale_Percent = 0,
                             Sale_Percent_Private = 10,
-                            Short_Description = "The Angel Wing begonia (Begonia corymbosa) is a stunning houseplant with large, wing-shaped leaves featuring silvery spots. It produces vibrant clusters of tubular flowers in pink, red, or white, adding elegance to any indoor space.",
-                            Size = 2,
+                            Short_Description = "The Angel Wing Begonia (Begonia Corymbosa) is a stunning houseplant with large, wing-shaped leaves featuring silvery spots. It produces vibrant clusters of tubular flowers in pink, red, or white, adding elegance to any indoor space.",
+                            Size = 0,
                             Tags = "Potter, Garden, Plants"
                         },
                         new
                         {
-                            PlantId = "1cf4f6ba-0433-4bc9-af8f-d32c9058e6f1",
-                            Acquisition_Date = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "5f772372-0489-4e91-9ee8-227e23824907",
+                            Acquisition_Date = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "House Plants",
-                            DiningRoom_Description = "The African violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
-                            Image = "africanViolet.png",
-                            LivingRoom_Description = "The African violet adds a delightful pop of color to the living room with its vibrant, fuzzy blooms in shades of purple, pink, and white. Its compact size and easy care make it a perfect choice for brightening up shelves or tabletops.",
-                            Long_Description = "The African violet (Saintpaulia) is a beloved houseplant known for its soft, fuzzy leaves and vibrant, colorful flowers that bloom in shades of purple, pink, and white. This charming plant is easy to care for, thriving in low to moderate light conditions and preferring consistent moisture without waterlogging. With its compact size, the African violet fits perfectly on windowsills, desks, or shelves, bringing a cheerful touch to any indoor space.\nBlooming throughout the year with proper care, it can create a lively display of color and elegance. African violets are also known for their ability to adapt to various indoor environments, making them a popular choice for both beginners and experienced gardeners. Additionally, they can be propagated easily through leaf cuttings, allowing enthusiasts to share their beauty with friends and family.",
-                            Name = "African Violet",
-                            Office_Description = "The African violet brightens up the office with its cheerful, colorful blooms and lush, fuzzy foliage. Its low maintenance requirements and compact size make it an ideal plant for adding a touch of nature to your workspace.",
-                            Price = 179.0,
+                            DiningRoom_Description = "The Orange Violet enhances the dining room with its charming, colorful blooms and soft, fuzzy leaves. Its vibrant flowers create a warm and inviting atmosphere, making mealtime feel more special.",
+                            Image = "orangeViolet.webp",
+                            LivingRoom_Description = "The Orange Violet adds a delightful pop of color to the living room with its vibrant, fuzzy blooms in shades of purple and orange. Its compact size and easy care make it a perfect choice for brightening up shelves or tabletops.",
+                            Long_Description = "The Orange Violet (Gynura Aurantiaca) is a beloved houseplant known for its soft, fuzzy leaves and vibrant, colorful flowers that bloom in shades of purple and orange. This charming plant is easy to care for, thriving in low to moderate light conditions and preferring consistent moisture without waterlogging. With its compact size, the African violet fits perfectly on windowsills, desks, or shelves, bringing a cheerful touch to any indoor space.\nBlooming throughout the year with proper care, it can create a lively display of color and elegance. Orange Violets are also known for their ability to adapt to various indoor environments, making them a popular choice for both beginners and experienced gardeners. Additionally, they can be propagated easily through leaf cuttings, allowing enthusiasts to share their beauty with friends and family.",
+                            Name = "Orange Violet",
+                            Office_Description = "The Orange Violet brightens up the office with its cheerful, colorful blooms and lush, fuzzy foliage. Its low maintenance requirements and compact size make it an ideal plant for adding a touch of nature to your workspace.",
+                            Price = 129.0,
                             Sale_Percent = 13,
                             Sale_Percent_Private = 20,
-                            Short_Description = "The African violet (Saintpaulia) is a popular houseplant known for its soft, fuzzy leaves and vibrant, colorful flowers that bloom in shades of purple, pink, and white. Easy to care for and requiring low light, it adds a cheerful touch to any indoor space, making it a favorite among plant enthusiasts.",
+                            Short_Description = "The Orange Violet (Gynura Aurantiaca) is a popular houseplant known for its soft, fuzzy leaves and vibrant, colorful flowers that bloom in shades of purple and orange. Easy to care for and requiring low light, it adds a cheerful touch to any indoor space, making it a favorite among plant enthusiasts.",
                             Size = 1,
                             Tags = "Home, Garden, Plants"
                         },
                         new
                         {
-                            PlantId = "2196a814-53ed-4614-9053-c964e10947c6",
-                            Acquisition_Date = new DateTime(2024, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Category = "Gardening",
-                            Image = "beachSpiderLilly.png",
-                            Long_Description = "The beach spider lily (Hymenocallis littoralis) is a striking coastal plant known for its dramatic, white, spider-like flowers that bloom atop tall, slender stems. Thriving in sandy soil and salt spray, this hardy perennial adds a unique beauty to seaside landscapes and gardens.\nWith its long, narrow leaves forming a graceful rosette, the beach spider lily is not only visually appealing but also resilient to harsh coastal conditions, including salt and wind. This plant is often used in coastal gardens or as a border plant, where it can create a stunning display against the backdrop of the ocean. Additionally, its low maintenance requirements make it an excellent choice for gardeners looking to add tropical flair to their outdoor spaces.",
-                            Name = "Beach Spider Lilly",
-                            Price = 129.0,
-                            Sale_Percent = 5,
-                            Sale_Percent_Private = 15,
-                            Short_Description = "The beach spider lily (Hymenocallis littoralis) is a striking coastal plant known for its dramatic, white, spider-like flowers that bloom atop tall, slender stems. Thriving in sandy soil and salt spray, this hardy perennial adds a unique beauty to seaside landscapes and gardens.",
-                            Size = 2,
-                            Tags = "Home, Tropical, Plants"
-                        },
-                        new
-                        {
-                            PlantId = "a3f10cef-74ec-4e3d-b2ae-8b0f18c33208",
-                            Acquisition_Date = new DateTime(2024, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "b33f5c0e-2d9b-43a9-b1c2-3c419538f2f5",
+                            Acquisition_Date = new DateTime(2025, 3, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "House Plants",
-                            DiningRoom_Description = "The blushing bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
-                            Image = "blushingBromeliad.png",
-                            LivingRoom_Description = "The blushing bromeliad adds a vibrant touch to the living room with its striking green leaves that turn red or pink in the center. Its low-maintenance care and tropical flair make it a perfect choice for brightening up indoor spaces.",
-                            Long_Description = "The blushing bromeliad (Neoregalia carolinae) is a striking tropical plant known for its rosette of green leaves that turn a vibrant red or pink in the center when about to bloom. This low-maintenance plant thrives in bright, indirect light, making it a popular choice for adding a splash of color to indoor spaces.\nThriving in bright, indirect light and requiring minimal watering, the blushing bromeliad is an easy-care option for both novice and experienced gardeners. It absorbs water through its central \"tank,\" where moisture and nutrients can collect. With its compact size and low maintenance needs, this plant brings a splash of tropical color to living spaces, offices, or even outdoor patios.",
+                            DiningRoom_Description = "The Blushing Bromeliad brings a pop of color to the dining room with its vibrant center that turns red or pink as it matures. Its striking appearance and easy care make it an eye-catching addition to any dining space.",
+                            Image = "blushingBromeliad.webp",
+                            LivingRoom_Description = "The Blushing Bromeliad adds a vibrant touch to the living room with its striking green leaves that turn red or pink in the center. Its low-maintenance care and tropical flair make it a perfect choice for brightening up indoor spaces.",
+                            Long_Description = "The Blushing Bromeliad (Neoregalia Carolinae) is a striking tropical plant known for its rosette of green leaves that turn a vibrant red or pink in the center when about to bloom. This low-maintenance plant thrives in bright, indirect light, making it a popular choice for adding a splash of color to indoor spaces.\nThriving in bright, indirect light and requiring minimal watering, the blushing bromeliad is an easy-care option for both novice and experienced gardeners. It absorbs water through its central \"tank,\" where moisture and nutrients can collect. With its compact size and low maintenance needs, this plant brings a splash of tropical color to living spaces, offices, or even outdoor patios.",
                             Name = "Blushing Bromeliad",
-                            Office_Description = "The blushing bromeliad adds a splash of vibrant color to the office with its striking red or pink center. Its low-maintenance nature and unique design make it a refreshing addition to the workspace.",
-                            Price = 139.0,
+                            Office_Description = "The Blushing Bromeliad adds a splash of vibrant color to the office with its striking red or pink center. Its low-maintenance nature and unique design make it a refreshing addition to the workspace.",
+                            Price = 169.0,
                             Sale_Percent = 0,
                             Sale_Percent_Private = 10,
-                            Short_Description = "The blushing bromeliad (Neoregalia carolinae) is a striking tropical plant known for its rosette of green leaves that turn a vibrant red or pink in the center when about to bloom. This low-maintenance plant thrives in bright, indirect light, making it a popular choice for adding a splash of color to indoor spaces.",
+                            Short_Description = "The Blushing Bromeliad (Neoregalia Carolinae) is a striking tropical plant known for its rosette of green leaves that turn a vibrant red or pink in the center when about to bloom. This low-maintenance plant thrives in bright, indirect light, making it a popular choice for adding a splash of color to indoor spaces.",
                             Size = 3,
                             Tags = "Home, Tropical, Plants"
                         },
                         new
                         {
-                            PlantId = "04f342f6-3194-483c-a833-19835d3993d1",
-                            Acquisition_Date = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "41ae09bc-0c2e-4a29-a131-f381c4f755e5",
+                            Acquisition_Date = new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "Potter Plants",
-                            DiningRoom_Description = "The aluminum plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
-                            Image = "aluminumPlant.png",
-                            LivingRoom_Description = "The aluminum plant adds a unique, eye-catching touch to the living room with its green leaves featuring striking silver markings. Its compact size and easy care make it a perfect choice for brightening up small spaces or shelves.",
-                            Long_Description = "The aluminum plant (Pilea cadierei) is a striking houseplant known for its green leaves with distinctive silver markings, resembling metallic patterns. Easy to care for, it thrives in indirect light and adds a touch of unique texture to indoor spaces.\nIts compact size makes it ideal for tabletops, shelves, or small indoor spaces. The plant's vibrant foliage adds a unique texture and visual interest to any room. Easy to care for, the aluminum plant is a great option for both beginners and experienced plant lovers.",
+                            DiningRoom_Description = "The Aluminum Plant brings a touch of elegance to the dining room with its vibrant green leaves and distinctive silver patterns. Its compact size makes it a great centerpiece or accent for tabletops, adding a fresh, lively feel to the space.",
+                            Image = "aluminumPlant.webp",
+                            LivingRoom_Description = "The Aluminum Plant adds a unique, eye-catching touch to the living room with its green leaves featuring striking silver markings. Its compact size and easy care make it a perfect choice for brightening up small spaces or shelves.",
+                            Long_Description = "The Aluminum Plant (Pilea Cadierei) is a striking houseplant known for its green leaves with distinctive silver markings, resembling metallic patterns. Easy to care for, it thrives in indirect light and adds a touch of unique texture to indoor spaces.\nIts compact size makes it ideal for tabletops, shelves, or small indoor spaces. The plant's vibrant foliage adds a unique texture and visual interest to any room. Easy to care for, the aluminum plant is a great option for both beginners and experienced plant lovers.",
                             Name = "Aluminum Plant",
-                            Office_Description = "The aluminum plant adds a refreshing touch to the office with its vibrant green leaves and metallic silver markings. Its compact, low-maintenance nature makes it a perfect desk plant, bringing a bit of nature to the workspace.",
+                            Office_Description = "The Aluminum Plant adds a refreshing touch to the office with its vibrant green leaves and metallic silver markings. Its compact, low-maintenance nature makes it a perfect desk plant, bringing a bit of nature to the workspace.",
                             Price = 179.0,
                             Sale_Percent = 0,
                             Sale_Percent_Private = 10,
-                            Short_Description = "The aluminum plant (Pilea cadierei) is a striking houseplant known for its green leaves with distinctive silver markings, resembling metallic patterns. Easy to care for, it thrives in indirect light and adds a touch of unique texture to indoor spaces.",
+                            Short_Description = "The Aluminum Plant (Pilea Cadierei) is a striking houseplant known for its green leaves with distinctive silver markings, resembling metallic patterns. Easy to care for, it thrives in indirect light and adds a touch of unique texture to indoor spaces.",
                             Size = 1,
                             Tags = "Potter, Garden, Plants"
                         },
                         new
                         {
-                            PlantId = "4367914e-bfba-4aed-8826-cfb610afbd6e",
-                            Acquisition_Date = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "f47b4de3-b1d1-472a-8b75-b81fc02d3535",
+                            Acquisition_Date = new DateTime(2025, 4, 7, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "House Plants",
-                            DiningRoom_Description = "The bird's nest fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
-                            Image = "birdsNestFern.png",
-                            LivingRoom_Description = "The bird's nest fern adds a lush, tropical vibe to the living room with its bright green, wavy fronds that form a unique rosette shape. Its bold, elegant appearance and low-light tolerance make it an excellent choice for adding natural beauty to any indoor space.",
-                            Long_Description = "The bird's nest fern (Asplenium nidus) is a lush, tropical plant with bright green, wavy fronds that form a rosette shape resembling a bird's nest. Thriving in low to moderate light, it adds a touch of natural elegance to indoor spaces.\nEasy to care for, the bird’s nest fern requires regular misting or a humidity tray to maintain moisture and prefers well-draining soil to avoid root rot. Its bold, architectural shape makes it a stunning centerpiece or accent in both homes and offices.",
+                            DiningRoom_Description = "The Bird's Nest Fern brings a touch of tropical elegance to the dining room with its vibrant green, wavy fronds. Its graceful, rosette-shaped foliage adds a fresh, natural accent, creating a calm and inviting atmosphere for meals.",
+                            Image = "birdsNestFern.webp",
+                            LivingRoom_Description = "The Bird's Nest Fern adds a lush, tropical vibe to the living room with its bright green, wavy fronds that form a unique rosette shape. Its bold, elegant appearance and low-light tolerance make it an excellent choice for adding natural beauty to any indoor space.",
+                            Long_Description = "The Bird's Nest Fern (Asplenium Nidus) is a lush, tropical plant with bright green, wavy fronds that form a rosette shape resembling a bird's nest. Thriving in low to moderate light, it adds a touch of natural elegance to indoor spaces.\nEasy to care for, the bird’s nest fern requires regular misting or a humidity tray to maintain moisture and prefers well-draining soil to avoid root rot. Its bold, architectural shape makes it a stunning centerpiece or accent in both homes and offices.",
                             Name = "Bird's Nest Fern",
-                            Office_Description = "The bird's nest fern adds a calming, natural touch to the office with its bright green, wavy fronds. Its low-maintenance care and unique rosette shape make it an ideal plant for enhancing the workspace with a refreshing, tropical feel.",
+                            Office_Description = "The Bird's Nest Fern adds a calming, natural touch to the office with its bright green, wavy fronds. Its low-maintenance care and unique rosette shape make it an ideal plant for enhancing the workspace with a refreshing, tropical feel.",
                             Price = 99.0,
                             Sale_Percent = 10,
                             Sale_Percent_Private = 25,
-                            Short_Description = "The bird's nest fern (Asplenium nidus) is a lush, tropical plant with bright green, wavy fronds that form a rosette shape resembling a bird's nest. Thriving in low to moderate light, it adds a touch of natural elegance to indoor spaces.",
-                            Size = 0,
+                            Short_Description = "The Bird's Nest Fern (Asplenium Nidus) is a lush, tropical plant with bright green, wavy fronds that form a rosette shape resembling a bird's nest. Thriving in low to moderate light, it adds a touch of natural elegance to indoor spaces.",
+                            Size = 1,
                             Tags = "Home, Tropical, Plants"
                         },
                         new
                         {
-                            PlantId = "7d1f82f7-5edb-46ae-af10-eb0ba45b8900",
-                            Acquisition_Date = new DateTime(2024, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "21031469-9b76-4703-847c-63183d39f144",
+                            Acquisition_Date = new DateTime(2025, 4, 28, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "Gardening",
-                            Image = "broadleafLadyPalm.png",
-                            Long_Description = "The broadleaf lady palm (Rhapis excelsa) is an attractive garden plant known for its lush, fan-shaped fronds and graceful, slender stems. Thriving in partial shade, it adds a tropical touch to outdoor landscapes while providing a natural privacy screen or focal point in garden beds.\nWith its ability to grow up to 10 feet tall, the broadleaf lady palm creates a striking visual presence in any garden setting. Its dense foliage not only enhances the aesthetic appeal but also offers shelter for birds and other wildlife. Easy to maintain, this palm requires minimal care and can withstand drought once established, making it an excellent addition to low-maintenance gardens.",
+                            DiningRoom_Description = "In the dining room, the Broadleaf Lady Palm adds height and greenery without overpowering the space. Its calming presence creates a serene, inviting atmosphere for meals.",
+                            Image = "broadleafLadyPalm.webp",
+                            LivingRoom_Description = "This elegant palm makes a sophisticated statement in the living room with its broad, layered leaves. It pairs well with classic or tropical décor and thrives in indirect light.",
+                            Long_Description = "The Broadleaf Lady Palm (Rhapis Excelsa) is an attractive garden plant known for its lush, fan-shaped fronds and graceful, slender stems. Thriving in partial shade, it adds a tropical touch to outdoor landscapes while providing a natural privacy screen or focal point in garden beds.\nWith its ability to grow up to 10 feet tall, the broadleaf lady palm creates a striking visual presence in any garden setting. Its dense foliage not only enhances the aesthetic appeal but also offers shelter for birds and other wildlife. Easy to maintain, this palm requires minimal care and can withstand drought once established, making it an excellent addition to low-maintenance gardens.",
                             Name = "Broadleaf Lady Palm",
-                            Price = 59.0,
+                            Office_Description = "The Lady Palm is an excellent office plant with a clean, vertical structure that fits neatly into corners. Its air-purifying qualities and low-light tolerance make it a refreshing office companion.",
+                            Price = 69.0,
                             Sale_Percent = 10,
                             Sale_Percent_Private = 25,
-                            Short_Description = "The broadleaf lady palm (Rhapis excelsa) is an attractive garden plant known for its lush, fan-shaped fronds and graceful, slender stems. Thriving in partial shade, it adds a tropical touch to outdoor landscapes while providing a natural privacy screen or focal point in garden beds.",
-                            Size = 0,
-                            Tags = "Palm, Garden, Plants"
+                            Short_Description = "The Broadleaf Lady Palm (Rhapis Excelsa) is an attractive garden plant known for its lush, fan-shaped fronds and graceful, slender stems. Thriving in partial shade, it adds a tropical touch to outdoor landscapes while providing a natural privacy screen or focal point in garden beds.",
+                            Size = 3,
+                            Tags = "Tropical, Garden, Plants"
                         },
                         new
                         {
-                            PlantId = "c9767020-21ea-4643-9fc2-190258dad3df",
-                            Acquisition_Date = new DateTime(2024, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PlantId = "9a7a09e3-7d85-4a44-9304-77f7a42175fa",
+                            Acquisition_Date = new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Category = "Gardening",
-                            Image = "chineseEvergreen.png",
-                            Long_Description = "The Chinese evergreen (Aglaonema) is a resilient garden plant known for its lush, glossy leaves and attractive variegation in shades of green, silver, and cream. Thriving in low to moderate light, it adds vibrant color and texture to shaded garden areas while requiring minimal maintenance.\nWith its ability to grow up to 3 feet tall, the Chinese evergreen makes a striking addition to borders or containers, creating a beautiful focal point in any garden setting. It is also known for its air-purifying qualities, helping to improve the overall environment in which it grows. Given its hardiness and easy care, the Chinese evergreen is a favorite among gardeners looking to add life and color to shaded or low-light areas.",
+                            DiningRoom_Description = "This plant brings a gentle splash of color to the dining area. Its lush, variegated leaves enhance the space without taking attention away from the décor.",
+                            Image = "chineseEvergreen.webp",
+                            LivingRoom_Description = "The Chinese Evergreen adds soft color and tropical elegance to the living room. Its striking foliage creates a calming, decorative touch with very little care required.",
+                            Long_Description = "The Chinese Evergreen (Aglaonema) is a resilient garden plant known for its lush, glossy leaves and attractive variegation in shades of green, silver, and cream. Thriving in low to moderate light, it adds vibrant color and texture to shaded garden areas while requiring minimal maintenance.\nWith its ability to grow up to 3 feet tall, the Chinese evergreen makes a striking addition to borders or containers, creating a beautiful focal point in any garden setting. It is also known for its air-purifying qualities, helping to improve the overall environment in which it grows. Given its hardiness and easy care, the Chinese evergreen is a favorite among gardeners looking to add life and color to shaded or low-light areas.",
                             Name = "Chinese Evergreen",
+                            Office_Description = "Perfect for the office, the Chinese Evergreen requires little light or water, yet keeps its vibrant look. It freshens up desks, corners, or meeting rooms with minimal upkeep.",
                             Price = 39.0,
                             Sale_Percent = 10,
                             Sale_Percent_Private = 25,
-                            Short_Description = "The Chinese evergreen (Aglaonema) is a resilient garden plant known for its lush, glossy leaves and attractive variegation in shades of green, silver, and cream. Thriving in low to moderate light, it adds vibrant color and texture to shaded garden areas while requiring minimal maintenance.",
+                            Short_Description = "The Chinese Evergreen (Aglaonema) is a resilient garden plant known for its lush, glossy leaves and attractive variegation in shades of green, silver, and cream. Thriving in low to moderate light, it adds vibrant color and texture to shaded garden areas while requiring minimal maintenance.",
                             Size = 0,
+                            Tags = "Garden, Home, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "6fbe7093-10c0-4f16-9d72-b83c9d7fd76d",
+                            Acquisition_Date = new DateTime(2025, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Potter Plants",
+                            DiningRoom_Description = "With its lush foliage and compact shape, the Pepper Face brings a cozy, fresh vibe to the dining area. It makes a lovely accent on the dining table or buffet.",
+                            Image = "pepperFace.webp",
+                            LivingRoom_Description = "The Pepper Face adds a splash of green charm to the living room with its shiny, rounded leaves. Its tidy form and low maintenance make it perfect for side tables or shelves.",
+                            Long_Description = "The Pepper Face (Peperomia Obtusifolia) is a compact, easy-care plant with thick, glossy leaves in vibrant green or variegated patterns. It thrives in bright, indirect light and adds a cheerful touch to any indoor space.\nThis plant is non-toxic, making it safe for homes with pets or children. Its slow-growing nature means it maintains its neat appearance with minimal pruning. Ideal for small spaces, it also works beautifully in terrariums or grouped with other houseplants.",
+                            Name = "Pepper Face",
+                            Office_Description = "Perfect for desks or window sills, the Pepper Face adds a touch of natural calm to the office. Its low-care needs make it ideal for busy workspaces.",
+                            Price = 29.0,
+                            Sale_Percent = 5,
+                            Sale_Percent_Private = 10,
+                            Short_Description = "The Pepper Face (Peperomia Obtusifolia) is a compact, easy-care plant with thick, glossy leaves in vibrant green or variegated patterns. It thrives in bright, indirect light and adds a cheerful touch to any indoor space.",
+                            Size = 0,
+                            Tags = "Potter, Thick, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "6bc2d7ce-fbd3-4b8f-84e7-2ebcc9fdbbd9",
+                            Acquisition_Date = new DateTime(2025, 5, 20, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "With its sleek leaves and modern look, the Snake Plant enhances dining spaces with a clean, minimalistic feel. It's a great conversation piece that also helps purify the air.",
+                            Image = "snakePlant.webp",
+                            LivingRoom_Description = "The Snake Plant adds bold vertical interest to the living room with its striking architectural form. Its tolerance for low light makes it ideal for corners or near furniture.",
+                            Long_Description = "The Snake Plant (Dracaena Trifasciata) is a hardy, upright plant with tall, sword-like leaves, often patterned with green and yellow. It's known for air purification and thriving with little water or light.\nExceptionally drought-tolerant, it's nearly indestructible and perfect for beginners. The plant helps remove toxins from the air, making it a healthy addition to any room. With its clean lines and strong silhouette, it complements both modern and traditional interiors.",
+                            Name = "Snake Plant",
+                            Office_Description = "The Snake Plant is perfect for the office, requiring almost no upkeep while bringing a fresh, structured look to any work area. It thrives even in artificial lighting.",
+                            Price = 119.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 10,
+                            Short_Description = "The Snake Plant (Dracaena Trifasciata) is a hardy, upright plant with tall, sword-like leaves, often patterned with green and yellow. It's known for air purification and thriving with little water or light.",
+                            Size = 2,
+                            Tags = "Home, Thick, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "80f0d85b-f42b-4a87-bd87-e750504be75b",
+                            Acquisition_Date = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Gardening",
+                            DiningRoom_Description = "Placed near sunlight, Aloe adds an organic, modern feel to the dining space. Its clean, structured look complements minimal or rustic decor.",
+                            Image = "aloe.webp",
+                            LivingRoom_Description = "Aloe brings a refreshing, natural vibe to the living room with its spiky, sculptural leaves. Its medicinal use and minimal care make it both stylish and practical.",
+                            Long_Description = "Aloe (Aloe) is a succulent plant with thick, fleshy leaves filled with soothing gel. It thrives in bright light and requires minimal watering.\nIt’s drought-tolerant and easy to grow, making it ideal for busy households or beginner gardeners. Aloe prefers bright, indirect sunlight and well-draining soil. Its medicinal value adds to its charm, making it both a decorative and functional plant. A must-have for sunny indoor spots or patios.",
+                            Name = "Aloe",
+                            Office_Description = "Compact and resilient, Aloe is perfect for office desks or windowsills. It adds greenery while asking for very little care or attention.",
+                            Price = 129.0,
+                            Sale_Percent = 15,
+                            Sale_Percent_Private = 25,
+                            Short_Description = "Aloe (Aloe) is a succulent plant with thick, fleshy leaves filled with soothing gel. It thrives in bright light and requires minimal watering.",
+                            Size = 2,
+                            Tags = "Garden, Thick, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "54aebd13-86f6-49ae-87ed-319e0d2e0996",
+                            Acquisition_Date = new DateTime(2025, 4, 25, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "A small Hedgehog Cactus makes a quirky, artistic addition to the dining table or shelf. It adds character without cluttering space.",
+                            Image = "hedgehogCactus.webp",
+                            LivingRoom_Description = "Hedgehog Cactus adds a bold, desert-style touch to the living room. Its fascinating form and seasonal flowers bring both charm and texture.",
+                            Long_Description = "The Hedgehog Cactus (Echinopsis Cactus) is a hardy, rounded cactus known for its beautiful, large, colorful blooms. It requires bright light and minimal watering.\nThese low-maintenance plants thrive in full sun and only need occasional watering, making them perfect for indoor and container gardens. Their compact size fits well in modern spaces. Although they appear simple, their blooms are stunning, ranging from white to vivid pink and orange. Great for adding interest to sunny spots.",
+                            Name = "Hedgehog Cactus",
+                            Office_Description = "Perfect for desks or windowsills, this plant is low-maintenance and thrives on neglect. Its unexpected blossoms add a touch of wonder to your work area.",
+                            Price = 49.0,
+                            Sale_Percent = 10,
+                            Sale_Percent_Private = 20,
+                            Short_Description = "The Hedgehog Cactus (Echinopsis Cactus) is a hardy, rounded cactus known for its beautiful, large, colorful blooms. It requires bright light and minimal watering.",
+                            Size = 0,
+                            Tags = "Home, Cactus, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "89cf6d9e-c90d-422e-8fe3-c187d0f6aa3f",
+                            Acquisition_Date = new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "Perfect for a peaceful atmosphere, the Peace Lily offers a refined look in the dining area. Its subtle fragrance and clean lines add to the ambiance.",
+                            Image = "peaceLilly.webp",
+                            LivingRoom_Description = "The Peace Lily brings softness and elegance to the living room with its lush foliage and serene white flowers. It thrives in indirect light and enhances indoor air quality.",
+                            Long_Description = "The Peace Lily (Spathiphyllum) is a graceful plant with deep green leaves and elegant white blooms. It's known for purifying air and thriving in low light.\nIt thrives in indirect light and requires only moderate watering. Ideal for low-light environments, it's also one of the best plants for removing toxins from the air. Its soft, flowing appearance makes it a favorite for interior decoration. Plus, it's non-fussy and forgiving—perfect for plant lovers at any level.",
+                            Name = "Peace Lilly",
+                            Office_Description = "Calming and low-maintenance, the Peace Lily suits any office setting. It improves air quality while adding a touch of calm greenery.",
+                            Price = 159.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 5,
+                            Short_Description = "The Peace Lily (Spathiphyllum) is a graceful plant with deep green leaves and elegant white blooms. It's known for purifying air and thriving in low light.",
+                            Size = 1,
+                            Tags = "Home, Elegant, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "d0bc8cf5-b53a-4201-a309-174c9e8fa8e6",
+                            Acquisition_Date = new DateTime(2025, 5, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Potter Plants",
+                            DiningRoom_Description = "With its colorful foliage, Pink Caladium makes a lively centerpiece or shelf plant in the dining room. It brightens up the space with a touch of the tropics.",
+                            Image = "pinkCaladium.webp",
+                            LivingRoom_Description = "Pink Caladium adds a vibrant, tropical flair to the living room. Its eye-catching leaves serve as a natural piece of art in any corner.",
+                            Long_Description = "Pink Caladium (Caladium Bicolor) is a striking foliage plant with heart-shaped leaves splashed in shades of pink, green, and white. It thrives in warm, humid environments with bright, indirect light.\nThis tropical plant thrives in warm, humid conditions with filtered light, making it perfect for bright indoor spaces. While seasonal and sometimes dormant in cooler months, its vivid foliage brings a cheerful burst of color when in growth. Caladium is great for pots, containers, or mixed with other foliage plants. It requires regular watering and humidity to look its best.",
+                            Name = "Pink Caladium",
+                            Office_Description = "Pink Caladium brings bold energy to the office with its unique coloring. It’s a mood-lifting plant that adds personality without taking up much space.",
+                            Price = 179.0,
+                            Sale_Percent = 5,
+                            Sale_Percent_Private = 15,
+                            Short_Description = "Pink Caladium (Caladium Bicolor) is a striking foliage plant with heart-shaped leaves splashed in shades of pink, green, and white. It thrives in warm, humid environments with bright, indirect light.",
+                            Size = 2,
+                            Tags = "Potter, Tropical, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "e0106cd9-75eb-4098-bb23-0ab3b1cb3df7",
+                            Acquisition_Date = new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Gardening",
+                            DiningRoom_Description = "Bring resort-like luxury to your dining space with the Giant Bird of Paradise’s broad, elegant foliage. Its grand form adds freshness and a calming atmosphere to shared meals.",
+                            Image = "giantBirdOfParadise.webp",
+                            LivingRoom_Description = "This plant makes a bold statement in the living room with its towering leaves and lush, tropical vibe.It works beautifully as a floor plant in bright corners.",
+                            Long_Description = "The Giant Bird of Paradise (Strelitzia Nicolai) is a dramatic tropical plant with large, banana-like leaves and striking white flowers. It adds bold, sculptural elegance to any indoor or outdoor space.\nWhile it can bloom indoors, it typically requires optimal lighting conditions for flowers to appear. Its architectural shape and height make it an excellent focal point for larger spaces. With the right care and humidity, it becomes a true showpiece plant.",
+                            Name = "Giant Bird of Paradise",
+                            Office_Description = "In an office, this plant delivers a strong visual impact while promoting a serene, green workspace. It thrives best near large windows with plenty of light.",
+                            Price = 199.0,
+                            Sale_Percent = 10,
+                            Sale_Percent_Private = 30,
+                            Short_Description = "The Giant Bird of Paradise (Strelitzia Nicolai) is a dramatic tropical plant with large, banana-like leaves and striking white flowers. It adds bold, sculptural elegance to any indoor or outdoor space.",
+                            Size = 3,
+                            Tags = "Garden, Tropical, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "2bfa7e8c-e9f3-45ef-a9b4-94e6d7fc69ef",
+                            Acquisition_Date = new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Potter Plants",
+                            DiningRoom_Description = "This fig’s elegant form creates a sophisticated atmosphere in the dining area. Place it in a corner or near a window for maximum impact.",
+                            Image = "fiddleLeafFig.webp",
+                            LivingRoom_Description = "Perfect for bright living rooms, the Fiddle Leaf Fig adds natural height and greenery. Its striking leaves enhance both classic and contemporary decor.",
+                            Long_Description = "The Fiddle Leaf Fig (Ficus Lyrata) is a popular indoor plant with large, violin-shaped leaves and a tall, upright growth habit. It brings a modern, stylish look to interior spaces.\nIt grows best in bright, indirect sunlight and prefers consistent watering with good drainage. Though it requires a bit more attention than low-maintenance plants, its dramatic beauty is worth the effort. The glossy, fiddle-shaped leaves help clean the air and add depth to open interior designs. It's ideal for minimalist, modern, or Scandinavian spaces.",
+                            Name = "Fiddle Leaf Fig",
+                            Office_Description = "Add a refined, leafy accent to your office with the Fiddle Leaf Fig. It brings life and a sense of calm to professional settings when placed near natural light.",
+                            Price = 99.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 15,
+                            Short_Description = "The Fiddle Leaf Fig (Ficus Lyrata) is a popular indoor plant with large, violin-shaped leaves and a tall, upright growth habit. It brings a modern, stylish look to interior spaces.",
+                            Size = 2,
+                            Tags = "Potter, Elegant, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "f1f1f746-0a3e-493b-867e-61ae6618be6b",
+                            Acquisition_Date = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "Place a Bonsai on the dining table or a nearby shelf to create a calming, thoughtful focal point. It adds elegance and serenity to meals.",
+                            Image = "bonsaiTree.webp",
+                            LivingRoom_Description = "A Bonsai adds a peaceful, meditative presence to the living room. Its detailed form invites closer appreciation and admiration.",
+                            Long_Description = "The Bonsai Tree (Ficus Bonsai) is a miniature tree grown and shaped for artistic expression. It symbolizes harmony, patience, and balance in nature.\nRooted in Japanese tradition, bonsai cultivation reflects the beauty of nature through careful pruning, wiring, and care. It requires dedication and attention to detail, making it both a plant and an art form. A well-maintained Bonsai brings a unique aesthetic and symbolic depth to any space.",
+                            Name = "Bonsai Tree",
+                            Office_Description = "In the office, a Bonsai promotes focus and tranquility. Its slow growth and quiet beauty offer a gentle reminder of mindfulness and care.",
+                            Price = 119.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 0,
+                            Short_Description = "The Bonsai Tree (Ficus Bonsai) is a miniature tree grown and shaped for artistic expression. It symbolizes harmony, patience, and balance in nature.",
+                            Size = 1,
+                            Tags = "Home, Artistic, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "27ad3d0d-712c-4932-86bb-0cfb5d7d4d71",
+                            Acquisition_Date = new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Gardening",
+                            DiningRoom_Description = "Pink Roses bring elegance and charm to the dining table. Whether freshly cut or in a container, they create a refined and intimate setting.",
+                            Image = "pinkRose.webp",
+                            LivingRoom_Description = "A vase or pot of Pink Roses brightens the living room with soft color and romance. Their gentle fragrance creates a warm, inviting atmosphere.",
+                            Long_Description = "The Pink Rose (Rosa Hybrid) is a timeless symbol of love, gratitude, and grace, known for its soft color and delicate scent. It adds classic beauty to gardens and arrangements alike.\nIt thrives in well-drained soil with plenty of sunlight, whether grown in the garden or kept as a potted plant. Beyond its aesthetic appeal, the pink rose is often used in bouquets, decor, and aromatherapy. There are many varieties, from soft pastel tones to deep rose hues, each adding a unique feel to their environment. A truly timeless bloom, it blends natural elegance with emotional warmth.",
+                            Name = "Pink Rose",
+                            Office_Description = "In an office, Pink Roses add a delicate touch of color and calm. A small bouquet or single bloom can elevate the mood and soften the workspace.",
+                            Price = 89.0,
+                            Sale_Percent = 20,
+                            Sale_Percent_Private = 25,
+                            Short_Description = "The Pink Rose (Rosa Hybrid) is a timeless symbol of love, gratitude, and grace, known for its soft color and delicate scent. It adds classic beauty to gardens and arrangements alike.",
+                            Size = 2,
+                            Tags = "Garden, Elegant, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "12cd3e9b-b9a4-453c-abe0-0cfbfc8c2790",
+                            Acquisition_Date = new DateTime(2025, 5, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "With their vivid blooms and sweet aroma, Blue Hyacinths create a fresh and inviting atmosphere in the dining area. Perfect as a centerpiece or sideboard accent.",
+                            Image = "blueHyacints.webp",
+                            LivingRoom_Description = "Blue Hyacinths add a splash of cheerful color and a pleasant fragrance to the living room. They look stunning in decorative pots on coffee tables or windowsills.",
+                            Long_Description = "Blue Hyacinths (Hyacinthoides) are fragrant, spring-blooming bulbs known for their dense spikes of star-shaped flowers in rich blue hues. They bring vibrant color and sweet scent to indoor or outdoor spaces.\nThese cheerful blooms are often associated with rebirth and positivity, making them a favorite during springtime. Hyacinths prefer bright, indirect light and well-drained soil. With proper care, their lovely scent can fill a room for weeks.",
+                            Name = "Blue Hyacints",
+                            Office_Description = "In the office, Blue Hyacinths offer a refreshing pop of color and a calming scent to boost mood and focus. Ideal for desks or reception areas.",
+                            Price = 79.0,
+                            Sale_Percent = 10,
+                            Sale_Percent_Private = 20,
+                            Short_Description = "Blue Hyacinths (Hyacinthoides) are fragrant, spring-blooming bulbs known for their dense spikes of star-shaped flowers in rich blue hues. They bring vibrant color and sweet scent to indoor or outdoor spaces.",
+                            Size = 0,
+                            Tags = "Home, Artistic, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "a8b04a4e-0f9e-4e8d-8a43-7810276eeb20",
+                            Acquisition_Date = new DateTime(2025, 4, 29, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Gardening",
+                            DiningRoom_Description = "In the dining area, Pink Daisies make charming table centerpieces, adding a soft and welcoming feel. Their color complements a range of decor styles.",
+                            Image = "pinkDaisies.webp",
+                            LivingRoom_Description = "Pink Daisies brighten the living room with their vibrant petals and playful energy. They work well as potted plants on side tables or shelves.",
+                            Long_Description = "Pink Daisies (Bellis Perennis) are cheerful flowering plants with bright pink petals and yellow centers, symbolizing joy and friendship. They thrive in sunny spots and add a burst of happiness to any room.\nEasy to grow in containers or garden beds, they bloom generously with proper light and moderate watering. These dainty flowers are perfect for brightening up dull corners or adding a soft, natural touch to workspaces and living areas. Their low-maintenance nature makes them ideal for beginners.",
+                            Name = "Pink Daisies",
+                            Office_Description = "Pink Daisies bring a splash of color to the office, uplifting the workspace with their cheerful presence. Great for desks or communal areas.",
+                            Price = 49.0,
+                            Sale_Percent = 10,
+                            Sale_Percent_Private = 15,
+                            Short_Description = "Pink Daisies (Bellis Perennis) are cheerful flowering plants with bright pink petals and yellow centers, symbolizing joy and friendship. They thrive in sunny spots and add a burst of happiness to any room.",
+                            Size = 1,
+                            Tags = "Home, Garden, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "63bb2089-5dd8-4df5-a09d-53c4ae0e6d4b",
+                            Acquisition_Date = new DateTime(2025, 5, 19, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "With its sleek leaves and modern look, the Snake Plant enhances dining spaces with a clean, minimalistic feel. It's a great conversation piece that also helps purify the air.",
+                            Image = "compactSnakePlant.webp",
+                            LivingRoom_Description = "The Snake Plant adds bold vertical interest to the living room with its striking architectural form. Its tolerance for low light makes it ideal for corners or near furniture.",
+                            Long_Description = "The Snake Plant (Dracaena Trifasciata) is a hardy, upright plant with tall, sword-like leaves, often patterned with green and yellow. It's known for air purification and thriving with little water or light.\nExceptionally drought-tolerant, it's nearly indestructible and perfect for beginners. The plant helps remove toxins from the air, making it a healthy addition to any room. With its clean lines and strong silhouette, it complements both modern and traditional interiors.",
+                            Name = "Compact Snake Plant",
+                            Office_Description = "The Snake Plant is perfect for the office, requiring almost no upkeep while bringing a fresh, structured look to any work area. It thrives even in artificial lighting.",
+                            Price = 89.0,
+                            Sale_Percent = 5,
+                            Sale_Percent_Private = 10,
+                            Short_Description = "The Snake Plant (Dracaena Trifasciata) is a hardy, upright plant with tall, sword-like leaves, often patterned with green and yellow. It's known for air purification and thriving with little water or light.",
+                            Size = 1,
+                            Tags = "Home, Thick, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "9cf97d6a-2743-4703-8fc4-1cc3ae350fbb",
+                            Acquisition_Date = new DateTime(2025, 5, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "In the dining room, the Rubber Plant adds structure and greenery with minimal care. Its sculptural look pairs well with modern or classic interiors.",
+                            Image = "rubberPlant.webp",
+                            LivingRoom_Description = "The Rubber Plant brings a bold, elegant touch to the living room with its broad, shiny leaves. It makes a beautiful floor plant near windows or seating areas.",
+                            Long_Description = "The Rubber Plant (Ficus Elastica) is a striking indoor plant with large, glossy leaves in deep green or burgundy shades. It’s known for its air-purifying properties and bold visual appeal.\nA member of the fig family, it grows upright and can reach impressive heights indoors. The Rubber Plant thrives in bright, indirect light and only needs occasional watering, making it suitable for homes and offices alike. With its clean lines and vibrant foliage, it complements minimalist and modern décor beautifully.",
+                            Name = "Rubber Plant",
+                            Office_Description = "Perfect for offices, the Rubber Plant adds a strong yet calming presence to the workspace. It purifies the air and thrives in indirect light.",
+                            Price = 139.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 10,
+                            Short_Description = "The Rubber Plant (Ficus Elastica) is a striking indoor plant with large, glossy leaves in deep green or burgundy shades. It’s known for its air-purifying properties and bold visual appeal.",
+                            Size = 3,
+                            Tags = "Home, Garden, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "857c7051-e204-4f3f-bf70-9dcffbdb9a83",
+                            Acquisition_Date = new DateTime(2025, 5, 7, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Gardening",
+                            DiningRoom_Description = "Pothos brings a touch of relaxed greenery to the dining area, great for softening corners or framing windows. Its low-maintenance charm fits any setting.",
+                            Image = "pothosPlant.webp",
+                            LivingRoom_Description = "In the living room, Pothos adds flowing greenery to shelves, hanging baskets, or plant stands. Its cascading vines create a cozy, lived-in feel.",
+                            Long_Description = "The Pothos Plant (Epipremnum Aureum) is a trailing vine with heart-shaped leaves, often variegated in green, yellow, or white. It's incredibly easy to care for and thrives in low light.\nKnown for its air-purifying qualities, it adapts well to various environments and recovers quickly from neglect. Pothos can be grown in pots, hanging baskets, or even water-filled jars. It's a top choice for beginners and plant lovers who want effortless, lush greenery indoors.",
+                            Name = "Pothos Plant",
+                            Office_Description = "Perfect for the office, Pothos is an undemanding plant that adds vitality to desks or filing cabinets. It improves air quality and tolerates artificial light.",
+                            Price = 99.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 15,
+                            Short_Description = "The Pothos Plant (Epipremnum Aureum) is a trailing vine with heart-shaped leaves, often variegated in green, yellow, or white. It's incredibly easy to care for and thrives in low light.",
+                            Size = 1,
                             Tags = "Garden, Hanging, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "933be930-f1fa-4a68-93d3-2d4a0fa2713f",
+                            Acquisition_Date = new DateTime(2025, 4, 27, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "Placed in a corner or near a window, the Elephant Ear enhances the dining room with a grand, leafy presence. It pairs beautifully with minimalist or natural decor styles.",
+                            Image = "elephantEar.webp",
+                            LivingRoom_Description = "With its oversized leaves, the Elephant Ear makes a stunning statement in the living room. It adds lush, dramatic greenery and a sense of tropical luxury.",
+                            Long_Description = "Elephant Ear (Alocasia) plants are known for their large, dramatic leaves that resemble elephant ears. They bring a bold, tropical vibe to any space.\nThey thrive in bright, indirect light and love moisture, making them great for humid environments. These tropical beauties can grow quite large, turning any indoor or outdoor space into a bold, lush retreat. While eye-catching, they need consistent watering and warmth to thrive indoors. They're ideal for plant lovers looking to make a strong visual impact.",
+                            Name = "Elephant Ear",
+                            Office_Description = "For offices with bright light, Elephant Ear adds a creative, nature-inspired element. Its bold foliage brings energy and life to workspaces.",
+                            Price = 129.0,
+                            Sale_Percent = 5,
+                            Sale_Percent_Private = 20,
+                            Short_Description = "Elephant Ear (Alocasia) plants are known for their large, dramatic leaves that resemble elephant ears. They bring a bold, tropical vibe to any space.",
+                            Size = 2,
+                            Tags = "Home, Tropical, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "d4938f41-d3e5-4d6f-8dbe-f0b2054d3fd5",
+                            Acquisition_Date = new DateTime(2025, 5, 4, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Potter Plants",
+                            DiningRoom_Description = "Its graceful fronds bring a timeless charm to the dining area, perfect for hanging or shelf display. The Fern enhances cozy, inviting atmospheres.",
+                            Image = "bostonFern.webp",
+                            LivingRoom_Description = "Boston Fern adds soft texture and refreshing greenery to the living room. It looks beautiful in hanging baskets or decorative pots.",
+                            Long_Description = "Boston Fern (Nephrolepis Exaltata) is a classic, elegant houseplant with feathery, arching fronds. It’s known for air purification and a lush, green look.\nIt prefers indirect light and consistent humidity, making it well-suited for bathrooms, kitchens, or well-watered living spaces. Aside from its beauty, it’s also known for its air-purifying abilities. While it requires regular misting and care, the payoff is lush, vibrant foliage that livens up any space. It’s a favorite for those who love hanging plants or soft greenery.",
+                            Name = "Boston Fern",
+                            Office_Description = "Ideal for desks or filing cabinets, Boston Fern adds softness and life to office corners. It thrives in humidity and filtered light.",
+                            Price = 69.0,
+                            Sale_Percent = 5,
+                            Sale_Percent_Private = 10,
+                            Short_Description = "Boston Fern (Nephrolepis Exaltata) is a classic, elegant houseplant with feathery, arching fronds. It’s known for air purification and a lush, green look.",
+                            Size = 1,
+                            Tags = "Hanging, Potter, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "671e3532-e218-45bb-bfd0-1e1aefdcfcb0",
+                            Acquisition_Date = new DateTime(2025, 5, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "House Plants",
+                            DiningRoom_Description = "Perfect for the center of the dining table or nearby window, Hydrangeas offer a lush and inviting touch. Their ever-changing colors enhance seasonal dining moods.",
+                            Image = "bigleafHydrangea.webp",
+                            LivingRoom_Description = "A potted Bigleaf Hydrangea adds bursts of color and elegance to the living room. Its large blooms serve as natural décor and conversation starters.",
+                            Long_Description = "Bigleaf Hydrangea (Hydrangea Macrophylla) is a flowering plant with large, vibrant blooms in shades of blue, pink, or purple. It thrives in partial sun and adds bold color to gardens and indoor displays.\nIt can be grown in pots indoors with proper light and moisture, though it's more commonly used as a garden plant. With large green leaves and long-lasting blooms, it adds seasonal beauty and drama to any setting. Indoors, it requires bright light and regular watering. Its color-changing feature is particularly loved by gardeners and decor enthusiasts alike.",
+                            Name = "Bigleaf Hydrangea",
+                            Office_Description = "Though less common indoors, a well-lit office corner can be brightened with a potted Hydrangea. Its colorful blooms uplift and energize the workspace.",
+                            Price = 99.0,
+                            Sale_Percent = 0,
+                            Sale_Percent_Private = 15,
+                            Short_Description = "Bigleaf Hydrangea (Hydrangea Macrophylla) is a flowering plant with large, vibrant blooms in shades of blue, pink, or purple. It thrives in partial sun and adds bold color to gardens and indoor displays.",
+                            Size = 1,
+                            Tags = "Home, Potter, Plants"
+                        },
+                        new
+                        {
+                            PlantId = "a423f4a1-f781-4c35-bf10-6ccfe2e9c6e7",
+                            Acquisition_Date = new DateTime(2025, 5, 7, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Category = "Potter Plants",
+                            DiningRoom_Description = "This compact plant brings fresh greenery to the dining area without taking up much space. It’s a subtle but charming decorative accent.",
+                            Image = "raindropPeperomia.webp",
+                            LivingRoom_Description = "The Raindrop Peperomia adds a modern and elegant feel to the living room with its plump, shiny leaves. It’s ideal for shelves, tables, or plant groupings.",
+                            Long_Description = "Raindrop Peperomia (Peperomia Polybotrya) features glossy, teardrop-shaped leaves and a compact, stylish form. It’s an easy-care plant perfect for bright indoor spaces.\nIt thrives in medium to bright indirect light and only needs occasional watering, making it a favorite for modern interiors and beginners. The plant stays compact, making it ideal for small spaces like desks or side tables. Its unique leaf shape adds visual interest without overwhelming the space. It's also non-toxic, making it a safe choice for homes with pets.",
+                            Name = "Raindrop Peperomia",
+                            Office_Description = "Perfect for desks or window sills, Raindrop Peperomia adds a calming touch of green to any office. It’s low-maintenance and visually soothing.",
+                            Price = 39.0,
+                            Sale_Percent = 10,
+                            Sale_Percent_Private = 25,
+                            Short_Description = "Raindrop Peperomia (Peperomia Polybotrya) features glossy, teardrop-shaped leaves and a compact, stylish form. It’s an easy-care plant perfect for bright indoor spaces.",
+                            Size = 0,
+                            Tags = "Home, Potter, Plants"
                         });
                 });
 
             modelBuilder.Entity("greenshop_api.Domain.Models.Review", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlantId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Creation_Date")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "PlantId");
 
@@ -304,11 +669,11 @@ namespace greenshop_api.Migrations
             modelBuilder.Entity("greenshop_api.Domain.Models.Subscriber", b =>
                 {
                     b.Property<string>("SubscriberId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SubscriberEmail")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("SubscriberId");
 
@@ -321,22 +686,22 @@ namespace greenshop_api.Migrations
             modelBuilder.Entity("greenshop_api.Domain.Models.User", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsSubscribed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserPassword")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId");
 
@@ -344,6 +709,48 @@ namespace greenshop_api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "26945430-abed-4187-9088-3f8f2c531e9b",
+                            IsSubscribed = false,
+                            UserEmail = "melanie.stones.misogreenshop@gmail.com",
+                            UserName = "Melanie Stones",
+                            UserPassword = "$2a$11$NFQLK9I7fyQDvGMW75oaBOU6R/NpsLRzlkGL/PJ0n8Z61ujI.k7p."
+                        },
+                        new
+                        {
+                            UserId = "aaec19e4-0cdd-4b9c-800e-12525cc990a8",
+                            IsSubscribed = false,
+                            UserEmail = "maria.fernandez.misogreenshop@gmail.com",
+                            UserName = "Maria Frenandez",
+                            UserPassword = "$2a$11$eq3bHauG4FOW50p8nemG.OCoz8r/O3Baa7F7G/4N61FpcesK5OELK"
+                        },
+                        new
+                        {
+                            UserId = "3f81fe8b-852c-4190-8be3-91508c5ad2fa",
+                            IsSubscribed = false,
+                            UserEmail = "nicholas.roger.misogreenshop@gmail.com",
+                            UserName = "Nicholas Roger",
+                            UserPassword = "$2a$11$yX65nOt6QhMzv8V82rC1UeqvRKNKOXzS.Sohcq19Djs09UFt1K/Ga"
+                        },
+                        new
+                        {
+                            UserId = "cb247c72-dfb0-4848-a3ef-1218ee97b97d",
+                            IsSubscribed = false,
+                            UserEmail = "john.doe.misogreenshop@gmail.com",
+                            UserName = "John Doe",
+                            UserPassword = "$2a$11$F7rohO3revayAeqqMXKDXuvRLauvsl8ezsvy3Zh8MoJiK1IwYxFF."
+                        },
+                        new
+                        {
+                            UserId = "7118530e-b675-4fe6-b190-0711822b943f",
+                            IsSubscribed = false,
+                            UserEmail = "becky.benson.misogreenshop@gmail.com",
+                            UserName = "Becky Benson",
+                            UserPassword = "$2a$11$z4obkxbthXyPhxv1llRpReYSrFdf2iBAdzOMmhchVp/JDT2Og5ArG"
+                        });
                 });
 
             modelBuilder.Entity("greenshop_api.Domain.Models.Cart", b =>

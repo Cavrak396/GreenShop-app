@@ -23,13 +23,11 @@ var builder = WebApplication
 
 var connectionString = builder.Configuration
     .GetConnectionString("GreenshopManagement");
+
 builder.Services
     .AddDbContext<ApplicationDbContext>(options =>
     {
-        options.UseMySql(
-            connectionString,
-            ServerVersion
-            .AutoDetect(connectionString));
+        options.UseNpgsql(connectionString);
     });
 
 builder.Services
