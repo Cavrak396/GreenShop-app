@@ -13,7 +13,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public IQueryable<Review> GetAllReviewsQueryable(string plantId)
         {
-            return _dbContext.Reviews
+            return _dbContext.Reviews!
                 .AsQueryable()
                 .Where(r => r.PlantId == plantId);
         }
@@ -22,7 +22,7 @@ namespace greenshop_api.Infrastructure.Repositories
             string userId, 
             string plantId)
         {
-            return await _dbContext.Reviews
+            return await _dbContext.Reviews!
                 .FindAsync(
                 userId, 
                 plantId);
@@ -30,7 +30,7 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<int> GetTotalNumberOfReviewsByPlantIdAsync(string plantId)
         {
-            return await _dbContext.Reviews
+            return await _dbContext.Reviews!
                 .CountAsync(r => r.PlantId == plantId);
         }
 
@@ -38,14 +38,14 @@ namespace greenshop_api.Infrastructure.Repositories
             string plantId, 
             int rating)
         {
-            return await _dbContext.Reviews
+            return await _dbContext.Reviews!
                 .CountAsync(r => r.PlantId == plantId && 
                 r.Rating == rating);
         }
 
         public async Task AddReviewAsync(Review review)
         {
-            _dbContext.Reviews
+            _dbContext.Reviews!
                 .Add(review);
             await _dbContext
                 .SaveChangesAsync();
@@ -67,7 +67,7 @@ namespace greenshop_api.Infrastructure.Repositories
         }
         public async Task DeleteReviewAsync(Review review)
         {
-            _dbContext.Reviews
+            _dbContext.Reviews!
                 .Remove(review);
             await _dbContext
                 .SaveChangesAsync();
