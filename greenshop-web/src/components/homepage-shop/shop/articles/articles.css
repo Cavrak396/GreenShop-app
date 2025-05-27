@@ -137,6 +137,7 @@
   background-color: rgba(70, 163, 88, 1);
   color: rgba(255, 255, 255, 1);
   padding: 5px 18px 5px 5px;
+  z-index: 10;
 }
 
 .homepageshop__price-information {

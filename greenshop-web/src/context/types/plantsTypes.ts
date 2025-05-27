@@ -32,4 +32,5 @@ export interface PlantsContextType {
   setActiveSizeId: (id: number | null) => void;
   setCategoriesData: (data: CategoryCount) => void;
   setPriceRange: (minPrice: number, maxPrice: number) => void;
+  getShopImage: (fileName: string) => string;
 }

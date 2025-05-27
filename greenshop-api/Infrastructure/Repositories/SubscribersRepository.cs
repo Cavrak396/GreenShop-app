@@ -13,19 +13,19 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task<List<Subscriber>> GetAllSubscribersAsync()
         {
-            return await _dbContext.Subscribers
+            return await _dbContext.Subscribers!
                 .ToListAsync();
         }
 
         public async Task<Subscriber?> GetSubscriberByEmailAsync(string email)
         {
-            return await _dbContext.Subscribers
+            return await _dbContext.Subscribers!
                 .FirstOrDefaultAsync(s => s.SubscriberEmail == email);
         }
 
         public async Task AddSubscriberAsync(Subscriber subscriber)
         {
-            _dbContext.Subscribers
+            _dbContext.Subscribers!
                 .Add(subscriber);
             await _dbContext
                 .SaveChangesAsync();
@@ -33,7 +33,7 @@ namespace greenshop_api.Infrastructure.Repositories
         
         public async Task DeleteSubscriberAsync(Subscriber subscriber)
         {
-            _dbContext.Subscribers
+            _dbContext.Subscribers!
                 .Remove(subscriber);
             await _dbContext
                 .SaveChangesAsync();
@@ -41,10 +41,10 @@ namespace greenshop_api.Infrastructure.Repositories
 
         public async Task DeleteAllSubscribersAsync()
         {
-            var allSubscribers = _dbContext.Subscribers
+            var allSubscribers = _dbContext.Subscribers!
                 .ToList();
 
-            _dbContext.Subscribers
+            _dbContext.Subscribers!
                 .RemoveRange(allSubscribers);
             await _dbContext
                 .SaveChangesAsync();

@@ -1,12 +1,15 @@
 import magnifier from "../../assets/images/reusable/magnifier.svg";
 import { ProductReviewType } from "./types/detailsTypes";
 import LazyImage from "../../reusable/lazyImage/LazyImage";
-import ProductImage from "../../assets/images/banner/banner-image.webp";
+import { useProduct } from "../../context/ProductContext";
+import { usePlants } from "../../context/PlantsContext";
 
 function DetailsProductReview({ setIsAppear }: ProductReviewType) {
   function handleImageZoom() {
     setIsAppear((prev) => !prev);
   }
+  const { getShopImage } = usePlants();
+  const product = useProduct();
 
   return (
     <div className="details__review-container">
@@ -23,7 +26,7 @@ function DetailsProductReview({ setIsAppear }: ProductReviewType) {
           alt="Magnifying glass icon for zooming"
         />
         <LazyImage
-          src={ProductImage}
+          src={getShopImage(product.image)}
           className="details__review-image"
           alt="Product image"
         />

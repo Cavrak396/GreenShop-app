@@ -18,6 +18,8 @@ import {
 } from "./types/plantsTypes";
 import { PlantsParams } from "../services/plants/plantsTypes";
 import { ProductType } from "../components/homepage-shop/types/shopTypes";
+import aloe from "../assets/images/shop/articles/aloe.webp";
+import { imagesMap } from "../components/homepage-shop/shop/articles/utils/articlesUtils";
 
 const PlantsContext = createContext<PlantsContextType | undefined>(undefined);
 
@@ -42,6 +44,12 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const CATEGORIES = ["House Plants", "Potter Plants", "Gardening"];
+  const defaultPlantImage = aloe;
+
+  const getShopImage = (fileName: string): string => {
+    const webpName = fileName.replace(/\.\w+$/, ".webp");
+    return imagesMap[webpName] || defaultPlantImage;
+  };
 
   const loadPlants = async (params: PlantsParams): Promise<void> => {
     setLoading(true);
@@ -130,6 +138,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
         plantsTotal,
         plantsNumberBySize,
         setSearchedData,
+        getShopImage,
         setActiveCategoryId: (id: number | null) =>
           setFilters((prev) => ({
             ...prev,
