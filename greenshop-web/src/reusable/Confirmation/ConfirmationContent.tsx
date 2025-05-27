@@ -1,6 +1,6 @@
 import ConfirmationButtons from "./ConfirmationButtons";
-import "../reusable.css";
 import { ConfirmationTypes } from "../types/confirmationTypes";
+import "../reusable.css";
 
 type ConfirmationContentProps = ConfirmationTypes & {
   onConfirmAction: (() => void) | null;
