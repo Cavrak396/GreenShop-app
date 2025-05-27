@@ -7,8 +7,8 @@ import { useCart } from "../../../../context/CartContext";
 import { HomePageShopArticleProps, ProductType } from "../../types/shopTypes";
 import HomePageShopSale from "./HomePageShopSale";
 import { CartItemTypes } from "../../../cart/types/cartTypes";
-import ProductImage from "../../../../assets/images/banner/banner-image.webp";
 import { useUser } from "../../../../context/AuthContext";
+import { usePlants } from "../../../../context/PlantsContext";
 
 function HomePageShopArticle({
   isOnSale,
@@ -20,6 +20,7 @@ function HomePageShopArticle({
   const { addItemToCart } = useCart();
   const navigate = useNavigate();
   const { token } = useUser();
+  const { getShopImage } = usePlants();
 
   const addingItemsToCart = useCallback(
     (product: ProductType) => {
@@ -31,7 +32,7 @@ function HomePageShopArticle({
         price: product.price,
         sale: product.sale_Percent,
         privateSale: product.sale_Percent_Private,
-        src: product.image,
+        src: getShopImage(item.image),
         alt: product.name,
         dateAdded,
       };
@@ -49,7 +50,7 @@ function HomePageShopArticle({
     <li className="homepageshop__article-item">
       {isOnSale && <HomePageShopSale sale={totalSalePercent} />}
       <HomePageShopImage
-        src={ProductImage}
+        src={getShopImage(item.image)}
         alt={item.name}
         onClick={goToDetailsPage}
       />
