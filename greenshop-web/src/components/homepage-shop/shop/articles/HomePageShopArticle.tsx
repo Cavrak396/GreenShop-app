@@ -36,7 +36,7 @@ function HomePageShopArticle({
         alt: product.name,
         dateAdded,
       };
-
+      console.log(product);
       addItemToCart(cartItem, 1);
     },
     [addItemToCart, token]

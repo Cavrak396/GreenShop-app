@@ -22,7 +22,7 @@ function DetailsProductPanel() {
     currentPageSize,
   } = useComments();
   const { id } = useParams();
-  const { user, token } = useUser();
+  const { user } = useUser();
   const { avgRating } = useRatings(ratingNumbers || {});
 
   useEffect(() => {
@@ -36,16 +36,10 @@ function DetailsProductPanel() {
   }, [id, currentCommentsPage, currentPageSize, user]);
 
   const calculatedSalePrice = useMemo(() => {
-    const basePrice = product.price;
-
-    if (token && product.sale_Percent_Private > 0) {
-      return basePrice * (1 - product.sale_Percent_Private / 100);
-    } else if (product.sale_Percent > 0) {
-      return basePrice * (1 - product.sale_Percent / 100);
-    }
-
-    return basePrice;
-  }, [product, token]);
+    return product.sale_Percent
+      ? product.price * (1 - product.sale_Percent / 100)
+      : product.price;
+  }, [product]);
 
   return (
     <div className="details__product-panel">
