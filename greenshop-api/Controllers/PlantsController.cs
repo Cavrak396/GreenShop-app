@@ -92,12 +92,15 @@ namespace greenshop_api.Controllers
         [HttpGet("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
-        public async Task<IActionResult> GetPlantById(string plantId)
+        public async Task<IActionResult> GetPlantById(
+            string plantId,
+            [FromHeader(Name = "Authorized")] bool authorized = false)
         {
             var getPlantDto = await _mediator.Send(
             new GetPlantByIdQuery
             {
-                Id = plantId
+                Id = plantId,
+                Authorized = authorized
             });
 
             return Ok(getPlantDto);

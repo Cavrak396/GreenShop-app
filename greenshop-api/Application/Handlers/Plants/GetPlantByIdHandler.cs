@@ -23,6 +23,15 @@ namespace greenshop_api.Application.Handlers.Plants
             var plant = await _plantsRepository
                 .GetPlantByIdAsync(request.Id!);
 
+            if(!request.Authorized)
+            {
+                plant!.Price = Math.Truncate(100 *
+                (double)plant.Price! /
+                (100 + plant.Sale_Percent -
+                plant.Sale_Percent_Private)) +
+                0.99;
+            }
+
             return _mapper
                 .Map<GetPlantDto>(plant);
         }
