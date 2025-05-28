@@ -3,6 +3,7 @@ import { ProductType } from "../../components/homepage-shop/types/shopTypes";
 import axios from "axios";
 
 const BASE_URL = "https://localhost:7178/Plants";
+const token = sessionStorage.getItem("token");
 
 export const fetchPlants = async ({
     searchValue,
@@ -15,8 +16,6 @@ export const fetchPlants = async ({
     pageSize,
 }: PlantsParams) => {
     try {
-        const token = sessionStorage.getItem("token");
-
         const response = await axios.get(BASE_URL, {
             headers: {
                 SearchValue: searchValue || "",
@@ -41,7 +40,11 @@ export const fetchPlants = async ({
 
 export const fetchPlantById = async (id: string): Promise<ProductType> => {
     try {
-        const response = await axios.get(`${BASE_URL}/${id}`);
+        const response = await axios.get(`${BASE_URL}/${id}`, {
+            headers: {
+                Authorized: token ? true : false,
+            },
+        });
         return response.data;
     } catch (error) {
         console.error("Error fetching plant by ID:", error);

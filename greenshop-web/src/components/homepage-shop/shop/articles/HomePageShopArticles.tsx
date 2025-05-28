@@ -10,7 +10,7 @@ function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
     <ul className="homepageshop__articles-list">
       {sortedData.map((item) => {
         const publicSalePercent = token
-          ? item.sale_Percent_Private
+          ? item.sale_Percent_Private || 0
           : item.sale_Percent || 0;
 
         const isOnSale = publicSalePercent > 0;
