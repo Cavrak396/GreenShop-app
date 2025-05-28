@@ -4,23 +4,26 @@ import { calculateRatingPercentages } from "../../utils/detailsUtils";
 
 function DetailsCritiqueRateList() {
   const { ratingNumbers } = useComments();
-  const ratingPercentages = calculateRatingPercentages(ratingNumbers || {});
+  const percentages = calculateRatingPercentages(ratingNumbers || {});
 
-  const sortedRatings = ratingPercentages.sort(
-    (a, b) => b.percentage - a.percentage
-  );
+  const allRatings = [5, 4, 3, 2, 1];
 
   return (
     <div className="details__rating-bars">
-      {sortedRatings.map(({ rating, percentage }) => (
-        <div key={rating} className="details__rating-bar-container">
-          <ProgressBar
-            percentage={percentage}
-            rating={rating}
-            className="details__rating-bar"
-          />
-        </div>
-      ))}
+      {allRatings.map((rating) => {
+        const match = percentages.find((p) => p.rating === rating);
+        const percentage = match ? match.percentage : 0;
+
+        return (
+          <div key={rating} className="details__rating-bar-container">
+            <ProgressBar
+              percentage={percentage}
+              rating={rating}
+              className="details__rating-bar"
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

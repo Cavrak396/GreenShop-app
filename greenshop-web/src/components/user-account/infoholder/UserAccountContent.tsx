@@ -4,34 +4,36 @@ import UserAccountProfile from "./profile/UserAccountProfile";
 import UserAccountSubscribe from "./subscribe/UserAccountSubscribe";
 import Portal from "../../../reusable/portal/Portal";
 import ConfirmationContent from "../../../reusable/confirmation/ConfirmationContent";
-import { useUser } from "../../../context/AuthContext";
+import { ConfirmationTypes } from "../../../reusable/types/confirmationTypes";
 
 function UserAccountContent({ isActive }: { isActive: number }) {
-  const { logout, user } = useUser();
-
   const [isAppear, setIsAppear] = useState(false);
   const [onConfirmAction, setOnConfirmAction] = useState<(() => void) | null>(
     null
   );
 
+  const componentsMap: { [key: number]: React.FC<ConfirmationTypes> } = {
+    1: UserAccountProfile,
+    2: UserAccountSubscribe,
+    3: UserAccountLogout,
+  };
+
+  const ActiveComponent = componentsMap[isActive];
+
   return (
     <div className="useraccount__content">
-      {isActive === 1 && <UserAccountProfile setIsAppear={setIsAppear} />}
-      {isActive === 2 && <UserAccountSubscribe setIsAppear={setIsAppear} />}
-      {isActive === 3 && (
-        <UserAccountLogout
+      {ActiveComponent && (
+        <ActiveComponent
           setIsAppear={setIsAppear}
           setOnConfirmAction={setOnConfirmAction}
-          logout={logout}
         />
       )}
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>
           <ConfirmationContent
-            type={user?.isSubscribed ? "unsubscribe" : "subscribe"}
+            message="Are you sure you want to proceed?"
             setIsAppear={setIsAppear}
             onConfirmAction={onConfirmAction}
-            message="Are you sure about this action, this action can change your current status?"
           />
         </Portal>
       )}

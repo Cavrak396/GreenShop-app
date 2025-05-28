@@ -15,13 +15,6 @@ function AuthForm({
   const inputsToShow = activatedId === 1 ? authInputs.slice(0, 2) : authInputs;
   const actionTypeText = activatedId === 1 ? "login" : "register";
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    inputId: number
-  ) => {
-    console.log(`Input ${inputId} changed to: ${e.target.value}`);
-  };
-
   return (
     <form onSubmit={onSubmit} aria-labelledby="auth-form-title">
       <AccessibiltyText
@@ -36,7 +29,6 @@ function AuthForm({
           refHandler={(el) => (inputRefs.current[input.id] = el)}
           showPassword={showPassword?.[input.id]}
           togglePasswordVisibility={togglePasswordVisibility}
-          onChange={(e) => handleInputChange(e, input.id)}
           aria-label={input.label}
           aria-describedby={`input-desc-${input.id}`}
         />

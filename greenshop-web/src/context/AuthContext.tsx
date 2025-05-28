@@ -74,7 +74,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     try {
       setLoading(true);
       const response = await loginUser(dto);
-      console.log(response);
       if (response.jwt) {
         setToken(response.jwt);
         sessionStorage.setItem("token", response.jwt);
@@ -129,9 +128,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (): Promise<{
+    success: boolean;
+    message: string;
+  }> => {
     if (!token) {
-      const error: ApiError = { message: "User not authenticated." };
+      const error = { success: false, message: "User not authenticated." };
       setError(error.message);
       return error;
     }
@@ -142,9 +144,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setUser(null);
       setToken(null);
       sessionStorage.removeItem("token");
-      return response;
+      return {
+        success: true,
+        message: response.message || "Account deleted successfully.",
+      };
     } catch (err: any) {
-      const error: ApiError = {
+      const error = {
+        success: false,
         message: err.message || "Account deletion failed.",
       };
       setError(error.message);

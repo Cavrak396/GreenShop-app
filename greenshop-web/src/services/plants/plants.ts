@@ -16,7 +16,6 @@ export const fetchPlants = async ({
     pageSize,
 }: PlantsParams) => {
     try {
-
         const response = await axios.get(BASE_URL, {
             headers: {
                 SearchValue: searchValue || "",

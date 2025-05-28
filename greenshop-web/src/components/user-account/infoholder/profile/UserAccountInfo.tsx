@@ -5,8 +5,6 @@ import ProfilePhoto from "../../../../assets/images/account/user.png";
 function UserAccountInfo() {
   const { user } = useUser();
 
-  console.log(user);
-
   return (
     <div className="useraccount__profile-info">
       <img

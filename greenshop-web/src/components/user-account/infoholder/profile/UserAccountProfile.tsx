@@ -1,9 +1,12 @@
-import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
 import UserAccountCopy from "./UserAccountCopy";
 import UserAccountDelete from "./UserAccountDelete";
 import UserAccountInfo from "./UserAccountInfo";
+import { ConfirmationTypes } from "../../../../reusable/types/confirmationTypes";
 
-function UserAccountProfile({ setIsAppear }: ConfirmationTypes) {
+function UserAccountProfile({
+  setIsAppear,
+  setOnConfirmAction,
+}: ConfirmationTypes) {
   return (
     <div className="useraccount__profile">
       <UserAccountInfo />
@@ -14,7 +17,10 @@ function UserAccountProfile({ setIsAppear }: ConfirmationTypes) {
         space.
       </p>
       <UserAccountCopy />
-      <UserAccountDelete setIsAppear={setIsAppear} />
+      <UserAccountDelete
+        setIsAppear={setIsAppear}
+        setOnConfirmAction={setOnConfirmAction}
+      />
     </div>
   );
 }
