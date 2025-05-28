@@ -4,6 +4,7 @@ using greenshop_api.Application.Queries.Plants;
 using greenshop_api.Application.Queries.Subscribers;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.Plants;
+using greenshop_api.Filters.ActionFilters.General;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Plant_ExceptionFilters;
 using MediatR;
@@ -26,12 +27,13 @@ namespace greenshop_api.Controllers
 
         [HttpGet]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidateGetHeadersActionFilter))]
         public async Task<IActionResult> GetPlants(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 9,
             [FromHeader(Name = "Authorized")] bool authorized = false,
-            [FromHeader(Name = "SearchValue")] string? key = null,
+            [FromHeader(Name = "SearchValue")] string? search = null,
             [FromHeader(Name = "CategoryValue")] string? category = null,
             [FromHeader(Name = "SizeType")] string? size = null,
             [FromHeader(Name = "Group")] string? group = null,
@@ -44,7 +46,7 @@ namespace greenshop_api.Controllers
                 Page = page,
                 PageSize = pageSize,
                 Authorized = authorized,
-                Key = key,
+                Key = search,
                 Category = category,
                 Size = size,
                 Group = group,
@@ -57,7 +59,9 @@ namespace greenshop_api.Controllers
 
         [HttpGet("total-number")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
-        public async Task<IActionResult> GetTotalNumberOfPlants()
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
+        public async Task<IActionResult> GetTotalNumberOfPlants(
+            [FromHeader(Name = "ApplicationKey")] string? applicationKey = null)
         {
             var count = await _mediator.Send(
                 new GetTotalNumberOfPlantsQuery());
@@ -67,6 +71,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("category-number")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidateGetPlantNumberActionFilter))]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsByCategory([FromQuery]List<string> categories)
         {
@@ -81,6 +86,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("size-number")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         public async Task<ActionResult<Dictionary<string, int>>> GetNumberOfPlantsBySize()
         {
             var sizeCounts = await _mediator.Send(
@@ -91,6 +97,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetPlantById(
             string plantId,
@@ -108,6 +115,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/related")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetRelatedPlants(
             [FromRoute]string plantId, 
@@ -125,6 +133,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost]
         [EnableRateLimiting("ConcurrencyIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateAdminKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidateCreatePlantActionFilter))]
         public async Task<IActionResult> CreatePlant([FromBody]PostPlantDto plant)
         {
@@ -157,6 +166,7 @@ namespace greenshop_api.Controllers
 
         [HttpPut("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateAdminKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Plant_ValidateUpdatePlantActionFilter))]
         [TypeFilter(typeof(Plant_HandleUpdateExceptionFilter))]
@@ -176,6 +186,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateAdminKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task <IActionResult> DeletePlant([FromRoute]string plantId)
         {

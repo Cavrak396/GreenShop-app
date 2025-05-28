@@ -1,6 +1,7 @@
 ﻿using greenshop_api.Application.Commands.Reviews;
 using greenshop_api.Application.Queries.Reviews;
 using greenshop_api.Dtos.Reviews;
+using greenshop_api.Filters.ActionFilters.General;
 using greenshop_api.Filters.ActionFilters.Plant_ActionFilters;
 using greenshop_api.Filters.ActionFilters.Review_ActionFilters;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
@@ -22,6 +23,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(Review_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviews(
@@ -43,6 +45,7 @@ namespace greenshop_api.Controllers
         [HttpGet("{plantId}/user")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetReviewByUser([FromRoute]string plantId)
@@ -63,6 +66,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/total-number")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<IActionResult> GetTotalNumberOfReviewsPerPlant([FromRoute]string plantId)
         {
@@ -77,6 +81,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("{plantId}/rating-number")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         public async Task<ActionResult<Dictionary<int, int>>> GetNumberOfReviewsByRatingsPerPlant([FromRoute]string plantId)
         {
@@ -92,6 +97,7 @@ namespace greenshop_api.Controllers
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateCreateReviewActionFilter))]
         public async Task<IActionResult> CreateReview([FromBody]PostReviewDto review)
@@ -108,6 +114,7 @@ namespace greenshop_api.Controllers
         [HttpPut("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
@@ -130,6 +137,7 @@ namespace greenshop_api.Controllers
         [HttpDelete("{plantId}")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Plant_ValidatePlantIdActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Review_ValidateReviewExistsActionFilter))]
