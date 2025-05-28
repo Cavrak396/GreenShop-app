@@ -3,6 +3,7 @@ using greenshop_api.Application.Models;
 using greenshop_api.Application.Queries.Users;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.Users;
+using greenshop_api.Filters.ActionFilters.General;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.User_ExceptionFilters;
 using MediatR;
@@ -26,6 +27,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet("all")]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateAdminKeyActionFilter))]
         public async Task<IActionResult> GetUsers()
         {
             var getUserDtos = await _mediator.Send(
@@ -36,6 +38,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost("register")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateRegisterUserActionFilter))]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
@@ -60,6 +63,7 @@ namespace greenshop_api.Controllers
         [HttpPost("login")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateLoginUserActionFilter))]
         public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
@@ -88,6 +92,7 @@ namespace greenshop_api.Controllers
         [HttpPost("logout")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         public async Task<IActionResult> Logout()
         {
             await Task.CompletedTask;
@@ -99,6 +104,7 @@ namespace greenshop_api.Controllers
         [HttpGet]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> GetUser()
         {
@@ -111,6 +117,7 @@ namespace greenshop_api.Controllers
         [HttpPut("{isSubscribed}")]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(User_HandleUpdateUserExceptionFilter))]
         public async Task<IActionResult> UpdateUserIsSubscribed([FromRoute]bool isSubscribed)
@@ -127,6 +134,7 @@ namespace greenshop_api.Controllers
         [HttpDelete]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         public async Task<IActionResult> DeleteUser()
         {

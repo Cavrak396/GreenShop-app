@@ -3,6 +3,7 @@ using greenshop_api.Application.Models;
 using greenshop_api.Application.Queries.Subscribers;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.Subscribers;
+using greenshop_api.Filters.ActionFilters.General;
 using greenshop_api.Filters.ActionFilters.Subscriber_ActionFilters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace greenshop_api.Controllers
 
         [HttpGet]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         public async Task<IActionResult> GetSubscribers()
         {
             var subscriberDtos = await _mediator.Send(
@@ -33,6 +35,7 @@ namespace greenshop_api.Controllers
 
         [HttpPost]
         [EnableRateLimiting("SlidingWindowIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Subscriber_ValidateCreateSubscriberActionFilter))]
         public async Task<IActionResult> CreateSubscriber([FromBody]SubscriberDto subscriber)
         {
@@ -55,6 +58,7 @@ namespace greenshop_api.Controllers
 
         [HttpDelete("{subscriberEmail}")]
         [EnableRateLimiting("SlidingWindowIpAddressRestrictLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(Subscriber_ValidateSubscriberEmailActionFilter))]
         public async Task<IActionResult> DeleteSubscriber([FromRoute]string subscriberEmail)
         {

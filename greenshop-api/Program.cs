@@ -5,6 +5,7 @@ using greenshop_api.Domain.Interfaces.Jwt;
 using greenshop_api.Domain.Interfaces.Modules;
 using greenshop_api.Domain.Interfaces.Repositories;
 using greenshop_api.Domain.Interfaces.Service;
+using greenshop_api.Domain.Interfaces.Services;
 using greenshop_api.Infrastructure.Bootstrap;
 using greenshop_api.Infrastructure.Creators;
 using greenshop_api.Infrastructure.Newsletter;
@@ -13,8 +14,8 @@ using greenshop_api.Infrastructure.Repositories;
 using greenshop_api.Infrastructure.Services;
 using greenshop_api.Infrastructure.Services.Newsletter;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading.RateLimiting;
 
@@ -174,6 +175,9 @@ builder.Services
 });
 
 builder.Services
+    .Configure<PermissionControlOptions>(builder.Configuration
+    .GetSection("PermissionControl"));
+builder.Services
     .Configure<JwtOptions>(builder.Configuration
     .GetSection("JWT"));
 builder.Services
@@ -182,6 +186,9 @@ builder.Services
 
 builder.Services
     .AddSmtpClient();
+
+builder.Services
+    .AddScoped<IPermissionControlService, PermissionControlService>();
 
 builder.Services
     .AddScoped<IJwtService, JwtService>();

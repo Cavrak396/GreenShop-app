@@ -4,6 +4,7 @@ using greenshop_api.Application.Queries.Users;
 using greenshop_api.Domain.Interfaces.Service;
 using greenshop_api.Dtos.CartItems;
 using greenshop_api.Filters.ActionFilters.Cart_ActionFilters;
+using greenshop_api.Filters.ActionFilters.General;
 using greenshop_api.Filters.ActionFilters.User_ActionFilters;
 using greenshop_api.Filters.ExceptionFilters.Carts;
 using MediatR;
@@ -28,6 +29,7 @@ namespace greenshop_api.Controllers
         [HttpPost]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidatePlantIdsActionFilter))]
         [TypeFilter(typeof(Cart_HandleUpdateCartExceptionFilter))]
@@ -45,6 +47,7 @@ namespace greenshop_api.Controllers
         [HttpPut]
         [EnableCors("WithCredentialsPolicy")]
         [EnableRateLimiting("TokenBucketIpAddressLimiter")]
+        [TypeFilter(typeof(ValidateApplicationKeyActionFilter))]
         [TypeFilter(typeof(User_ValidateJwtTokenActionFilter))]
         [TypeFilter(typeof(Cart_ValidateCartExistsActionFilter))]
         [TypeFilter(typeof(Cart_HandleUpdateCartExceptionFilter))]
