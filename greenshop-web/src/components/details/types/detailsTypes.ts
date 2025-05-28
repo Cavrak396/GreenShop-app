@@ -6,6 +6,7 @@ export interface ProductType {
   short_Description: string;
   price: number;
   sale_Percent: number;
+  sale_Percent_Private: number;
   image: string;
   category: string;
   tags: string;
