@@ -1,13 +1,15 @@
 import axios, { AxiosError } from "axios";
 import { ReviewDto } from "./reviewsTypes";
+import { BASE_URL } from "../reusable/baseUrl";
 import { ApiError } from "../reusable/reusableTypes";
 
-const API_BASE_URL = "https://localhost:7178";
+const APPLICATION_KEY = import.meta.env.VITE_APPLICATION_KEY;
 
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    ApplicationKey: APPLICATION_KEY,
   },
   withCredentials: true,
 });

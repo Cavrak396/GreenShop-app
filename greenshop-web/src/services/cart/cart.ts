@@ -3,11 +3,13 @@ import { ApiError } from "../reusable/reusableTypes";
 import axios from "axios";
 
 const API_BASE_URL = "https://localhost:7178";
+const APPLICATION_KEY = import.meta.env.VITE_APPLICATION_KEY;
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
     headers: {
         "Content-Type": "application/json",
+        ApplicationKey: APPLICATION_KEY,
     },
     withCredentials: true,
 });
@@ -29,6 +31,7 @@ export const syncCart = async (cartItems: CartApiItemDto[]): Promise<CartDto | A
         return handleApiError(error);
     }
 };
+
 export const updateCart = async (): Promise<CartDto | ApiError> => {
     try {
         const response = await axiosInstance.put<CartDto>("/carts");

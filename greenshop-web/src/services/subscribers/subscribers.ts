@@ -1,13 +1,15 @@
 import axios from "axios";
 import { SubscribeApiResponse, SubscribeSuccessResponse } from "./subscribersTypes";
 import { ApiError } from "../reusable/reusableTypes";
+import { BASE_URL } from "../reusable/baseUrl";
 
-const API_BASE_URL = "https://localhost:7178";
+const APPLICATION_KEY = import.meta.env.VITE_APPLICATION_KEY;
 
 const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: BASE_URL,
     headers: {
         "Content-Type": "application/json",
+        ApplicationKey: APPLICATION_KEY,
     },
     withCredentials: false,
 });
@@ -36,9 +38,12 @@ export const subscribeToNewsletter = async (
     email: string
 ): Promise<SubscribeSuccessResponse | ApiError> => {
     try {
-        await axiosInstance.post<SubscribeApiResponse>("/subscribers", {
-            subscriberEmail: email,
-        });
+        await axiosInstance.post<SubscribeApiResponse>(
+            "/subscribers",
+            {
+                subscriberEmail: email,
+            }
+        );
 
         return {
             success: true,

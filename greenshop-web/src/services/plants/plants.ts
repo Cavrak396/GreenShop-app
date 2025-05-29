@@ -1,9 +1,18 @@
 import { PlantsParams } from "./plantsTypes";
 import { ProductType } from "../../components/homepage-shop/types/shopTypes";
+import { BASE_URL } from "../reusable/baseUrl";
 import axios from "axios";
 
-const BASE_URL = "https://localhost:7178/Plants";
-const token = sessionStorage.getItem("token");
+const APPLICATION_KEY = import.meta.env.VITE_APPLICATION_KEY;
+
+const axiosInstance = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+        ApplicationKey: APPLICATION_KEY,
+    },
+    withCredentials: false,
+});
 
 export const fetchPlants = async ({
     searchValue,
@@ -16,15 +25,16 @@ export const fetchPlants = async ({
     pageSize,
 }: PlantsParams) => {
     try {
-        const response = await axios.get(BASE_URL, {
+        const token = sessionStorage.getItem("token");
+        const response = await axiosInstance.get("/plants", {
             headers: {
+                Authorized: token ? true : false,
                 SearchValue: searchValue || "",
                 CategoryValue: categoryValue || "",
                 SizeType: sizeType || "",
                 Group: group || "",
                 PriceMin: priceMin || "",
                 PriceMax: priceMax || "",
-                Authorized: token ? true : false,
             },
             params: {
                 page,
@@ -40,7 +50,8 @@ export const fetchPlants = async ({
 
 export const fetchPlantById = async (id: string): Promise<ProductType> => {
     try {
-        const response = await axios.get(`${BASE_URL}/${id}`, {
+        const token = sessionStorage.getItem("token");
+        const response = await axiosInstance.get(`/plants/${id}`, {
             headers: {
                 Authorized: token ? true : false,
             },
@@ -54,14 +65,12 @@ export const fetchPlantById = async (id: string): Promise<ProductType> => {
 
 export const fetchPlantsNumberByCategories = async (categories: string[]) => {
     try {
-        const response = await axios.get(`${BASE_URL}/category-number`, {
+        const response = await axiosInstance.get("/plants/category-number", {
             params: {
-                categories: categories,
+                categories,
             },
-            paramsSerializer: () => {
-                return categories.map((c) => `categories=${encodeURIComponent(c)}`).join("&");
-            },
-            withCredentials: false,
+            paramsSerializer: () =>
+                categories.map((c) => `categories=${encodeURIComponent(c)}`).join("&"),
         });
         return response.data;
     } catch (error) {
@@ -72,9 +81,7 @@ export const fetchPlantsNumberByCategories = async (categories: string[]) => {
 
 export const fetchTotalPlantsNumber = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/total-number`, {
-            withCredentials: false,
-        });
+        const response = await axiosInstance.get("/plants/total-number");
         return response.data;
     } catch (error) {
         console.error("Error fetching total plants number:", error);
@@ -84,9 +91,7 @@ export const fetchTotalPlantsNumber = async () => {
 
 export const fetchPlantsNumberBySize = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/size-number`, {
-            withCredentials: false,
-        });
+        const response = await axiosInstance.get("/plants/size-number");
         return response.data;
     } catch (error) {
         console.error("Error fetching plants number by size:", error);
