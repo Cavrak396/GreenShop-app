@@ -1,1 +1,1 @@
-export const BASE_URL = "https://localhost:7178";
+export const BASE_URL = "https://miso-greenshop-api.onrender.com";
