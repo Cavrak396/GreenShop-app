@@ -6,11 +6,21 @@ import CartTotal from "./CartTotal";
 import Portal from "../../reusable/portal/Portal";
 import AuthContent from "../authorization/AuthContent";
 import { CartTotalProps } from "./types/cartTypes";
+import { toast } from "react-toastify";
 
 function CartOrdering({ totalPrice }: CartTotalProps) {
   const { purchase } = useCart();
   const { token } = useUser();
   const [isAppear, setIsAppear] = useState(false);
+
+  const handlePurchase = async () => {
+    try {
+      await purchase();
+      toast.success("Purchase completed successfully!");
+    } catch (error) {
+      toast.error("Something went wrong with your purchase.");
+    }
+  };
 
   return (
     <div className="cart__ordering">
@@ -20,7 +30,7 @@ function CartOrdering({ totalPrice }: CartTotalProps) {
         {token ? (
           <Button
             className="cart__ordering-button button"
-            onClick={() => purchase()}
+            onClick={handlePurchase}
           >
             Complete Purchase
           </Button>

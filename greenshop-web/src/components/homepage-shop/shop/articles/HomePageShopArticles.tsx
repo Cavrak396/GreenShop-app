@@ -1,8 +1,8 @@
 import HomePageShopArticle from "./HomePageShopArticle";
 import { userTools } from "./utils/articlesUtils";
 import { HomePageShopArticlesProps } from "../../types/shopTypes";
-import "./articles.css";
 import { useUser } from "../../../../context/AuthContext";
+import "./articles.css";
 
 function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
   const { token } = useUser();

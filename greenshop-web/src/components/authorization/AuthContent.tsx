@@ -49,7 +49,6 @@ function AuthContent({ onLoginSuccess }: AuthContentProps) {
           toast.error("Email and password are required.");
         }
       } else {
-        // Register
         if (!name || !email || !password || password !== confirmationPassword) {
           if (password !== confirmationPassword) {
             toast.error("Passwords do not match.");
