@@ -8,3 +8,4 @@ bin/
 *.sqlite
 *.AssemblyInfo.cs
 *.AssemblyInfoInputs.cache
+/greenshop-web/.env*
