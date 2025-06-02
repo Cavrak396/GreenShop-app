@@ -37,7 +37,9 @@ function DetailsCritiqueComments() {
             <DetailsCritiqueCommentsPersonal comment={userComment} />
           )}
           <DetailsCritiqueCommentsList comments={comments} />
-          {totalReviews != null && totalReviews > 10 && <ArrowPagination />}
+          {totalReviews != null && totalReviews > 3 && (
+            <ArrowPagination className={"details"} />
+          )}
         </>
       )}
     </div>

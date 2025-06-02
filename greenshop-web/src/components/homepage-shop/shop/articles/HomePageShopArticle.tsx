@@ -1,14 +1,15 @@
 import HomePageShopImage from "./HomePageShopImage";
 import HomePageShopUsertools from "./HomePageShopUsertools";
 import HomePageShopPrice from "./HomePageShopPrice";
+import HomePageShopSale from "./HomePageShopSale";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useCart } from "../../../../context/CartContext";
 import { HomePageShopArticleProps, ProductType } from "../../types/shopTypes";
-import HomePageShopSale from "./HomePageShopSale";
 import { CartItemTypes } from "../../../cart/types/cartTypes";
 import { useUser } from "../../../../context/AuthContext";
 import { usePlants } from "../../../../context/PlantsContext";
+import { createCartItem } from "../../../details/utils/detailsUtils";
 
 function HomePageShopArticle({
   isOnSale,
@@ -25,21 +26,15 @@ function HomePageShopArticle({
   const addingItemsToCart = useCallback(
     (product: ProductType) => {
       const dateAdded = new Date();
+      const cartItem: CartItemTypes = createCartItem(
+        product,
+        getShopImage,
+        dateAdded
+      );
 
-      const cartItem: CartItemTypes = {
-        id: product.plantId,
-        label: product.name,
-        price: product.price,
-        sale: product.sale_Percent,
-        privateSale: product.sale_Percent_Private,
-        src: getShopImage(item.image),
-        alt: product.name,
-        dateAdded,
-      };
-      console.log(product);
       addItemToCart(cartItem, 1);
     },
-    [addItemToCart, token]
+    [addItemToCart, token, getShopImage]
   );
 
   function goToDetailsPage() {
