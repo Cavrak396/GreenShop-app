@@ -198,6 +198,7 @@
 .details__critique-line {
   display: flex;
   flex-wrap: wrap;
+  min-height: 381px;
 }
 
 .details__critique-usertool {
@@ -384,6 +385,27 @@
   max-width: 100%;
 }
 
+.details__arrow-pagination-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.details__arrow-pagination-item {
+  max-width: 25px;
+  max-height: 25px;
+  flex: 1 1 25px;
+}
+
+.details__arrow-pagination-arrow {
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.details__arrow-pagination-arrow--left {
+  transform: rotate(180deg);
+}
+
 @media screen and (max-width: 975px) {
   .details__product-info {
     flex-direction: column;
@@ -429,7 +451,7 @@
   }
 
   .details__product-info {
-    padding: 0 0 45px 0;
+    padding: 0 0 25px 0;
   }
 
   .details__review-container {

@@ -24,6 +24,7 @@ function HomePageShop() {
             setActivePage={setCurrentShopPage}
             totalItems={dataPlantsTotal}
             itemsPerPage={itemsPerPage}
+            className={"homepageshop"}
             loadItems={(params) =>
               loadPlants({
                 ...params,

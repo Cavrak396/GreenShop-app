@@ -28,7 +28,7 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [rating, setRating] = useState<number>(0);
   const [totalReviews, setTotalReviews] = useState<number | null>(null);
   const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
-  const [currentPageSize, setCurrentPageSize] = useState<number>(10);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(3);
   const [ratingNumbers, setRatingNumbers] = useState<{
     [key: string]: number;
   } | null>(null);

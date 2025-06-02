@@ -16,6 +16,7 @@ function Pagination({
   loadItems,
   activePage,
   setActivePage,
+  className,
 }: PaginationItemsProps) {
   const prevActivePage = useRef(activePage);
 
@@ -53,12 +54,12 @@ function Pagination({
   );
 
   return (
-    <div className="homepageshop__pagination">
+    <div className={`${className}__pagination pagination`}>
       {rangeStartPage > 1 && (
         <img
           src={arrow}
           alt="Go to first page"
-          className="homepageshop__pagination-arrow homepageshop__pagination-arrow--left"
+          className={`${className}__pagination-arrow ${className}__pagination-arrow--left`}
           onClick={() =>
             handleMoveToFirstPage({ setActivePage, setRangeStartPage })
           }
@@ -69,12 +70,13 @@ function Pagination({
         visiblePages={visiblePages}
         activePage={activePage}
         handlePageClick={handlePageClick}
+        className={className}
       />
       {visiblePages[visiblePages.length - 1] < numOfPages && (
         <img
           src={arrow}
           alt="Go to last page"
-          className="homepageshop__pagination-arrow"
+          className={`${className}__pagination-arrow pagination-arrow`}
           onClick={() =>
             handleMoveToLastPage({
               setActivePage,
