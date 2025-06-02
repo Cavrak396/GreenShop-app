@@ -1,7 +1,7 @@
 import { useComments } from "../../../context/ReviewsContext";
 import { ArrowPaginationItemProps } from "../../types/paginationTypes";
 
-function ArrowPaginationItem({ arrow }: ArrowPaginationItemProps) {
+function ArrowPaginationItem({ arrow, className }: ArrowPaginationItemProps) {
   const {
     currentCommentsPage,
     totalReviews,
@@ -15,28 +15,30 @@ function ArrowPaginationItem({ arrow }: ArrowPaginationItemProps) {
   const isFirstPage = currentCommentsPage === 1;
 
   function handleClick() {
-    if (arrow.id === 1) {
+    if (arrow?.id === 1) {
       setCurrentCommentsPage((prevPage: number) => Math.max(prevPage - 1, 1));
-    } else if (arrow.id === 2 && !isLastPage) {
+    } else if (arrow?.id === 2 && !isLastPage) {
       setCurrentCommentsPage((prevPage: number) => prevPage + 1);
     }
   }
 
   return (
     <li
-      className={`arrow-pagination-item ${
-        (arrow.id === 1 && isFirstPage) || (arrow.id === 2 && isLastPage)
+      className={`${className}__arrow-pagination-item arrow-pagination-item ${
+        (arrow?.id === 1 && isFirstPage) || (arrow?.id === 2 && isLastPage)
           ? "disabled"
           : ""
       }`}
       onClick={handleClick}
     >
       <img
-        src={arrow.img}
-        className={`arrow-pagination-arrow ${
-          arrow.id === 1 ? "arrow-pagination-arrow--left" : ""
+        src={arrow?.img}
+        className={`${className}__arrow-pagination-arrow arrow-pagination-arrow ${
+          arrow?.id === 1
+            ? `${className}__arrow-pagination-arrow--left arrow-pagination-arrow--left`
+            : ""
         }`}
-        alt={arrow.alt}
+        alt={arrow?.alt}
       />
     </li>
   );
