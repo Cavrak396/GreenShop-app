@@ -4,6 +4,7 @@ import linkedin from "../../../assets/images/reusable/Linkedin.svg";
 import union from "../../../assets/images/reusable/Union.svg";
 import bin from "../../../assets/images/reusable/bin.svg";
 import edit from "../../../assets/images/reusable/edit.svg";
+import { ProductType } from "../types/detailsTypes";
 import { CartItemTypes } from "../../cart/types/cartTypes";
 import { Comment } from "../../../context/types/reviewsTypes";
 import { ButtonOrSizeType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
@@ -61,15 +62,19 @@ export function calculateAverageRating(ratings: Comment[]) {
   return ratings.length > 0 ? totalRating / ratings.length : 0;
 }
 
-export const createCartItem = (product: any, dateAdded: Date): CartItemTypes => {
-  const { plantId, name, price, image } = product;
-
+export function createCartItem(
+  product: ProductType,
+  getShopImage: (img: string) => string,
+  date: Date = new Date()
+): CartItemTypes {
   return {
-    id: plantId,
-    label: name,
-    price,
-    src: image,
-    alt: `Image of ${name}`,
-    dateAdded,
+    id: product.plantId,
+    label: product.name,
+    price: product.price,
+    sale: product.sale_Percent,
+    privateSale: product.sale_Percent_Private,
+    src: getShopImage(product.image),
+    alt: `Image of ${product.name}`,
+    dateAdded: date,
   };
-};
+}

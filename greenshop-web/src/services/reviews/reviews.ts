@@ -30,7 +30,7 @@ const handleApiError = (error: AxiosError): ApiError => {
 export const getPlantReviews = async (
   plantId: string,
   page = 1,
-  pageSize = 10
+  pageSize = 3
 ): Promise<ReviewDto[]> => {
   if (!plantId) {
     throw new Error("plantId is required");

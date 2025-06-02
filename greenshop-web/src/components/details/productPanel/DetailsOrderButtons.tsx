@@ -1,12 +1,14 @@
-import { userButtons } from "../utils/detailsUtils";
-import Button from "../../../reusable/button/Button";
-import { useCart } from "../../../context/CartContext";
 import { useState, useEffect, useCallback } from "react";
+import { useCart } from "../../../context/CartContext";
 import { useProduct } from "../../../context/ProductContext";
-import { createCartItem } from "../utils/detailsUtils";
+import { usePlants } from "../../../context/PlantsContext";
+import { userButtons, createCartItem } from "../utils/detailsUtils";
+import Button from "../../../reusable/button/Button";
+import { CartItemTypes } from "../../cart/types/cartTypes";
 
 function DetailsOrderButtons() {
   const product = useProduct();
+  const { getShopImage } = usePlants();
   const { quantities, addItemToCart, cartItems } = useCart();
   const [isActive, setIsActive] = useState<number>(1);
   const [isAdded, setIsAdded] = useState<string>("Add to cart");
@@ -16,21 +18,26 @@ function DetailsOrderButtons() {
   const handleButtonClick = useCallback(
     (id: number, text: string) => {
       setIsActive(id);
-      const dateAdded = new Date();
-      const productWithDate = createCartItem(product, dateAdded);
 
       if (text === "Add to cart") {
-        addItemToCart(productWithDate, quantity);
+        const dateAdded = new Date();
+        const cartItem: CartItemTypes = createCartItem(
+          product,
+          getShopImage,
+          dateAdded
+        );
+        addItemToCart(cartItem, quantity);
         setIsAdded("Added to cart");
       }
     },
-    [addItemToCart, product, quantity]
+    [addItemToCart, product, quantity, getShopImage]
   );
 
   useEffect(() => {
     const isInCart = cartItems.some(
-      (item) => item && item.id && item.id.toString() === product.plantId
+      (item) => item?.id?.toString() === product.plantId
     );
+
     if (!isInCart) {
       setIsAdded("Add to cart");
     }
@@ -38,19 +45,23 @@ function DetailsOrderButtons() {
 
   return (
     <div className="details__buttons">
-      {userButtons.map((button) => (
-        <Button
-          key={button.id}
-          className={`details__order-button ${
-            isActive === button.id ? "button" : ""
-          }`}
-          onClick={() => handleButtonClick(button.id, button.text)}
-          aria-label={button.text === "Add to cart" ? isAdded : button.text}
-          aria-pressed={isActive === button.id ? "true" : "false"}
-        >
-          {button.text === "Add to cart" ? isAdded : button.text}
-        </Button>
-      ))}
+      {userButtons.map(({ id, text }) => {
+        const isCartButton = text === "Add to cart";
+        const buttonLabel = isCartButton ? isAdded : text;
+        const isPressed = isActive === id;
+
+        return (
+          <Button
+            key={id}
+            className={`details__order-button ${isPressed ? "button" : ""}`}
+            onClick={() => handleButtonClick(id, text)}
+            aria-label={buttonLabel}
+            aria-pressed={isPressed ? "true" : "false"}
+          >
+            {buttonLabel}
+          </Button>
+        );
+      })}
     </div>
   );
 }

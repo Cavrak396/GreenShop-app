@@ -1,12 +1,14 @@
 export interface PaginationTypes {
   visiblePages: number[];
   activePage: number;
+  className: string;
   handlePageClick: (page: number) => void;
 }
 
 export interface PaginationPropsTypes {
   page: number;
   isActive: boolean;
+  className: string;
   handleClick: (page: number) => void;
 }
 
@@ -14,6 +16,7 @@ export interface PaginationItemsProps {
   totalItems: number;
   itemsPerPage: number;
   activePage: number,
+  className: string;
   setActivePage: React.Dispatch<React.SetStateAction<number>>;
   loadItems: (params: { plantId?: string; page: number; pageSize: number }) => void;
 }
@@ -35,5 +38,6 @@ export interface ArrowProps {
 }
 
 export interface ArrowPaginationItemProps {
-  arrow: ArrowProps;
+  arrow?: ArrowProps;
+  className: string;
 }
