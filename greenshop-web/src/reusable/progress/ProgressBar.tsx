@@ -1,6 +1,6 @@
 import ProgressBar from "react-progressbar";
 import { ProgressBarProps } from "../types/progressBar";
-import "../reusable.css";
+import "./progress.css";
 
 function ProgressBarComponent({
   percentage,

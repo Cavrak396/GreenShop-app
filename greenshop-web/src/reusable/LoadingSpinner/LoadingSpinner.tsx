@@ -1,4 +1,4 @@
-import "../reusable.css";
+import "./spinner.css";
 
 function LoadingSpinner() {
   return <div className="loading-spinner"></div>;

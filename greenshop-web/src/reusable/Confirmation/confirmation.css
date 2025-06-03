@@ -1,0 +1,29 @@
+.confirmation__content {
+  padding: 40px 20px 15px 20px;
+}
+
+.confirmation__message {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.confirmation__buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .confirmation__content {
+    padding: 30px 20px 15px 20px;
+  }
+
+  .confirmation__message {
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+}
