@@ -1,6 +1,6 @@
 import ConfirmationButtons from "./ConfirmationButtons";
 import { ConfirmationProps } from "../types/confirmationTypes";
-import "../reusable.css";
+import "./confirmation.css";
 
 function ConfirmationContent({
   message,

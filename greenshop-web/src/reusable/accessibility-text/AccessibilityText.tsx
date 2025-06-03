@@ -1,5 +1,6 @@
 import Title from "../titles/Title";
 import { AccessibilityTextTypes } from "../types/accessibilityTypes";
+import "./accessibillity.css";
 
 function AccessibiltyText({ title, text }: AccessibilityTextTypes) {
   return (
