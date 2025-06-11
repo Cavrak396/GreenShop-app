@@ -15,6 +15,10 @@
   flex: 1 1 50%;
 }
 
+.banner__content-holder {
+  z-index: 10;
+}
+
 .banner__title-above {
   display: block;
   margin-bottom: 10px;
@@ -35,6 +39,7 @@
 
 .banner__title-colored {
   color: rgba(70, 163, 88, 1);
+  margin-left: 5px;
 }
 
 .banner__lines {

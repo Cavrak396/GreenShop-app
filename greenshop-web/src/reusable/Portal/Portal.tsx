@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
 import { OverlayModalTypes } from "../types/modalTypes";
-import "../reusable.css";
 import Button from "../button/Button";
 import close from "../../assets/images/reusable/close-image.svg";
+import "./portal.css";
 
 function Portal({ children, setIsAppear }: OverlayModalTypes) {
   function handleOverlayClose(e: React.MouseEvent<HTMLDivElement>) {

@@ -3,6 +3,8 @@ export interface CartItemTypes {
   label: string;
   price: number;
   sale?: number;
+  sale_Percent_Private: number;
+  sale_Percent: number;
   privateSale?: number;
   src: string;
   alt: string;

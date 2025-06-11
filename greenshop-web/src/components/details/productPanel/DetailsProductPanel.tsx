@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useEffect } from "react";
 import DetailsProductDescription from "../DetailsProductDescription";
 import ProductSizesList from "./DetailsProductSizesList";
 import DetailsQuantity from "./DetailsQuantity";
@@ -11,6 +11,7 @@ import { useRatings } from "../../../customHooks/useRating";
 import { useComments } from "../../../context/ReviewsContext";
 import { useParams } from "react-router-dom";
 import { useUser } from "../../../context/AuthContext";
+import { usePrice } from "../../../customHooks/usePriceCalculator";
 
 function DetailsProductPanel() {
   const product = useProduct();
@@ -25,6 +26,8 @@ function DetailsProductPanel() {
   const { user } = useUser();
   const { avgRating } = useRatings(ratingNumbers || {});
 
+  const { getPrice } = usePrice();
+
   useEffect(() => {
     if (id) {
       fetchComments(id, currentCommentsPage, currentPageSize);
@@ -35,21 +38,20 @@ function DetailsProductPanel() {
     }
   }, [id, currentCommentsPage, currentPageSize, user]);
 
-  const calculatedSalePrice = useMemo(() => {
-    return product.sale_Percent
-      ? product.price * (1 - product.sale_Percent / 100)
-      : product.price;
-  }, [product]);
+  const displayedPrice = React.useMemo(() => {
+    if (!product) return 0;
+    return getPrice(product);
+  }, [product, getPrice]);
 
   return (
     <div className="details__product-panel">
       <div className="details__product-panel-container">
         <Title className="details__product-title middle-title">
-          {product.name}
+          {product?.name}
         </Title>
         <div className="details__product-line details__product-line--with-price-rating">
           <span className="details__product-price">
-            ${calculatedSalePrice.toFixed(2)}
+            ${displayedPrice.toFixed(2)}
           </span>
           <StaticStars
             rate={avgRating}
@@ -61,10 +63,7 @@ function DetailsProductPanel() {
           <span className="details__product-description-tag">
             Short Description:
           </span>
-          <DetailsProductDescription
-            className="details__product-description-text"
-            text={product.short_Description.slice(0, 215) + "..."}
-          />
+          <DetailsProductDescription shortDescription={true} />
         </div>
         <ProductSizesList />
         <div className="details__product-line">

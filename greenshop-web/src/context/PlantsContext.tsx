@@ -20,6 +20,7 @@ import { PlantsParams } from "../services/plants/plantsTypes";
 import { ProductType } from "../components/homepage-shop/types/shopTypes";
 import aloe from "../assets/images/shop/articles/aloe.webp";
 import { imagesMap } from "../components/homepage-shop/shop/articles/utils/articlesUtils";
+import { useUser } from "./AuthContext";
 
 const PlantsContext = createContext<PlantsContextType | undefined>(undefined);
 
@@ -42,6 +43,8 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
     priceMin: null,
     priceMax: null,
   });
+
+  const { token } = useUser();
 
   const CATEGORIES = ["House Plants", "Potter Plants", "Gardening"];
   const defaultPlantImage = aloe;
@@ -119,7 +122,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       page: 1,
       pageSize: 9,
     });
-  }, [filters]);
+  }, [filters, token]);
 
   return (
     <PlantsContext.Provider

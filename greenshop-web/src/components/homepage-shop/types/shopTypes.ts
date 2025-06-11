@@ -16,6 +16,7 @@ export interface ProductType {
   sale_Percent_Private: number;
   size: number;
   tags: string;
+  sale: number;
 }
 
 export interface UserToolsType {
@@ -45,10 +46,12 @@ export enum SortOptions {
 
 export interface HomePageShopArticleProps {
   isOnSale: boolean;
-  newPrice: number;
   totalSalePercent: number;
   item: ProductType;
+  newPrice: number;
+  oldPrice: number;
   userTools: UserToolsType[];
+  isLoggedIn: boolean;
 }
 
 export interface HomePageShopArticlesProps {

@@ -1,0 +1,15 @@
+.small-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.middle-title {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 768px) {
+  .middle-title {
+    font-size: 20px;
+  }
+}
