@@ -5,18 +5,21 @@ import { CartItemProps } from "./types/cartTypes";
 import Button from "../../reusable/button/Button";
 import { useCart } from "../../context/CartContext";
 import removeImg from "../../assets/images/cart/Delete.svg";
+import { usePrice } from "../../customHooks/usePriceCalculator";
 
 function CartItem({ item }: CartItemProps) {
   const { quantities, setQuantity, removeItem } = useCart();
+  const { getPrice } = usePrice();
   const quantity = quantities[item.id] || 1;
 
-  const cartPrice = useMemo(() => {
-    return item.sale ? item.price * (1 - item.sale / 100) : item.price;
-  }, [item.price, item.sale]);
+  const price = useMemo(() => {
+    if (!getPrice) return item.price;
+    return getPrice(item);
+  }, [item, getPrice]);
 
   const totalPrice = useMemo(() => {
-    return (cartPrice * quantity).toFixed(2);
-  }, [cartPrice, quantity]);
+    return (price * quantity).toFixed(2);
+  }, [price, quantity]);
 
   const handleQuantityChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +28,7 @@ function CartItem({ item }: CartItemProps) {
     },
     [item.id, setQuantity]
   );
+
   const formattedDate = useMemo(() => {
     const dateAdded = new Date(item.dateAdded);
     return dateAdded instanceof Date && !isNaN(dateAdded.getTime())
@@ -41,7 +45,7 @@ function CartItem({ item }: CartItemProps) {
       />
       <div className="cart__item-info">
         <CartItemInfo label={item.label} info={formattedDate} />
-        <CartItemInfo label="Price" info={`$${cartPrice.toFixed(2)}`} />
+        <CartItemInfo label="Price" info={`$${price.toFixed(2)}`} />
         <div className="cart__item-info-detail">
           <span className="cart__item-label">Quantity</span>
           <FormInput

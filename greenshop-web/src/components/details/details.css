@@ -182,11 +182,19 @@
   padding-bottom: 10px;
 }
 
+.details__product-description-tag {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
 .details__product-description {
   opacity: 0.6;
   font-size: 15px;
   line-height: 22px;
   max-width: 90%;
+  margin-bottom: 20px;
 }
 
 .activated {
@@ -505,7 +513,7 @@
   }
 
   .details__info-buttons {
-    margin-bottom: 11px;
+    margin-bottom: 18px;
   }
 
   .details__order-button {
@@ -525,9 +533,15 @@
     min-width: 20px;
   }
 
+  .details__product-description-tag {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
   .details__product-description {
     font-size: 12px;
     line-height: 21px;
+    margin-bottom: 10px;
   }
 
   .details__critique-title {

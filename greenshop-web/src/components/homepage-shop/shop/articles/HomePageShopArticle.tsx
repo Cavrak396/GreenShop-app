@@ -17,6 +17,7 @@ function HomePageShopArticle({
   totalSalePercent,
   item,
   userTools,
+  oldPrice,
 }: HomePageShopArticleProps) {
   const { addItemToCart } = useCart();
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function HomePageShopArticle({
       <HomePageShopPrice
         isOnSale={isOnSale}
         newPrice={newPrice}
-        price={item.price}
+        price={oldPrice}
       />
     </li>
   );

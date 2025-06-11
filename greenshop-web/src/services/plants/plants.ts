@@ -50,12 +50,8 @@ export const fetchPlants = async ({
 
 export const fetchPlantById = async (id: string): Promise<ProductType> => {
     try {
-        const token = sessionStorage.getItem("token");
-        const response = await axiosInstance.get(`/plants/${id}`, {
-            headers: {
-                Authorized: token ? true : false,
-            },
-        });
+        const response = await axiosInstance.get(`/plants/${id}`
+        );
         return response.data;
     } catch (error) {
         console.error("Error fetching plant by ID:", error);

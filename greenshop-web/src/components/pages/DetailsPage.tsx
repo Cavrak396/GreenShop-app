@@ -5,11 +5,11 @@ import { ProductProvider } from "../../context/ProductContext";
 import { fetchPlantById } from "../../services/plants/plants";
 import LoadingSpinner from "../../reusable/loadingSpinner/LoadingSpinner";
 import ErrorMessage from "../../reusable/error/ErrorMessage";
-import { ProductType } from "../homepage-shop/types/shopTypes";
+import { ProductTypeDetails } from "../details/types/detailsTypes";
 
 function DetailsPage() {
   const { id } = useParams();
-  const [product, setProduct] = useState<ProductType | null>(null);
+  const [product, setProduct] = useState<ProductTypeDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

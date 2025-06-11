@@ -1,7 +1,9 @@
 import { Dispatch, SetStateAction, ReactNode } from "react";
 
-export interface ProductType {
+export interface ProductTypeDetails {
   long_Description: string;
+  livingRoom_Description: string;
+  diningRoom_Description: string;
   name: string;
   short_Description: string;
   price: number;
@@ -9,13 +11,15 @@ export interface ProductType {
   sale_Percent_Private: number;
   image: string;
   category: string;
-  tags: string;
   plantId: string;
+  sale?: number;
+  size: number;
+  tags: string;
 }
 
 export interface ProductProviderProps {
   children: ReactNode;
-  product: ProductType;
+  product: ProductTypeDetails;
 }
 
 export interface ProductDescriptionType {

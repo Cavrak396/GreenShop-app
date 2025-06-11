@@ -13,7 +13,7 @@ function DetailsOrderButtons() {
   const [isActive, setIsActive] = useState<number>(1);
   const [isAdded, setIsAdded] = useState<string>("Add to cart");
 
-  const quantity = quantities[Number(product.plantId)] || 1;
+  const quantity = quantities[product.plantId.toString()] || 1;
 
   const handleButtonClick = useCallback(
     (id: number, text: string) => {
