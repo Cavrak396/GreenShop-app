@@ -4,7 +4,7 @@ import linkedin from "../../../assets/images/reusable/Linkedin.svg";
 import union from "../../../assets/images/reusable/Union.svg";
 import bin from "../../../assets/images/reusable/bin.svg";
 import edit from "../../../assets/images/reusable/edit.svg";
-import { ProductType } from "../types/detailsTypes";
+import { ProductTypeDetails } from "../types/detailsTypes";
 import { CartItemTypes } from "../../cart/types/cartTypes";
 import { Comment } from "../../../context/types/reviewsTypes";
 import { ButtonOrSizeType, SocialMediaType, DetailsPersonalToolsType } from "../types/detailsTypes";
@@ -38,6 +38,14 @@ export const infoButtons: ButtonOrSizeType[] = [
   { id: 2, text: "Reviews" },
 ];
 
+export function getProductDescriptions(product: ProductTypeDetails) {
+  return [
+    { label: "Long description", value: product.long_Description },
+    { label: "Living room description", value: product.livingRoom_Description },
+    { label: "Dining room description", value: product.diningRoom_Description },
+  ].filter(desc => desc.value);
+}
+
 export function calculateRatingPercentages(ratingNumbers: { [key: number]: number }) {
   const totalVotes = Object.values(ratingNumbers).reduce(
     (total, count) => total + count,
@@ -63,7 +71,7 @@ export function calculateAverageRating(ratings: Comment[]) {
 }
 
 export function createCartItem(
-  product: ProductType,
+  product: ProductTypeDetails,
   getShopImage: (img: string) => string,
   date: Date = new Date()
 ): CartItemTypes {
@@ -73,6 +81,8 @@ export function createCartItem(
     price: product.price,
     sale: product.sale_Percent,
     privateSale: product.sale_Percent_Private,
+    sale_Percent: product.sale_Percent,
+    sale_Percent_Private: product.sale_Percent_Private,
     src: getShopImage(product.image),
     alt: `Image of ${product.name}`,
     dateAdded: date,

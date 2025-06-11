@@ -1,4 +1,5 @@
 button {
+  color: inherit;
   font-family: "Poppins";
   border: none;
   background: none;

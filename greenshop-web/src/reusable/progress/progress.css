@@ -1,0 +1,10 @@
+.progressbar-progress {
+  background-color: rgba(70, 163, 88, 1) !important;
+  border-radius: 20px;
+}
+
+.rating-bar-label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 5px;
+}

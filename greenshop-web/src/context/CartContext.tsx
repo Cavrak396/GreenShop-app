@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { CartItemTypes } from "../components/cart/types/cartTypes";
 import { CartContextType } from "./types/cartTypes";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../services/cart/cart";
 import { useUser } from "../context/AuthContext";
 import { ApiError } from "../services/reusable/reusableTypes";
+import { usePrice } from "../customHooks/usePriceCalculator";
 
 const saveToLocalStorage = (key: string, value: any) => {
   localStorage.setItem(key, JSON.stringify(value));
@@ -29,13 +30,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     getFromLocalStorage("quantities")
   );
 
+  const { getPrice } = usePrice();
+
   const totalPrice = useMemo(() => {
     return cartItems.reduce((accumulator, item) => {
       const quantity = quantities[item.id.toString()] || 1;
-      const price = item.sale ? item.price * (1 - item.sale / 100) : item.price;
+      const price = getPrice(item);
       return accumulator + price * quantity;
     }, 0);
-  }, [cartItems, quantities]);
+  }, [cartItems, quantities, getPrice]);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {
     setQuantities((prevQuantities) => {
