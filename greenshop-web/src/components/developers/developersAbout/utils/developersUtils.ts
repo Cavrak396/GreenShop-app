@@ -5,7 +5,7 @@ import javascript from "../../../../assets/images/developers/js.svg";
 import css from "../../../../assets/images/developers/css-3.svg";
 import net from "../../../../assets/images/developers/net.svg";
 import c from "../../../../assets/images/developers/c-sharp.svg";
-import mySql from "../../../../assets/images/developers/mysql.svg";
+import mySql from "../../../../assets/images/developers/postgresql_elephant.svg";
 import github from "../../../../assets/images/developers/github.svg";
 import linkedin from "../../../../assets/images/developers/linkedin.svg";
 import { DevelopersTypes } from "../../types/developersTypes";

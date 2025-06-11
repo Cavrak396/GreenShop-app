@@ -32,7 +32,6 @@ function AuthContent({ onLoginSuccess }: AuthContentProps) {
       const subscribeEmail = inputRefs.current[5]?.value;
 
       if (activatedId === 1) {
-        // Login
         if (email && password) {
           const loginResponse = await login({ email, password });
           if ("jwt" in loginResponse) {
