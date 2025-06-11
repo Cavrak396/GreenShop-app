@@ -10,6 +10,7 @@ function HomePageShopArticles({ sortedData }: HomePageShopArticlesProps) {
   return (
     <ul className="homepageshop__articles-list">
       {sortedData.map((item) => {
+        console.log(item);
         const newPrice = getPrice(item);
         const salePercent = item.sale_Percent_Private ?? item.sale ?? 0;
 
