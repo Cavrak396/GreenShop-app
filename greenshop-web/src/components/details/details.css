@@ -218,6 +218,7 @@
   position: relative;
   max-width: 55%;
   flex: 1 1 55%;
+  min-height: 603px;
 }
 
 .details__critique-title,
@@ -431,6 +432,10 @@
     flex: 1 1 100%;
   }
 
+  .details__comments {
+    min-height: 596px;
+  }
+
   .details__critique-average {
     flex-direction: column;
   }
@@ -573,6 +578,10 @@
   .rating-bar-label {
     font-size: 9px;
     margin-bottom: 2px;
+  }
+
+  .details__comments {
+     min-height: 551px;
   }
 
   .details__comments-comment {
