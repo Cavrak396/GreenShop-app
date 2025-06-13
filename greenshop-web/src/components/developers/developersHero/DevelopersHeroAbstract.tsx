@@ -9,7 +9,7 @@ function DevelopersHeroAbstract() {
       <p className="hero__lines">
         We are passionate developers crafting seamless, intuitive web
         experiences. With our unique skills, we're dedicated to delivering a
-        responsive and user-friendly GreenShop.
+        responsive and user-friendly greenshop.
       </p>
     </div>
   );

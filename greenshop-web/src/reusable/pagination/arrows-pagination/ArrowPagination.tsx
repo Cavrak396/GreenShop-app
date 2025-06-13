@@ -1,6 +1,6 @@
 import ArrowPaginationList from "./ArrowPaginationList";
-import "../pagination.css";
 import { ArrowPaginationItemProps } from "../../types/paginationTypes";
+import "../pagination.css";
 
 function ArrowPagination({ className }: ArrowPaginationItemProps) {
   return (
