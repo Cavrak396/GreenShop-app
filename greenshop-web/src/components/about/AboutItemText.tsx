@@ -1,5 +1,5 @@
 import Button from "../../reusable/button/Button";
-import arrow from "../../assets/images/reusable/arrow-right.svg";
+import arrow from "../../assets/images/reusable/arrow.svg";
 import { AboutItemProps } from "./types/aboutTypes";
 import Title from "../../reusable/titles/Title";
 

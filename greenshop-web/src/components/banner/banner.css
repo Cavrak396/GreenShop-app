@@ -50,6 +50,10 @@
   margin-bottom: 40px;
 }
 
+.banner__lines-responsive {
+  margin-left: 4px;
+}
+
 .banner__button {
   font-size: 18px;
   text-transform: uppercase;

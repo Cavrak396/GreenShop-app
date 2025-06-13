@@ -67,6 +67,6 @@ export const developersInfo: DevelopersTypes[] = [
       },
     ],
     alt: "Ana Jurisic backend developer",
-    text: "Ana is a backend developer responsible for designing and implementing RESTful APIs with .NET C#, optimizing database queries using Entity Framework Core, and ensuring data security through encryption and authentication. She also manages testing processes with a containerized MySQL database via Docker. Her expertise in server-side technologies enables the creation of well-structured systems that can scale according to the application's needs. With her focus on backend optimization, the application is secure, efficient, and ready for production.",
+    text: "Ana is a backend developer responsible for designing and implementing RESTful APIs with .NET C#, optimizing database queries using Entity Framework Core, and ensuring data security through encryption and authentication. She also manages testing processes with a containerized PostgreSQL database via Docker. Her expertise in server-side technologies enables the creation of well-structured systems that can scale according to the application's needs. With her focus on backend optimization, the application is secure, efficient, and ready for production.",
   },
 ];

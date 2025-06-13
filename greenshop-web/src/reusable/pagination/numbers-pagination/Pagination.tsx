@@ -7,7 +7,7 @@ import {
 } from "../utils/paginationUtils";
 import PaginationList from "./PaginationList";
 import { PaginationItemsProps } from "../../types/paginationTypes";
-import arrow from "../../../assets/images/shop/pagination/arrow-right.svg";
+import arrow from "../../../assets/images/reusable/arrow.svg";
 import "../pagination.css";
 
 function Pagination({

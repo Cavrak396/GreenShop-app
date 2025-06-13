@@ -3,7 +3,7 @@ import {
   VisiblePagesParams,
 } from "../../types/paginationTypes";
 
-import arrow from "../../../assets/images/shop/pagination/arrow-right.svg";
+import arrow from "../../../assets/images/reusable/arrow.svg";
 
 export function getVisiblePages({
   rangeStartPage,

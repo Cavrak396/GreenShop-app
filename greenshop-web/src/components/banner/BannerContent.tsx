@@ -1,7 +1,7 @@
 import MainTitle from "../../reusable/titles/MainTitle";
 import Button from "../../reusable/button/Button";
-import "./banner.css";
 import BannerText from "./BannerText";
+import "./banner.css";
 
 function BannerContent() {
   return (
