@@ -56,6 +56,14 @@ function UserBarItem({
     }
   }, [activePortal, location.pathname, setActiveId]);
 
+  useEffect(() => {
+    if (token && activePortal === "authContent") {
+      setActivePortal(null);
+    } else if (!token && activePortal === "userAccount") {
+      setActivePortal(null);
+    }
+  }, [token, activePortal, setActivePortal]);
+
   return (
     <>
       <li

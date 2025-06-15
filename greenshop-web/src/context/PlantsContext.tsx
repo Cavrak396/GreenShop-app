@@ -10,6 +10,7 @@ import {
   fetchPlantsNumberByCategories,
   fetchTotalPlantsNumber,
   fetchPlantsNumberBySize,
+  fetchRelatedPlants,
 } from "../services/plants/plants";
 import {
   PlantsContextType,
@@ -36,6 +37,7 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
   const [plantsNumberBySize, setPlantsNumberBySize] = useState<CategoryCount>(
     {}
   );
+  const [relatedProducts, setRelatedProducts] = useState<ProductType[]>([]);
   const [filters, setFilters] = useState<FiltersType>({
     category: null,
     size: null,
@@ -62,6 +64,21 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
       setSortedData(data.plants);
       setData(data);
       setDataPlantsTotal(data.totalNumber);
+    } catch (error) {
+      setError("Failed to fetch plants. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getRelatedProducts = async (
+    plantId: string,
+    relatedProductSize?: number
+  ) => {
+    setLoading(true);
+    try {
+      const data = await fetchRelatedPlants(plantId, relatedProductSize);
+      setRelatedProducts(data);
     } catch (error) {
       setError("Failed to fetch plants. Please try again later.");
     } finally {
@@ -142,6 +159,8 @@ export const PlantsProvider = ({ children }: { children: ReactNode }) => {
         plantsNumberBySize,
         setSearchedData,
         getShopImage,
+        relatedProducts,
+        getRelatedProducts,
         setActiveCategoryId: (id: number | null) =>
           setFilters((prev) => ({
             ...prev,

@@ -94,3 +94,15 @@ export const fetchPlantsNumberBySize = async () => {
         throw error;
     }
 };
+
+export const fetchRelatedPlants = async (plantId: string, relatedProductSize?: number) => {
+    try {
+        const response = await axiosInstance.get(`/plants/${plantId}/related`, {
+            params: relatedProductSize ? { relatedProductSize } : undefined,
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching related plants:", error);
+        throw error;
+    }
+};
