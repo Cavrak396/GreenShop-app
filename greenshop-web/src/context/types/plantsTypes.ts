@@ -33,4 +33,6 @@ export interface PlantsContextType {
   setCategoriesData: (data: CategoryCount) => void;
   setPriceRange: (minPrice: number, maxPrice: number) => void;
   getShopImage: (fileName: string) => string;
+  relatedProducts: ProductType[];
+  getRelatedProducts: (id: string, limit: number) => Promise<void>;
 }

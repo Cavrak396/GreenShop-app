@@ -102,6 +102,15 @@
   display: none;
 }
 
+.header__responsive-button {
+  display: none;
+}
+
+.header__responsive-button-image {
+  max-width: 20px;
+  max-height: 20px;
+}
+
 @media screen and (max-width: 768px) {
   .header__line {
     border-bottom: none;
@@ -173,5 +182,10 @@
   .header__responsive-decoration:hover {
     top: 14px;
     cursor: pointer;
+  }
+
+  .header__responsive-button {
+    display: block;
+    transform: rotate(-180deg);
   }
 }

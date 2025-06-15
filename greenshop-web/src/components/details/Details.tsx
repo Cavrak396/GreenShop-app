@@ -5,6 +5,7 @@ import Portal from "../../reusable/portal/Portal";
 import DetailsProductInfo from "./productInfo/DetailsProductInfo";
 import { useProduct } from "../../context/ProductContext";
 import { usePlants } from "../../context/PlantsContext";
+import RelatedProducts from "./relatedProducts/RelatedProducts";
 import "./details.css";
 
 function Details() {
@@ -20,6 +21,7 @@ function Details() {
           <DetailsProductPanel />
         </div>
         <DetailsProductInfo />
+        <RelatedProducts />
       </div>
       {isAppear && (
         <Portal setIsAppear={setIsAppear}>

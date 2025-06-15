@@ -1,10 +1,16 @@
+import { useLocation } from "react-router-dom";
 import HeaderNav from "./HeaderNav";
 import HeaderUserToolbar from "./HeaderUserToolbar";
 import Logo from "../../reusable/logo/Logo";
-import "./header.css";
 import HeaderResponsiveMessage from "./headerResponsive/HeaderResponsiveMessage";
+import HeaderResponsiveBackButton from "./headerResponsive/HeaderResponsiveBackButton";
+import "./header.css";
 
 function Header() {
+  const location = useLocation();
+
+  const isOnDetailsPage = location.pathname.startsWith("/details");
+
   return (
     <section className="header">
       <div className="wrap">
@@ -16,6 +22,7 @@ function Header() {
           <HeaderUserToolbar />
         </div>
         <HeaderResponsiveMessage />
+        {isOnDetailsPage && <HeaderResponsiveBackButton />}
       </div>
     </section>
   );

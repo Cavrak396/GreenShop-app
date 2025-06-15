@@ -5,6 +5,7 @@ import { usePlants } from "../../../context/PlantsContext";
 import { userButtons, createCartItem } from "../utils/detailsUtils";
 import Button from "../../../reusable/button/Button";
 import { CartItemTypes } from "../../cart/types/cartTypes";
+import { toast } from "react-toastify";
 
 function DetailsOrderButtons() {
   const product = useProduct();
@@ -28,6 +29,10 @@ function DetailsOrderButtons() {
         );
         addItemToCart(cartItem, quantity);
         setIsAdded("Added to cart");
+      } else if (text === "Buy now") {
+        toast.info(
+          "Sorry, but my developers decided I don`t need to do anything 😄"
+        );
       }
     },
     [addItemToCart, product, quantity, getShopImage]
