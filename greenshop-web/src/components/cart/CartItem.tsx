@@ -6,10 +6,13 @@ import Button from "../../reusable/button/Button";
 import { useCart } from "../../context/CartContext";
 import removeImg from "../../assets/images/cart/Delete.svg";
 import { usePrice } from "../../customHooks/usePriceCalculator";
+import useIsMobile from "../../customHooks/useIsMobile";
 
 function CartItem({ item }: CartItemProps) {
   const { quantities, setQuantity, removeItem } = useCart();
   const { getPrice } = usePrice();
+  const isMobile = useIsMobile();
+
   const quantity = quantities[item.id] || 1;
 
   const price = useMemo(() => {
@@ -36,6 +39,11 @@ function CartItem({ item }: CartItemProps) {
       : "Invalid Date";
   }, [item.dateAdded]);
 
+  const displayLabel =
+    isMobile && item.label && item.label.length > 10
+      ? item.label.slice(0, 13) + "..."
+      : item.label || "";
+
   return (
     <li className="cart__list-item">
       <img
@@ -44,7 +52,7 @@ function CartItem({ item }: CartItemProps) {
         className="cart__item-image"
       />
       <div className="cart__item-info">
-        <CartItemInfo label={item.label} info={formattedDate} />
+        <CartItemInfo label={displayLabel} info={formattedDate} />
         <CartItemInfo label="Price" info={`$${price.toFixed(2)}`} />
         <div className="cart__item-info-detail">
           <span className="cart__item-label">Quantity</span>

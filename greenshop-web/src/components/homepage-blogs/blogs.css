@@ -82,7 +82,6 @@
 .homepage-blogs__arrow {
   max-width: 18px;
   max-height: 18px;
-  filter: invert(1);
 }
 
 @media screen and (max-width: 975px) {
