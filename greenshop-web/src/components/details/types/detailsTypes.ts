@@ -71,3 +71,7 @@ export interface DetailsPersonalToolType {
 export interface DetailsCritiqueCommentsToolsProps {
   setIsActiveEdit: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface RelatedItemTypes {
+  item: ProductTypeDetails
+}
