@@ -1,4 +1,4 @@
-# GreenShop-app
+# Miso-greenshop
 
 # 🌿 Miso GreenShop
 
@@ -76,7 +76,7 @@ This project helped me:
 ## 🚀 Getting Started Locally
 
 ```bash
-git clone https://github.com/your-username/miso-greenshop.git
-cd miso-greenshop
+git clone https://github.com/Cavrak396/Miso-greenshop-web.git
+cd Miso-greenshop
 npm install
 npm run dev
