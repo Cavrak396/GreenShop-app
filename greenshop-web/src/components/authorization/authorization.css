@@ -93,6 +93,11 @@
   max-height: 30px;
 }
 
+.authorization__error-message {
+  text-align: center;
+  max-width: 300px;
+}
+
 @media screen and (max-width: 768px) {
   .authorization__holder {
     padding: 20px 70px;
@@ -145,5 +150,10 @@
   .authorization__form-social-image {
     max-width: 15px;
     max-height: 15px;
+  }
+
+  .authorization__error-message {
+    font-size: 11px;
+    line-height: 15px !important;
   }
 }
