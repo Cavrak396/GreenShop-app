@@ -12,7 +12,7 @@ This project was built as part of my frontend developer portfolio, with a strong
 ## 🛠️ Tech Stack
 
 - **React + TypeScript** – for a scalable, typed, and structured frontend
-- **CSS** – fully custom styling, no UI libraries
+- **CSS** – fully custom styling
 - **Axios** – for handling HTTP requests
 - **React Context API** – for managing global state (cart, auth, etc.)
 
