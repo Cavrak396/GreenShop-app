@@ -3,15 +3,17 @@ import { useUser } from "../../context/AuthContext";
 import AuthTypeOption from "./AuthTypeOption";
 import AuthForm from "./AuthForm";
 import LoadingSpinner from "../../reusable/loadingSpinner/LoadingSpinner";
-import { authInstructions, emailRegex } from "./utils/authUtils";
+import { authInstructions, validateForm } from "./utils/authUtils";
 import { AuthContentProps } from "./types/authTypes";
 import { toast } from "react-toastify";
+import ErrorMessage from "../../reusable/error/ErrorMessage";
 import "./authorization.css";
 
 function AuthContent({ onLoginSuccess }: AuthContentProps) {
   const [activatedId, setActivatedId] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { login, register, setUser, setToken, loading } = useUser();
 
   const togglePasswordVisibility = useCallback((id: number) => {
@@ -23,45 +25,42 @@ function AuthContent({ onLoginSuccess }: AuthContentProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage(null);
+
+    const email = inputRefs.current[1]?.value ?? "";
+    const password = inputRefs.current[2]?.value ?? "";
+    const confirmationPassword = inputRefs.current[3]?.value ?? "";
+    const name = inputRefs.current[4]?.value ?? "";
+    const subscribeEmail = inputRefs.current[5]?.value ?? "";
+
+    const formData = {
+      email,
+      password,
+      confirmationPassword,
+      name,
+      subscribeEmail,
+    };
+
+    const errors = validateForm(formData, activatedId);
+    if (errors.length > 0) {
+      setErrorMessage(errors.join(" "));
+      return;
+    }
 
     try {
-      const email = inputRefs.current[1]?.value;
-      const password = inputRefs.current[2]?.value;
-      const confirmationPassword = inputRefs.current[3]?.value;
-      const name = inputRefs.current[4]?.value;
-      const subscribeEmail = inputRefs.current[5]?.value;
-
       if (activatedId === 1) {
-        if (email && password) {
-          const loginResponse = await login({ email, password });
-          if ("jwt" in loginResponse) {
-            setUser({ email });
-            setToken(loginResponse.jwt);
-            toast.success("Successfully logged in!");
-            if (onLoginSuccess) onLoginSuccess();
-          } else if (!emailRegex.test(email)) {
-            toast.error("Write a correct email.");
-          } else {
-            toast.error("This account doesn't exist");
-          }
+        // Login
+        const loginResponse = await login({ email, password });
+        if ("jwt" in loginResponse) {
+          setUser({ email });
+          setToken(loginResponse.jwt);
+          toast.success("Successfully logged in!");
+          if (onLoginSuccess) onLoginSuccess();
         } else {
-          toast.error("Email and password are required.");
+          setErrorMessage("This account doesn't exist!");
         }
       } else {
-        if (!name || !email || !password || password !== confirmationPassword) {
-          if (password !== confirmationPassword) {
-            toast.error("Passwords do not match.");
-          } else {
-            toast.error("All fields are required for registration.");
-          }
-          return;
-        }
-
-        if (subscribeEmail && subscribeEmail !== email) {
-          toast.error("Subscription email does not match registration email.");
-          return;
-        }
-
+        // Register
         const registrationResponse = await register({
           name,
           email,
@@ -80,9 +79,9 @@ function AuthContent({ onLoginSuccess }: AuthContentProps) {
       console.error("Error during authentication:", err);
 
       if (err instanceof Error) {
-        toast.error(err.message);
+        setErrorMessage(err.message);
       } else {
-        toast.error("An unknown error occurred.");
+        setErrorMessage("An unknown error occurred!");
       }
     }
   };
@@ -107,6 +106,10 @@ function AuthContent({ onLoginSuccess }: AuthContentProps) {
         onSubmit={handleSubmit}
       />
       {loading && <LoadingSpinner />}
+      <ErrorMessage
+        className="authorization__error-message"
+        message={errorMessage}
+      />
     </div>
   );
 }
