@@ -5,6 +5,7 @@
 Welcome to **Miso GreenShop** – a modern, clean, and fully functional plant eCommerce app.  
 This project was built as part of my frontend developer portfolio, with a strong focus on user experience, clean architecture, and full integration with a real backend.
 
+❗important; For optimal app functionality on mobile devices, please disable the ‘Prevent Cross-Site Tracking’ option (Safari) or third-party cookie blocking (Chrome and other browsers) in your browser settings!
 🔗 **Live Demo**: https://amazing-biscuit-7704bb.netlify.app/
 
 ---
